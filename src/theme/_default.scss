@@ -1,0 +1,31 @@
+// felix theme entry.
+//
+// Composes the upstream default theme with the felix light overrides.
+// Set `$global: false` before including to emit variables into a custom
+// scope instead of `:root` (see the playground theme toggle for an example).
+
+@use "@fkui/theme-default/src/default" as themeDefault with (
+    $global: false
+);
+
+@use "light/theme" as light;
+
+$global: true !default;
+
+/// Upstream default light theme only – lets consumers emit the base theme
+/// into a global `:root` while keeping the felix overrides scoped.
+@mixin base {
+    @include themeDefault.light;
+}
+
+@mixin light {
+    @include themeDefault.light;
+    @include light.theme;
+}
+
+@if $global {
+    :root {
+        @include themeDefault.light;
+        @include light.theme;
+    }
+}

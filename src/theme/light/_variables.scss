@@ -1,0 +1,123 @@
+// Light-mode colour overrides for the felix profile.
+//
+// Every --fkds-color-* token of the upstream default theme is listed with a
+// raw profile value. Nearest-neighbour choices are called out in comments.
+
+@mixin variables {
+    // TEXT
+    --fkds-color-text-primary: #081130;
+    --fkds-color-text-secondary: #585f71;
+    --fkds-color-text-inverted: #ffffff;
+    --fkds-color-text-disabled: #585f71;
+
+    // BACKGROUND
+    --fkds-color-background-primary: #ffffff;
+    --fkds-color-background-secondary: #f7f8f8;
+    --fkds-color-background-tertiary: #f6f3ee;
+    --fkds-color-background-disabled: #f7f8f8;
+
+    // BORDER
+    --fkds-color-border-primary: #6e7689;
+    --fkds-color-border-strong: #8c93a4;
+    --fkds-color-border-weak: #d7d9e0;
+    --fkds-color-border-disabled: #8c93a4;
+    --fkds-color-border-inverted: #ffffff;
+
+    // ACTION - TEXT
+    // Links keep one constant colour across states – the underline carries
+    // the hover/active feedback, so hover/active/focus all stay the default.
+    --fkds-color-action-text-primary-default: #0865ae;
+    --fkds-color-action-text-primary-hover: #0865ae;
+    --fkds-color-action-text-primary-active: #0865ae;
+    --fkds-color-action-text-primary-focus: #0865ae;
+    --fkds-color-action-text-secondary-default: #171c26;
+    --fkds-color-action-text-secondary-hover: #171c26;
+    --fkds-color-action-text-secondary-active: #171c26;
+    --fkds-color-action-text-secondary-focus: #171c26;
+    --fkds-color-action-text-inverted-default: #ffffff;
+    --fkds-color-action-text-inverted-hover: #ffffff;
+    --fkds-color-action-text-inverted-active: #ffffff;
+    --fkds-color-action-text-inverted-focus: #ffffff;
+
+    // ACTION - BACKGROUND
+    --fkds-color-action-background-primary-default: #232948;
+    --fkds-color-action-background-primary-hover: #334075;
+    --fkds-color-action-background-primary-active: #334075;
+    --fkds-color-action-background-primary-focus: #334075;
+    // Secondary actions are a solid tinted surface whose border matches the
+    // fill (see the button rule in the theme mixin). One tint step at
+    // rest/focus, a lighter step on hover/active.
+    --fkds-color-action-background-secondary-default: #eef070;
+    --fkds-color-action-background-secondary-hover: #eef495;
+    --fkds-color-action-background-secondary-active: #eef495;
+    --fkds-color-action-background-secondary-focus: #eef070;
+
+    // ACTION - BORDER
+    --fkds-color-action-border-primary-default: #232948;
+    --fkds-color-action-border-primary-hover: #232948;
+    --fkds-color-action-border-primary-active: #232948;
+    --fkds-color-action-border-primary-focus: #232948;
+
+    // FEEDBACK - BACKGROUND
+    --fkds-color-feedback-background-neutral: #ededf1;
+    --fkds-color-feedback-background-neutral-strong: #585f71;
+    --fkds-color-feedback-background-info: #e7f2ff;
+    --fkds-color-feedback-background-info-strong: #0053a7;
+    --fkds-color-feedback-background-positive: #e0f8e0;
+    --fkds-color-feedback-background-positive-strong: #217424;
+    --fkds-color-feedback-background-warning: #fff3c6;
+    --fkds-color-feedback-background-warning-strong: #ffc108;
+    --fkds-color-feedback-background-negative: #ffe5e1;
+    --fkds-color-feedback-background-negative-strong: #c7311a;
+
+    // FEEDBACK - BORDER
+    --fkds-color-feedback-border-neutral: #484d5c;
+    --fkds-color-feedback-border-info: #0053a7;
+    --fkds-color-feedback-border-positive: #217424;
+    --fkds-color-feedback-border-warning: #ffc108;
+    --fkds-color-feedback-border-negative: #c7311a;
+
+    // FEEDBACK - TEXT
+    --fkds-color-feedback-text-negative: #c7311a;
+    --fkds-color-feedback-text-positive: #217424;
+    --fkds-color-feedback-text-on-warning: #081130;
+
+    // SELECT - BACKGROUND
+    --fkds-color-select-background-primary-default: #232948;
+    --fkds-color-select-background-primary-hover: #e2eaf7;
+    --fkds-color-select-background-primary-active: #e2eaf7;
+    --fkds-color-select-background-primary-focus: #e2eaf7;
+    --fkds-color-select-background-secondary-default: #cbd9f2;
+    --fkds-color-select-background-secondary-hover: #e2eaf7;
+    --fkds-color-select-background-secondary-active: #e2eaf7;
+    --fkds-color-select-background-secondary-focus: #e2eaf7;
+
+    // INTERACTIVE SURFACE - BACKGROUND
+    // No direct profile slot; mapped to the profile's soft tinted action
+    // surface (default/active one step, hover/focus two steps).
+    --fkds-color-interactive-surface-background-primary-default: #e2eaf7;
+    --fkds-color-interactive-surface-background-primary-hover: #cbd9f2;
+    --fkds-color-interactive-surface-background-primary-active: #e2eaf7;
+    --fkds-color-interactive-surface-background-primary-focus: #cbd9f2;
+
+    // NAVIGATION - BORDER
+    --fkds-color-navigation-border-hover: #92acc8;
+    --fkds-color-navigation-border-selected: #232948;
+
+    // NAVIGATION - BACKGROUND
+    --fkds-color-navigation-background-hover: #e2eaf7;
+    --fkds-color-navigation-background-selected: #232948;
+
+    // HEADER - BACKGROUND
+    --fkds-color-header-background-primary: #ffffff;
+
+    // HEADER - TEXT
+    // Header background is light in this profile, so header text flips from
+    // the upstream inverted colour to the primary text colour.
+    --fkds-color-header-text-primary: #081130;
+
+    // FOCUS INDICATOR
+    // Pure black outer ring over a white inner ring – see --f-focus-box-shadow.
+    --fkds-focus-indicator-color: #000000;
+    --fkds-focus-indicator-color-background: #ffffff;
+}

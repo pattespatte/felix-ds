@@ -1,0 +1,56 @@
+// Self-hosted fonts for the felix theme.
+//
+// Body text: Noto Sans (400, 600 + italics). Headings/display: Roboto Slab (600).
+// Bold maps to weight 600 throughout the theme, so no 700 weights are bundled.
+//
+// License texts for both families live next to this file in `licenses/`.
+
+@font-face {
+    font-family: "Noto Sans";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src:
+        local(""),
+        url("./files/noto-sans-v42-latin-regular.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Noto Sans";
+    font-style: italic;
+    font-weight: 400;
+    font-display: swap;
+    src:
+        local(""),
+        url("./files/noto-sans-v42-latin-italic.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Noto Sans";
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src:
+        local(""),
+        url("./files/noto-sans-v42-latin-600.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Noto Sans";
+    font-style: italic;
+    font-weight: 600;
+    font-display: swap;
+    src:
+        local(""),
+        url("./files/noto-sans-v42-latin-600italic.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Roboto Slab";
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src:
+        local(""),
+        url("./files/roboto-slab-v36-latin-600.woff2") format("woff2");
+}

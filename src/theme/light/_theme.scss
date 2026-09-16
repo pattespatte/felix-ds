@@ -1,0 +1,121 @@
+// Light theme: variable overrides plus the few structural rules the profile
+// needs (heading typography and the chip radius, which is hardcoded upstream).
+
+@use "../shared" as shared;
+@use "variables" as light;
+
+@mixin theme {
+    @include shared.variables;
+    @include light.variables;
+
+    // Heading typography. The upstream theme has no heading-family token,
+    // so heading rules are plain CSS emitted with the theme. Display font
+    // for h1, body font for the rest; bold maps to the bundled semibold.
+    // The h1 uses the profile's display style: tight 1.2 line height and
+    // slightly negative tracking.
+    h1 {
+        font-family: "Roboto Slab", serif;
+        font-weight: var(--f-font-weight-bold);
+        font-size: var(--f-font-size-h1);
+        line-height: 1.2;
+        letter-spacing: -0.02em;
+    }
+
+    h2 {
+        font-family: "Noto Sans", system-ui, sans-serif;
+        font-weight: var(--f-font-weight-bold);
+        font-size: var(--f-font-size-h2);
+    }
+
+    h3 {
+        font-family: "Noto Sans", system-ui, sans-serif;
+        font-weight: var(--f-font-weight-bold);
+        font-size: var(--f-font-size-h3);
+    }
+
+    h4 {
+        font-family: "Noto Sans", system-ui, sans-serif;
+        font-weight: var(--f-font-weight-bold);
+        font-size: var(--f-font-size-h4);
+    }
+
+    h5 {
+        font-family: "Noto Sans", system-ui, sans-serif;
+        font-weight: var(--f-font-weight-bold);
+        font-size: var(--f-font-size-large);
+    }
+
+    h6 {
+        font-family: "Noto Sans", system-ui, sans-serif;
+        font-weight: var(--f-font-weight-bold);
+        font-size: var(--f-font-size-standard);
+    }
+
+    // Chip radius. Upstream hardcodes a 20px pill radius on chip labels and
+    // their focus ring; the profile uses the medium radius instead. These
+    // selectors mirror the upstream ones so the override wins on focus too.
+    .radio-button-group--chip .radio-button__label,
+    .checkbox-group--chip .checkbox__label {
+        border-radius: var(--f-border-radius-medium);
+    }
+
+    .radio-button-group--chip input[type="radio"]:focus-visible + label.radio-button__label,
+    .checkbox-group--chip input[type="checkbox"]:focus-visible + label.checkbox__label {
+        border-radius: var(--f-border-radius-medium);
+    }
+
+    // Secondary button. Upstream binds the secondary variant's border to the
+    // primary action border and its text to the primary action text, but the
+    // profile's secondary action is a filled surface whose border matches the
+    // fill and whose text stays dark in every state.
+    .button--secondary {
+        border-color: var(--fkds-color-action-background-secondary-default);
+        color: var(--fkds-color-action-text-secondary-default);
+    }
+
+    .button--secondary:hover,
+    .button--secondary:active {
+        border-color: var(--fkds-color-action-background-secondary-hover);
+        color: var(--fkds-color-action-text-secondary-default);
+    }
+
+    .button--secondary:focus-visible {
+        border-color: var(--fkds-color-action-background-secondary-focus);
+        color: var(--fkds-color-action-text-secondary-focus);
+    }
+
+    // Input fields get a soft tinted hover surface with a slightly deeper
+    // border, mirroring the profile's text field behaviour. Focus and error
+    // states are left to the upstream styling.
+    $input-hover-bg: #f2f5fc;
+    $input-hover-border: #a6c0e7;
+
+    .text-field:not(.text-field--error) .text-field__input:hover:not(:disabled):not(:focus),
+    .textarea-field:not(.textarea-field--error) .textarea-field__textarea:hover:not(:disabled):not(:focus),
+    .select-field:not(.select-field--error) .select-field__select:hover:not(:disabled):not(:focus) {
+        background-color: $input-hover-bg;
+        border-color: $input-hover-border;
+    }
+
+    // Anchors follow the profile's link treatment: one constant link colour
+    // with an underline that disappears on hover. Buttons and other
+    // components that set their own colours are unaffected (higher
+    // specificity), and focus keeps the upstream focus ring.
+    a {
+        color: var(--fkds-color-action-text-primary-default);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+    }
+
+    a:hover {
+        color: var(--fkds-color-action-text-primary-hover);
+        text-decoration: none;
+    }
+
+    // Checkbox and radio glyphs draw their resting border with the weak
+    // border colour instead of the regular component border.
+    .checkbox__label::before,
+    .radio-button__label::before {
+        border-color: var(--fkds-color-border-weak);
+    }
+}

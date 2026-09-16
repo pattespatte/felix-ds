@@ -1,0 +1,54 @@
+// The base theme is loaded through the felix module (its `base` mixin emits
+// the upstream default light variables) – loading @fkui/theme-default here
+// as well would collide with felix's own configured load of the same module.
+@use "../../src/fonts/fonts";
+@use "../../src/theme/default" as felix with (
+    $global: false
+);
+
+:root {
+    @include felix.base;
+}
+
+// Scoped felix theme: html.theme-felix (0,1,1) wins over the global :root
+// (0,1,0), so no !important is needed for instant switching.
+html.theme-felix {
+    @include felix.light;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+// The page is always a light surface: without an explicit background the
+// dark browser canvas of dark-preference systems shows through.
+body {
+    background-color: var(--fkds-color-background-primary, #ffffff);
+}
+
+// Taller header band with a hairline divider, aligned with the reference
+// profile's page shell. Right padding stacks with the right slot's own
+// padding for 32px on both edges. Global rules (not scoped): the FKUI
+// component does not propagate the parent's style scope to its markup.
+.page-header {
+    padding: 1.5rem 1rem 1.5rem 2rem;
+    border-bottom: 1px solid var(--fkds-color-border-weak, #d7d9e0);
+}
+
+// Progress meters run in the profile blue (the info scale) instead of the
+// upstream positive green, in both the base theme and the felix theme.
+.progress {
+    --fkds-color-feedback-background-positive-strong: var(
+        --fkds-color-feedback-background-info-strong,
+        #0053a7
+    );
+    --fkds-color-feedback-border-positive: var(--fkds-color-feedback-border-info, #0053a7);
+}
+
+main {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 1.5rem 1rem 4rem;
+}

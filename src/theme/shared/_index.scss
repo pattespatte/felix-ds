@@ -1,0 +1,60 @@
+// Shared (color-mode independent) variable overrides for the felix profile.
+//
+// Only tokens that differ from the upstream default theme are listed; the
+// upstream values are emitted first by the composed theme, these follow and
+// win the cascade.
+
+@mixin variables {
+    /// Font variables – body family is the self-hosted Noto Sans (see
+    /// src/fonts). Headings get explicit rules in the theme mixin.
+    --f-font-family: "Noto Sans", system-ui, sans-serif;
+
+    /// Font weight – the profile has no 700 weight bundled; bold maps to 600.
+    --f-font-weight-normal: 400;
+    --f-font-weight-medium: 600;
+    --f-font-weight-bold: 600;
+
+    /// Font line height
+    --f-line-height-small: 1.5;
+    --f-line-height-medium: 1.5;
+    --f-line-height-large: 1.5;
+
+    /// Font sizes – profile heading scale: h1 48px, h2 24px, h3 20px,
+    /// h4 18px, h5/h6 16px, body 16px. The xxx-large token backs the mobile
+    /// h2 step. Body text stays at 16px so form controls (which share the
+    /// same token) keep the profile's 16px control text size.
+    --f-font-size-h1: 3rem;
+    --f-font-size-h2: 1.5rem;
+    --f-font-size-xxx-large: 1.25rem;
+    --f-font-size-h3: 1.25rem;
+    --f-font-size-h4: 1.125rem;
+    --f-font-size-large: 1rem;
+    --f-font-size-standard: 1rem;
+
+    /// Borders – the profile draws every component border as a 1px hairline
+    /// (text fields, selects, buttons, cards, panels, message boxes, modal).
+    --f-border-width-small: 1px;
+    --f-border-width-medium: 1px;
+
+    /// Radii – profile scale: small 6px (checkbox/radio glyph, message boxes,
+    /// tooltip), medium 8px (text fields, selects, buttons, cards).
+    --f-border-radius-small: 6px;
+    --f-border-radius-medium: 8px;
+
+    /// Shadows – the profile is completely flat: no drop shadow on buttons,
+    /// message boxes, modal or popup surfaces, and no inset shadow in input
+    /// fields. Focus is handled by --f-focus-box-shadow below.
+    --f-button-shadow: none;
+    --f-button-shadow-hover: none;
+    --f-button-shadow-active: none;
+    --f-box-modal-shadow: none;
+    --f-input-shadow-inset: none;
+
+    /// Focus – two-ring indicator (white inner, profile colour outer), the
+    /// same construction the profile uses for links and buttons.
+    --f-focus-box-shadow: 0 0 0 2px var(--fkds-focus-indicator-color-background),
+        0 0 0 4px var(--fkds-focus-indicator-color);
+
+    /// Modal/loader overlay – slightly darker than the upstream default.
+    --f-background-overlay: rgba(0, 0, 0, 0.8);
+}
