@@ -86,7 +86,7 @@ Playgrounden visar cirka 20 representativa FKUI-komponenter: FButton, FBadge, FM
 
 ## Publiceringspolicy
 
-Projektet hålls `private: true`. Ingen publicering till npm, GitHub eller annan extern server sker utan ägarens uttryckliga godkännande. Repot versionshanteras bara lokalt; inga fjärrrepos läggs till.
+Paketet hålls `private: true` – ingen publicering till npm sker. Repot publiceras på GitHub och playgrounden byggs och serveras via GitHub Pages, med ägarens uttryckliga godkännande.
 
 ---
 
@@ -178,4 +178,4 @@ About 20 representative FKUI components are shown: FButton, FBadge, FMessageBox,
 
 ## Publishing policy
 
-The project stays `private: true`. Nothing is published to npm, GitHub or any other external server without the owner's explicit approval. The repo is version-controlled locally; no remotes are added.
+The package stays `private: true` – nothing is published to npm. The repo is published on GitHub and the playground is built and served via GitHub Pages, with the owner's explicit approval.
