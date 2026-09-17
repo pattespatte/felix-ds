@@ -1,23 +1,19 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import {
-    FButton,
-    FCheckboxField,
-    FFieldset,
-    FRadioField,
-    FSearchTextField,
-    FSelectField,
-    FTextareaField,
-    FTextField,
-    FValidationForm,
-} from "@fkui/vue";
+import { FCheckboxField, FFieldset, FRadioField } from "@fkui/vue";
+import FTextFieldDemo from "../demos/forms/FTextFieldDemo.vue";
+import FTextareaFieldDemo from "../demos/forms/FTextareaFieldDemo.vue";
+import FSelectFieldDemo from "../demos/forms/FSelectFieldDemo.vue";
+import FCheckboxFieldDemo from "../demos/forms/FCheckboxFieldDemo.vue";
+import FRadioFieldDemo from "../demos/forms/FRadioFieldDemo.vue";
+import FFieldsetDemo from "../demos/forms/FFieldsetDemo.vue";
+import FLabelDemo from "../demos/forms/FLabelDemo.vue";
+import FStaticFieldDemo from "../demos/forms/FStaticFieldDemo.vue";
+import FOutputFieldDemo from "../demos/forms/FOutputFieldDemo.vue";
+import FValidationFormDemo from "../demos/forms/FValidationFormDemo.vue";
+import FErrorListDemo from "../demos/forms/FErrorListDemo.vue";
 
-const namn = ref("");
-const meddelande = ref("");
-const ort = ref("");
-const sokord = ref("");
-const intressen = ref<string[]>([]);
-const kontakt = ref("");
+// Tillfälligt chip-innehåll från v1 – flyttas till CSS-vyn i fas 3.
 const chipAlternativ = ref("");
 const chipVal = ref<string[]>([]);
 </script>
@@ -26,70 +22,37 @@ const chipVal = ref<string[]>([]);
     <div class="view">
         <h1>Formulär</h1>
         <p class="view__intro">
-            Skicka formuläret med tomt namnfält för att se felmarkering och
-            fellistan (FErrorList) som valideringspluginet renderar.
+            Grundläggande formulärfält: inmatning, val, gruppering, validering
+            och återkoppling. Prova båda temana med väljaren uppe till höger.
         </p>
 
-        <section id="fvalideringsform" aria-labelledby="fvalideringsform-heading">
-            <h2 id="fvalideringsform-heading" class="sr-only">
-                Valideringsformulär
-            </h2>
-            <f-validation-form>
-                <template #error-message> Fel i följande fält: </template>
+        <f-text-field-demo />
+        <f-textarea-field-demo />
+        <f-select-field-demo />
+        <f-checkbox-field-demo />
+        <f-radio-field-demo />
+        <f-fieldset-demo />
+        <f-label-demo />
+        <f-static-field-demo />
+        <f-output-field-demo />
+        <f-validation-form-demo />
+        <f-error-list-demo />
 
-                <f-text-field id="namn" v-model="namn" v-validation.required :maxlength="100">
-                    Namn
-                </f-text-field>
-
-                <f-textarea-field v-model="meddelande" v-validation.required :maxlength="500">
-                    Meddelande
-                </f-textarea-field>
-
-                <f-select-field v-model="ort">
-                    <template #label> Ort </template>
-                    <option value="goteborg">Göteborg</option>
-                    <option value="stockholm">Stockholm</option>
-                    <option value="umea">Umeå</option>
-                </f-select-field>
-
-                <f-search-text-field v-model="sokord"> Sökord </f-search-text-field>
-
-                <f-fieldset name="intressen">
-                    <template #label> Intressen </template>
-                    <f-checkbox-field v-model="intressen" value="design"> Design </f-checkbox-field>
-                    <f-checkbox-field v-model="intressen" value="kod"> Kod </f-checkbox-field>
-                    <f-checkbox-field v-model="intressen" value="typografi"> Typografi </f-checkbox-field>
-                </f-fieldset>
-
-                <f-fieldset name="kontakt" v-validation.required>
-                    <template #label> Önskad kontaktväg </template>
-                    <f-radio-field v-model="kontakt" value="epost"> E-post </f-radio-field>
-                    <f-radio-field v-model="kontakt" value="telefon"> Telefon </f-radio-field>
-                    <f-radio-field v-model="kontakt" value="brev"> Brev </f-radio-field>
-                </f-fieldset>
-
-                <f-fieldset name="chip-alternativ" chip>
-                    <template #label> Chip – radioknappar </template>
-                    <f-radio-field v-model="chipAlternativ" value="ett"> Alternativ ett </f-radio-field>
-                    <f-radio-field v-model="chipAlternativ" value="tva"> Alternativ två </f-radio-field>
-                    <f-radio-field v-model="chipAlternativ" value="tre"> Alternativ tre </f-radio-field>
-                </f-fieldset>
-
-                <f-fieldset name="chip-val" chip>
-                    <template #label> Chip – kryssrutor </template>
-                    <f-checkbox-field v-model="chipVal" value="a"> Val A </f-checkbox-field>
-                    <f-checkbox-field v-model="chipVal" value="b"> Val B </f-checkbox-field>
-                    <f-checkbox-field v-model="chipVal" value="c"> Val C </f-checkbox-field>
-                </f-fieldset>
-
-                <f-button type="submit" size="medium" variant="primary"> Skicka </f-button>
-            </f-validation-form>
+        <!-- Tillfällig grupp från v1 – flyttas till CSS-vyn (chip) i fas 3. -->
+        <section id="chip" aria-labelledby="chip-heading" class="demo">
+            <h2 id="chip-heading">Chip</h2>
+            <f-fieldset name="chip-alternativ" chip>
+                <template #label> Chip – radioknappar </template>
+                <f-radio-field v-model="chipAlternativ" value="ett"> Alternativ ett </f-radio-field>
+                <f-radio-field v-model="chipAlternativ" value="tva"> Alternativ två </f-radio-field>
+                <f-radio-field v-model="chipAlternativ" value="tre"> Alternativ tre </f-radio-field>
+            </f-fieldset>
+            <f-fieldset name="chip-val" chip>
+                <template #label> Chip – kryssrutor </template>
+                <f-checkbox-field v-model="chipVal" value="a"> Val A </f-checkbox-field>
+                <f-checkbox-field v-model="chipVal" value="b"> Val B </f-checkbox-field>
+                <f-checkbox-field v-model="chipVal" value="c"> Val C </f-checkbox-field>
+            </f-fieldset>
         </section>
     </div>
 </template>
-
-<style scoped lang="scss">
-section {
-    margin-top: 1.5rem;
-}
-</style>

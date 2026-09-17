@@ -32,7 +32,19 @@ export const views: NavView[] = [
     {
         slug: "formular",
         title: "Formulär",
-        anchors: [{ id: "fvalideringsform", title: "Valideringsformulär" }],
+        anchors: [
+            { id: "ftextfield", title: "Textfält" },
+            { id: "ftextareafield", title: "Textruta" },
+            { id: "fselectfield", title: "Rulllista" },
+            { id: "fcheckboxfield", title: "Kryssruta" },
+            { id: "fradiofield", title: "Radioknappar" },
+            { id: "ffieldset", title: "Fältset" },
+            { id: "flabel", title: "Etikett" },
+            { id: "fstaticfield", title: "Statiskt fält" },
+            { id: "foutputfield", title: "Utdatafält" },
+            { id: "fvalidationform", title: "Valideringsformulär" },
+            { id: "ferrorlist", title: "Fellista" },
+        ],
     },
     {
         slug: "kalender",
