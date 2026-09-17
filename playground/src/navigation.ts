@@ -70,7 +70,11 @@ export const views: NavView[] = [
     {
         slug: "filer",
         title: "Filer",
-        anchors: [],
+        anchors: [
+            { id: "ffileselector", title: "Filväljare" },
+            { id: "ffileitem", title: "Filrad" },
+            { id: "file-uploader", title: "Uppladdning (CSS)" },
+        ],
     },
     {
         slug: "ytor",
