@@ -2,12 +2,15 @@
 import { useTemplateRef } from "vue";
 import {
     FBadge,
-    FButton,
     FLoader,
     FMessageBox,
     FProgressbar,
     FTooltip,
 } from "@fkui/vue";
+import FButtonDemo from "../demos/actions/FButtonDemo.vue";
+import FCrudButtonDemo from "../demos/actions/FCrudButtonDemo.vue";
+import FIconDemo from "../demos/actions/FIconDemo.vue";
+import FLogoDemo from "../demos/actions/FLogoDemo.vue";
 
 const tooltipHeading = useTemplateRef<HTMLDivElement>("tooltip-heading");
 </script>
@@ -21,27 +24,14 @@ const tooltipHeading = useTemplateRef<HTMLDivElement>("tooltip-heading");
             till höger – alla komponenter byter utseende direkt, utan omladdning.
         </p>
 
-        <section id="fbutton" aria-labelledby="fbutton-heading">
-            <h2 id="fbutton-heading">Knappar</h2>
-            <div class="demo-row">
-                <f-button size="small" variant="primary"> Liten primär </f-button>
-                <f-button size="small" variant="secondary"> Liten sekundär </f-button>
-                <f-button size="small" variant="tertiary"> Liten tertiär </f-button>
-            </div>
-            <div class="demo-row">
-                <f-button size="medium" variant="primary"> Primär </f-button>
-                <f-button size="medium" variant="secondary"> Sekundär </f-button>
-                <f-button size="medium" variant="tertiary"> Tertiär </f-button>
-            </div>
-            <div class="demo-row">
-                <f-button size="large" variant="primary"> Stor primär </f-button>
-                <f-button size="large" variant="secondary"> Stor sekundär </f-button>
-                <f-button size="large" variant="tertiary"> Stor tertiär </f-button>
-            </div>
-        </section>
+        <f-button-demo />
+        <f-crud-button-demo />
+        <f-icon-demo />
+        <f-logo-demo />
 
-        <section id="fbadge" aria-labelledby="fbadge-heading">
-            <h2 id="fbadge-heading">Brickor</h2>
+        <!-- Tillfälliga grupper från v1 – flyttas till sina vyer i fas 3. -->
+        <section id="fbadge" aria-labelledby="fbadge-heading" class="demo">
+            <h2 id="fbadge-heading">FBadge</h2>
             <div class="demo-row">
                 <f-badge> Standard </f-badge>
                 <f-badge status="info"> Info </f-badge>
@@ -51,8 +41,8 @@ const tooltipHeading = useTemplateRef<HTMLDivElement>("tooltip-heading");
             </div>
         </section>
 
-        <section id="fmessagebox" aria-labelledby="fmessagebox-heading">
-            <h2 id="fmessagebox-heading">Meddelanderutor</h2>
+        <section id="fmessagebox" aria-labelledby="fmessagebox-heading" class="demo">
+            <h2 id="fmessagebox-heading">FMessageBox</h2>
             <f-message-box type="info">
                 <template #default="{ headingSlotClass }">
                     <h3 :class="headingSlotClass">Informationsmeddelande</h3>
@@ -79,8 +69,8 @@ const tooltipHeading = useTemplateRef<HTMLDivElement>("tooltip-heading");
             </f-message-box>
         </section>
 
-        <section id="ftooltip" aria-labelledby="ftooltip-heading">
-            <h2 id="ftooltip-heading">Tooltip</h2>
+        <section id="ftooltip" aria-labelledby="ftooltip-heading" class="demo">
+            <h2 id="ftooltip-heading">FTooltip</h2>
             <div ref="tooltip-heading">
                 <h3>Rubrik med tooltip</h3>
             </div>
@@ -97,8 +87,8 @@ const tooltipHeading = useTemplateRef<HTMLDivElement>("tooltip-heading");
             </f-tooltip>
         </section>
 
-        <section id="fprogressbar" aria-labelledby="fprogressbar-heading">
-            <h2 id="fprogressbar-heading">Förlopp och läge</h2>
+        <section id="fprogressbar" aria-labelledby="fprogressbar-heading" class="demo">
+            <h2 id="fprogressbar-heading">FProgressbar och FLoader</h2>
             <f-progressbar :value="40" aria-label="Pågående förlopp"></f-progressbar>
             <f-loader />
         </section>
@@ -106,20 +96,8 @@ const tooltipHeading = useTemplateRef<HTMLDivElement>("tooltip-heading");
 </template>
 
 <style scoped lang="scss">
-section {
-    margin-top: 2.5rem;
-}
-
 h3 {
     margin: 0;
-}
-
-.demo-row {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-    align-items: center;
-    margin-bottom: 1rem;
 }
 
 f-message-box {

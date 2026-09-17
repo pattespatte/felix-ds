@@ -20,6 +20,9 @@ export const views: NavView[] = [
         title: "Knappar och ikoner",
         anchors: [
             { id: "fbutton", title: "Knappar" },
+            { id: "fcrudbutton", title: "CRUD-knappar" },
+            { id: "ficon", title: "Ikoner" },
+            { id: "flogo", title: "Logotyp" },
             { id: "fbadge", title: "Brickor" },
             { id: "fmessagebox", title: "Meddelanderutor" },
             { id: "ftooltip", title: "Tooltip" },

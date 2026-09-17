@@ -57,4 +57,11 @@
 
     /// Modal/loader overlay – slightly darker than the upstream default.
     --f-background-overlay: rgba(0, 0, 0, 0.8);
+
+    /// Logo placeholder – the profile ships a neutral mark (a filled circle in
+    /// the primary action colour) so FLogo has an image to display. No real
+    /// logotype is referenced; consumers are expected to replace these URLs
+    /// with their own mark.
+    --f-logo-image-small: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='11' fill='%23232948'/%3E%3C/svg%3E");
+    --f-logo-image-large: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='11' fill='%23232948'/%3E%3C/svg%3E");
 }

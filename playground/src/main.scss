@@ -80,3 +80,20 @@ body {
 .view :is(h1, h2, h3, section)[id] {
     scroll-margin-top: 6.5rem;
 }
+
+// Shared demo-block scaffolding used by the per-component demo components.
+.demo {
+    margin-top: 2.5rem;
+}
+
+.demo__description {
+    max-width: 46rem;
+}
+
+.demo-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 1rem;
+}
