@@ -47,8 +47,36 @@ body {
     --fkds-color-feedback-border-positive: var(--fkds-color-feedback-border-info, #0053a7);
 }
 
-main {
+// App-shell adjustments for the left navigation. Structure follows the
+// reference's proportions; every value is a theme token – the nav column is a
+// plain primary surface with no item fill, separated from the content by a
+// thin divider in the weak border colour (the panel's resize handle keeps its
+// native behaviour, minus the grip dots).
+.layout-navigation__navigation {
+    background-color: var(--fkds-color-background-primary, #ffffff);
+}
+
+.layout-navigation__navigation__border {
+    background-color: var(--fkds-color-border-weak, #d7d9e0);
+}
+
+.layout-navigation__navigation__border__dot {
+    display: none;
+}
+
+// Routed views: page container that previously sat on the main element
+// (the shell owns the main element now and spans the full viewport).
+.view {
     max-width: 72rem;
-    margin: 0 auto;
     padding: 1.5rem 1rem 4rem;
+    box-sizing: border-box;
+}
+
+.view__intro {
+    max-width: 46rem;
+}
+
+// Anchor targets clear the sticky page header when scrolled into view.
+.view :is(h1, h2, h3, section)[id] {
+    scroll-margin-top: 6.5rem;
 }

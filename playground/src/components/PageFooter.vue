@@ -1,5 +1,7 @@
 <template>
-    <footer class="page-footer">
+    <!-- Root is a div: the footer landmark comes from
+         FLayoutApplicationTemplate's footer slot wrapper. -->
+    <div class="page-footer">
         <div class="page-footer__inner">
             <div class="page-footer__brand">
                 <p class="page-footer__title">felix-ds</p>
@@ -8,25 +10,43 @@
                 </p>
             </div>
             <nav class="page-footer__group" aria-label="Sidfotsnavigation">
-                <h2 class="page-footer__heading">Sektioner</h2>
+                <h2 class="page-footer__heading">Kategorier</h2>
                 <ul>
-                    <li><a href="#actions">Knappar och återkoppling</a></li>
-                    <li><a href="#forms">Formulär</a></li>
-                    <li><a href="#surfaces">Ytor och data</a></li>
+                    <li><a href="#/knappar">Knappar och ikoner</a></li>
+                    <li><a href="#/formular">Formulär</a></li>
+                    <li><a href="#/kalender">Datum och kalender</a></li>
+                    <li><a href="#/filer">Filer</a></li>
+                    <li><a href="#/ytor">Ytor och paneler</a></li>
+                    <li><a href="#/modaler">Modaler och dialoger</a></li>
+                    <li><a href="#/navigation">Navigation och layout</a></li>
+                    <li><a href="#/tabeller">Tabeller och data</a></li>
+                    <li><a href="#/aterkoppling">Återkoppling och status</a></li>
+                    <li><a href="#/wizard">Stegvisa flöden</a></li>
+                    <li><a href="#/css">Endast CSS</a></li>
                 </ul>
             </nav>
             <div class="page-footer__group">
                 <h2 class="page-footer__heading">Genvägar</h2>
                 <ul>
-                    <li><a href="#app">Till sidans topp</a></li>
+                    <li>
+                        <button class="page-footer__top" type="button" @click="scrollToTop">
+                            Till sidans topp
+                        </button>
+                    </li>
                 </ul>
             </div>
         </div>
         <div class="page-footer__bottom">
             <p>felix-ds 0.1.0 – privat proof of concept. Koden publiceras inte.</p>
         </div>
-    </footer>
+    </div>
 </template>
+
+<script setup lang="ts">
+function scrollToTop(): void {
+    window.scrollTo({ top: 0 });
+}
+</script>
 
 <style scoped lang="scss">
 .page-footer {
@@ -73,15 +93,27 @@
     gap: 0.5rem;
 }
 
-.page-footer a {
+.page-footer a,
+.page-footer__top {
     color: var(--fkds-color-text-inverted, #ffffff);
     text-decoration: underline;
     text-underline-offset: 3px;
 }
 
-.page-footer a:hover {
+.page-footer a:hover,
+.page-footer__top:hover {
     color: var(--fkds-color-text-inverted, #ffffff);
     text-decoration: none;
+}
+
+// Reads as a link (same treatment as the anchors above), stays a button so it
+// can scroll without touching the route hash.
+.page-footer__top {
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    cursor: pointer;
 }
 
 .page-footer__bottom {

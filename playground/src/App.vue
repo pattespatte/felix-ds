@@ -1,47 +1,73 @@
 <script setup lang="ts">
-import { FPageHeader } from "@fkui/vue";
-import { applyTheme, currentTheme } from "./theme";
+import { computed, type Component } from "vue";
+import { FLayoutApplicationTemplate, FLayoutLeftPanel, FPageHeader } from "@fkui/vue";
 import ThemeToggle from "./components/ThemeToggle.vue";
 import PageFooter from "./components/PageFooter.vue";
-import ActionsSection from "./sections/ActionsSection.vue";
-import FormsSection from "./sections/FormsSection.vue";
-import SurfacesSection from "./sections/SurfacesSection.vue";
+import NavTree from "./components/NavTree.vue";
+import { currentRoute } from "./router";
+import ActionsView from "./views/ActionsView.vue";
+import FormsView from "./views/FormsView.vue";
+import CalendarView from "./views/CalendarView.vue";
+import FilesView from "./views/FilesView.vue";
+import SurfacesView from "./views/SurfacesView.vue";
+import ModalsView from "./views/ModalsView.vue";
+import NavigationView from "./views/NavigationView.vue";
+import TablesView from "./views/TablesView.vue";
+import FeedbackView from "./views/FeedbackView.vue";
+import WizardView from "./views/WizardView.vue";
+import CssOnlyView from "./views/CssOnlyView.vue";
+
+// Slugs mirror navigation.ts; the lookup makes unknown routes impossible
+// (router normalises) but falls back to the first view regardless.
+const viewComponents: Record<string, Component> = {
+    knappar: ActionsView,
+    formular: FormsView,
+    kalender: CalendarView,
+    filer: FilesView,
+    ytor: SurfacesView,
+    modaler: ModalsView,
+    navigation: NavigationView,
+    tabeller: TablesView,
+    aterkoppling: FeedbackView,
+    wizard: WizardView,
+    css: CssOnlyView,
+};
+
+const currentViewComponent = computed<Component>(
+    () => viewComponents[currentRoute.value.slug] ?? ActionsView,
+);
 </script>
 
 <template>
-    <!-- FKUI:s sidhuvud renderas som en div utan landmärke; wrappern ger
-         banner-landmärket (motsvarande footer-elementet nedan). -->
-    <header>
-        <f-page-header>
-            felix-ds<span class="app-name-sub"> – playground</span>
-            <template #right>
-                <theme-toggle />
+    <!-- FLayoutApplicationTemplate renders the header/footer landmarks around
+         its slots, so FPageHeader and PageFooter need no wrapper elements of
+         their own. -->
+    <f-layout-application-template>
+        <template #header>
+            <f-page-header>
+                felix-ds<span class="app-name-sub"> – playground</span>
+                <template #right>
+                    <theme-toggle />
+                </template>
+            </f-page-header>
+        </template>
+
+        <f-layout-left-panel nav-label="Komponenter" initial-width="200">
+            <template #heading>
+                <p class="shell-nav-title">Komponenter</p>
             </template>
-        </f-page-header>
-    </header>
+            <template #content>
+                <nav-tree />
+            </template>
+            <template #default>
+                <component :is="currentViewComponent" />
+            </template>
+        </f-layout-left-panel>
 
-    <main>
-        <h1>Playground</h1>
-        <p class="intro">
-            Ett tunt temalager ovanpå FKUI:s publika npm-paket. Växla mellan
-            <button class="intro__theme-toggle" type="button" :aria-pressed="currentTheme === 'fkui'" @click="applyTheme('fkui')">FKUI:s grundtema</button>
-            och
-            <button class="intro__theme-toggle" type="button" :aria-pressed="currentTheme === 'felix'" @click="applyTheme('felix')">felix-temat</button>.
-            Alla komponenter byter utseende direkt, utan omladdning.
-        </p>
-
-        <nav class="section-nav" aria-label="Sektioner">
-            <a href="#actions">Knappar och återkoppling</a>
-            <a href="#forms">Formulär</a>
-            <a href="#surfaces">Ytor och data</a>
-        </nav>
-
-        <actions-section />
-        <forms-section />
-        <surfaces-section />
-    </main>
-
-    <page-footer />
+        <template #footer>
+            <page-footer />
+        </template>
+    </f-layout-application-template>
 </template>
 
 <style scoped lang="scss">
@@ -49,39 +75,11 @@ import SurfacesSection from "./sections/SurfacesSection.vue";
     font-weight: var(--f-font-weight-normal, 400);
 }
 
-.intro {
-    max-width: 46rem;
-}
-
-// Inline theme switches that read as links: same treatment as the theme's
-// anchors (constant action colour, underline that disappears on hover).
-// Native button focus-visible styling from FKUI applies as-is.
-.intro__theme-toggle {
-    padding: 0;
-    border: 0;
-    background: none;
-    font: inherit;
-    color: var(--fkds-color-action-text-primary-default);
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    cursor: pointer;
-}
-
-.intro__theme-toggle:hover {
-    color: var(--fkds-color-action-text-primary-hover);
-    text-decoration: none;
-}
-
-.intro__theme-toggle[aria-pressed="true"] {
-    font-weight: var(--f-font-weight-bold);
-}
-
-.section-nav {
-    display: flex;
-    gap: 1.25rem;
-    flex-wrap: wrap;
-    padding: 0.75rem 0;
-    margin-bottom: 1rem;
-    border-block: 1px solid var(--fkds-color-border-weak);
+.shell-nav-title {
+    margin: 0;
+    padding: 0.5rem 0.25rem;
+    font-size: var(--f-font-size-standard, 1rem);
+    font-weight: var(--f-font-weight-bold, 600);
+    color: var(--fkds-color-text-primary, #1b1e23);
 }
 </style>
