@@ -6,6 +6,15 @@ import FSearchTextFieldDemo from "../demos/forms/FSearchTextFieldDemo.vue";
 import FNumericTextFieldDemo from "../demos/forms/FNumericTextFieldDemo.vue";
 import FCurrencyTextFieldDemo from "../demos/forms/FCurrencyTextFieldDemo.vue";
 import FPercentTextFieldDemo from "../demos/forms/FPercentTextFieldDemo.vue";
+import FPhoneTextFieldDemo from "../demos/forms/FPhoneTextFieldDemo.vue";
+import FEmailTextFieldDemo from "../demos/forms/FEmailTextFieldDemo.vue";
+import FPostalCodeTextFieldDemo from "../demos/forms/FPostalCodeTextFieldDemo.vue";
+import FPersonnummerTextFieldDemo from "../demos/forms/FPersonnummerTextFieldDemo.vue";
+import FOrganisationsnummerTextFieldDemo from "../demos/forms/FOrganisationsnummerTextFieldDemo.vue";
+import FBankAccountNumberTextFieldDemo from "../demos/forms/FBankAccountNumberTextFieldDemo.vue";
+import FBankgiroTextFieldDemo from "../demos/forms/FBankgiroTextFieldDemo.vue";
+import FClearingnumberTextFieldDemo from "../demos/forms/FClearingnumberTextFieldDemo.vue";
+import FPlusgiroTextFieldDemo from "../demos/forms/FPlusgiroTextFieldDemo.vue";
 import FTextareaFieldDemo from "../demos/forms/FTextareaFieldDemo.vue";
 import FSelectFieldDemo from "../demos/forms/FSelectFieldDemo.vue";
 import FCheckboxFieldDemo from "../demos/forms/FCheckboxFieldDemo.vue";
@@ -35,6 +44,15 @@ const chipVal = ref<string[]>([]);
         <f-numeric-text-field-demo />
         <f-currency-text-field-demo />
         <f-percent-text-field-demo />
+        <f-phone-text-field-demo />
+        <f-email-text-field-demo />
+        <f-postal-code-text-field-demo />
+        <f-personnummer-text-field-demo />
+        <f-organisationsnummer-text-field-demo />
+        <f-bank-account-number-text-field-demo />
+        <f-bankgiro-text-field-demo />
+        <f-clearingnumber-text-field-demo />
+        <f-plusgiro-text-field-demo />
         <f-textarea-field-demo />
         <f-select-field-demo />
         <f-checkbox-field-demo />
