@@ -62,7 +62,10 @@ export const views: NavView[] = [
     {
         slug: "kalender",
         title: "Datum och kalender",
-        anchors: [],
+        anchors: [
+            { id: "fcalendar", title: "Kalender" },
+            { id: "fdatepickerfield", title: "Datumfält" },
+        ],
     },
     {
         slug: "filer",
