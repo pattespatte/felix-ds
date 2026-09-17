@@ -64,6 +64,13 @@
         border-radius: var(--f-border-radius-medium);
     }
 
+    // Default badge. Upstream binds the badge text to the primary text
+    // colour, but the profile's neutral-strong badge fill is dark enough
+    // that the text needs the inverted colour for sufficient contrast.
+    .badge--default {
+        color: var(--fkds-color-text-inverted, #fff);
+    }
+
     // Secondary button. Upstream binds the secondary variant's border to the
     // primary action border and its text to the primary action text, but the
     // profile's secondary action is a filled surface whose border matches the
