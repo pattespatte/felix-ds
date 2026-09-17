@@ -105,7 +105,11 @@ export const views: NavView[] = [
     {
         slug: "navigation",
         title: "Navigation och layout",
-        anchors: [],
+        anchors: [
+            { id: "fnavigationmenu", title: "Navigeringsmeny" },
+            { id: "fpagelayout", title: "Sidlayout" },
+            { id: "flayoutrightpanel", title: "Högerpanel" },
+        ],
     },
     {
         slug: "tabeller",
