@@ -87,7 +87,6 @@ export const views: NavView[] = [
             { id: "ffixedpane", title: "Fast panel" },
             { id: "fresizepane", title: "Storleksändring" },
             { id: "foffline", title: "Nedkopplad" },
-            { id: "fmodal", title: "Modal" },
             { id: "ftable", title: "Tabell" },
             { id: "fdefinitionlist", title: "Definitionslista" },
         ],
@@ -95,7 +94,13 @@ export const views: NavView[] = [
     {
         slug: "modaler",
         title: "Modaler och dialoger",
-        anchors: [],
+        anchors: [
+            { id: "fmodal", title: "Modal" },
+            { id: "fconfirmmodal", title: "Bekräftelsedialog" },
+            { id: "fformmodal", title: "Formulärmodal" },
+            { id: "fcontextmenu", title: "Snabbmeny" },
+            { id: "fdialoguetree", title: "Frågeträd" },
+        ],
     },
     {
         slug: "navigation",

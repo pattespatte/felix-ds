@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import { ref } from "vue";
 import {
-    FButton,
     FDefinitionList,
-    FModal,
     FTable,
     defineTableColumns,
     useDatasetRef,
@@ -45,16 +42,6 @@ const definitions = [
     { term: "Temamodell", definition: "CSS-variabler ovanpå FKUI:s npm-paket" },
     { term: "Typografi", definition: "Noto Sans (text), Roboto Slab (rubriker)" },
 ];
-
-const modalOpen = ref(false);
-
-function openModal(): void {
-    modalOpen.value = true;
-}
-
-function closeModal(): void {
-    modalOpen.value = false;
-}
 </script>
 
 <template>
@@ -65,7 +52,7 @@ function closeModal(): void {
             paneler och lägesbandoller.
         </p>
 
-        <f-card-demo @open-modal="openModal" />
+        <f-card-demo />
         <f-expand-demo />
         <f-expandable-panel-demo />
         <f-expandable-paragraph-demo />
@@ -78,11 +65,6 @@ function closeModal(): void {
         <f-offline-demo />
 
         <!-- Tillfälliga grupper från v1 – flyttas till sina vyer i fas 3. -->
-        <section id="fmodal" aria-labelledby="fmodal-heading" class="demo">
-            <h2 id="fmodal-heading">FModal</h2>
-            <p>Modalen öppnas från knappen på kortet ovan.</p>
-        </section>
-
         <section id="ftable" aria-labelledby="ftable-heading" class="demo">
             <h2 id="ftable-heading">FTable</h2>
             <f-table :rows :columns>
@@ -95,23 +77,5 @@ function closeModal(): void {
             <f-definition-list :definitions />
         </section>
 
-        <f-modal :is-open="modalOpen" @close="closeModal">
-            <template #header> Bekräfta </template>
-            <template #content>
-                Detta är en modal som följer det aktiva temat.
-            </template>
-            <template #footer>
-                <div class="button-group">
-                    <f-button
-                        class="button-group__item"
-                        size="medium"
-                        variant="primary"
-                        @click="closeModal"
-                    >
-                        Stäng
-                    </f-button>
-                </div>
-            </template>
-        </f-modal>
     </div>
 </template>

@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { FButton, FCard } from "@fkui/vue";
+import { ref } from "vue";
+import { FButton, FCard, FModal } from "@fkui/vue";
 
-const emit = defineEmits<{ openModal: [] }>();
+const modalOpen = ref(false);
 </script>
 
 <template>
@@ -20,10 +21,29 @@ const emit = defineEmits<{ openModal: [] }>();
                 och eventuell skugga styrs av temats tokens.
             </template>
             <template #footer>
-                <f-button size="medium" variant="primary" @click="emit('openModal')">
+                <f-button size="medium" variant="primary" @click="modalOpen = true">
                     Öppna modal
                 </f-button>
             </template>
         </f-card>
+
+        <f-modal :is-open="modalOpen" @close="modalOpen = false">
+            <template #header> Bekräfta </template>
+            <template #content>
+                Detta är en modal som följer det aktiva temat.
+            </template>
+            <template #footer>
+                <div class="button-group">
+                    <f-button
+                        class="button-group__item"
+                        size="medium"
+                        variant="primary"
+                        @click="modalOpen = false"
+                    >
+                        Stäng
+                    </f-button>
+                </div>
+            </template>
+        </f-modal>
     </section>
 </template>
