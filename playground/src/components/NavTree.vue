@@ -69,9 +69,10 @@ function isCurrent(slug: string, anchor: string): boolean {
 </template>
 
 <style scoped lang="scss">
-// Structure (two levels, ~25 px indent step, chevron left of the label) and
-// colours follow the profile tokens – no values are taken from the reference
-// image itself.
+// Structure follows the reference site's left menu (full-width rows, hairline
+// separators between categories, fill on hover, inset bar on the current
+// link); colours stay on theme tokens so the two themes keep their own
+// palettes.
 .nav-tree,
 .nav-tree__group {
     margin: 0;
@@ -79,8 +80,8 @@ function isCurrent(slug: string, anchor: string): boolean {
     list-style: none;
 }
 
-.nav-tree__view {
-    margin-bottom: 0.25rem;
+.nav-tree__view + .nav-tree__view {
+    border-top: 1px solid var(--fkds-color-border-weak, #d7d9e0);
 }
 
 .nav-tree__toggle {
@@ -88,19 +89,18 @@ function isCurrent(slug: string, anchor: string): boolean {
     align-items: center;
     gap: 0.375rem;
     width: 100%;
-    padding: 0.375rem 0.25rem;
+    padding: 0.625rem 1rem;
     border: 0;
-    border-radius: var(--f-border-radius-medium, 4px);
     background: none;
     font: inherit;
+    font-weight: var(--f-font-weight-bold, 600);
     color: var(--fkds-color-text-primary, #1b1e23);
     text-align: left;
     cursor: pointer;
 }
 
 .nav-tree__toggle:hover {
-    text-decoration: underline;
-    text-underline-offset: 3px;
+    background-color: var(--fkds-color-navigation-background-hover, #dbe9e2);
 }
 
 .nav-tree__toggle:focus-visible {
@@ -109,7 +109,7 @@ function isCurrent(slug: string, anchor: string): boolean {
 }
 
 // Muted expand indicator, rotated open – the only marker besides the bold
-// current link (no accent colours in the nav).
+// current link.
 .nav-tree__chevron {
     flex: none;
     font-size: 0.75rem;
@@ -127,20 +127,24 @@ function isCurrent(slug: string, anchor: string): boolean {
     white-space: nowrap;
 }
 
-.nav-tree__item {
-    padding-left: 25px;
+// Sub-level guide bar, growing one step deeper per nesting level in the
+// reference; the tree is two levels, so a single fixed-width bar is enough.
+.nav-tree__group {
+    border-left: 12px solid var(--fkds-color-navigation-background-hover, #dbe9e2);
 }
 
 .nav-tree__link {
-    display: inline-block;
-    padding: 0.25rem 0.25rem 0.25rem 0.5rem;
-    border-radius: var(--f-border-radius-medium, 4px);
+    display: block;
+    padding: 0.375rem 1rem;
     color: var(--fkds-color-text-primary, #1b1e23);
+    // The felix theme underlines content anchors globally; the reference
+    // menu keeps its items plain, so the base style is pinned here.
+    text-decoration: none;
 }
 
 .nav-tree__link:hover {
-    text-decoration: underline;
-    text-underline-offset: 3px;
+    background-color: var(--fkds-color-navigation-background-hover, #dbe9e2);
+    text-decoration: none;
 }
 
 .nav-tree__link:focus-visible {
@@ -150,5 +154,12 @@ function isCurrent(slug: string, anchor: string): boolean {
 
 .nav-tree__link[aria-current="page"] {
     font-weight: var(--f-font-weight-bold, 600);
+    box-shadow: inset 4px 0 0 var(--fkds-color-text-primary, #1b1e23);
+}
+
+.nav-tree__link[aria-current="page"]:focus-visible {
+    box-shadow:
+        var(--f-focus-box-shadow),
+        inset 4px 0 0 var(--fkds-color-text-primary, #1b1e23);
 }
 </style>

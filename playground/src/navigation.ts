@@ -16,6 +16,14 @@ export interface NavView {
 
 export const views: NavView[] = [
     {
+        slug: "start",
+        title: "Start",
+        anchors: [
+            { id: "om", title: "Om playgrounden" },
+            { id: "komponenter", title: "Komponenter i playgrounden" },
+        ],
+    },
+    {
         slug: "knappar",
         title: "Knappar och ikoner",
         anchors: [

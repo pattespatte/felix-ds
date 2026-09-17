@@ -47,13 +47,43 @@ body {
     --fkds-color-feedback-border-positive: var(--fkds-color-feedback-border-info, #0053a7);
 }
 
-// App-shell adjustments for the left navigation. Structure follows the
-// reference's proportions; every value is a theme token – the nav column is a
-// plain primary surface with no item fill, separated from the content by a
-// thin divider in the weak border colour (the panel's resize handle keeps its
-// native behaviour, minus the grip dots).
+// App-shell adjustments for the left navigation. The reference layout keeps
+// the menu column in the page flow (it scrolls with the content and the
+// footer starts below it), so the FKUI fixed-position panel is converted to a
+// static flex column: every value is a theme token and the panel's resize
+// handle keeps its native behaviour, minus the grip dots.
+.layout-navigation {
+    display: flex;
+    align-items: stretch;
+}
+
 .layout-navigation__navigation {
+    position: static;
+    flex-shrink: 0;
     background-color: var(--fkds-color-background-primary, #ffffff);
+}
+
+// The static nav column still carries FKUI's declared z-index (9994) and, as
+// the later element in the DOM, would paint on top of the equally ranked
+// sticky header. Lift the header one step so the band keeps spanning the
+// full viewport width while scrolled.
+.layout-application-template__header {
+    z-index: 9995;
+}
+
+// The component puts margin-left on the primary column inline; the flex row
+// above handles the offset, so the inline value must be beaten.
+.layout-navigation__primary {
+    margin-left: 0 !important;
+    flex: 1;
+    min-width: 0;
+}
+
+// The panel's own collapse button is absolutely positioned; with a static
+// panel it needs this row as its containing block or it drifts to the page's
+// right edge.
+.layout-navigation__navigation__inner__title {
+    position: relative;
 }
 
 .layout-navigation__navigation__border {

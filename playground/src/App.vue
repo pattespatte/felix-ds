@@ -5,6 +5,7 @@ import ThemeToggle from "./components/ThemeToggle.vue";
 import PageFooter from "./components/PageFooter.vue";
 import NavTree from "./components/NavTree.vue";
 import { currentRoute } from "./router";
+import StartView from "./views/StartView.vue";
 import ActionsView from "./views/ActionsView.vue";
 import FormsView from "./views/FormsView.vue";
 import CalendarView from "./views/CalendarView.vue";
@@ -20,6 +21,7 @@ import CssOnlyView from "./views/CssOnlyView.vue";
 // Slugs mirror navigation.ts; the lookup makes unknown routes impossible
 // (router normalises) but falls back to the first view regardless.
 const viewComponents: Record<string, Component> = {
+    start: StartView,
     knappar: ActionsView,
     formular: FormsView,
     kalender: CalendarView,
@@ -45,14 +47,16 @@ const currentViewComponent = computed<Component>(
     <f-layout-application-template>
         <template #header>
             <f-page-header>
-                felix-ds<span class="app-name-sub"> – playground</span>
+                <a class="app-title-link" href="#/start"
+                    >felix-ds<span class="app-name-sub"> – playground</span></a
+                >
                 <template #right>
                     <theme-toggle />
                 </template>
             </f-page-header>
         </template>
 
-        <f-layout-left-panel nav-label="Komponenter" initial-width="200">
+        <f-layout-left-panel nav-label="Komponenter" initial-width="320">
             <template #heading>
                 <p class="shell-nav-title">Komponenter</p>
             </template>
@@ -71,6 +75,18 @@ const currentViewComponent = computed<Component>(
 </template>
 
 <style scoped lang="scss">
+// The header title doubles as the home link (same behaviour as the
+// reference site's logotype): styled as plain text, keyboard focus ring kept.
+.app-title-link {
+    color: inherit;
+    text-decoration: none;
+}
+
+.app-title-link:focus-visible {
+    outline: none;
+    box-shadow: var(--f-focus-box-shadow);
+}
+
 .app-name-sub {
     font-weight: var(--f-font-weight-normal, 400);
 }
@@ -78,7 +94,7 @@ const currentViewComponent = computed<Component>(
 .shell-nav-title {
     margin: 0;
     padding: 0.5rem 0.25rem;
-    font-size: var(--f-font-size-standard, 1rem);
+    font-size: var(--f-font-size-h3, 1.25rem);
     font-weight: var(--f-font-weight-bold, 600);
     color: var(--fkds-color-text-primary, #1b1e23);
 }

@@ -4,25 +4,22 @@
     <div class="page-footer">
         <div class="page-footer__inner">
             <div class="page-footer__brand">
-                <p class="page-footer__title">felix-ds</p>
+                <p class="page-footer__title">
+                    <a class="page-footer__home" href="#/start">felix-ds</a>
+                </p>
                 <p class="page-footer__tagline">
                     Ett tunt temalager ovanpå FKUI:s publika npm-paket.
                 </p>
             </div>
-            <nav class="page-footer__group" aria-label="Sidfotsnavigation">
+            <nav
+                class="page-footer__group page-footer__group--categories"
+                aria-label="Sidfotsnavigation"
+            >
                 <h2 class="page-footer__heading">Kategorier</h2>
                 <ul>
-                    <li><a href="#/knappar">Knappar och ikoner</a></li>
-                    <li><a href="#/formular">Formulär</a></li>
-                    <li><a href="#/kalender">Datum och kalender</a></li>
-                    <li><a href="#/filer">Filer</a></li>
-                    <li><a href="#/ytor">Ytor och paneler</a></li>
-                    <li><a href="#/modaler">Modaler och dialoger</a></li>
-                    <li><a href="#/navigation">Navigation och layout</a></li>
-                    <li><a href="#/tabeller">Tabeller och data</a></li>
-                    <li><a href="#/aterkoppling">Återkoppling och status</a></li>
-                    <li><a href="#/wizard">Stegvisa flöden</a></li>
-                    <li><a href="#/css">Endast CSS</a></li>
+                    <li v-for="view in views" :key="view.slug">
+                        <a :href="`#/${view.slug}`">{{ view.title }}</a>
+                    </li>
                 </ul>
             </nav>
             <div class="page-footer__group">
@@ -43,6 +40,8 @@
 </template>
 
 <script setup lang="ts">
+import { views } from "../navigation";
+
 function scrollToTop(): void {
     window.scrollTo({ top: 0 });
 }
@@ -74,6 +73,17 @@ function scrollToTop(): void {
     font-weight: var(--f-font-weight-bold, 600);
 }
 
+// Logo-style home link: plain until hovered, unlike the underlined footer
+// anchors.
+.page-footer__home {
+    text-decoration: none;
+}
+
+.page-footer__home:hover,
+.page-footer__home:focus-visible {
+    text-decoration: underline;
+}
+
 .page-footer__tagline {
     margin: 0.5rem 0 0;
     color: rgba(255, 255, 255, 0.85);
@@ -81,7 +91,7 @@ function scrollToTop(): void {
 
 .page-footer__heading {
     margin: 0 0 0.75rem;
-    font-size: var(--f-font-size-standard, 1rem);
+    font-size: var(--f-font-size-h3, 1.25rem);
     font-weight: var(--f-font-weight-bold, 600);
 }
 
@@ -91,6 +101,13 @@ function scrollToTop(): void {
     list-style: none;
     display: grid;
     gap: 0.5rem;
+}
+
+// The category list spreads over two columns so the footer fills the width
+// instead of stacking twelve links in one tall column.
+.page-footer__group--categories ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 2rem;
 }
 
 .page-footer a,
