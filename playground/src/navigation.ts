@@ -23,8 +23,6 @@ export const views: NavView[] = [
             { id: "fcrudbutton", title: "CRUD-knappar" },
             { id: "ficon", title: "Ikoner" },
             { id: "flogo", title: "Logotyp" },
-            { id: "fbadge", title: "Brickor" },
-            { id: "fprogressbar", title: "Förlopp och läge" },
         ],
     },
     {
@@ -112,12 +110,16 @@ export const views: NavView[] = [
     {
         slug: "aterkoppling",
         title: "Återkoppling och status",
-        anchors: [],
+        anchors: [
+            { id: "fbadge", title: "Brickor" },
+            { id: "floader", title: "Snurra" },
+            { id: "fprogressbar", title: "Förlopp" },
+        ],
     },
     {
         slug: "wizard",
         title: "Stegvisa flöden",
-        anchors: [],
+        anchors: [{ id: "fwizard", title: "Wizard" }],
     },
     {
         slug: "css",

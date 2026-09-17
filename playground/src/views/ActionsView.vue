@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { FBadge, FLoader, FProgressbar } from "@fkui/vue";
 import FButtonDemo from "../demos/actions/FButtonDemo.vue";
 import FCrudButtonDemo from "../demos/actions/FCrudButtonDemo.vue";
 import FIconDemo from "../demos/actions/FIconDemo.vue";
@@ -19,23 +18,5 @@ import FLogoDemo from "../demos/actions/FLogoDemo.vue";
         <f-crud-button-demo />
         <f-icon-demo />
         <f-logo-demo />
-
-        <!-- Tillfälliga grupper från v1 – flyttas till återkopplingsvyn i fas 3. -->
-        <section id="fbadge" aria-labelledby="fbadge-heading" class="demo">
-            <h2 id="fbadge-heading">FBadge</h2>
-            <div class="demo-row">
-                <f-badge> Standard </f-badge>
-                <f-badge status="info"> Info </f-badge>
-                <f-badge status="success"> Klart </f-badge>
-                <f-badge status="warning"> Varning </f-badge>
-                <f-badge status="error"> Fel </f-badge>
-            </div>
-        </section>
-
-        <section id="fprogressbar" aria-labelledby="fprogressbar-heading" class="demo">
-            <h2 id="fprogressbar-heading">FProgressbar och FLoader</h2>
-            <f-progressbar :value="40" aria-label="Pågående förlopp"></f-progressbar>
-            <f-loader />
-        </section>
     </div>
 </template>
