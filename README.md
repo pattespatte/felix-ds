@@ -78,6 +78,27 @@ import "@fkui/design/lib/fonts.css";
 
 Playgrounden visar cirka 20 representativa FKUI-komponenter: FButton, FBadge, FMessageBox, FTooltip, FProgressbar, FLoader, FTextField, FTextareaField, FSelectField, FSearchTextField, FCheckboxField, FRadioField, FFieldset, FValidationForm, FErrorList (renderas av valideringsformuläret), FCard, FModal, FExpandablePanel, FTable, FDefinitionList, FPageHeader – samt chip-läget (ren SCSS-komponent) som fältgrupperna i formulärssektionen demonstrerar.
 
+## Kända valideringsfynd (tredjepartskod)
+
+En HTML/CSS-validerare (t.ex. W3C:s Nu-validerare) rapporterar ett antal fynd på playgrounden. Samtliga härstammar från tredjepartskod – inget från temalagrets egna filer – och därför åtgärdas de inte här: projektet konsumerar FKUI enbart som publika npm-paket (ingen fork, inga patches), och de aktuella fynden finns kvar i senaste publicerade versionen (6.57.1). Fynden är harmlösa i webbläsarna och redovisas nedan per ursprung.
+
+Från FKUI:s stilmall `@fkui/design/lib/fkui.css`:
+
+- `padding`/`padding-top`/`padding-bottom` med `calc(var(--…, initial) * var(--f-density-factor, 1))` (6 deklarationer) – giltig modern CSS (math functions med `var()`); validerarens parser stödjer den inte ännu, alltså ett falskt positivt.
+- `container-type`, `@container` och `field-sizing` (4 fynd) – standardiserad modern CSS (container queries samt `field-sizing`, som där är skyddad av `@supports`); validerarens kunskap om egenskaper släpar efter, alltså falska positiva.
+- `border-radius: var(--f-button-discrete-radius-hover, none)` (2 deklarationer) – variabeln är definierad som `none`, som inte är en giltig radielängd; deklarationen ogiltigförklaras därför i körning. Det är en bugg i FKUI:s publicerade css utan synbar effekt i playgrounden (radien behålls från knappelementets övriga regler).
+- `background-color: none` (2 deklarationer) – ogiltigt värde som webbläsaren stryker; avsett värde sammanfaller med initialvärdet (transparent), så ingen visuell skillnad.
+- `font-feature-settings: tnum` (1 deklaration) – funktionstaggen ska citeras (`"tnum"`); webbläsaren stryker den ociterade deklarationen medan de övriga, korrekt citerade i samma fil, gäller.
+
+Från FKUI-renderad DOM:
+
+- `<textarea value="">` – komponenten FTextareaField skickar med `value` som attribut, vilket HTML-specen inte tillåter på `textarea`. Renderas av FKUI i körning och kan inte åtgärdas utan en Vue-wrapper (förbjuden enligt projektreglerna).
+- `<symbol x="0" y="0">` – `x`/`y` är giltiga attribut på `symbol` enligt SVG 2; validerarens schema bygger på SVG 1.1, alltså ett falskt positivt.
+
+Från Vite:s utvecklingsläge:
+
+- `<style type="text/css">` (8 varningar) – dev-servern injicerar importerad css som style-element. I produktionsbygget länkas css:en via `<link>` i stället, så varningarna försvinner: validera `bun run build` följt av `bun run preview` (eller den uppbyggda sidan), inte dev-serverns DOM.
+
 ## Licenser
 
 - FKUI-beroendena (`@fkui/vue`, `@fkui/design`, `@fkui/theme-default`, `@fkui/date`, `@fkui/logic`, `@fkui/icon-lib-default`) är MIT-licensierade och används som publika npm-paket.
@@ -169,6 +190,27 @@ import "@fkui/design/lib/fonts.css";
 ## Components in the playground
 
 About 20 representative FKUI components are shown: FButton, FBadge, FMessageBox, FTooltip, FProgressbar, FLoader, FTextField, FTextareaField, FSelectField, FSearchTextField, FCheckboxField, FRadioField, FFieldset, FValidationForm, FErrorList (rendered by the validation form), FCard, FModal, FExpandablePanel, FTable, FDefinitionList, FPageHeader – plus the chip mode (an SCSS-only component) demonstrated by the field groups in the forms section.
+
+## Known validation findings (third-party code)
+
+An HTML/CSS validator (e.g. the W3C Nu checker) reports a number of findings on the playground. All of them originate in third-party code – none in the theme layer's own files – and they are therefore not fixed here: the project consumes FKUI strictly as public npm packages (no fork, no patches), and the findings remain in the latest published version (6.57.1). They are harmless in browsers and are listed below by origin.
+
+From FKUI's stylesheet `@fkui/design/lib/fkui.css`:
+
+- `padding`/`padding-top`/`padding-bottom` with `calc(var(--…, initial) * var(--f-density-factor, 1))` (6 declarations) – valid modern CSS (math functions with `var()`); the validator's parser does not support it yet, so this is a false positive.
+- `container-type`, `@container` and `field-sizing` (4 findings) – standardised modern CSS (container queries, and `field-sizing`, which there is guarded by `@supports`); the validator's property knowledge lags behind, so these are false positives.
+- `border-radius: var(--f-button-discrete-radius-hover, none)` (2 declarations) – the variable is defined as `none`, which is not a valid radius length; the declaration is therefore invalidated at runtime. This is a bug in FKUI's published css with no visible effect in the playground (the radius comes from the button element's other rules).
+- `background-color: none` (2 declarations) – invalid value that browsers drop; the intended value coincides with the initial value (transparent), so there is no visual difference.
+- `font-feature-settings: tnum` (1 declaration) – the feature tag must be quoted (`"tnum"`); browsers drop the unquoted declaration while the other, correctly quoted ones in the same file apply.
+
+From FKUI-rendered DOM:
+
+- `<textarea value="">` – the FTextareaField component passes `value` as an attribute, which the HTML spec does not allow on `textarea`. It is rendered by FKUI at runtime and cannot be fixed without a Vue wrapper (forbidden by the project rules).
+- `<symbol x="0" y="0">` – `x`/`y` are valid attributes on `symbol` per SVG 2; the validator's schema is based on SVG 1.1, so this is a false positive.
+
+From Vite's development mode:
+
+- `<style type="text/css">` (8 warnings) – the dev server injects imported css as style elements. The production build links the css via `<link>` instead, so the warnings disappear: validate `bun run build` followed by `bun run preview` (or the built site), not the dev server's DOM.
 
 ## Licenses
 
