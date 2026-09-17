@@ -34,6 +34,10 @@ export const views: NavView[] = [
         title: "Formulär",
         anchors: [
             { id: "ftextfield", title: "Textfält" },
+            { id: "fsearchtextfield", title: "Sökfält" },
+            { id: "fnumerictextfield", title: "Numeriskt fält" },
+            { id: "fcurrencytextfield", title: "Beloppsfält" },
+            { id: "fpercenttextfield", title: "Procentfält" },
             { id: "ftextareafield", title: "Textruta" },
             { id: "fselectfield", title: "Rulllista" },
             { id: "fcheckboxfield", title: "Kryssruta" },

@@ -2,6 +2,10 @@
 import { ref } from "vue";
 import { FCheckboxField, FFieldset, FRadioField } from "@fkui/vue";
 import FTextFieldDemo from "../demos/forms/FTextFieldDemo.vue";
+import FSearchTextFieldDemo from "../demos/forms/FSearchTextFieldDemo.vue";
+import FNumericTextFieldDemo from "../demos/forms/FNumericTextFieldDemo.vue";
+import FCurrencyTextFieldDemo from "../demos/forms/FCurrencyTextFieldDemo.vue";
+import FPercentTextFieldDemo from "../demos/forms/FPercentTextFieldDemo.vue";
 import FTextareaFieldDemo from "../demos/forms/FTextareaFieldDemo.vue";
 import FSelectFieldDemo from "../demos/forms/FSelectFieldDemo.vue";
 import FCheckboxFieldDemo from "../demos/forms/FCheckboxFieldDemo.vue";
@@ -27,6 +31,10 @@ const chipVal = ref<string[]>([]);
         </p>
 
         <f-text-field-demo />
+        <f-search-text-field-demo />
+        <f-numeric-text-field-demo />
+        <f-currency-text-field-demo />
+        <f-percent-text-field-demo />
         <f-textarea-field-demo />
         <f-select-field-demo />
         <f-checkbox-field-demo />
