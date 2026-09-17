@@ -9,12 +9,16 @@ import SurfacesSection from "./sections/SurfacesSection.vue";
 </script>
 
 <template>
-    <f-page-header>
-        felix-ds<span class="app-name-sub"> – playground</span>
-        <template #right>
-            <theme-toggle />
-        </template>
-    </f-page-header>
+    <!-- FKUI:s sidhuvud renderas som en div utan landmärke; wrappern ger
+         banner-landmärket (motsvarande footer-elementet nedan). -->
+    <header>
+        <f-page-header>
+            felix-ds<span class="app-name-sub"> – playground</span>
+            <template #right>
+                <theme-toggle />
+            </template>
+        </f-page-header>
+    </header>
 
     <main>
         <h1>Playground</h1>
