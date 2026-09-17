@@ -1,15 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { applyTheme, type ThemeName } from "../theme";
-
-const current = ref<ThemeName>(
-    document.documentElement.classList.contains("theme-felix") ? "felix" : "fkui",
-);
-
-function select(theme: ThemeName): void {
-    current.value = theme;
-    applyTheme(theme);
-}
+import { applyTheme, currentTheme } from "../theme";
 </script>
 
 <template>
@@ -20,8 +10,8 @@ function select(theme: ThemeName): void {
                 type="radio"
                 name="theme"
                 value="fkui"
-                :checked="current === 'fkui'"
-                @change="select('fkui')"
+                :checked="currentTheme === 'fkui'"
+                @change="applyTheme('fkui')"
             />
             <span class="theme-toggle__label">FKUI grundtema</span>
         </label>
@@ -31,8 +21,8 @@ function select(theme: ThemeName): void {
                 type="radio"
                 name="theme"
                 value="felix"
-                :checked="current === 'felix'"
-                @change="select('felix')"
+                :checked="currentTheme === 'felix'"
+                @change="applyTheme('felix')"
             />
             <span class="theme-toggle__label">felix-tema</span>
         </label>
