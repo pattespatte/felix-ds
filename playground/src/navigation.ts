@@ -149,7 +149,15 @@ export const views: NavView[] = [
     {
         slug: "css",
         title: "Endast CSS",
-        anchors: [],
+        anchors: [
+            { id: "anchor", title: "Länk" },
+            { id: "entrypoint", title: "Startpunkt" },
+            { id: "combobox", title: "Kombinationsruta" },
+            { id: "selectable-item", title: "Valbart listobjekt" },
+            { id: "chip", title: "Chip" },
+            { id: "close-button", title: "Stängknapp" },
+            { id: "indent", title: "Indrag" },
+        ],
     },
 ];
 
