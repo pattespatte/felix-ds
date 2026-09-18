@@ -1,6 +1,6 @@
 # felix-ds
 
-En privat konceptstudie (proof of concept): ett fristående, organisationsneutralt designsystem byggt som ett tunt temalager – designvariabler som CSS-variabler plus inbäddade typsnitt – ovanpå FKUI:s publika npm-paket. En lokal playground bevisar konceptet genom att visa cirka 20 representativa FKUI-komponenter med omedelbar växling mellan FKUI:s grundtema och felix-temat. Inga Vue-wrappers, ingen fork, inga egna komponenter: konsumenten använder FKUI-komponenterna direkt och lägger bara på temat.
+En privat konceptstudie (proof of concept): ett fristående, organisationsneutralt designsystem byggt som ett tunt temalager – designvariabler som CSS-variabler plus inbäddade typsnitt – ovanpå FKUI:s publika npm-paket. En lokal playground bevisar konceptet genom att visa samtliga 89 komponenter i FKUI:s publika paket (79 Vue-komponenter och 10 SCSS-komponenter) med omedelbar växling mellan FKUI:s grundtema och felix-temat. Inga Vue-wrappers, ingen fork, inga egna komponenter: konsumenten använder FKUI-komponenterna direkt och lägger bara på temat.
 
 ## Kom igång
 
@@ -33,10 +33,19 @@ felix-ds/
 │   ├── fonts/                    # woff2, @font-face och licenstexter
 │   └── index.scss                # entry: @font-face + tema
 ├── playground/                   # Vite-app som demonstrerar temat
+│   └── src/
+│       ├── navigation.ts         # navigationens enda källa: vyer + ankare
+│       ├── router.ts             # handrullad hash-routing (#/vy/ankare)
+│       ├── views/                # en vyfil per kategori
+│       └── demos/                # en demofil per komponent, grupperade per kategori
 └── package.json
 ```
 
 Temat bygger på samma modell som FKUI:s egna temapaket: mixins som skriver ut CSS-variabler ovanpå `@fkui/design`. Grundtemat (`@fkui/theme-default`) laddas först; felix-variablerna deklareras efter i kaskaden och vinner utan `!important`. Bara ljusläget finns i v1.
+
+### Navigation i playgrounden
+
+Playgrounden ligger i FKUI:s applikationsmall (`FLayoutApplicationTemplate` + `FLayoutLeftPanel`) med en egen tvånivånavigering i vänsterkolumnen: kategori > komponent. Länkarna är hash-rutter på formen `#/vy` och `#/vy/ankare` (t.ex. `#/formular/ftextfield`) så att GitHub Pages-deployen fungerar utan serverkonfiguration. Vilka vyer och ankare som finns definieras på ett ställe – `playground/src/navigation.ts` – som både vänstermenyn, sidfoten, startvyn och routern läser; en komponent som läggs till där får automatiskt länk, djuplänk och plats i startlistan.
 
 ### Grafisk profil
 
@@ -76,7 +85,7 @@ import "@fkui/design/lib/fonts.css";
 
 ## Komponenter i playgrounden
 
-Playgrounden visar cirka 20 representativa FKUI-komponenter: FButton, FBadge, FMessageBox, FTooltip, FProgressbar, FLoader, FTextField, FTextareaField, FSelectField, FSearchTextField, FCheckboxField, FRadioField, FFieldset, FValidationForm, FErrorList (renderas av valideringsformuläret), FCard, FModal, FExpandablePanel, FTable, FDefinitionList, FPageHeader – samt chip-läget (ren SCSS-komponent) som fältgrupperna i formulärssektionen demonstrerar.
+Playgrounden täcker samtliga 89 komponenter i FKUI:s publika paket – 79 Vue-komponenter och 10 SCSS-komponenter – enligt komponentrapporten för installerad version. Registret över vad som finns är strukturellt i stället för en handskriven lista: varje komponent har en demofil `playground/src/demos/<kategori>/<Komponent>Demo.vue` (subkomponenter och enums demonstreras i sin förälders demo) och länkas som ankare från `playground/src/navigation.ts`. Startvyns avsnitt ”Komponenter i playgrounden” listar kategorierna direkt från navigation.ts, så listan på sidan kan aldrig skilja sig från menyn.
 
 ## Kända valideringsfynd (tredjepartskod)
 
@@ -113,7 +122,7 @@ Paketet hålls `private: true` – ingen publicering till npm sker. Repot public
 
 # felix-ds (English)
 
-A private proof of concept: a standalone, organisation-neutral design system built as a thin theme layer – design tokens as CSS custom properties plus self-hosted fonts – on top of FKUI's public npm packages. The concept is proven by a local playground showing about 20 representative FKUI components with instant switching between the FKUI base theme and the felix theme. No Vue wrappers, no fork, no components of our own – consumers use the FKUI components directly and simply apply the theme.
+A private proof of concept: a standalone, organisation-neutral design system built as a thin theme layer – design tokens as CSS custom properties plus self-hosted fonts – on top of FKUI's public npm packages. The concept is proven by a local playground showing all 89 components in FKUI's public packages (79 Vue components and 10 SCSS-only components) with instant switching between the FKUI base theme and the felix theme. No Vue wrappers, no fork, no components of our own – consumers use the FKUI components directly and simply apply the theme.
 
 ## Getting started
 
@@ -146,10 +155,19 @@ felix-ds/
 │   ├── fonts/                    # woff2, @font-face and license texts
 │   └── index.scss                # entry: @font-face + theme
 ├── playground/                   # Vite app demonstrating the theme
+│   └── src/
+│       ├── navigation.ts         # single source of truth: views + anchors
+│       ├── router.ts             # hand-rolled hash routing (#/view/anchor)
+│       ├── views/                # one view file per category
+│       └── demos/                # one demo file per component, grouped by category
 └── package.json
 ```
 
 The theme follows the same model as FKUI's own theme packages: mixins emitting CSS custom properties on top of `@fkui/design`. The base theme (`@fkui/theme-default`) loads first; the felix variables are declared after it in the cascade and win without `!important`. Light mode only in v1.
+
+### Playground navigation
+
+The playground sits in FKUI's application template (`FLayoutApplicationTemplate` + `FLayoutLeftPanel`) with a custom two-level navigation in the left column: category > component. Links are hash routes on the form `#/view` and `#/view/anchor` (e.g. `#/formular/ftextfield`), which keeps the GitHub Pages deploy working without any server configuration. Which views and anchors exist is defined in one place – `playground/src/navigation.ts` – read by the left menu, the footer, the start view and the router alike; a component added there automatically gets a link, a deep link and a place in the start list.
 
 ### Visual profile
 
@@ -189,7 +207,7 @@ import "@fkui/design/lib/fonts.css";
 
 ## Components in the playground
 
-About 20 representative FKUI components are shown: FButton, FBadge, FMessageBox, FTooltip, FProgressbar, FLoader, FTextField, FTextareaField, FSelectField, FSearchTextField, FCheckboxField, FRadioField, FFieldset, FValidationForm, FErrorList (rendered by the validation form), FCard, FModal, FExpandablePanel, FTable, FDefinitionList, FPageHeader – plus the chip mode (an SCSS-only component) demonstrated by the field groups in the forms section.
+The playground covers all 89 components in FKUI's public packages – 79 Vue components and 10 SCSS-only components – according to the component report for the installed version. The registry of what exists is structural rather than a hand-written list: every component has a demo file `playground/src/demos/<category>/<Component>Demo.vue` (sub-components and enums are demonstrated inside their parent's demo) and is linked as an anchor from `playground/src/navigation.ts`. The start view's "Components in the playground" section lists the categories straight from navigation.ts, so the on-page list can never drift from the menu.
 
 ## Known validation findings (third-party code)
 

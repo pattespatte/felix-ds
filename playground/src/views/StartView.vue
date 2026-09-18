@@ -13,8 +13,9 @@ const categories = views.filter((view) => view.slug !== "start");
             organisationsneutralt designsystem byggt som ett tunt temalager –
             designvariabler som CSS-variabler plus inbäddade typsnitt – ovanpå
             FKUI:s publika npm-paket. En lokal playground bevisar konceptet
-            genom att visa cirka 20 representativa FKUI-komponenter med
-            omedelbar växling mellan FKUI:s grundtema och felix-temat. Inga
+            genom att visa samtliga komponenter i FKUI:s publika paket – 79
+            Vue-komponenter och 10 SCSS-komponenter – med omedelbar växling
+            mellan FKUI:s grundtema och felix-temat. Inga
             Vue-wrappers, ingen fork, inga egna komponenter: konsumenten
             använder FKUI-komponenterna direkt och lägger bara på temat.
         </p>
@@ -46,9 +47,10 @@ const categories = views.filter((view) => view.slug !== "start");
         <section id="komponenter" aria-labelledby="komponenter-heading" class="demo">
             <h2 id="komponenter-heading">Komponenter i playgrounden</h2>
             <p>
-                Cirka 20 representativa FKUI-komponenter, grupperade i
-                kategorier. Komponenterna är FKUI:s egna – playgrounden lägger
-                bara på temat.
+                Samtliga 89 komponenter i komponentrapporten (79 Vue + 10
+                SCSS), grupperade i kategorier. Komponenterna är FKUI:s egna
+                – playgrounden lägger bara på temat. Listan nedan genereras
+                från navigation.ts, samma källa som vänstermenyn.
             </p>
             <ul class="start-categories">
                 <li v-for="category in categories" :key="category.slug">
