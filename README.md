@@ -76,6 +76,38 @@ html.theme-felix {
 }
 ```
 
+### Mörkt läge
+
+Temat har även en mörk profil. Standardemissionen (`src/index.scss`) är fortsätt ljus – mörkt läge är opt-in via mixins:
+
+- `base` / `light` – uppströms ljusa tema utan respektive med felix-variablerna.
+- `base-dark` / `dark` – samma par på mörka sidan (`base-dark` är FKUI:s egna mörka tema).
+- `auto` – båda composeade temana bakom `prefers-color-scheme`-medieförfrågningar, för konsumenter som vill följa systeminställningen.
+
+Klass- eller attributbaserad växling (inga mediefrågor, sidan styr själv):
+
+```scss
+@use "felix-ds/src/theme/default" as felix with ($global: false);
+
+:root {
+    @include felix.base; // grundtema, ljust
+}
+
+html[data-color-mode="dark"] {
+    @include felix.base-dark; // grundtema, mörkt
+}
+
+html.theme-felix {
+    @include felix.light; // felix, ljust
+}
+
+html.theme-felix[data-color-mode="dark"] {
+    @include felix.dark; // felix, mörkt
+}
+```
+
+Varje scope emitterar den kompletta tokensytan och specificitetssteget (`:root` < `html.theme-felix` / `html[data-color-mode="dark"]` < kombinerad selector) löser alla kombinationer utan `!important`. Mixinerna deklarerar även `color-scheme` per läge, så nativa kontroller och rullistor följer med. I playgrounden gör färglägesknappen (sol/måne) uppe till höger exakt detta: den följer systeminställningen tills användaren väljer, och valet persistas då i localStorage.
+
 Konsumentens ingångspunkt laddar dessutom FKUI:s komponent-CSS:
 
 ```ts
@@ -197,6 +229,38 @@ html.theme-felix {
     @include felix.light; // base theme + felix variables
 }
 ```
+
+### Dark mode
+
+The theme also ships a dark profile. The default emission (`src/index.scss`) stays light – dark mode is opt-in via mixins:
+
+- `base` / `light` – the upstream light theme without and with the felix variables.
+- `base-dark` / `dark` – the same pair for the dark side (`base-dark` is FKUI's own dark theme).
+- `auto` – both composed themes behind `prefers-color-scheme` media queries, for consumers that want to follow the system preference.
+
+Class- or attribute-based switching (no media queries; the page drives it):
+
+```scss
+@use "felix-ds/src/theme/default" as felix with ($global: false);
+
+:root {
+    @include felix.base; // base theme, light
+}
+
+html[data-color-mode="dark"] {
+    @include felix.base-dark; // base theme, dark
+}
+
+html.theme-felix {
+    @include felix.light; // felix, light
+}
+
+html.theme-felix[data-color-mode="dark"] {
+    @include felix.dark; // felix, dark
+}
+```
+
+Every scope emits the complete token surface, and the specificity ladder (`:root` < `html.theme-felix` / `html[data-color-mode="dark"]` < the combined selector) resolves all combinations without `!important`. The mixins also declare `color-scheme` per mode, so native controls and scrollbars follow along. In the playground, the color mode button (sun/moon) in the top right does exactly this: it follows the system preference until the user makes an explicit choice, which is then persisted to localStorage.
 
 Also load FKUI's component CSS in the consumer entry point:
 

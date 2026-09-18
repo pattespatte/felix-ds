@@ -27,8 +27,10 @@ const categories = views.filter((view) => view.slug !== "start");
                 samma modell som FKUI:s egna temapaket: grundtemat laddas först
                 och felix-variablerna deklareras efter i kaskaden och vinner
                 utan <code>!important</code>. Växla mellan temana med väljaren
-                uppe till höger – sidan byter utseende direkt, utan
-                omladdning.
+                uppe till höger och mellan ljust och mörkt läge med
+                sol/måne-knappen bredvid – sidan byter utseende direkt, utan
+                omladdning. Färgläget följer systeminställningen tills du
+                väljer själv.
             </p>
             <ul>
                 <li>
