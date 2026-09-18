@@ -95,7 +95,6 @@ export const views: NavView[] = [
             { id: "ffixedpane", title: "Fast panel" },
             { id: "fresizepane", title: "Storleksändring" },
             { id: "foffline", title: "Nedkopplad" },
-            { id: "ftable", title: "Tabell" },
             { id: "fdefinitionlist", title: "Definitionslista" },
         ],
     },
@@ -122,7 +121,11 @@ export const views: NavView[] = [
     {
         slug: "tabeller",
         title: "Tabeller och data",
-        anchors: [],
+        anchors: [
+            { id: "ftable", title: "Tabell" },
+            { id: "fdatatable", title: "Datatabell" },
+            { id: "finteractivetable", title: "Interaktiv tabell" },
+        ],
     },
     {
         slug: "aterkoppling",

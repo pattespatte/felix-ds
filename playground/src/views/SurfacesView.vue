@@ -1,10 +1,5 @@
 <script setup lang="ts">
-import {
-    FDefinitionList,
-    FTable,
-    defineTableColumns,
-    useDatasetRef,
-} from "@fkui/vue";
+import { FDefinitionList } from "@fkui/vue";
 import FCardDemo from "../demos/surfaces/FCardDemo.vue";
 import FExpandDemo from "../demos/surfaces/FExpandDemo.vue";
 import FExpandablePanelDemo from "../demos/surfaces/FExpandablePanelDemo.vue";
@@ -16,26 +11,6 @@ import FMinimizablePanelDemo from "../demos/surfaces/FMinimizablePanelDemo.vue";
 import FFixedPaneDemo from "../demos/surfaces/FFixedPaneDemo.vue";
 import FResizePaneDemo from "../demos/surfaces/FResizePaneDemo.vue";
 import FOfflineDemo from "../demos/surfaces/FOfflineDemo.vue";
-
-interface FruitRow {
-    namn: string;
-    ursprung: string;
-    pris: string;
-}
-
-const data: FruitRow[] = [
-    { namn: "Apelsin", ursprung: "Spanien", pris: "30" },
-    { namn: "Banan", ursprung: "Ecuador", pris: "15" },
-    { namn: "Äpple", ursprung: "Sverige", pris: "22" },
-];
-
-const rows = useDatasetRef(data);
-
-const columns = defineTableColumns<FruitRow>([
-    { type: "text", header: "Frukt", key: "namn" },
-    { type: "text", header: "Ursprung", key: "ursprung" },
-    { type: "text:currency", header: "Pris per kilo", key: "pris" },
-]);
 
 const definitions = [
     { term: "Version", definition: "0.1.0 (proof of concept)" },
@@ -64,14 +39,7 @@ const definitions = [
         <f-resize-pane-demo />
         <f-offline-demo />
 
-        <!-- Tillfälliga grupper från v1 – flyttas till sina vyer i fas 3. -->
-        <section id="ftable" aria-labelledby="ftable-heading" class="demo">
-            <h2 id="ftable-heading">FTable</h2>
-            <f-table :rows :columns>
-                <template #caption> Frukt och ursprung </template>
-            </f-table>
-        </section>
-
+        <!-- Tillfällig grupp från v1 – flyttas till tabellvyn i nästa task. -->
         <section id="fdefinitionlist" aria-labelledby="fdefinitionlist-heading" class="demo">
             <h2 id="fdefinitionlist-heading">FDefinitionList</h2>
             <f-definition-list :definitions />
