@@ -23,8 +23,12 @@
 $global: true !default;
 
 /// Upstream default light theme only – lets consumers emit the base theme
-/// into a global `:root` while keeping the felix overrides scoped.
+/// into a global `:root` while keeping the felix overrides scoped. The
+/// colour scheme is declared explicitly (upstream does so only in `auto`)
+/// so native controls and scrollbars match the emitted palette.
 @mixin base {
+    color-scheme: light;
+
     @include themeDefault.light;
 }
 
@@ -35,7 +39,11 @@ $global: true !default;
 
 /// Upstream default dark theme only – the dark counterpart of `base`, for
 /// consumers that want the unprofiled base themes switchable by scope.
+/// `color-scheme: dark` is declared here because upstream emits it only in
+/// `auto`; without it native controls stay light under the dark palette.
 @mixin base-dark {
+    color-scheme: dark;
+
     @include themeDefault.dark;
 }
 

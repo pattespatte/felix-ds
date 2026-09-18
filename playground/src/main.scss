@@ -22,14 +22,29 @@ html.theme-felix {
     @include felix.light;
 }
 
+// Dark color mode. Profile × mode are orthogonal axes: the attribute scope
+// carries the upstream dark base theme (grundtema mörkt) and the combined
+// selector carries the felix dark theme. Every scope emits the complete
+// token surface, and the specificity ladder
+// :root (0,1,0) < html.theme-felix / html[data-color-mode=dark] (0,1,1)
+// < html.theme-felix[data-color-mode=dark] (0,2,1)
+// resolves all four combinations without !important.
+html[data-color-mode="dark"] {
+    @include felix.base-dark;
+}
+
+html.theme-felix[data-color-mode="dark"] {
+    @include felix.dark;
+}
+
 html,
 body {
     margin: 0;
     padding: 0;
 }
 
-// The page is always a light surface: without an explicit background the
-// dark browser canvas of dark-preference systems shows through.
+// Without an explicit background the browser canvas shows through wherever
+// the app shell does not paint; the token flips with the active theme/mode.
 body {
     background-color: var(--fkds-color-background-primary, #ffffff);
 }

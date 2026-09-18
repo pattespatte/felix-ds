@@ -2,6 +2,7 @@
 import { computed, type Component } from "vue";
 import { FLayoutApplicationTemplate, FLayoutLeftPanel, FPageHeader } from "@fkui/vue";
 import ThemeToggle from "./components/ThemeToggle.vue";
+import ColorModeToggle from "./components/ColorModeToggle.vue";
 import PageFooter from "./components/PageFooter.vue";
 import NavTree from "./components/NavTree.vue";
 import { currentRoute } from "./router";
@@ -51,7 +52,10 @@ const currentViewComponent = computed<Component>(
                     >felix-ds<span class="app-name-sub"> – playground</span></a
                 >
                 <template #right>
-                    <theme-toggle />
+                    <div class="header-controls">
+                        <theme-toggle />
+                        <color-mode-toggle />
+                    </div>
                 </template>
             </f-page-header>
         </template>
@@ -75,6 +79,13 @@ const currentViewComponent = computed<Component>(
 </template>
 
 <style scoped lang="scss">
+// Header controls row: theme profile pill + color mode icon button.
+.header-controls {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
 // The header title doubles as the home link (same behaviour as the
 // reference site's logotype): styled as plain text, keyboard focus ring kept.
 .app-title-link {
