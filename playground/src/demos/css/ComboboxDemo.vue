@@ -188,6 +188,15 @@ function onKeydown(event: KeyboardEvent): void {
     max-width: 24rem;
 }
 
+// Upstream anchors .text-field__append-inner to the nearest positioned
+// ancestor. In the Vue components that is the input row (.text-field__icon-
+// wrapper); this demo's plain markup only has the .text-field block (which
+// includes the label), so the arrow would land above the field. Making the
+// input row the containing block places the arrow inside it, like upstream.
+.combobox-demo__field .text-field__input-wrapper {
+    position: relative;
+}
+
 .combobox-demo__icon--upp {
     transform: rotate(180deg);
 }

@@ -3,6 +3,7 @@ import "@fkui/icon-lib-default/dist/f";
 import "@fkui/design/lib/fkui.css";
 import "@fkui/design/lib/fonts.css";
 import "./main.scss";
+import "./fkui-patches";
 import App from "./App.vue";
 import { ValidationPlugin } from "@fkui/vue";
 import { restoreTheme } from "./theme";

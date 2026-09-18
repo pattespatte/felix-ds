@@ -119,6 +119,34 @@
         text-decoration: none;
     }
 
+    // The entrypoint is an anchor styled as a primary action surface. Its own
+    // class loses to the anchor rules above on hover (0,1,1 vs 0,1,0), which
+    // would put the dark link colour on the dark action fill, so the
+    // inverted – light – action text colour is restated with higher
+    // specificity for every state.
+    a.entrypoint,
+    a.entrypoint:hover,
+    a.entrypoint:active,
+    a.entrypoint:focus-visible {
+        color: var(--fkds-color-action-text-inverted-default);
+        text-decoration: none;
+    }
+
+    // Expandable paragraph icon. Upstream binds the disc to the select
+    // secondary background, a light tint in this profile; the white glyph
+    // needs a dark fill, so the primary (dark blue) select surface is used.
+    .expandable-paragraph__icon {
+        background-color: var(--fkds-color-select-background-primary-default);
+    }
+
+    // Checked chips. Upstream binds the label to the inverted text colour,
+    // but the profile's checked fill is a light tint, so the label keeps the
+    // primary text colour instead.
+    .radio-button-group--chip input[type="radio"]:checked + label.radio-button__label,
+    .checkbox-group--chip input[type="checkbox"]:checked + label.checkbox__label {
+        color: var(--fkds-color-text-primary);
+    }
+
     // Checkbox and radio glyphs draw their resting border with the weak
     // border colour instead of the regular component border.
     .checkbox__label::before,

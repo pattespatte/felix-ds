@@ -111,6 +111,13 @@
     // HEADER - BACKGROUND
     --fkds-color-header-background-primary: #ffffff;
 
+    // PAGE LAYOUT SURFACE
+    // Upstream only defines this token inside the page layout's own shadow
+    // parts (panel areas get the secondary background); standalone surfaces
+    // like FMinimizablePanel read it without a fallback. The profile maps
+    // the panel surface to the beige tertiary background.
+    --f-page-layout-background: var(--fkds-color-background-tertiary);
+
     // HEADER - TEXT
     // Header background is light in this profile, so header text flips from
     // the upstream inverted colour to the primary text colour.

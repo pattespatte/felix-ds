@@ -8,6 +8,6 @@ import { FLoader } from "@fkui/vue";
         <p class="demo__description">
             Snurran visar att något pågår. Använd den när väntetiden är okänd.
         </p>
-        <f-loader />
+        <f-loader show />
     </section>
 </template>

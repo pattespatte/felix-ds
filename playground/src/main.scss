@@ -8,6 +8,12 @@
 
 :root {
     @include felix.base;
+
+    // Page layout surface token: upstream defines it only inside the page
+    // layout's shadow parts, so standalone consumers of it (FMinimizablePanel)
+    // would render transparent. The base theme gets the same value the
+    // upstream panel area uses.
+    --f-page-layout-background: var(--fkds-color-background-secondary);
 }
 
 // Scoped felix theme: html.theme-felix (0,1,1) wins over the global :root
