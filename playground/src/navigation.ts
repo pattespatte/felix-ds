@@ -95,7 +95,6 @@ export const views: NavView[] = [
             { id: "ffixedpane", title: "Fast panel" },
             { id: "fresizepane", title: "Storleksändring" },
             { id: "foffline", title: "Nedkopplad" },
-            { id: "fdefinitionlist", title: "Definitionslista" },
         ],
     },
     {
@@ -125,6 +124,12 @@ export const views: NavView[] = [
             { id: "ftable", title: "Tabell" },
             { id: "fdatatable", title: "Datatabell" },
             { id: "finteractivetable", title: "Interaktiv tabell" },
+            { id: "fcruddataset", title: "Redigerbar mängd" },
+            { id: "fsortfilterdataset", title: "Sök och sortera" },
+            { id: "fpaginatedataset", title: "Sidindelad mängd" },
+            { id: "fpaginator", title: "Paginering" },
+            { id: "flist", title: "Lista" },
+            { id: "fdefinitionlist", title: "Definitionslista" },
         ],
     },
     {
