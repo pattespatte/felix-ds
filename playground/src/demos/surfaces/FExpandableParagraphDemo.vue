@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import { FExpandableParagraph } from "@fkui/vue";
+
+const expanderad = ref(false);
 </script>
 
 <template>
@@ -8,7 +11,11 @@ import { FExpandableParagraph } from "@fkui/vue";
         <p class="demo__description">
             Expanderbar paragraf med egen knapp i rubriken.
         </p>
-        <f-expandable-paragraph header-tag="h3">
+        <f-expandable-paragraph
+            header-tag="h3"
+            :expanded="expanderad"
+            @toggle="expanderad = !expanderad"
+        >
             <template #title> Vanliga frågor om temat </template>
             <template #default>
                 Temat är ett tunt lager av CSS-variabler ovanpå FKUI:s publika
