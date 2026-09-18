@@ -1,0 +1,73 @@
+// Dark theme: variable overrides plus the structural rules that assume a
+// dark canvas. Mode-independent rules live in the shared theme mixin; the
+// light theme's mode-dependent rules are re-derived here for dark surfaces,
+// and rules whose upstream bindings already resolve correctly on dark fills
+// are deliberately left out (noted inline).
+
+@use "../shared" as shared;
+@use "variables" as dark;
+
+@mixin theme {
+    color-scheme: dark;
+
+    @include shared.variables;
+    @include shared.theme;
+    @include dark.variables;
+
+    // Secondary button. The dark profile's secondary action is a ghost
+    // surface: upstream binds the variant's border to the primary action
+    // border (the profile blue), but the dark snapshot draws ghost actions
+    // with the light action surface colour as their border. The text colour
+    // and the hover/active fill flow from the tokens upstream already binds.
+    // No --fkds-color-action-border-secondary token exists upstream, so the
+    // light action surface colour is referenced through the secondary action
+    // text token (same snapshot value: action.border/text.secondary #e2eaf7).
+    .button--secondary {
+        border-color: var(--fkds-color-action-text-secondary-default, #e2eaf7);
+    }
+
+    .button--secondary:hover,
+    .button--secondary:active {
+        border-color: var(--fkds-color-action-text-secondary-hover, #e2eaf7);
+    }
+
+    .button--secondary:focus-visible {
+        border-color: var(--fkds-color-action-text-secondary-focus, #e2eaf7);
+    }
+
+    // Input fields get a lifted hover surface with a brighter blue border,
+    // mirroring the light theme's tinted hover from the dark side of the
+    // palette: bg from the select secondary hover step (darkmode
+    // select.background.secondary.hover), border from the resting action
+    // link colour (darkmode action.text.primary.default). Focus and error
+    // states are left to the upstream styling.
+    $input-hover-bg: #484d5c;
+    $input-hover-border: #7ea2dc;
+
+    .text-field:not(.text-field--error) .text-field__input:hover:not(:disabled):not(:focus),
+    .textarea-field:not(.textarea-field--error) .textarea-field__textarea:hover:not(:disabled):not(:focus),
+    .select-field:not(.select-field--error) .select-field__select:hover:not(:disabled):not(:focus) {
+        background-color: $input-hover-bg;
+        border-color: $input-hover-border;
+    }
+
+    // Expandable paragraph icon. Same binding as the light theme – upstream
+    // binds the disc to the select secondary background, which is too close
+    // to the dark canvas for the white glyph; the select primary surface
+    // (#585f71) keeps the contrast. Restated so the dark theme stands alone
+    // for consumers that emit it without the light theme.
+    .expandable-paragraph__icon {
+        background-color: var(--fkds-color-select-background-primary-default);
+    }
+
+    // Default badge: NOT overridden. Upstream binds the badge text to the
+    // primary text colour (white in dark mode), which clears AA on the
+    // profile's neutral-strong fill (#6e7689, ~4.6:1) – the light theme's
+    // inverted-text override would resolve to the same white here.
+
+    // Checked chips: NOT overridden. Upstream binds the checked label to the
+    // inverted text colour (white), which is correct on the profile's dark
+    // checked fill (#3e424e); the light theme's override exists only because
+    // its checked fill is a light tint. (Under a combined light+dark scope
+    // the light rule still matches but resolves to the same white.)
+}

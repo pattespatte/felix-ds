@@ -1,8 +1,11 @@
-// Shared (color-mode independent) variable overrides for the felix profile.
+// Shared (color-mode independent) overrides for the felix profile.
 //
 // Only tokens that differ from the upstream default theme are listed; the
 // upstream values are emitted first by the composed theme, these follow and
-// win the cascade.
+// win the cascade. The `theme` mixin holds the structural rules whose values
+// are carried entirely by tokens, so both colour modes emit them unchanged;
+// mode-dependent rules (surfaces chosen for a light or dark canvas) live in
+// each mode's own _theme.scss.
 
 @mixin variables {
     /// Font variables – body family is the self-hosted Noto Sans (see
@@ -64,4 +67,97 @@
     /// with their own mark.
     --f-logo-image-small: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='11' fill='%23232948'/%3E%3C/svg%3E");
     --f-logo-image-large: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='11' fill='%23232948'/%3E%3C/svg%3E");
+}
+
+// Heading typography. The upstream theme has no heading-family token,
+// so heading rules are plain CSS emitted with the theme. Display font
+// for h1, body font for the rest; bold maps to the bundled semibold.
+// The h1 uses the profile's display style: tight 1.2 line height and
+// slightly negative tracking.
+@mixin theme {
+    h1 {
+        font-family: "Roboto Slab", serif;
+        font-weight: var(--f-font-weight-bold);
+        font-size: var(--f-font-size-h1);
+        line-height: 1.2;
+        letter-spacing: -0.02em;
+    }
+
+    h2 {
+        font-family: "Noto Sans", system-ui, sans-serif;
+        font-weight: var(--f-font-weight-bold);
+        font-size: var(--f-font-size-h2);
+    }
+
+    h3 {
+        font-family: "Noto Sans", system-ui, sans-serif;
+        font-weight: var(--f-font-weight-bold);
+        font-size: var(--f-font-size-h3);
+    }
+
+    h4 {
+        font-family: "Noto Sans", system-ui, sans-serif;
+        font-weight: var(--f-font-weight-bold);
+        font-size: var(--f-font-size-h4);
+    }
+
+    h5 {
+        font-family: "Noto Sans", system-ui, sans-serif;
+        font-weight: var(--f-font-weight-bold);
+        font-size: var(--f-font-size-large);
+    }
+
+    h6 {
+        font-family: "Noto Sans", system-ui, sans-serif;
+        font-weight: var(--f-font-weight-bold);
+        font-size: var(--f-font-size-standard);
+    }
+
+    // Chip radius. Upstream hardcodes a 20px pill radius on chip labels and
+    // their focus ring; the profile uses the medium radius instead. These
+    // selectors mirror the upstream ones so the override wins on focus too.
+    .radio-button-group--chip .radio-button__label,
+    .checkbox-group--chip .checkbox__label {
+        border-radius: var(--f-border-radius-medium);
+    }
+
+    .radio-button-group--chip input[type="radio"]:focus-visible + label.radio-button__label,
+    .checkbox-group--chip input[type="checkbox"]:focus-visible + label.checkbox__label {
+        border-radius: var(--f-border-radius-medium);
+    }
+
+    // Anchors follow the profile's link treatment: one constant link colour
+    // with an underline that disappears on hover. Buttons and other
+    // components that set their own colours are unaffected (higher
+    // specificity), and focus keeps the upstream focus ring.
+    a {
+        color: var(--fkds-color-action-text-primary-default);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+    }
+
+    a:hover {
+        color: var(--fkds-color-action-text-primary-hover);
+        text-decoration: none;
+    }
+
+    // The entrypoint is an anchor styled as a primary action surface. Its own
+    // class loses to the anchor rules above on hover (0,1,1 vs 0,1,0), which
+    // would put the dark link colour on the dark action fill, so the
+    // inverted – light – action text colour is restated with higher
+    // specificity for every state.
+    a.entrypoint,
+    a.entrypoint:hover,
+    a.entrypoint:active,
+    a.entrypoint:focus-visible {
+        color: var(--fkds-color-action-text-inverted-default);
+        text-decoration: none;
+    }
+
+    // Checkbox and radio glyphs draw their resting border with the weak
+    // border colour instead of the regular component border.
+    .checkbox__label::before,
+    .radio-button__label::before {
+        border-color: var(--fkds-color-border-weak);
+    }
 }

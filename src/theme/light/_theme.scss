@@ -1,68 +1,16 @@
-// Light theme: variable overrides plus the few structural rules the profile
-// needs (heading typography and the chip radius, which is hardcoded upstream).
+// Light theme: variable overrides plus the structural rules that assume a
+// light canvas (the dark theme re-derives these for its own surfaces).
+// Mode-independent rules live in the shared theme mixin.
 
 @use "../shared" as shared;
 @use "variables" as light;
 
 @mixin theme {
+    color-scheme: light;
+
     @include shared.variables;
+    @include shared.theme;
     @include light.variables;
-
-    // Heading typography. The upstream theme has no heading-family token,
-    // so heading rules are plain CSS emitted with the theme. Display font
-    // for h1, body font for the rest; bold maps to the bundled semibold.
-    // The h1 uses the profile's display style: tight 1.2 line height and
-    // slightly negative tracking.
-    h1 {
-        font-family: "Roboto Slab", serif;
-        font-weight: var(--f-font-weight-bold);
-        font-size: var(--f-font-size-h1);
-        line-height: 1.2;
-        letter-spacing: -0.02em;
-    }
-
-    h2 {
-        font-family: "Noto Sans", system-ui, sans-serif;
-        font-weight: var(--f-font-weight-bold);
-        font-size: var(--f-font-size-h2);
-    }
-
-    h3 {
-        font-family: "Noto Sans", system-ui, sans-serif;
-        font-weight: var(--f-font-weight-bold);
-        font-size: var(--f-font-size-h3);
-    }
-
-    h4 {
-        font-family: "Noto Sans", system-ui, sans-serif;
-        font-weight: var(--f-font-weight-bold);
-        font-size: var(--f-font-size-h4);
-    }
-
-    h5 {
-        font-family: "Noto Sans", system-ui, sans-serif;
-        font-weight: var(--f-font-weight-bold);
-        font-size: var(--f-font-size-large);
-    }
-
-    h6 {
-        font-family: "Noto Sans", system-ui, sans-serif;
-        font-weight: var(--f-font-weight-bold);
-        font-size: var(--f-font-size-standard);
-    }
-
-    // Chip radius. Upstream hardcodes a 20px pill radius on chip labels and
-    // their focus ring; the profile uses the medium radius instead. These
-    // selectors mirror the upstream ones so the override wins on focus too.
-    .radio-button-group--chip .radio-button__label,
-    .checkbox-group--chip .checkbox__label {
-        border-radius: var(--f-border-radius-medium);
-    }
-
-    .radio-button-group--chip input[type="radio"]:focus-visible + label.radio-button__label,
-    .checkbox-group--chip input[type="checkbox"]:focus-visible + label.checkbox__label {
-        border-radius: var(--f-border-radius-medium);
-    }
 
     // Default badge. Upstream binds the badge text to the primary text
     // colour, but the profile's neutral-strong badge fill is dark enough
@@ -104,34 +52,6 @@
         border-color: $input-hover-border;
     }
 
-    // Anchors follow the profile's link treatment: one constant link colour
-    // with an underline that disappears on hover. Buttons and other
-    // components that set their own colours are unaffected (higher
-    // specificity), and focus keeps the upstream focus ring.
-    a {
-        color: var(--fkds-color-action-text-primary-default);
-        text-decoration: underline;
-        text-underline-offset: 3px;
-    }
-
-    a:hover {
-        color: var(--fkds-color-action-text-primary-hover);
-        text-decoration: none;
-    }
-
-    // The entrypoint is an anchor styled as a primary action surface. Its own
-    // class loses to the anchor rules above on hover (0,1,1 vs 0,1,0), which
-    // would put the dark link colour on the dark action fill, so the
-    // inverted – light – action text colour is restated with higher
-    // specificity for every state.
-    a.entrypoint,
-    a.entrypoint:hover,
-    a.entrypoint:active,
-    a.entrypoint:focus-visible {
-        color: var(--fkds-color-action-text-inverted-default);
-        text-decoration: none;
-    }
-
     // Expandable paragraph icon. Upstream binds the disc to the select
     // secondary background, a light tint in this profile; the white glyph
     // needs a dark fill, so the primary (dark blue) select surface is used.
@@ -145,12 +65,5 @@
     .radio-button-group--chip input[type="radio"]:checked + label.radio-button__label,
     .checkbox-group--chip input[type="checkbox"]:checked + label.checkbox__label {
         color: var(--fkds-color-text-primary);
-    }
-
-    // Checkbox and radio glyphs draw their resting border with the weak
-    // border colour instead of the regular component border.
-    .checkbox__label::before,
-    .radio-button__label::before {
-        border-color: var(--fkds-color-border-weak);
     }
 }

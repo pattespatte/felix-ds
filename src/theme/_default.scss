@@ -1,14 +1,24 @@
 // felix theme entry.
 //
-// Composes the upstream default theme with the felix light overrides.
-// Set `$global: false` before including to emit variables into a custom
-// scope instead of `:root` (see the playground theme toggle for an example).
+// Composes the upstream default theme (light and dark) with the felix
+// profile's light and dark overrides. Set `$global: false` before including
+// to emit variables into a custom scope instead of `:root` (see the
+// playground theme toggle for an example).
+//
+// Mixins:
+//   base      – upstream default light theme only
+//   light     – upstream light + felix light
+//   base-dark – upstream default dark theme only
+//   dark      – upstream dark + felix dark
+//   auto      – both composed themes behind prefers-color-scheme media
+//               queries (color-scheme: light dark)
 
 @use "@fkui/theme-default/src/default" as themeDefault with (
     $global: false
 );
 
 @use "light/theme" as light;
+@use "dark/theme" as dark;
 
 $global: true !default;
 
@@ -21,6 +31,35 @@ $global: true !default;
 @mixin light {
     @include themeDefault.light;
     @include light.theme;
+}
+
+/// Upstream default dark theme only – the dark counterpart of `base`, for
+/// consumers that want the unprofiled base themes switchable by scope.
+@mixin base-dark {
+    @include themeDefault.dark;
+}
+
+/// Upstream dark theme with the felix dark profile overrides.
+@mixin dark {
+    @include themeDefault.dark;
+    @include dark.theme;
+}
+
+/// Both composed themes driven by the system colour scheme preference.
+/// Class/attribute-based switching should use the scoped `light`/`dark`
+/// mixins instead (media queries cannot be toggled by the page).
+@mixin auto {
+    color-scheme: light dark;
+
+    @media (prefers-color-scheme: light) {
+        @include themeDefault.light;
+        @include light.theme;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        @include themeDefault.dark;
+        @include dark.theme;
+    }
 }
 
 @if $global {

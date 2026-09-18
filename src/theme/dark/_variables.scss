@@ -1,0 +1,149 @@
+// Dark-mode colour overrides for the felix profile.
+//
+// Every --fkds-color-* token of the upstream default theme is listed with a
+// raw profile value from the design token snapshot's darkmode set (raw
+// values only, never the source architecture). Nearest-neighbour choices
+// are called out in comments. The dark profile runs on a pure black primary
+// surface; secondary actions are intentionally ghost surfaces (a whisper of
+// white at rest, a lifted neutral on hover/active) with a light border and
+// light text rather than the light mode's solid tinted fill.
+
+@mixin variables {
+    // TEXT
+    --fkds-color-text-primary: #ffffff;
+    --fkds-color-text-secondary: #d7d9e0;
+    --fkds-color-text-inverted: #ffffff;
+    --fkds-color-text-disabled: #585f71;
+
+    // BACKGROUND
+    --fkds-color-background-primary: #000000;
+    --fkds-color-background-secondary: #16171b;
+    --fkds-color-background-tertiary: #1e222e;
+    --fkds-color-background-disabled: #3e424e;
+
+    // BORDER
+    --fkds-color-border-primary: #8c93a4;
+    --fkds-color-border-strong: #d7d9e0;
+    --fkds-color-border-weak: #585f71;
+    --fkds-color-border-disabled: #3e424e;
+    --fkds-color-border-inverted: #ffffff;
+
+    // ACTION - TEXT
+    // Links rest on the muted profile blue and lift to the pale tint on
+    // hover/active/focus – the dark snapshot defines state colours, so the
+    // light theme's "one constant colour" simplification does not apply.
+    --fkds-color-action-text-primary-default: #7ea2dc;
+    --fkds-color-action-text-primary-hover: #e2eaf7;
+    --fkds-color-action-text-primary-active: #e2eaf7;
+    --fkds-color-action-text-primary-focus: #e2eaf7;
+    --fkds-color-action-text-secondary-default: #e2eaf7;
+    --fkds-color-action-text-secondary-hover: #e2eaf7;
+    --fkds-color-action-text-secondary-active: #e2eaf7;
+    --fkds-color-action-text-secondary-focus: #e2eaf7;
+    --fkds-color-action-text-inverted-default: #ffffff;
+    --fkds-color-action-text-inverted-hover: #ffffff;
+    --fkds-color-action-text-inverted-active: #ffffff;
+    --fkds-color-action-text-inverted-focus: #ffffff;
+
+    // ACTION - BACKGROUND
+    --fkds-color-action-background-primary-default: #4c6ac4;
+    --fkds-color-action-background-primary-hover: #3d509e;
+    --fkds-color-action-background-primary-active: #3d509e;
+    --fkds-color-action-background-primary-focus: #3d509e;
+    // Secondary actions are ghost surfaces in the dark profile: a near
+    // transparent white at rest/focus, a lifted neutral on hover/active.
+    --fkds-color-action-background-secondary-default: #ffffff03;
+    --fkds-color-action-background-secondary-hover: #3e424e;
+    --fkds-color-action-background-secondary-active: #3e424e;
+    --fkds-color-action-background-secondary-focus: #ffffff03;
+
+    // ACTION - BORDER
+    --fkds-color-action-border-primary-default: #4c6ac4;
+    --fkds-color-action-border-primary-hover: #4c6ac4;
+    --fkds-color-action-border-primary-active: #4c6ac4;
+    --fkds-color-action-border-primary-focus: #4c6ac4;
+
+    // FEEDBACK - BACKGROUND
+    // The dark snapshot collapses the pale message fills onto the tertiary
+    // background; the strong fills carry the state colour, paired with the
+    // dedicated dark border ramp below.
+    --fkds-color-feedback-background-neutral: #1e222e;
+    --fkds-color-feedback-background-neutral-strong: #6e7689;
+    --fkds-color-feedback-background-info: #1e222e;
+    --fkds-color-feedback-background-info-strong: #02478a;
+    --fkds-color-feedback-background-positive: #1e222e;
+    --fkds-color-feedback-background-positive-strong: #217424;
+    --fkds-color-feedback-background-warning: #1e222e;
+    --fkds-color-feedback-background-warning-strong: #ffc108;
+    --fkds-color-feedback-background-negative: #1e222e;
+    --fkds-color-feedback-background-negative-strong: #c7311a;
+
+    // FEEDBACK - BORDER
+    --fkds-color-feedback-border-neutral: #6e7689;
+    --fkds-color-feedback-border-info: #0586f2;
+    --fkds-color-feedback-border-positive: #5bcd5f;
+    --fkds-color-feedback-border-warning: #ffd248;
+    --fkds-color-feedback-border-negative: #f35840;
+
+    // FEEDBACK - TEXT
+    --fkds-color-feedback-text-negative: #f35840;
+    --fkds-color-feedback-text-positive: #f1fcf1;
+    // Nearest neighbour: the warning-strong fill (#ffc108) is a light
+    // surface in dark mode too, so its text uses the snapshot's dark
+    // on-light-bg value – not the near-white on-dark warning text.
+    --fkds-color-feedback-text-on-warning: #081130;
+
+    // SELECT - BACKGROUND
+    --fkds-color-select-background-primary-default: #585f71;
+    --fkds-color-select-background-primary-hover: #3e424e;
+    --fkds-color-select-background-primary-active: #3e424e;
+    --fkds-color-select-background-primary-focus: #3e424e;
+    --fkds-color-select-background-secondary-default: #3e424e;
+    --fkds-color-select-background-secondary-hover: #484d5c;
+    --fkds-color-select-background-secondary-active: #484d5c;
+    --fkds-color-select-background-secondary-focus: #484d5c;
+
+    // INTERACTIVE SURFACE - BACKGROUND
+    // No direct profile slot; mapped to the profile's dark action tertiary
+    // surface (default/active one step, hover/focus the other) – the same
+    // mapping the light theme uses for its tinted action surface.
+    --fkds-color-interactive-surface-background-primary-default: #414d67;
+    --fkds-color-interactive-surface-background-primary-hover: #4d5b80;
+    --fkds-color-interactive-surface-background-primary-active: #414d67;
+    --fkds-color-interactive-surface-background-primary-focus: #4d5b80;
+
+    // NAVIGATION - BORDER
+    --fkds-color-navigation-border-hover: #4c6ac4;
+    --fkds-color-navigation-border-selected: #334075;
+
+    // NAVIGATION - BACKGROUND
+    --fkds-color-navigation-background-hover: #232948;
+    --fkds-color-navigation-background-selected: #334075;
+
+    // HEADER - BACKGROUND
+    --fkds-color-header-background-primary: #16171b;
+
+    // PAGE LAYOUT SURFACE
+    // Same binding as the light theme: standalone panel surfaces read the
+    // profile's tertiary background.
+    --f-page-layout-background: var(--fkds-color-background-tertiary);
+
+    // HEADER - TEXT
+    // Header background (#16171b) is dark in this profile, so header text
+    // uses the primary text colour – white – mirroring the light theme's
+    // flip logic in the opposite direction.
+    --fkds-color-header-text-primary: #ffffff;
+
+    // LOGO PLACEHOLDER
+    // The shared mark is a dark circle that would disappear on the dark
+    // header band; the dark theme ships the same neutral circle filled
+    // with the profile's light action surface colour instead. As in light
+    // mode, consumers are expected to replace these URLs with their own
+    // mark.
+    --f-logo-image-small: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='11' fill='%23e2eaf7'/%3E%3C/svg%3E");
+    --f-logo-image-large: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='11' fill='%23e2eaf7'/%3E%3C/svg%3E");
+
+    // FOCUS INDICATOR
+    // The dark snapshot has no focus tokens; the upstream dark theme's
+    // white outer ring over a black inner ring is kept by not overriding.
+}
