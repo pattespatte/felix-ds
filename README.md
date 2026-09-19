@@ -131,6 +131,8 @@ import "@fkui/design/lib/fkui.css";
 import "@fkui/design/lib/fonts.css";
 ```
 
+En komplett genomgång – projektsetup, temaintegration, mörkt läge, ikoner, formulär, sök och prerendering – finns i guiden [Skapa en webbplats med felix-ds](docs/create-a-site.sv.md).
+
 ## Komponenter i playgrounden
 
 Playgrounden täcker samtliga 89 komponenter i FKUI:s publika paket – 79 Vue-komponenter och 10 SCSS-komponenter – enligt komponentrapporten för installerad version. Registret över vad som finns är strukturellt i stället för en handskriven lista: varje komponent har en demofil `playground/src/demos/<kategori>/<Komponent>Demo.vue` (subkomponenter och enums demonstreras i sin förälders demo) och länkas som ankare från `playground/src/navigation.ts`. Startvyns avsnitt ”Komponenter i playgrounden” listar kategorierna direkt från navigation.ts, så listan på sidan kan aldrig skilja sig från menyn.
@@ -300,6 +302,8 @@ Also load FKUI's component CSS in the consumer entry point:
 import "@fkui/design/lib/fkui.css";
 import "@fkui/design/lib/fonts.css";
 ```
+
+A complete walkthrough – project setup, theme integration, dark mode, icons, forms, search and prerendering – is in the guide [Building a site with felix-ds](docs/create-a-site.en.md).
 
 ## Components in the playground
 
