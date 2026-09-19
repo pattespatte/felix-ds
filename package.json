@@ -7,7 +7,8 @@
   "scripts": {
     "dev": "vite --config playground/vite.config.ts",
     "build": "vite build --config playground/vite.config.ts",
-    "build:theme": "sass --load-path=node_modules src/index.scss dist/felix.css && cp -R src/fonts/files dist/files"
+    "build:theme": "sass --load-path=node_modules src/index.scss dist/felix.css && cp -R src/fonts/files dist/files",
+    "fkui": "bun scripts/fkui.ts"
   },
   "sass": "./src/index.scss",
   "dependencies": {

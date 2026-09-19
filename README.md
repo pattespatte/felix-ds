@@ -1,6 +1,8 @@
 # felix-ds
 
-En privat konceptstudie (proof of concept): ett fristående, organisationsneutralt designsystem byggt som ett tunt temalager – designvariabler som CSS-variabler plus inbäddade typsnitt – ovanpå FKUI:s publika npm-paket. En lokal playground bevisar konceptet genom att visa samtliga 89 komponenter i FKUI:s publika paket (79 Vue-komponenter och 10 SCSS-komponenter) med omedelbar växling mellan FKUI:s grundtema och felix-temat. Inga Vue-wrappers, ingen fork, inga egna komponenter: konsumenten använder FKUI-komponenterna direkt och lägger bara på temat.
+En privat konceptstudie (proof of concept): ett fristående, organisationsneutralt designsystem byggt som ett tunt temalager – designvariabler som CSS-variabler plus inbäddade typsnitt – ovanpå [FKUI:s](https://github.com/Forsakringskassan/designsystem) publika npm-paket. En lokal playground bevisar konceptet genom att visa samtliga 89 komponenter i FKUI:s publika paket (79 Vue-komponenter och 10 SCSS-komponenter) med omedelbar växling mellan FKUI:s grundtema och felix-temat. Inga Vue-wrappers, ingen fork, inga egna komponenter: konsumenten använder FKUI-komponenterna direkt och lägger bara på temat.
+
+FKUI:s dokumentation med levande komponentdemos finns på [designsystem.forsakringskassan.se](https://designsystem.forsakringskassan.se/).
 
 ## Kom igång
 
@@ -18,6 +20,20 @@ Fler skript:
 | `bun run dev` | Starta playgrounden lokalt |
 | `bun run build` | Bygg playgrounden för produktion |
 | `bun run build:theme` | Kompilera temalagret till `dist/felix.css` (med typsnittsfilerna bredvid i `dist/files/`) |
+| `bun run fkui …` | Visa och uppgradera `@fkui/*`-beroendena (se avsnittet nedan) |
+
+## Uppgradera FKUI-beroendena
+
+Alla `@fkui/*`-paket låses till exakta versioner och uppgraderas i takt – samma version på samtliga paket, som uppströms publicerar dem. Hjälpskriptet `fkui` håller koll på läget och genomför uppgraderingen (`bun fkui …` är en genväg som Bun tolkar som `bun run fkui …`):
+
+| Kommando | Beskrivning |
+| --- | --- |
+| `bun fkui version` | Visa specifierad, installerad och senaste version per paket |
+| `bun fkui upgrade -n` | Torrkörning: visa planen (nuvarande → mål, steg, utgivningsdatum) utan att ändra något |
+| `bun fkui upgrade` | Skriva nya exakta versioner i `package.json` och köra `bun install` |
+| `bun fkui upgrade 6.58.0` | Som ovan, men till en vald version i stället för senaste |
+
+Planen skriver ut länk till release notes, och majorskiften varnas särskilt. Efter en genomförd uppgradering: kör `bun run build`, `bunx vue-tsc --noEmit` och `bun run build:theme`, och gör en visuell runda i playgrounden.
 
 ## Arkitektur
 
@@ -154,7 +170,9 @@ Paketet hålls `private: true` – ingen publicering till npm sker. Repot public
 
 # felix-ds (English)
 
-A private proof of concept: a standalone, organisation-neutral design system built as a thin theme layer – design tokens as CSS custom properties plus self-hosted fonts – on top of FKUI's public npm packages. The concept is proven by a local playground showing all 89 components in FKUI's public packages (79 Vue components and 10 SCSS-only components) with instant switching between the FKUI base theme and the felix theme. No Vue wrappers, no fork, no components of our own – consumers use the FKUI components directly and simply apply the theme.
+A private proof of concept: a standalone, organisation-neutral design system built as a thin theme layer – design tokens as CSS custom properties plus self-hosted fonts – on top of [FKUI's](https://github.com/Forsakringskassan/designsystem) public npm packages. The concept is proven by a local playground showing all 89 components in FKUI's public packages (79 Vue components and 10 SCSS-only components) with instant switching between the FKUI base theme and the felix theme. No Vue wrappers, no fork, no components of our own – consumers use the FKUI components directly and simply apply the theme.
+
+FKUI's documentation with live component demos is available at [designsystem.forsakringskassan.se](https://designsystem.forsakringskassan.se/).
 
 ## Getting started
 
@@ -172,6 +190,20 @@ Further scripts:
 | `bun run dev` | Run the playground locally |
 | `bun run build` | Production build of the playground |
 | `bun run build:theme` | Compile the theme layer to `dist/felix.css` (fonts copied next to it in `dist/files/`) |
+| `bun run fkui …` | Show and upgrade the `@fkui/*` dependencies (see the section below) |
+
+## Upgrading the FKUI dependencies
+
+All `@fkui/*` packages are pinned to exact versions and upgraded in lockstep – the same version on every package, matching how upstream publishes them. The `fkui` helper script tracks the state and performs the upgrade (`bun fkui …` is a shortcut that Bun resolves to `bun run fkui …`):
+
+| Command | Description |
+| --- | --- |
+| `bun fkui version` | Show the specified, installed and latest version per package |
+| `bun fkui upgrade -n` | Dry run: show the plan (current → target, step, release date) without changing anything |
+| `bun fkui upgrade` | Write the new exact versions to `package.json` and run `bun install` |
+| `bun fkui upgrade 6.58.0` | Same, but to a chosen version instead of latest |
+
+The plan prints a link to the release notes, and major bumps are called out. After a completed upgrade: run `bun run build`, `bunx vue-tsc --noEmit` and `bun run build:theme`, and take a visual pass through the playground.
 
 ## Architecture
 
