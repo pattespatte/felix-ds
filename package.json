@@ -11,6 +11,10 @@
     "fkui": "bun scripts/fkui.ts"
   },
   "sass": "./src/index.scss",
+  "files": [
+    "src",
+    "README.md"
+  ],
   "dependencies": {
     "@fkui/date": "6.57.1",
     "@fkui/design": "6.57.1",
