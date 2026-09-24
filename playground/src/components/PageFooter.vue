@@ -34,7 +34,10 @@
             </div>
         </div>
         <div class="page-footer__bottom">
-            <p>felix-ds 0.1.0 – privat proof of concept. Koden publiceras inte.</p>
+            <p>
+                felix-ds 0.1.0 – privat proof of concept.
+                <a href="https://github.com/pattespatte/felix-ds">Öppen källkod på GitHub</a>.
+            </p>
         </div>
     </div>
 </template>
@@ -52,6 +55,18 @@ function scrollToTop(): void {
     background-color: var(--fkds-color-action-background-primary-default, #232948);
     color: var(--fkds-color-text-inverted, #ffffff);
     padding: 4rem 1rem 2rem;
+}
+
+// Grundtema (html without .theme-felix): the footer takes the reference
+// site's green surface with a darker green top border. Neither green is an
+// FKUI token, so the raw values stand in here: #316942 body fill and
+// #0c4329 border, taken from the reference footer (2026-09-24). The fill is
+// dark in both color modes, but upstream dark flips --fkds-color-text-
+// inverted to dark ink (it expects a light surface) – pin it back to white.
+html:not(.theme-felix) .page-footer {
+    --fkds-color-text-inverted: #ffffff;
+    background-color: #316942;
+    border-top: 0.5rem solid #0c4329;
 }
 
 .page-footer__inner {
@@ -74,19 +89,26 @@ function scrollToTop(): void {
 }
 
 // Logo-style home link: plain until hovered, unlike the underlined footer
-// anchors.
-.page-footer__home {
+// anchors. :root lifts these rules one class-step – the theme emits its
+// anchor colours under the combined dark scope as
+// html.theme-felix[data-color-mode=dark] a (0,2,2), which out-specifies a
+// plain scoped rule (0,2,1) and would paint the profile link blue on the
+// footer's inverted fill – and the type selector on the anchor rules below
+// out-ranks a bare class, so the home link restates it.
+:root .page-footer a.page-footer__home {
     text-decoration: none;
 }
 
-.page-footer__home:hover,
-.page-footer__home:focus-visible {
+:root .page-footer a.page-footer__home:hover,
+:root .page-footer a.page-footer__home:focus-visible {
     text-decoration: underline;
 }
 
 .page-footer__tagline {
     margin: 0.5rem 0 0;
-    color: rgba(255, 255, 255, 0.85);
+    // Full opacity: at 0.85 the white drops to 4.14:1 on the felix dark
+    // footer fill (#4c6ac4) – just under the AA threshold.
+    color: var(--fkds-color-text-inverted, #ffffff);
 }
 
 .page-footer__heading {
@@ -110,15 +132,20 @@ function scrollToTop(): void {
     column-gap: 2rem;
 }
 
-.page-footer a,
-.page-footer__top {
+// :root lifts these rules one class-step: the theme emits its anchor colours
+// under the combined dark scope as
+// html.theme-felix[data-color-mode=dark] a (0,2,2), which out-specifies a
+// plain scoped .page-footer a (0,2,1) and would paint the profile link blue
+// on the footer's inverted fill.
+:root .page-footer a,
+:root .page-footer__top {
     color: var(--fkds-color-text-inverted, #ffffff);
     text-decoration: underline;
     text-underline-offset: 3px;
 }
 
-.page-footer a:hover,
-.page-footer__top:hover {
+:root .page-footer a:hover,
+:root .page-footer__top:hover {
     color: var(--fkds-color-text-inverted, #ffffff);
     text-decoration: none;
 }
@@ -139,7 +166,8 @@ function scrollToTop(): void {
     padding-top: 2rem;
     border-top: 1px solid rgba(255, 255, 255, 0.5);
     font-size: 0.875rem;
-    color: rgba(255, 255, 255, 0.85);
+    // Full opacity – see the tagline note above.
+    color: var(--fkds-color-text-inverted, #ffffff);
 }
 
 .page-footer__bottom p {
