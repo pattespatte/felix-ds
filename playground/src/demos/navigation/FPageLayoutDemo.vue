@@ -14,7 +14,7 @@ import { FPageLayout } from "@fkui/vue";
                 <header :slot="header" class="page-layout-demo__band">Sidhuvud</header>
                 <div :slot="left" class="page-layout-demo__panel">Vänsterpanel</div>
                 <div :slot="right" class="page-layout-demo__panel">Högerpanel</div>
-                <main :slot="content" class="page-layout-demo__content">Huvudinnehåll</main>
+                <div :slot="content" class="page-layout-demo__content">Huvudinnehåll</div>
                 <footer :slot="footer" class="page-layout-demo__band">Sidfot</footer>
             </template>
         </f-page-layout>
@@ -34,6 +34,9 @@ import { FPageLayout } from "@fkui/vue";
 
 .page-layout-demo__band {
     background-color: var(--fkds-color-background-secondary, #f7f8f8);
+    // The page layout paints its header/footer areas with inverted text;
+    // without an explicit color the band labels end up white on light gray.
+    color: var(--fkds-color-text-primary, #1b1e23);
 }
 
 .page-layout-demo__panel {

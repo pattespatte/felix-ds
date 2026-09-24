@@ -45,7 +45,13 @@ onBeforeUnmount(() => {
             egna händelser utanför en datamängd.
         </p>
         <div ref="root">
-            <f-paginator :current-page="page" :number-of-pages="numberOfPages" />
+            <!-- Distinct landmark name: the page also carries the paginator
+                 inside FPaginateDatasetDemo, which uses the default label. -->
+            <f-paginator
+                :current-page="page"
+                :number-of-pages="numberOfPages"
+                navigator-label="Navigera mellan sidor i pagineringsexemplet"
+            />
         </div>
         <p aria-live="polite">Vald sida: {{ page }} av {{ numberOfPages }}</p>
     </section>

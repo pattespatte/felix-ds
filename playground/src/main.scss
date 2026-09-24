@@ -68,6 +68,15 @@ body {
     --fkds-color-feedback-border-positive: var(--fkds-color-feedback-border-info, #0053a7);
 }
 
+// Upstream dark renders the default badge as near-white text on its medium
+// gray neutral-strong fill (#ddddde on #8d8e91, 2.4:1 – axe, WCAG AA).
+// Dark ink on the same fill passes (≈5:1); that is also how upstream dark
+// treats the warning badge's text (fk-black-100). Scoped to grundtema dark:
+// the felix dark theme already pairs white text with its own #6e7689 fill.
+html[data-color-mode="dark"]:not(.theme-felix) .badge--default {
+    --fkds-color-text-primary: #1b1e23;
+}
+
 // App-shell adjustments for the left navigation. The reference layout keeps
 // the menu column in the page flow (it scrolls with the content and the
 // footer starts below it), so the FKUI fixed-position panel is converted to a

@@ -60,6 +60,11 @@ const statusText = computed(() => {
                     key-attribute="id"
                 >
                     <template #caption> Pågående ärenden </template>
+                    <!-- Labels the row checkboxes (FKUI renders the field's
+                         label empty without this slot). -->
+                    <template #checkbox-description="{ row }">
+                        Markera {{ row.rubrik }}
+                    </template>
                     <template #default="{ row }">
                         <f-table-column
                             name="rubrik"
