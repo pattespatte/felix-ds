@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { FLabel } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 </script>
 
 <template>
     <section id="flabel" aria-labelledby="flabel-heading" class="demo">
-        <h2 id="flabel-heading">FLabel</h2>
+        <component-heading id="flabel-heading" :names="['FLabel']" />
         <p class="demo__description">
             Fristående etikett kopplad till ett inmatningsfält via
             <code>for</code>-attributet, med en valfri beskrivning under etiketten.

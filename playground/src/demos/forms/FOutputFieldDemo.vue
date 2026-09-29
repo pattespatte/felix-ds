@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { FOutputField } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 
 const antalVuxna = ref(2);
 const antalBarn = ref(1);
@@ -9,7 +10,7 @@ const antalTotal = computed(() => antalVuxna.value + antalBarn.value);
 
 <template>
     <section id="foutputfield" aria-labelledby="foutputfield-heading" class="demo">
-        <h2 id="foutputfield-heading">FOutputField</h2>
+        <component-heading id="foutputfield-heading" :names="['FOutputField']" />
         <p class="demo__description">
             Utdatafält som visar ett beräknat resultat live, kopplat till de
             fält det beror på via <code>for</code>.

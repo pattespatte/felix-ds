@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { FBankgiroTextField } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 
 const bankgiro = ref("");
 </script>
 
 <template>
     <section id="fbankgirotextfield" aria-labelledby="fbankgirotextfield-heading" class="demo">
-        <h2 id="fbankgirotextfield-heading">FBankgiroTextField</h2>
+        <component-heading id="fbankgirotextfield-heading" :names="['FBankgiroTextField']" />
         <p class="demo__description">
             Bankgironummersfält med sifferkontroll – prova <em>999-9996</em> och
             ett värde med fel siffra.

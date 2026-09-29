@@ -8,6 +8,7 @@ import {
     FValidationGroup,
     type GroupValidityEvent,
 } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 
 const namn = ref("");
 const epost = ref("");
@@ -16,7 +17,7 @@ const kontaktuppgifter = ref({} as GroupValidityEvent);
 
 <template>
     <section id="fvalidationform" aria-labelledby="fvalidationform-heading" class="demo">
-        <h2 id="fvalidationform-heading">FValidationForm och FValidationGroup</h2>
+        <component-heading id="fvalidationform-heading" :names="['FValidationForm', 'FValidationGroup']" />
         <p class="demo__description">
             Valideringsformulär som samlar felen i en fellista (FErrorList) när
             man skickar med tomma obligatoriska fält. FValidationGroup

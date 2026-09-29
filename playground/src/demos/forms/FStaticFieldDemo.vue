@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { FStaticField } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 </script>
 
 <template>
     <section id="fstaticfield" aria-labelledby="fstaticfield-heading" class="demo">
-        <h2 id="fstaticfield-heading">FStaticField</h2>
+        <component-heading id="fstaticfield-heading" :names="['FStaticField']" />
         <p class="demo__description">
             Skrivskyddat fält för värden användaren inte ska ändra – etikett och
             värde presenteras som text.

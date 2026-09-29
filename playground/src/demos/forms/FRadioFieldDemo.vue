@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { FFieldset, FRadioField } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 
 const kontakt = ref("");
 </script>
 
 <template>
     <section id="fradiofield" aria-labelledby="fradiofield-heading" class="demo">
-        <h2 id="fradiofield-heading">FRadioField</h2>
+        <component-heading id="fradiofield-heading" :names="['FRadioField']" />
         <p class="demo__description">
             Radioknappar – en av flera alternativ – grupperade i ett fältset.
         </p>

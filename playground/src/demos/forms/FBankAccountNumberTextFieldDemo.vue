@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { FBankAccountNumberTextField } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 
 const bankkonto = ref("");
 </script>
 
 <template>
     <section id="fbankaccountnumbertextfield" aria-labelledby="fbankaccountnumbertextfield-heading" class="demo">
-        <h2 id="fbankaccountnumbertextfield-heading">FBankAccountNumberTextField</h2>
+        <component-heading id="fbankaccountnumbertextfield-heading" :names="['FBankAccountNumberTextField']" />
         <p class="demo__description">
             Kontonummersfält som validerar clearing- och kontonummer.
         </p>

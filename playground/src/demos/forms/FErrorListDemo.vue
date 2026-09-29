@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { FErrorList } from "@fkui/vue";
 import type { ErrorItem } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 
 const errors: ErrorItem[] = [
     { title: "Namn måste anges", id: "ftextfield-epost" },
@@ -11,7 +12,7 @@ const errors: ErrorItem[] = [
 
 <template>
     <section id="ferrorlist" aria-labelledby="ferrorlist-heading" class="demo">
-        <h2 id="ferrorlist-heading">FErrorList</h2>
+        <component-heading id="ferrorlist-heading" :names="['FErrorList']" />
         <p class="demo__description">
             Fellistan används normalt av valideringsformuläret (se ovan), men kan
             också renderas fristående. Rader med element-id blir klickbara

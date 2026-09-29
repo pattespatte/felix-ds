@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { FCheckboxField, FFieldset } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 
 const intressen = ref<string[]>([]);
 </script>
 
 <template>
     <section id="ffieldset" aria-labelledby="ffieldset-heading" class="demo">
-        <h2 id="ffieldset-heading">FFieldset</h2>
+        <component-heading id="ffieldset-heading" :names="['FFieldset']" />
         <p class="demo__description">
             Fältset grupperar sammanhörande fält under en gemensam etikett och
             gör gruppvalidering möjlig.

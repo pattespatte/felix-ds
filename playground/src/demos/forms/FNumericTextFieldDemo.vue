@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { FNumericTextField } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 
 const antal = ref(1000);
 </script>
 
 <template>
     <section id="fnumerictextfield" aria-labelledby="fnumerictextfield-heading" class="demo">
-        <h2 id="fnumerictextfield-heading">FNumericTextField</h2>
+        <component-heading id="fnumerictextfield-heading" :names="['FNumericTextField']" />
         <p class="demo__description">
             Numeriskt fält som formaterar värdet med svenska tusentalsavgränsare
             när fältet lämnas – skriv <em>10000</em> och tryck på Tab så visas

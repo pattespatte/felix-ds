@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { FSelectField } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 
 const ort = ref("");
 </script>
 
 <template>
     <section id="fselectfield" aria-labelledby="fselectfield-heading" class="demo">
-        <h2 id="fselectfield-heading">FSelectField</h2>
+        <component-heading id="fselectfield-heading" :names="['FSelectField']" />
         <p class="demo__description">Rulllista med etikett.</p>
         <f-select-field v-model="ort">
             <template #label> Ort </template>
