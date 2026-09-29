@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { FCrudButton, FCrudDataset, FTextField } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 
 interface Activity {
     id: string;
@@ -16,7 +17,7 @@ const activities = ref<Activity[]>([
 
 <template>
     <section id="fcrudbutton" aria-labelledby="fcrudbutton-heading" class="demo">
-        <h2 id="fcrudbutton-heading">FCrudButton</h2>
+        <component-heading id="fcrudbutton-heading" :names="['FCrudButton']" />
         <p class="demo__description">
             Åtgärdsknapparna ändra och ta bort är avsedda inuti en datamängd
             (FCrudDataset). De öppnar mängdens formulär- respektive

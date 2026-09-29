@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { FLogo } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 </script>
 
 <template>
     <section id="flogo" aria-labelledby="flogo-heading" class="demo">
-        <h2 id="flogo-heading">FLogo</h2>
+        <component-heading id="flogo-heading" :names="['FLogo']" />
         <p class="demo__description">
             Logotypkomponenten visar sin bild via CSS-variablerna
             <code>--f-logo-image-small</code> och <code>--f-logo-image-large</code>.

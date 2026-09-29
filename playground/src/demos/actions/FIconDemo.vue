@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { FIcon } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 
 const icons = [
     { name: "bell", label: "bell" },
@@ -19,7 +20,7 @@ const icons = [
 
 <template>
     <section id="ficon" aria-labelledby="ficon-heading" class="demo">
-        <h2 id="ficon-heading">FIcon</h2>
+        <component-heading id="ficon-heading" :names="['FIcon']" />
         <p class="demo__description">
             Ett urval ur standardikonbiblioteket. Ikonerna är teckensnittsbaserade
             och följer textfärgen i det aktiva temat.

@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { FButton } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 </script>
 
 <template>
     <section id="fbutton" aria-labelledby="fbutton-heading" class="demo">
-        <h2 id="fbutton-heading">FButton</h2>
+        <component-heading id="fbutton-heading" :names="['FButton']" />
         <p class="demo__description">
             Knappar i de tre varianterna – primär för huvudåtgärden, sekundär
             för alternativ och tertiär för lägre prioriterade åtgärder – samt
