@@ -2,6 +2,7 @@
 import { shallowRef } from "vue";
 import { FDate } from "@fkui/date";
 import { FCalendar } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 
 const today = FDate.fromIso(new Date().toISOString().slice(0, 10));
 
@@ -31,7 +32,7 @@ function dayClasses(date: FDate): string[] {
 
 <template>
     <section id="fcalendar" aria-labelledby="fcalendar-heading" class="demo">
-        <h2 id="fcalendar-heading">FCalendar och FCalendarDay</h2>
+        <component-heading id="fcalendar-heading" :names="['FCalendar', 'FCalendarDay']" />
         <p class="demo__description">
             Kalender med egna dagceller (FCalendarDay anpassas via dagslotten):
             vald dag markeras och två exempelhändelser visas. Klicka på en dag

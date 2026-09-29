@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { FDatepickerField } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 
 const datum = ref("");
 </script>
 
 <template>
     <section id="fdatepickerfield" aria-labelledby="fdatepickerfield-heading" class="demo">
-        <h2 id="fdatepickerfield-heading">FDatepickerField</h2>
+        <component-heading id="fdatepickerfield-heading" :names="['FDatepickerField']" />
         <p class="demo__description">
             Datumfält med kalenderpopover. Klicka på kalenderikonen för att öppna
             kalendern och välja ett datum.
