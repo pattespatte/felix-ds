@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { FFixedPane } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 </script>
 
 <template>
     <section id="ffixedpane" aria-labelledby="ffixedpane-heading" class="demo">
-        <h2 id="ffixedpane-heading">FFixedPane</h2>
+        <component-heading id="ffixedpane-heading" :names="['FFixedPane']" />
         <p class="demo__description">
             Fast (oscrollbar) panel vid sidan av en scrollbar innehållsyta.
             Vänster kolumn scrollar inte – höger kolumn rullar.

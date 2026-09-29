@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { FResizePane } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 </script>
 
 <template>
     <section id="fresizepane" aria-labelledby="fresizepane-heading" class="demo">
-        <h2 id="fresizepane-heading">FResizePane</h2>
+        <component-heading id="fresizepane-heading" :names="['FResizePane']" />
         <p class="demo__description">
             Storleksändringsbart område – dra i handtaget mellan ytorna (eller
             fokusera det och använd piltangenter).

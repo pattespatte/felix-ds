@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { useTemplateRef } from "vue";
 import { FTooltip } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 
 const heading = useTemplateRef<HTMLHeadingElement>("tooltip-heading");
 </script>
 
 <template>
     <section id="ftooltip" aria-labelledby="ftooltip-heading" class="demo">
-        <h2 id="ftooltip-heading">FTooltip</h2>
+        <component-heading id="ftooltip-heading" :names="['FTooltip']" />
         <p class="demo__description">
             Tooltip med rubrik och brödtext, fäst vid elementet under.
         </p>

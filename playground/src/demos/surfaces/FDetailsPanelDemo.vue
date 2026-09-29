@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { FButton, FDetailsPanel, FTextField, useDetailsPanel } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 
 interface Activity {
     id: number;
@@ -25,7 +26,7 @@ function openPanel(): void {
 
 <template>
     <section id="fdetailspanel" aria-labelledby="fdetailspanel-heading" class="demo">
-        <h2 id="fdetailspanel-heading">FDetailsPanel</h2>
+        <component-heading id="fdetailspanel-heading" :names="['FDetailsPanel']" />
         <p class="demo__description">
             Detaljpanel som visas som en utfällbar yta. Öppna panelen, ändra
             namnet och spara – stäng med Esc eller stängknappen.

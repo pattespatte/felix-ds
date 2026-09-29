@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { FButton, FExpand } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 
 const expanded = ref(false);
 </script>
 
 <template>
     <section id="fexpand" aria-labelledby="fexpand-heading" class="demo">
-        <h2 id="fexpand-heading">FExpand</h2>
+        <component-heading id="fexpand-heading" :names="['FExpand']" />
         <p class="demo__description">
             Expanderingsområde utan egen knapp – synligheten styrs externt.
         </p>

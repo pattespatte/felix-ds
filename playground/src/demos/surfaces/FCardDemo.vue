@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { FButton, FCard, FModal } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 
 const modalOpen = ref(false);
 </script>
 
 <template>
     <section id="fcard" aria-labelledby="fcard-heading" class="demo">
-        <h2 id="fcard-heading">FCard</h2>
+        <component-heading id="fcard-heading" :names="['FCard']" />
         <p class="demo__description">
             Kort samlar sammanhängande information med rubrik, innehåll och en
             sidfot med åtgärder.

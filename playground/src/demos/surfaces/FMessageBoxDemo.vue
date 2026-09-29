@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { FMessageBox } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 </script>
 
 <template>
     <section id="fmessagebox" aria-labelledby="fmessagebox-heading" class="demo">
-        <h2 id="fmessagebox-heading">FMessageBox</h2>
+        <component-heading id="fmessagebox-heading" :names="['FMessageBox']" />
         <p class="demo__description">
             Meddelanderutor i de fyra typerna – information, bekräftelse,
             varning och fel.

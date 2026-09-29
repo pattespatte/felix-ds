@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { FMinimizablePanel } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 </script>
 
 <template>
     <section id="fminimizablepanel" aria-labelledby="fminimizablepanel-heading" class="demo">
-        <h2 id="fminimizablepanel-heading">FMinimizablePanel</h2>
+        <component-heading id="fminimizablepanel-heading" :names="['FMinimizablePanel']" />
         <p class="demo__description">
             Panel som kan minimeras till en smal list – klicka på pilen i
             panelens huvud.

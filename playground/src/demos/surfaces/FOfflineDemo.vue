@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { FButton, FOffline } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 
 const isOffline = ref(false);
 
@@ -12,7 +13,7 @@ function toggle(): void {
 
 <template>
     <section id="foffline" aria-labelledby="foffline-heading" class="demo">
-        <h2 id="foffline-heading">FOffline</h2>
+        <component-heading id="foffline-heading" :names="['FOffline']" />
         <p class="demo__description">
             Meddelandebanderoll när uppkopplingen försvinner. Demon simulerar
             händelsen (i en riktiga applikation kommer den från webbläsaren,

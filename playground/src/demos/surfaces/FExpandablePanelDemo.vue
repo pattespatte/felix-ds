@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { FExpandablePanel } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 
 const expanderad = ref(false);
 </script>
 
 <template>
     <section id="fexpandablepanel" aria-labelledby="fexpandablepanel-heading" class="demo">
-        <h2 id="fexpandablepanel-heading">FExpandablePanel</h2>
+        <component-heading id="fexpandablepanel-heading" :names="['FExpandablePanel']" />
         <p class="demo__description">
             Expanderbar panel med rubrik och innehåll – klicka för att veckla ut.
         </p>

@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { FExpandableParagraph } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 
 const expanderad = ref(false);
 </script>
 
 <template>
     <section id="fexpandableparagraph" aria-labelledby="fexpandableparagraph-heading" class="demo">
-        <h2 id="fexpandableparagraph-heading">FExpandableParagraph</h2>
+        <component-heading id="fexpandableparagraph-heading" :names="['FExpandableParagraph']" />
         <p class="demo__description">
             Expanderbar paragraf med egen knapp i rubriken.
         </p>
