@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { FButton, FLayoutRightPanel, FLayoutRightPanelService } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 
 const items = [
     { title: "Aktiviteter", text: "Planerade aktiviteter för veckan." },
@@ -23,7 +24,7 @@ function closePanel(): void {
 
 <template>
     <section id="flayoutrightpanel" aria-labelledby="flayoutrightpanel-heading" class="demo">
-        <h2 id="flayoutrightpanel-heading">FLayoutRightPanel</h2>
+        <component-heading id="flayoutrightpanel-heading" :names="['FLayoutRightPanel']" />
         <p class="demo__description">
             Högerpanel som öppnas vid behov – klicka på ett ämne i listan.
         </p>

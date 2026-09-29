@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { FPageLayout } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 </script>
 
 <template>
     <section id="fpagelayout" aria-labelledby="fpagelayout-heading" class="demo">
-        <h2 id="fpagelayout-heading">FPageLayout</h2>
+        <component-heading id="fpagelayout-heading" :names="['FPageLayout']" />
         <p class="demo__description">
             Sidlayout med tre kolumner – sidhuvud, vänster och höger panel,
             innehåll och sidfot.

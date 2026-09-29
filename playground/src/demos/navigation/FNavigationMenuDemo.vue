@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { FNavigationMenu } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 
 const routes = [
     { label: "Att komma åt", route: "/knappar" },
@@ -10,7 +11,7 @@ const routes = [
 
 <template>
     <section id="fnavigationmenu" aria-labelledby="fnavigationmenu-heading" class="demo">
-        <h2 id="fnavigationmenu-heading">FNavigationMenu</h2>
+        <component-heading id="fnavigationmenu-heading" :names="['FNavigationMenu']" />
         <p class="demo__description">
             Navigeringsmeny med länklista – horisontell som standard.
         </p>
