@@ -7,6 +7,7 @@ import {
     FTextField,
     FValidationFormAction,
 } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 
 // FFormModalAction och FValidationFormAction är samma api-enum (re-export):
 // den används i before-submit för att tillåta eller avbryta inskickandet.
@@ -33,7 +34,7 @@ function onSubmit(): void {
 
 <template>
     <section id="fformmodal" aria-labelledby="fformmodal-heading" class="demo">
-        <h2 id="fformmodal-heading">FFormModal, FFormModalAction och FValidationFormAction</h2>
+        <component-heading id="fformmodal-heading" :names="['FFormModal', 'FFormModalAction', 'FValidationFormAction']" />
         <p class="demo__description">
             Formulärmodal med validering. Fälten kontrolleras innan inskick –
             försök spara med tomt namn.

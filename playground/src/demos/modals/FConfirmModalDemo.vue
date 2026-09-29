@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { FButton, FConfirmModal } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 
 const isOpen = ref(false);
 const resultat = ref("");
@@ -17,7 +18,7 @@ function onClose(): void {
 
 <template>
     <section id="fconfirmmodal" aria-labelledby="fconfirmmodal-heading" class="demo">
-        <h2 id="fconfirmmodal-heading">FConfirmModal</h2>
+        <component-heading id="fconfirmmodal-heading" :names="['FConfirmModal']" />
         <p class="demo__description">
             Bekräftelsedialog med automatiska knappar för- och avbryt.
         </p>

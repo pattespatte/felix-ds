@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { FButton, FContextMenu } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 
 const isOpen = ref(false);
 const selected = ref("");
@@ -28,7 +29,7 @@ function onSelect(item: unknown): void {
 
 <template>
     <section id="fcontextmenu" aria-labelledby="fcontextmenu-heading" class="demo">
-        <h2 id="fcontextmenu-heading">FContextMenu</h2>
+        <component-heading id="fcontextmenu-heading" :names="['FContextMenu']" />
         <p class="demo__description">
             Snabbmeny som öppnas vid en ankarpunkt – klicka på knappen.
         </p>

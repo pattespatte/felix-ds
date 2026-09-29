@@ -5,6 +5,7 @@ import {
     type FDialogueTreeQuestion,
     type FDialogueTreeUserProgress,
 } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 
 const tree: FDialogueTreeQuestion = {
     label: "Vad vill du göra?",
@@ -65,7 +66,7 @@ const current = ref<FDialogueTreeUserProgress>({
 
 <template>
     <section id="fdialoguetree" aria-labelledby="fdialoguetree-heading" class="demo">
-        <h2 id="fdialoguetree-heading">FDialogueTree</h2>
+        <component-heading id="fdialoguetree-heading" :names="['FDialogueTree']" />
         <p class="demo__description">
             Frågeträd som lotsar användaren genom val. Komponenten renderar
             valen – aktuell fråga och svaret i sista steget ritar konsumanten

@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { FButton, FModal } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 
 const isOpen = ref(false);
 </script>
 
 <template>
     <section id="fmodal" aria-labelledby="fmodal-heading" class="demo">
-        <h2 id="fmodal-heading">FModal</h2>
+        <component-heading id="fmodal-heading" :names="['FModal']" />
         <p class="demo__description">
             Modal dialog som öppnas från en knapp. Backdrop, z-index och
             fokusHantering styrs av temats tokens.
