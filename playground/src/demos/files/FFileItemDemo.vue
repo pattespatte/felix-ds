@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { FFileItem } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 
 const files = ref([
     { name: "rapport.pdf", mime: "application/pdf" },
@@ -14,7 +15,7 @@ function remove(index: number): void {
 
 <template>
     <section id="ffileitem" aria-labelledby="ffileitem-heading" class="demo">
-        <h2 id="ffileitem-heading">FFileItem</h2>
+        <component-heading id="ffileitem-heading" :names="['FFileItem']" />
         <p class="demo__description">
             Filrader med ikon utifrån filtyp och en åtgärd per fil.
         </p>

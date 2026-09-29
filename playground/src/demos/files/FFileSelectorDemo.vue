@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { FFileSelector } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 
 const senasteFil = ref("");
 const accept = "application/pdf, image/jpeg, image/png";
@@ -12,7 +13,7 @@ function onChange(files: FileList): void {
 
 <template>
     <section id="ffileselector" aria-labelledby="ffileselector-heading" class="demo">
-        <h2 id="ffileselector-heading">FFileSelector</h2>
+        <component-heading id="ffileselector-heading" :names="['FFileSelector']" />
         <p class="demo__description">
             Filväljarknapp som öppnar systemets filval. Välj en fil för att se
             namnet här under.
