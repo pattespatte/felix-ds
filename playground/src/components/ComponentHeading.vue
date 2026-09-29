@@ -28,13 +28,16 @@ function joinNames(names: FkuiComponentName[]): string {
 </script>
 
 <template>
-    <!-- FKUI doc/source links render only in the grundtema profile; in felix
-         the heading is plain text with the id unchanged. The name anchor and
-         its (kod) anchor are kept on one line so the single space between
-         them survives the template compiler's whitespace condensing. -->
+    <!-- FKUI links render only in the grundtema profile; in felix the heading
+         is plain text with the id unchanged. The name anchor and its (kod)
+         anchor are kept on one line so the single space between them survives
+         the template compiler's whitespace condensing. The "anchor" class is
+         FKUI's own link style: the stylesheet resets bare <a> to no
+         underline, so without it the links lose the FKUI-standard look (and
+         the token colour) that must survive both color modes. -->
     <h2 :id="id">
         <template v-if="currentTheme === 'fkui'">
-            <template v-for="(name, index) in names" :key="name"><template v-if="index > 0">{{ index === names.length - 1 ? " och " : ", " }}</template><a :href="FKUI_DOCS_BASE + fkuiComponentLinks[name].docsPath">{{ name }}</a> <a :href="FKUI_SOURCE_BASE + fkuiComponentLinks[name].sourcePath">(kod)</a></template>
+            <template v-for="(name, index) in names" :key="name"><template v-if="index > 0">{{ index === names.length - 1 ? " och " : ", " }}</template><a class="anchor" :href="FKUI_DOCS_BASE + fkuiComponentLinks[name].docsPath">{{ name }}</a> <a class="anchor" :href="FKUI_SOURCE_BASE + fkuiComponentLinks[name].sourcePath">(kod)</a></template>
         </template>
         <template v-else>{{ headingText }}</template>
     </h2>
