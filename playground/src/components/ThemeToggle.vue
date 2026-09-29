@@ -42,6 +42,12 @@ import { applyTheme, currentTheme } from "../theme";
     position: relative;
     display: inline-flex;
     cursor: pointer;
+    // Follows the header text colour, so the segment boundary keeps >= 3:1
+    // against the header background in every theme × color-mode combination
+    // (WCAG 2.2, 1.4.11) – including the checked segment, whose fill token
+    // alone sits at ~1:1 on the grundtema header.
+    border: 1px solid var(--fkds-color-header-text-primary, currentColor);
+    border-radius: 999px;
 }
 
 // Native radio inputs, visually reduced to an invisible cover of their
@@ -68,12 +74,12 @@ import { applyTheme, currentTheme } from "../theme";
     white-space: nowrap;
 }
 
-// The hover background token is pale in both themes, but the header text
-// token is white in FKUI grundtema – pair the hover state with the dark
-// primary text color or contrast drops to ~1.2:1 (WCAG AA needs 4.5:1).
+// Dark translucent overlay instead of a theme token: the header text token
+// stays readable on it in all four theme × color-mode combinations
+// (>= 4.5:1), while navigation-background-hover pairs below AA with
+// text-primary in grundtema dark (~1.7:1).
 .theme-toggle__option:hover .theme-toggle__input:not(:checked) + .theme-toggle__label {
-    background: var(--fkds-color-navigation-background-hover, rgba(0, 0, 0, 0.2));
-    color: var(--fkds-color-text-primary, #1b1e23);
+    background: rgba(0, 0, 0, 0.2);
 }
 
 .theme-toggle__input:checked + .theme-toggle__label {

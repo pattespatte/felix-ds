@@ -67,12 +67,12 @@ const label = computed(() =>
     cursor: pointer;
 }
 
-// Same hover pairing as the theme pill: the hover surface token is pale in
-// both modes while the header text is white in the grundtema, so the label
-// switches to the primary text colour on hover to keep AA contrast.
+// Dark translucent overlay instead of a theme token: the header text token
+// stays readable on it in all four theme × color-mode combinations
+// (>= 4.5:1), while navigation-background-hover pairs below AA with
+// text-primary in grundtema dark (~1.7:1).
 .color-mode-toggle:hover {
-    background: var(--fkds-color-navigation-background-hover, rgba(0, 0, 0, 0.2));
-    color: var(--fkds-color-text-primary, #1b1e23);
+    background: rgba(0, 0, 0, 0.2);
 }
 
 .color-mode-toggle:focus-visible {
