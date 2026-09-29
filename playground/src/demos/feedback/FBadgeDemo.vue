@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { FBadge } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 </script>
 
 <template>
     <section id="fbadge" aria-labelledby="fbadge-heading" class="demo">
-        <h2 id="fbadge-heading">FBadge</h2>
+        <component-heading id="fbadge-heading" :names="['FBadge']" />
         <p class="demo__description">
             Statusbrickor i de fem varianterna.
         </p>

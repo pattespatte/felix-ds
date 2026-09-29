@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { FButton, FProgressbar } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 
 const value = ref(40);
 
@@ -11,7 +12,7 @@ function increase(): void {
 
 <template>
     <section id="fprogressbar" aria-labelledby="fprogressbar-heading" class="demo">
-        <h2 id="fprogressbar-heading">FProgressbar</h2>
+        <component-heading id="fprogressbar-heading" :names="['FProgressbar']" />
         <p class="demo__description">
             Förloppsindikator med känd procent – öka värdet med knappen.
         </p>
