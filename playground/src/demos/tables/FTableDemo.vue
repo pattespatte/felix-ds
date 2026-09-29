@@ -5,6 +5,7 @@ import {
     defineTableColumns,
     useDatasetRef,
 } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 
 interface FruitRow {
     namn: string;
@@ -33,7 +34,7 @@ const sortableAttributes = { namn: "Frukt" };
 
 <template>
     <section id="ftable" aria-labelledby="ftable-heading" class="demo">
-        <h2 id="ftable-heading">FTable</h2>
+        <component-heading id="ftable-heading" :names="['FTable']" />
         <p class="demo__description">
             Tabell med kolumndefinitioner via defineTableColumns –
             kolumntyperna text och valuta – och sortering på kolumnen Frukt

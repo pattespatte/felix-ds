@@ -6,6 +6,7 @@ import {
     defineTableColumns,
     useDatasetRef,
 } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 
 interface GearRow {
     namn: string;
@@ -63,7 +64,7 @@ const rows = useDatasetRef<GearRow>([
 
 <template>
     <section id="fcruddataset" aria-labelledby="fcruddataset-heading" class="demo">
-        <h2 id="fcruddataset-heading">FCrudDataset</h2>
+        <component-heading id="fcruddataset-heading" :names="['FCrudDataset']" />
         <p class="demo__description">
             Datamängd med inbyggd redigering och borttagning – åtgärdsmenyn
             i tabellen öppnar formulärmodalen (Ändra) respektive

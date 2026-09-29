@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { FDataTable, FTableColumn, FTableColumnType } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 
 interface BookingRow {
     id: string;
@@ -20,7 +21,7 @@ const rows: BookingRow[] = [
 
 <template>
     <section id="fdatatable" aria-labelledby="fdatatable-heading" class="demo">
-        <h2 id="fdatatable-heading">FDataTable</h2>
+        <component-heading id="fdatatable-heading" :names="['FDataTable']" />
         <p class="demo__description">
             Kolumner deklareras med FTableColumn i mallen – radrubrik,
             datumkolumn med formatbeskrivning och numerisk kolumn.

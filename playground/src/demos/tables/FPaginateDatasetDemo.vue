@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { FList, FPaginateDataset, FPaginator } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 
 interface MaintenanceItem {
     id: string;
@@ -33,7 +34,7 @@ const items: MaintenanceItem[] = [
 
 <template>
     <section id="fpaginatedataset" aria-labelledby="fpaginatedataset-heading" class="demo">
-        <h2 id="fpaginatedataset-heading">FPaginateDataset</h2>
+        <component-heading id="fpaginatedataset-heading" :names="['FPaginateDataset']" />
         <p class="demo__description">
             Sidindelad datamängd – 20 underhållsåtgärder visas fem i taget
             tillsammans med pagineringen (FPaginator).

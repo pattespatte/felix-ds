@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { FList } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 
 interface DocumentItem {
     id: string;
@@ -27,7 +28,7 @@ const statusText = computed(() =>
 
 <template>
     <section id="flist" aria-labelledby="flist-heading" class="demo">
-        <h2 id="flist-heading">FList</h2>
+        <component-heading id="flist-heading" :names="['FList']" />
         <p class="demo__description">
             Lista med kryssruteval – markera dokumenten du vill hämta.
         </p>

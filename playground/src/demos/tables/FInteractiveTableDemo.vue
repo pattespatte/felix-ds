@@ -7,6 +7,7 @@ import {
     FTableColumn,
     FTableColumnType,
 } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 
 interface ErrandRow {
     id: string;
@@ -45,7 +46,7 @@ const statusText = computed(() => {
 
 <template>
     <section id="finteractivetable" aria-labelledby="finteractivetable-heading" class="demo">
-        <h2 id="finteractivetable-heading">FInteractiveTable</h2>
+        <component-heading id="finteractivetable-heading" :names="['FInteractiveTable']" />
         <p class="demo__description">
             Interaktiv tabell med flerval av rader, sortering på kolumnen
             Ärende samt åtgärdsknappar (FTableButton) i en smal

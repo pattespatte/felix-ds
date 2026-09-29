@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { FList, FSortFilterDataset } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 
 interface FruitItem {
     id: string;
@@ -46,7 +47,7 @@ const sortableAttributes = { namn: "Frukt", ursprung: "Ursprung" };
 
 <template>
     <section id="fsortfilterdataset" aria-labelledby="fsortfilterdataset-heading" class="demo">
-        <h2 id="fsortfilterdataset-heading">FSortFilterDataset</h2>
+        <component-heading id="fsortfilterdataset-heading" :names="['FSortFilterDataset']" />
         <p class="demo__description">
             Sök- och sorteringsbar datamängd – fritextsökningen filtrerar och
             listan kan sorteras på Frukt eller Ursprung. Komponenten ger även

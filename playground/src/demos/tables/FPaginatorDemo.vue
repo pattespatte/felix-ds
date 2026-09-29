@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from "vue";
 import { FPaginator } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 
 const numberOfPages = 7;
 const page = ref(1);
@@ -39,7 +40,7 @@ onBeforeUnmount(() => {
 
 <template>
     <section id="fpaginator" aria-labelledby="fpaginator-heading" class="demo">
-        <h2 id="fpaginator-heading">FPaginator</h2>
+        <component-heading id="fpaginator-heading" :names="['FPaginator']" />
         <p class="demo__description">
             Pagineringen fristående – sidvalet styrs här av komponentens
             egna händelser utanför en datamängd.
