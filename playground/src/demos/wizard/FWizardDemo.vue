@@ -7,6 +7,7 @@ import {
     FWizardStepAction,
     type FWizardValidationCallback,
 } from "@fkui/vue";
+import ComponentHeading from "../../components/ComponentHeading.vue";
 
 const current = ref<string | undefined>(undefined);
 const namn = ref("");
@@ -26,7 +27,7 @@ function onCompleted(): void {
 
 <template>
     <section id="fwizard" aria-labelledby="fwizard-heading" class="demo">
-        <h2 id="fwizard-heading">FWizard, FWizardStep och FWizardStepAction</h2>
+        <component-heading id="fwizard-heading" :names="['FWizard', 'FWizardStep', 'FWizardStepAction']" />
         <p class="demo__description">
             Stegvis flöde i tre steg med validering per steg – fyll i båda
             fälten och gå vidare till granskning och bekräftelse.
