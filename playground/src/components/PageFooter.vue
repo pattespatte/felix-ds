@@ -35,7 +35,7 @@
         </div>
         <div class="page-footer__bottom">
             <p>
-                felix-ds 0.1.0 – privat proof of concept.
+                felix-ds 1.0.0 – proof of concept.
                 <a href="https://github.com/pattespatte/felix-ds">Öppen källkod på GitHub</a>.
             </p>
         </div>
