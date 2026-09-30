@@ -158,6 +158,10 @@ Från Vite:s utvecklingsläge:
 
 - `<style type="text/css">` (8 varningar) – dev-servern injicerar importerad css som style-element. I produktionsbygget länkas css:en via `<link>` i stället, så varningarna försvinner: validera `bun run build` följt av `bun run preview` (eller den uppbyggda sidan), inte dev-serverns DOM.
 
+## Exempel på implementering
+
+- <https://pattespatte.github.io/felix-ds-demo-site/>
+
 ## Licenser
 
 - FKUI-beroendena (`@fkui/vue`, `@fkui/design`, `@fkui/theme-default`, `@fkui/date`, `@fkui/logic`, `@fkui/icon-lib-default`) är MIT-licensierade och används som publika npm-paket.
@@ -329,6 +333,11 @@ From FKUI-rendered DOM:
 From Vite's development mode:
 
 - `<style type="text/css">` (8 warnings) – the dev server injects imported css as style elements. The production build links the css via `<link>` instead, so the warnings disappear: validate `bun run build` followed by `bun run preview` (or the built site), not the dev server's DOM.
+
+## Exemple implementation
+
+- <https://pattespatte.github.io/felix-ds-demo-site/>
+
 
 ## Licenses
 
