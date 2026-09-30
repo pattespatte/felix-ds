@@ -15,21 +15,22 @@
     "src",
     "README.md"
   ],
-  "dependencies": {
-    "@fkui/date": "6.57.1",
-    "@fkui/design": "6.57.1",
-    "@fkui/icon-lib-default": "6.57.1",
-    "@fkui/logic": "6.57.1",
-    "@fkui/theme-default": "6.57.1",
-    "@fkui/vue": "6.57.1",
-    "vue": "^3.5.34"
+  "peerDependencies": {
+    "@fkui/theme-default": ">=6.57.0 <7.0.0"
   },
   "devDependencies": {
+    "@fkui/date": "6.60.0",
+    "@fkui/design": "6.60.0",
+    "@fkui/icon-lib-default": "6.60.0",
+    "@fkui/logic": "6.60.0",
+    "@fkui/theme-default": "6.60.0",
+    "@fkui/vue": "6.60.0",
     "@types/node": "^22.20.3",
     "@vitejs/plugin-vue": "^6.0.9",
     "sass": "^1.104.1",
     "typescript": "~5.9.0",
     "vite": "^8.3.0",
+    "vue": "^3.5.34",
     "vue-tsc": "^3.3.11"
   }
 }
