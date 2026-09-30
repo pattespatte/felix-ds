@@ -16,16 +16,35 @@ Skapa ett Vite-projekt med vue-ts-mallen och lägg till beroendena:
 
 ```bash
 bun add vue vue-router@^4
-bun add @fkui/vue@6.57.1 @fkui/design@6.57.1 @fkui/theme-default@6.57.1 @fkui/date@6.57.1 @fkui/logic@6.57.1 @fkui/icon-lib-default@6.57.1
+bun add @fkui/vue@6.60.0 @fkui/design@6.60.0 @fkui/theme-default@6.60.0 @fkui/date@6.60.0 @fkui/logic@6.60.0 @fkui/icon-lib-default@6.60.0
 bun add -d vite @vitejs/plugin-vue sass typescript vue-tsc @types/node
+```
+
+felix-ds installeras på två sätt – registerversionen är den huvudsakliga:
+
+**Väg A – register (huvudspår).** Paketet publiceras som `@pattespatte/felix-ds` på GitHub Packages med begränsad synlighet. Lägg en `.npmrc` i projektroten med en PAT som har `read:packages` (exakta rader och tokenhantering beskrivs i temarepots släppdokumentation, `docs/release.en.md`):
+
+```ini
+@pattespatte:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${GITHUB_PACKAGES_TOKEN}
+```
+
+```bash
+bun add @pattespatte/felix-ds
+```
+
+**Väg B – git-pin (före 1.0.0 och för låsning mot en specifik commit).** Installerar direkt från det publika repot:
+
+```bash
 bun add felix-ds@github:pattespatte/felix-ds#<commit>
 ```
 
-Tre saker är värda att känna till:
+Fyra saker är värda att känna till:
 
-- **FKUI paket låses exakt.** Alla sex `@fkui/*`-paket pinas till samma exakta version (6.57.1 i skrivande stund), samma version felix-ds byggts och testats mot.
-- **felix-ds konsumeras som git-beroende** så att bygget blir identiskt lokalt och i CI. Peka på en specifik commit, inte en gren.
-- **Git-beroendet innehåller bara `src/`.** Byggprodukten `dist/felix.css` är gitignorad i temarepot och följer därför inte med – konsumera SCSS-källorna under `felix-ds/src/`, vilket ändå är det enda som stödjer mörkt läge (se nästa avsnitt).
+- **FKUI paket låses exakt.** Alla sex `@fkui/*`-paket pinas till samma exakta version, i takt med hur uppströms publicerar dem. felix-ds stödjer `@fkui/theme-default` inom intervallet `>=6.57.0 <7.0.0` (se kompatibilitetsavsnittet i temarepots README) – pinna senaste versionen inom intervallet.
+- **Modulspecificeraren följer paketnamnet.** Väg A ger `@pattespatte/felix-ds/src/...` i `@use` och importvägar, väg B ger `felix-ds/src/...`. I övrigt är guiden identisk mellan vägarna.
+- **Peka på en specifik commit, inte en gren** (väg B), så att bygget blir identiskt lokalt och i CI.
+- **Paketet innehåller bara `src/`.** Byggprodukten `dist/felix.css` följer inte med – konsumera SCSS-källorna under `src/`, vilket ändå är det enda som stödjer mörkt läge (se nästa avsnitt).
 
 I `vite.config.ts` behövs två saker utöver vue-pluginen: en `@`-alias till `./src` och `isCustomElement: (tag) => tag.startsWith("ce-")`, eftersom FKUI registrerar sina egna custom elements (ce-page-layout med flera) i runtime.
 

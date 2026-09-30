@@ -16,16 +16,35 @@ Create a Vite project from the vue-ts template and add the dependencies:
 
 ```bash
 bun add vue vue-router@^4
-bun add @fkui/vue@6.57.1 @fkui/design@6.57.1 @fkui/theme-default@6.57.1 @fkui/date@6.57.1 @fkui/logic@6.57.1 @fkui/icon-lib-default@6.57.1
+bun add @fkui/vue@6.60.0 @fkui/design@6.60.0 @fkui/theme-default@6.60.0 @fkui/date@6.60.0 @fkui/logic@6.60.0 @fkui/icon-lib-default@6.60.0
 bun add -d vite @vitejs/plugin-vue sass typescript vue-tsc @types/node
+```
+
+felix-ds is installed one of two ways – the registry version is the primary path:
+
+**Path A – registry (primary).** The package is published as `@pattespatte/felix-ds` on GitHub Packages with restricted visibility. Put an `.npmrc` in the project root with a PAT that has `read:packages` (exact lines and token handling are described in the theme repo's release documentation, `docs/release.en.md`):
+
+```ini
+@pattespatte:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${GITHUB_PACKAGES_TOKEN}
+```
+
+```bash
+bun add @pattespatte/felix-ds
+```
+
+**Path B – git pin (pre-1.0.0, or for pinning to a specific commit).** Installs straight from the public repo:
+
+```bash
 bun add felix-ds@github:pattespatte/felix-ds#<commit>
 ```
 
-Three things are worth knowing:
+Four things are worth knowing:
 
-- **FKUI packages are pinned exactly.** All six `@fkui/*` packages pin to the same exact version (6.57.1 at the time of writing), the version felix-ds was built and tested against.
-- **felix-ds is consumed as a git dependency** so the build is identical locally and in CI. Point at a specific commit, not a branch.
-- **The git dependency contains only `src/`.** The build artifact `dist/felix.css` is gitignored in the theme repo and therefore not shipped – consume the SCSS sources under `felix-ds/src/`, which is in any case the only entry that supports dark mode (see the next section).
+- **FKUI packages are pinned exactly.** All six `@fkui/*` packages pin to the same exact version, in lockstep with how upstream publishes them. felix-ds supports `@fkui/theme-default` within the range `>=6.57.0 <7.0.0` (see the compatibility section in the theme repo's README) – pin the latest version inside the range.
+- **The module specifier follows the package name.** Path A yields `@pattespatte/felix-ds/src/...` in `@use` and import paths, path B yields `felix-ds/src/...`. Everything else in this guide is identical between the paths.
+- **Point at a specific commit, not a branch** (path B), so the build is identical locally and in CI.
+- **The package contains only `src/`.** The build artifact `dist/felix.css` is not shipped – consume the SCSS sources under `src/`, which is in any case the only entry that supports dark mode (see the next section).
 
 In `vite.config.ts` you need two things beyond the vue plugin: an `@` alias to `./src` and `isCustomElement: (tag) => tag.startsWith("ce-")`, because FKUI registers its own custom elements (ce-page-layout among others) at runtime.
 

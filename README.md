@@ -1,6 +1,6 @@
 # felix-ds
 
-En privat konceptstudie (proof of concept): ett fristående, organisationsneutralt designsystem byggt som ett tunt temalager – designvariabler som CSS-variabler plus inbäddade typsnitt – ovanpå [FKUI:s](https://github.com/Forsakringskassan/designsystem) publika npm-paket. En lokal playground bevisar konceptet genom att visa samtliga 89 komponenter i FKUI:s publika paket (79 Vue-komponenter och 10 SCSS-komponenter) med omedelbar växling mellan FKUI:s grundtema och felix-temat. Inga Vue-wrappers, ingen fork, inga egna komponenter: konsumenten använder FKUI-komponenterna direkt och lägger bara på temat.
+En konceptstudie (proof of concept): ett fristående, organisationsneutralt designsystem byggt som ett tunt temalager – designvariabler som CSS-variabler plus inbäddade typsnitt – ovanpå [FKUI:s](https://github.com/Forsakringskassan/designsystem) publika npm-paket. En lokal playground bevisar konceptet genom att visa samtliga 89 komponenter i FKUI:s publika paket (79 Vue-komponenter och 10 SCSS-komponenter) med omedelbar växling mellan FKUI:s grundtema och felix-temat. Inga Vue-wrappers, ingen fork, inga egna komponenter: konsumenten använder FKUI-komponenterna direkt och lägger bara på temat.
 
 FKUI:s dokumentation med levande komponentdemos finns på [designsystem.forsakringskassan.se](https://designsystem.forsakringskassan.se/).
 
@@ -37,7 +37,7 @@ Planen skriver ut länk till release notes, och majorskiften varnas särskilt. E
 
 ## Arkitektur
 
-Ett enda npm-paket (`private: true`). Playgrounden är en mapp i samma repo.
+Ett enda npm-paket. Playgrounden är en mapp i samma repo.
 
 ```
 felix-ds/
@@ -68,6 +68,29 @@ Playgrounden ligger i FKUI:s applikationsmall (`FLayoutApplicationTemplate` + `F
 - Typografi: Noto Sans för all löptext, Roboto Slab för rubriker och display (h1). Fetstil mappas till vikt 600 – inga 700-vikter bäddas in.
 - Färger, linjetjocklekar (1/2 px) och radier (4/8 px) kommer som råa värden från en profilkälla utanför repot; källans arkitektur återanvänds inte.
 - Fokusmarkering: en enkel 2 px-ring i profilens fokusfärg.
+
+## Installation
+
+Temat konsumeras som ett npm-beroende på två sätt.
+
+**Väg A – register (huvudspår).** Paketet publiceras som `@pattespatte/felix-ds` på GitHub Packages med begränsad synlighet. Det kräver en PAT med `read:packages` och en `.npmrc` i projektroten (släppdokumentationen [docs/release.en.md](docs/release.en.md) har de exakta raderna):
+
+```ini
+@pattespatte:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${GITHUB_PACKAGES_TOKEN}
+```
+
+```bash
+bun add @pattespatte/felix-ds
+```
+
+**Väg B – git-pin.** Installerar direkt från det publika repot, låst mot en exakt commit:
+
+```bash
+bun add felix-ds@github:pattespatte/felix-ds#<commit>
+```
+
+Notera att modulspecificeraren följer paketnamnet: `@pattespatte/felix-ds/src/...` på väg A, `felix-ds/src/...` på väg B. Deklarera `@fkui/theme-default` med egen pinne inom det stödda intervallet – men läs varningen i avsnittet Kompatibilitet innan din egen Sass rör det paketet. En komplett genomgång finns i guiden [Skapa en webbplats med felix-ds](docs/create-a-site.sv.md).
 
 ## Använda temat
 
@@ -178,13 +201,13 @@ Från Vite:s utvecklingsläge:
 
 ## Publiceringspolicy
 
-Paketet hålls `private: true` – ingen publicering till npm sker. Repot publiceras på GitHub och playgrounden byggs och serveras via GitHub Pages, med ägarens uttryckliga godkännande.
+Paketet versioneras och publiceras som `@pattespatte/felix-ds` på GitHub Packages, med begränsad synlighet (installation kräver PAT). Publicering sker uteslutande via ägarens släppdokumentation `docs/release.en.md` – varje släpp passerar den visuella porten (skärmdumpsjämförelser och axe-skanningar) innan det publiceras. Repot publiceras på GitHub och playgrounden byggs och serveras via GitHub Pages, med ägarens uttryckliga godkännande.
 
 ---
 
 # felix-ds (English)
 
-A private proof of concept: a standalone, organisation-neutral design system built as a thin theme layer – design tokens as CSS custom properties plus self-hosted fonts – on top of [FKUI's](https://github.com/Forsakringskassan/designsystem) public npm packages. The concept is proven by a local playground showing all 89 components in FKUI's public packages (79 Vue components and 10 SCSS-only components) with instant switching between the FKUI base theme and the felix theme. No Vue wrappers, no fork, no components of our own – consumers use the FKUI components directly and simply apply the theme.
+A proof of concept: a standalone, organisation-neutral design system built as a thin theme layer – design tokens as CSS custom properties plus self-hosted fonts – on top of [FKUI's](https://github.com/Forsakringskassan/designsystem) public npm packages. The concept is proven by a local playground showing all 89 components in FKUI's public packages (79 Vue components and 10 SCSS-only components) with instant switching between the FKUI base theme and the felix theme. No Vue wrappers, no fork, no components of our own – consumers use the FKUI components directly and simply apply the theme.
 
 FKUI's documentation with live component demos is available at [designsystem.forsakringskassan.se](https://designsystem.forsakringskassan.se/).
 
@@ -221,7 +244,7 @@ The plan prints a link to the release notes, and major bumps are called out. Aft
 
 ## Architecture
 
-A single npm package (`private: true`). The playground is a folder in the same repo.
+A single npm package. The playground is a folder in the same repo.
 
 ```
 felix-ds/
@@ -252,6 +275,29 @@ The playground sits in FKUI's application template (`FLayoutApplicationTemplate`
 - Typography: Noto Sans for all body text, Roboto Slab for headings and display (h1). Bold maps to weight 600 – no 700 weights are bundled.
 - Colours, border widths (1/2 px) and radii (4/8 px) are taken as raw values from a profile source outside this repo; its architecture is not reused.
 - Focus indicator: a single 2 px ring in the profile's focus colour.
+
+## Installation
+
+The theme is consumed as an npm dependency one of two ways.
+
+**Path A – registry (primary).** The package is published as `@pattespatte/felix-ds` on GitHub Packages with restricted visibility. It requires a PAT with `read:packages` and an `.npmrc` in the project root (the release runbook [docs/release.en.md](docs/release.en.md) has the exact lines):
+
+```ini
+@pattespatte:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${GITHUB_PACKAGES_TOKEN}
+```
+
+```bash
+bun add @pattespatte/felix-ds
+```
+
+**Path B – git pin.** Installs straight from the public repo, locked to an exact commit:
+
+```bash
+bun add felix-ds@github:pattespatte/felix-ds#<commit>
+```
+
+Note that the module specifier follows the package name: `@pattespatte/felix-ds/src/...` on path A, `felix-ds/src/...` on path B. Declare `@fkui/theme-default` with your own pin inside the supported range – but read the warning in the Compatibility section before your own Sass touches that package. A complete walkthrough is in the guide [Building a site with felix-ds](docs/create-a-site.en.md).
 
 ## Using the theme
 
@@ -363,4 +409,4 @@ From Vite's development mode:
 
 ## Publishing policy
 
-The package stays `private: true` – nothing is published to npm. The repo is published on GitHub and the playground is built and served via GitHub Pages, with the owner's explicit approval.
+The package is versioned and published as `@pattespatte/felix-ds` on GitHub Packages, with restricted visibility (installs require a PAT). Publishing happens exclusively through the owner's release runbook `docs/release.en.md` – every release passes the visual gate (screenshot comparisons and axe scans) before it is published. The repo is published on GitHub and the playground is built and served via GitHub Pages, with the owner's explicit approval.
