@@ -73,7 +73,7 @@ Playgrounden ligger i FKUI:s applikationsmall (`FLayoutApplicationTemplate` + `F
 
 Temat konsumeras som ett npm-beroende på två sätt.
 
-**Väg A – register (huvudspår).** Paketet publiceras som `@pattespatte/felix-ds` på GitHub Packages med begränsad synlighet. Det kräver en PAT med `read:packages` och en `.npmrc` i projektroten (släppdokumentationen [docs/release.en.md](docs/release.en.md) har de exakta raderna):
+**Väg A – register (huvudspår).** Paketet publiceras som `@pattespatte/felix-ds` på GitHub Packages med begränsad synlighet. Det kräver en PAT med `read:packages` och en `.npmrc` i projektroten (släppdokumentationen [docs/release.en.md](https://github.com/pattespatte/felix-ds/blob/main/docs/release.en.md) har de exakta raderna):
 
 ```ini
 @pattespatte:registry=https://npm.pkg.github.com
@@ -90,7 +90,7 @@ bun add @pattespatte/felix-ds
 bun add felix-ds@github:pattespatte/felix-ds#<commit>
 ```
 
-Notera att modulspecificeraren följer paketnamnet: `@pattespatte/felix-ds/src/...` på väg A, `felix-ds/src/...` på väg B. Deklarera `@fkui/theme-default` med egen pinne inom det stödda intervallet – men läs varningen i avsnittet Kompatibilitet innan din egen Sass rör det paketet. En komplett genomgång finns i guiden [Skapa en webbplats med felix-ds](docs/create-a-site.sv.md).
+Notera att modulspecificeraren följer paketnamnet: `@pattespatte/felix-ds/src/...` på väg A, `felix-ds/src/...` på väg B. Deklarera `@fkui/theme-default` med egen pinne inom det stödda intervallet – men läs varningen i avsnittet Kompatibilitet innan din egen Sass rör det paketet. En komplett genomgång finns i guiden [Skapa en webbplats med felix-ds](https://github.com/pattespatte/felix-ds/blob/main/docs/create-a-site.sv.md).
 
 ## Använda temat
 
@@ -154,7 +154,7 @@ import "@fkui/design/lib/fkui.css";
 import "@fkui/design/lib/fonts.css";
 ```
 
-En komplett genomgång – projektsetup, temaintegration, mörkt läge, ikoner, formulär, sök och prerendering – finns i guiden [Skapa en webbplats med felix-ds](docs/create-a-site.sv.md).
+En komplett genomgång – projektsetup, temaintegration, mörkt läge, ikoner, formulär, sök och prerendering – finns i guiden [Skapa en webbplats med felix-ds](https://github.com/pattespatte/felix-ds/blob/main/docs/create-a-site.sv.md).
 
 ## Kompatibilitet
 
@@ -280,7 +280,7 @@ The playground sits in FKUI's application template (`FLayoutApplicationTemplate`
 
 The theme is consumed as an npm dependency one of two ways.
 
-**Path A – registry (primary).** The package is published as `@pattespatte/felix-ds` on GitHub Packages with restricted visibility. It requires a PAT with `read:packages` and an `.npmrc` in the project root (the release runbook [docs/release.en.md](docs/release.en.md) has the exact lines):
+**Path A – registry (primary).** The package is published as `@pattespatte/felix-ds` on GitHub Packages with restricted visibility. It requires a PAT with `read:packages` and an `.npmrc` in the project root (the release runbook [docs/release.en.md](https://github.com/pattespatte/felix-ds/blob/main/docs/release.en.md) has the exact lines):
 
 ```ini
 @pattespatte:registry=https://npm.pkg.github.com
@@ -297,7 +297,7 @@ bun add @pattespatte/felix-ds
 bun add felix-ds@github:pattespatte/felix-ds#<commit>
 ```
 
-Note that the module specifier follows the package name: `@pattespatte/felix-ds/src/...` on path A, `felix-ds/src/...` on path B. Declare `@fkui/theme-default` with your own pin inside the supported range – but read the warning in the Compatibility section before your own Sass touches that package. A complete walkthrough is in the guide [Building a site with felix-ds](docs/create-a-site.en.md).
+Note that the module specifier follows the package name: `@pattespatte/felix-ds/src/...` on path A, `felix-ds/src/...` on path B. Declare `@fkui/theme-default` with your own pin inside the supported range – but read the warning in the Compatibility section before your own Sass touches that package. A complete walkthrough is in the guide [Building a site with felix-ds](https://github.com/pattespatte/felix-ds/blob/main/docs/create-a-site.en.md).
 
 ## Using the theme
 
@@ -361,7 +361,7 @@ import "@fkui/design/lib/fkui.css";
 import "@fkui/design/lib/fonts.css";
 ```
 
-A complete walkthrough – project setup, theme integration, dark mode, icons, forms, search and prerendering – is in the guide [Building a site with felix-ds](docs/create-a-site.en.md).
+A complete walkthrough – project setup, theme integration, dark mode, icons, forms, search and prerendering – is in the guide [Building a site with felix-ds](https://github.com/pattespatte/felix-ds/blob/main/docs/create-a-site.en.md).
 
 ## Compatibility
 
