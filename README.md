@@ -133,6 +133,14 @@ import "@fkui/design/lib/fonts.css";
 
 En komplett genomgång – projektsetup, temaintegration, mörkt läge, ikoner, formulär, sök och prerendering – finns i guiden [Skapa en webbplats med felix-ds](docs/create-a-site.sv.md).
 
+## Kompatibilitet
+
+Temat deklarerar `@fkui/theme-default` som enda peer-beroende, med det stödda intervallet `>=6.57.0 <7.0.0`. Intervallet är en garanti för temalagrets räkning: det som testas och stöds är `@fkui/theme-default`s Sass-tokenyta – de variabler temats ingång laddar konfigurerat (`@use` i `src/theme/_default.scss`) – inte FKUI-komponenternas interna. Övriga `@fkui/*`-paket (`@fkui/vue`, `@fkui/design` med flera) ingår inte i kontraktet och låses fristående av konsumenten.
+
+Testade ändpunkter i intervallet: 6.57.0 (undre gräns), 6.59.0 (demoplatsen) och 6.60.0 (playgroundens utvecklingsstift, som löper mot toppen av intervallet vid varje uppgradering).
+
+Versionsvalet gör konsumenten själv: deklarera gärna `@fkui/theme-default` med egen exakt version i `package.json` – men låt aldrig din egen Sass ladda eller konfigurera paketet. Temats ingång laddar det redan konfigurerat, och en andra konfigurerad `@use`-laddning krockar och bryter kompileringen.
+
 ## Komponenter i playgrounden
 
 Playgrounden täcker samtliga 89 komponenter i FKUI:s publika paket – 79 Vue-komponenter och 10 SCSS-komponenter – enligt komponentrapporten för installerad version. Registret över vad som finns är strukturellt i stället för en handskriven lista: varje komponent har en demofil `playground/src/demos/<kategori>/<Komponent>Demo.vue` (subkomponenter och enums demonstreras i sin förälders demo) och länkas som ankare från `playground/src/navigation.ts`. Startvyns avsnitt ”Komponenter i playgrounden” listar kategorierna direkt från navigation.ts, så listan på sidan kan aldrig skilja sig från menyn.
@@ -308,6 +316,14 @@ import "@fkui/design/lib/fonts.css";
 ```
 
 A complete walkthrough – project setup, theme integration, dark mode, icons, forms, search and prerendering – is in the guide [Building a site with felix-ds](docs/create-a-site.en.md).
+
+## Compatibility
+
+The theme declares `@fkui/theme-default` as its only peer dependency, with the supported range `>=6.57.0 <7.0.0`. That range is a promise about the theme layer specifically: what is tested and supported is the `@fkui/theme-default` Sass token surface – the variables the theme entry loads configured (`@use` in `src/theme/_default.scss`) – not FKUI component internals. The other `@fkui/*` packages (`@fkui/vue`, `@fkui/design` and the rest) are not part of the contract and are pinned independently by the consumer.
+
+Tested endpoints within the range: 6.57.0 (lower bound), 6.59.0 (the demo site) and 6.60.0 (the playground's dev pins, which continuously exercise the top of the range as they are upgraded).
+
+The version choice belongs to the consumer: declaring `@fkui/theme-default` with your own pinned version in `package.json` is encouraged – but never let your own Sass load or configure the package. The theme entry already loads it configured, and a second configured `@use` load collides and breaks compilation.
 
 ## Components in the playground
 
