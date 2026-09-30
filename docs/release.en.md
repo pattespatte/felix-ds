@@ -75,9 +75,13 @@ Run through this list before touching a tag:
 ## 2. Release steps
 
 ```bash
-# 1. Regenerate the changelog from conventional commits and commit it
+# 1. Bump `version` in package.json to X.Y.Z and regenerate the changelog
+#    from conventional commits; commit both
+#    (omitting the version bump makes npm publish fail with
+#    "409 Conflict - Cannot publish over existing version")
+echo '"version": "X.Y.Z"' # reminder — edit package.json, then:
 bun run changelog
-git add CHANGELOG.md
+git add package.json CHANGELOG.md
 git commit -m "chore(release): prepare vX.Y.Z"
 
 # 2. Annotated tag (semver; the contract starts at 1.0.0)

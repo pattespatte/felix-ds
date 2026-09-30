@@ -1,6 +1,6 @@
 {
   "name": "@pattespatte/felix-ds",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "description": "A thin, organisation-neutral theme layer (CSS custom properties + self-hosted fonts) on top of FKUI's public npm packages.",
   "repository": {
