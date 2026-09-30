@@ -42,18 +42,35 @@ Run through this list before touching a tag:
    button: every pixel change must be explainable.
 5. **Linux baselines for CI.** The release workflow runs `bun run
    test:visual` on ubuntu-latest, which needs `-linux` suffixed baselines.
-   Regenerate them with the official Playwright image whenever the darwin
-   baselines changed (the image version must match the `playwright` npm
-   version — check with `bunx playwright --version`):
+   Regenerate them whenever the darwin baselines changed, via the repo's
+   **Generate linux visual baselines** workflow (no docker needed locally):
 
-   ```bash
-   docker run --rm -v "$PWD:$PWD" -w "$PWD" mcr.microsoft.com/playwright:v1.63.0-noble bunx playwright test visual.spec.ts --update-snapshots
-   ```
+   1. GitHub → Actions → *Generate linux visual baselines* → **Run workflow**
+      on `main` (about 4 minutes; it runs `--update-snapshots` on an ubuntu
+      runner and uploads the snapshot folder as the `linux-baselines`
+      artifact). Triggering it is also possible from a terminal:
 
-   Commit the linux PNGs together with the darwin ones. (Both sets live side
-   by side; Playwright picks the suffix matching the runner platform. The
-   `noble` variant matches GitHub's `ubuntu-latest` (24.04) — use the image
-   family that corresponds to the workflow runner when GitHub bumps it.)
+      ```bash
+      gh workflow run generate-linux-baselines.yml --repo pattespatte/felix-ds --ref main
+      gh run watch --repo pattespatte/felix-ds   # optional, live view
+      ```
+
+   2. Download the artifact and copy **only** the `*-linux.png` files into
+      `e2e/visual.spec.ts-snapshots/` (it also contains the darwin set –
+      ignore those):
+
+      ```bash
+      gh run download --repo pattespatte/felix-ds -n linux-baselines -D /tmp/linux-baselines
+      cp /tmp/linux-baselines/e2e/visual.spec.ts-snapshots/*-linux.png e2e/visual.spec.ts-snapshots/
+      ls e2e/visual.spec.ts-snapshots/*-linux.png | wc -l   # expect 36
+      ```
+
+   3. Run `bun run test:visual` locally (confirms the darwin set still passes
+      side by side) and commit the linux PNGs together with the darwin ones.
+      Playwright picks the suffix matching the runner platform at test time.
+
+   A missing linux set fails the release gate with "snapshot doesn't exist …
+   `-chromium-linux.png`" — that is the gate doing its job; don't bypass it.
 
 ## 2. Release steps
 
