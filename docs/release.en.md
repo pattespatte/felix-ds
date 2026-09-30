@@ -61,7 +61,7 @@ Run through this list before touching a tag:
 
       ```bash
       gh run download --repo pattespatte/felix-ds -n linux-baselines -D /tmp/linux-baselines
-      cp /tmp/linux-baselines/e2e/visual.spec.ts-snapshots/*-linux.png e2e/visual.spec.ts-snapshots/
+      cp /tmp/linux-baselines/*-linux.png e2e/visual.spec.ts-snapshots/
       ls e2e/visual.spec.ts-snapshots/*-linux.png | wc -l   # expect 36
       ```
 

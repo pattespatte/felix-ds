@@ -24,6 +24,15 @@ jobs:
       - run: bunx vue-tsc --noEmit
       - run: bunx playwright install --with-deps chromium
       - run: bun run test:visual
+      - name: Upload gate report on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-gate-failure
+          path: |
+            test-results
+            playwright-report
+          retention-days: 14
       - name: Authenticate npm client against GitHub Packages
         run: |
           echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> ~/.npmrc
