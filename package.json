@@ -1,9 +1,19 @@
 {
-  "name": "felix-ds",
-  "version": "0.1.0",
-  "private": true,
+  "name": "@pattespatte/felix-ds",
+  "version": "1.0.0",
   "type": "module",
-  "description": "Private proof of concept: a thin theme layer (CSS custom properties + self-hosted fonts) on top of FKUI's public npm packages.",
+  "description": "A thin, organisation-neutral theme layer (CSS custom properties + self-hosted fonts) on top of FKUI's public npm packages.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pattespatte/felix-ds.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pattespatte/felix-ds/issues"
+  },
+  "homepage": "https://pattespatte.github.io/felix-ds/",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "scripts": {
     "dev": "vite --config playground/vite.config.ts",
     "build": "vite build --config playground/vite.config.ts",
