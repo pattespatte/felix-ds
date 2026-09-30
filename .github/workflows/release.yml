@@ -10,7 +10,8 @@ on:
     tags: ["v*"]
 
 permissions:
-  contents: read
+  # contents:write is required by the `gh release create` step at the end.
+  contents: write
   packages: write
 
 jobs:
@@ -36,7 +37,9 @@ jobs:
       - name: Authenticate npm client against GitHub Packages
         run: |
           echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> ~/.npmrc
-      - run: bun publish
+      # npm, not bun: bun 1.4.x does not pick up registry auth from ~/.npmrc
+      # for GitHub Packages ("missing authentication"); npm reads it fine.
+      - run: npm publish
       - name: Create GitHub Release
         run: gh release create "${{ github.ref_name }}" --generate-notes
         env:
