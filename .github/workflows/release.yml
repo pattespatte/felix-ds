@@ -1,0 +1,34 @@
+name: Release to GitHub Packages
+
+# Triggered by the owner pushing a vX.Y.Z tag, as described in
+# docs/release.en.md. Builds, type-checks and runs the visual release gate
+# (against linux baselines) before publishing the package and creating the
+# GitHub Release.
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install --frozen-lockfile
+      - run: bun run build
+      - run: bunx vue-tsc --noEmit
+      - run: bunx playwright install --with-deps chromium
+      - run: bun run test:visual
+      - name: Authenticate npm client against GitHub Packages
+        run: |
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> ~/.npmrc
+      - run: bun publish
+      - name: Create GitHub Release
+        run: gh release create "${{ github.ref_name }}" --generate-notes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
