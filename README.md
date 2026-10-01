@@ -1,6 +1,6 @@
 # felix-ds
 
-En konceptstudie (proof of concept): ett fristående, organisationsneutralt designsystem byggt som ett tunt temalager – designvariabler som CSS-variabler plus inbäddade typsnitt – ovanpå [FKUI:s](https://github.com/Forsakringskassan/designsystem) publika npm-paket. En lokal playground bevisar konceptet genom att visa samtliga 89 komponenter i FKUI:s publika paket (79 Vue-komponenter och 10 SCSS-komponenter) med omedelbar växling mellan FKUI:s grundtema och felix-temat. Inga Vue-wrappers, ingen fork, inga egna komponenter: konsumenten använder FKUI-komponenterna direkt och lägger bara på temat.
+En konceptstudie (proof of concept): ett fristående, organisationsneutralt designsystem byggt som ett tunt temalager – designvariabler som CSS-variabler plus inbäddade typsnitt – ovanpå [FKUI:s](https://github.com/Forsakringskassan/designsystem) publika npm-paket. En lokal playground bevisar konceptet: den visar samtliga 89 komponenter i FKUI:s publika paket (79 Vue-komponenter och 10 SCSS-komponenter) med omedelbar växling mellan FKUI:s grundtema och felix-temat. Inga Vue-wrappers, ingen fork, inga egna komponenter: konsumenten använder FKUI-komponenterna direkt och lägger bara på temat.
 
 FKUI:s dokumentation med levande komponentdemos finns på [designsystem.forsakringskassan.se](https://designsystem.forsakringskassan.se/).
 
@@ -33,7 +33,7 @@ Alla `@fkui/*`-paket låses till exakta versioner och uppgraderas i takt – sam
 | `bun fkui upgrade` | Skriva nya exakta versioner i `package.json` och köra `bun install` |
 | `bun fkui upgrade 6.58.0` | Som ovan, men till en vald version i stället för senaste |
 
-Planen skriver ut länk till release notes, och majorskiften varnas särskilt. Efter en genomförd uppgradering: kör `bun run build`, `bunx vue-tsc --noEmit` och `bun run build:theme`, och gör en visuell runda i playgrounden.
+Planen skriver ut länk till release notes och varnar särskilt för majorskiften. Efter en genomförd uppgradering: kör `bun run build`, `bunx vue-tsc --noEmit` och `bun run build:theme`, och gör en visuell runda i playgrounden.
 
 ## Arkitektur
 
@@ -73,7 +73,7 @@ Playgrounden ligger i FKUI:s applikationsmall (`FLayoutApplicationTemplate` + `F
 
 Temat konsumeras som ett npm-beroende på två sätt.
 
-**Väg A – register (huvudspår).** Paketet publiceras som `@pattespatte/felix-ds` på GitHub Packages med begränsad synlighet. Det kräver en PAT med `read:packages` och en `.npmrc` i projektroten (släppdokumentationen [docs/release.en.md](https://github.com/pattespatte/felix-ds/blob/main/docs/release.en.md) har de exakta raderna):
+**Väg A – register (huvudspår).** Paketet publiceras som `@pattespatte/felix-ds` på GitHub Packages med begränsad synlighet. Det kräver en PAT med `read:packages` och en `.npmrc` i projektroten (utgivningsdokumentationen [docs/release.sv.md](https://github.com/pattespatte/felix-ds/blob/main/docs/release.sv.md) har de exakta raderna):
 
 ```ini
 @pattespatte:registry=https://npm.pkg.github.com
@@ -90,7 +90,7 @@ bun add @pattespatte/felix-ds
 bun add felix-ds@github:pattespatte/felix-ds#<commit>
 ```
 
-Notera att modulspecificeraren följer paketnamnet: `@pattespatte/felix-ds/src/...` på väg A, `felix-ds/src/...` på väg B. Deklarera `@fkui/theme-default` med egen pinne inom det stödda intervallet – men läs varningen i avsnittet Kompatibilitet innan din egen Sass rör det paketet. En komplett genomgång finns i guiden [Skapa en webbplats med felix-ds](https://github.com/pattespatte/felix-ds/blob/main/docs/create-a-site.sv.md).
+Notera att modulspecificeraren följer paketnamnet: `@pattespatte/felix-ds/src/...` på väg A, `felix-ds/src/...` på väg B. Deklarera `@fkui/theme-default` med en egen låst version inom det stödda intervallet – men läs varningen i avsnittet Kompatibilitet innan din egen Sass rör det paketet. En komplett genomgång finns i guiden [Skapa en webbplats med felix-ds](https://github.com/pattespatte/felix-ds/blob/main/docs/create-a-site.sv.md).
 
 ## Använda temat
 
@@ -101,7 +101,7 @@ Temat importeras som SCSS (paketet pekar ut `src/index.scss` via nyckeln `sass`)
 @use "felix-ds/src/index";
 ```
 
-Eller avgränsa temat till en klass när du vill kunna växla i körtiden (så playgrounden gör):
+Eller avgränsa temat till en klass när du vill kunna växla tema i körtid (så playgrounden gör):
 
 ```scss
 @use "felix-ds/src/theme/default" as felix with ($global: false);
@@ -117,11 +117,11 @@ html.theme-felix {
 
 ### Mörkt läge
 
-Temat har även en mörk profil. Standardemissionen (`src/index.scss`) är fortsätt ljus – mörkt läge är opt-in via mixins:
+Temat har även en mörk profil. Det som `src/index.scss` skriver ut är fortfarande bara det ljusa temat – mörkt läge slås på med mixins:
 
 - `base` / `light` – uppströms ljusa tema utan respektive med felix-variablerna.
 - `base-dark` / `dark` – samma par på mörka sidan (`base-dark` är FKUI:s egna mörka tema).
-- `auto` – båda composeade temana bakom `prefers-color-scheme`-medieförfrågningar, för konsumenter som vill följa systeminställningen.
+- `auto` – båda de sammansatta temana bakom `prefers-color-scheme`-mediefrågor, för konsumenter som vill följa systeminställningen.
 
 Klass- eller attributbaserad växling (inga mediefrågor, sidan styr själv):
 
@@ -145,7 +145,7 @@ html.theme-felix[data-color-mode="dark"] {
 }
 ```
 
-Varje scope emitterar den kompletta tokensytan och specificitetssteget (`:root` < `html.theme-felix` / `html[data-color-mode="dark"]` < kombinerad selector) löser alla kombinationer utan `!important`. Mixinerna deklarerar även `color-scheme` per läge, så nativa kontroller och rullistor följer med. I playgrounden gör färglägesknappen (sol/måne) uppe till höger exakt detta: den följer systeminställningen tills användaren väljer, och valet persistas då i localStorage.
+Varje scope emitterar den kompletta tokensytan och specificitetssteget (`:root` < `html.theme-felix` / `html[data-color-mode="dark"]` < kombinerad selector) löser alla kombinationer utan `!important`. Mixinerna deklarerar även `color-scheme` per läge, så nativa kontroller och rullistor följer med. I playgrounden gör färglägesknappen (sol/måne) uppe till höger exakt detta: den följer systeminställningen tills användaren väljer, och valet sparas då i localStorage.
 
 Konsumentens ingångspunkt laddar dessutom FKUI:s komponent-CSS:
 
@@ -158,9 +158,9 @@ En komplett genomgång – projektsetup, temaintegration, mörkt läge, ikoner, 
 
 ## Kompatibilitet
 
-Temat deklarerar `@fkui/theme-default` som enda peer-beroende, med det stödda intervallet `>=6.57.0 <7.0.0`. Intervallet är en garanti för temalagrets räkning: det som testas och stöds är `@fkui/theme-default`s Sass-tokenyta – de variabler temats ingång laddar konfigurerat (`@use` i `src/theme/_default.scss`) – inte FKUI-komponenternas interna. Övriga `@fkui/*`-paket (`@fkui/vue`, `@fkui/design` med flera) ingår inte i kontraktet och låses fristående av konsumenten.
+Temat deklarerar `@fkui/theme-default` som enda peer-beroende, med det stödda intervallet `>=6.57.0 <7.0.0`. Intervallet är en garanti för temalagrets räkning: det som testas och stöds är `@fkui/theme-default`s Sass-tokenyta – de variabler temats ingång laddar konfigurerat (`@use` i `src/theme/_default.scss`) – inte det som är internt i FKUI-komponenterna. Övriga `@fkui/*`-paket (`@fkui/vue`, `@fkui/design` med flera) ingår inte i kontraktet och låses fristående av konsumenten.
 
-Testade ändpunkter i intervallet: 6.57.0 (undre gräns), 6.59.0 (demoplatsen) och 6.60.0 (playgroundens utvecklingsstift, som löper mot toppen av intervallet vid varje uppgradering).
+Testade ändpunkter i intervallet: 6.57.0 (undre gräns), 6.59.0 (demoplatsen) och 6.60.0 (playgroundens låsta utvecklingsversioner, som vid varje uppgradering ligger på intervallets topp).
 
 Versionsvalet gör konsumenten själv: deklarera gärna `@fkui/theme-default` med egen exakt version i `package.json` – men låt aldrig din egen Sass ladda eller konfigurera paketet. Temats ingång laddar det redan konfigurerat, och en andra konfigurerad `@use`-laddning krockar och bryter kompileringen.
 
@@ -201,13 +201,13 @@ Från Vite:s utvecklingsläge:
 
 ## Publiceringspolicy
 
-Paketet versioneras och publiceras som `@pattespatte/felix-ds` på GitHub Packages, med begränsad synlighet (installation kräver PAT). Publicering sker uteslutande via ägarens släppdokumentation `docs/release.en.md` – varje släpp passerar den visuella porten (skärmdumpsjämförelser och axe-skanningar) innan det publiceras. Repot publiceras på GitHub och playgrounden byggs och serveras via GitHub Pages, med ägarens uttryckliga godkännande.
+Paketet versioneras och publiceras som `@pattespatte/felix-ds` på GitHub Packages, med begränsad synlighet (installation kräver PAT). Publicering sker uteslutande via ägarens utgivningsdokumentation [docs/release.sv.md](https://github.com/pattespatte/felix-ds/blob/main/docs/release.sv.md) – varje utgivning passerar den visuella porten (skärmdumpsjämförelser och axe-skanningar) innan det publiceras. Repot publiceras på GitHub och playgrounden byggs och serveras via GitHub Pages, med ägarens uttryckliga godkännande.
 
 ---
 
 # felix-ds (English)
 
-A proof of concept: a standalone, organisation-neutral design system built as a thin theme layer – design tokens as CSS custom properties plus self-hosted fonts – on top of [FKUI's](https://github.com/Forsakringskassan/designsystem) public npm packages. The concept is proven by a local playground showing all 89 components in FKUI's public packages (79 Vue components and 10 SCSS-only components) with instant switching between the FKUI base theme and the felix theme. No Vue wrappers, no fork, no components of our own – consumers use the FKUI components directly and simply apply the theme.
+A proof of concept: a standalone, organisation-neutral design system built as a thin theme layer – design tokens as CSS custom properties plus self-hosted fonts – on top of [FKUI's](https://github.com/Forsakringskassan/designsystem) public npm packages. The concept is proven by a local playground showing all 89 components in FKUI's public packages (79 Vue components and 10 SCSS-only components) with instant switching between the FKUI base theme and the felix theme. No Vue wrappers, no fork, no components of our own – consumers use the FKUI components directly and apply the theme.
 
 FKUI's documentation with live component demos is available at [designsystem.forsakringskassan.se](https://designsystem.forsakringskassan.se/).
 
@@ -396,10 +396,9 @@ From Vite's development mode:
 
 - `<style type="text/css">` (8 warnings) – the dev server injects imported css as style elements. The production build links the css via `<link>` instead, so the warnings disappear: validate `bun run build` followed by `bun run preview` (or the built site), not the dev server's DOM.
 
-## Exemple implementation
+## Example implementation
 
 - <https://pattespatte.github.io/felix-ds-demo-site/>
-
 
 ## Licenses
 
@@ -409,4 +408,4 @@ From Vite's development mode:
 
 ## Publishing policy
 
-The package is versioned and published as `@pattespatte/felix-ds` on GitHub Packages, with restricted visibility (installs require a PAT). Publishing happens exclusively through the owner's release runbook `docs/release.en.md` – every release passes the visual gate (screenshot comparisons and axe scans) before it is published. The repo is published on GitHub and the playground is built and served via GitHub Pages, with the owner's explicit approval.
+The package is versioned and published as `@pattespatte/felix-ds` on GitHub Packages, with restricted visibility (installs require a PAT). Publishing happens exclusively through the owner's release runbook [docs/release.en.md](https://github.com/pattespatte/felix-ds/blob/main/docs/release.en.md) – every release passes the visual gate (screenshot comparisons and axe scans) before it is published. The repo is published on GitHub and the playground is built and served via GitHub Pages, with the owner's explicit approval.
