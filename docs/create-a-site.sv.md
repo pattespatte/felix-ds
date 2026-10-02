@@ -22,14 +22,14 @@ bun add -d vite @vitejs/plugin-vue sass typescript vue-tsc @types/node
 
 felix-ds installeras på två sätt – registerversionen är den huvudsakliga:
 
-**Väg A – register (huvudspår).** Paketet publiceras som `@pattespatte/felix-ds` på GitHub Packages med begränsad synlighet. Lägg en `.npmrc` i projektroten med en PAT som har `read:packages` (exakta rader och tokenhantering beskrivs i temarepots släppdokumentation, `docs/release.en.md`):
-
-```ini
-@pattespatte:registry=https://npm.pkg.github.com
-//npm.pkg.github.com/:_authToken=${GITHUB_PACKAGES_TOKEN}
-```
+**Väg A – register (huvudspår).** Paketet publiceras som `@pattespatte/felix-ds` på GitHub Packages med begränsad synlighet. Det kräver en PAT med `read:packages`, exporterad som miljövariabeln `GITHUB_PACKAGES_TOKEN` (tokenhanteringen beskrivs i utgivningsdokumentationen `docs/release.sv.md`). Kör blocket nedan i projektroten – det skriver `.npmrc` och installerar paketet. Har du redan en `.npmrc`, lägg de två raderna i den i stället:
 
 ```bash
+# förutsätter att GITHUB_PACKAGES_TOKEN är exporterad (PAT med read:packages)
+cat > .npmrc <<'EOF'
+@pattespatte:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${GITHUB_PACKAGES_TOKEN}
+EOF
 bun add @pattespatte/felix-ds
 ```
 

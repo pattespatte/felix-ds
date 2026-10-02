@@ -73,14 +73,14 @@ Playgrounden ligger i FKUI:s applikationsmall (`FLayoutApplicationTemplate` + `F
 
 Temat konsumeras som ett npm-beroende på två sätt.
 
-**Väg A – register (huvudspår).** Paketet publiceras som `@pattespatte/felix-ds` på GitHub Packages med begränsad synlighet. Det kräver en PAT med `read:packages` och en `.npmrc` i projektroten (utgivningsdokumentationen [docs/release.sv.md](https://github.com/pattespatte/felix-ds/blob/main/docs/release.sv.md) har de exakta raderna):
-
-```ini
-@pattespatte:registry=https://npm.pkg.github.com
-//npm.pkg.github.com/:_authToken=${GITHUB_PACKAGES_TOKEN}
-```
+**Väg A – register (huvudspår).** Paketet publiceras som `@pattespatte/felix-ds` på GitHub Packages med begränsad synlighet. Det kräver en PAT med `read:packages`, exporterad som miljövariabeln `GITHUB_PACKAGES_TOKEN` (tokenhanteringen beskrivs i utgivningsdokumentationen [docs/release.sv.md](https://github.com/pattespatte/felix-ds/blob/main/docs/release.sv.md)). Kör blocket nedan i projektroten – det skriver `.npmrc` och installerar paketet. Har du redan en `.npmrc`, lägg de två raderna i den i stället:
 
 ```bash
+# förutsätter att GITHUB_PACKAGES_TOKEN är exporterad (PAT med read:packages)
+cat > .npmrc <<'EOF'
+@pattespatte:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${GITHUB_PACKAGES_TOKEN}
+EOF
 bun add @pattespatte/felix-ds
 ```
 
@@ -280,14 +280,14 @@ The playground sits in FKUI's application template (`FLayoutApplicationTemplate`
 
 The theme is consumed as an npm dependency one of two ways.
 
-**Path A – registry (primary).** The package is published as `@pattespatte/felix-ds` on GitHub Packages with restricted visibility. It requires a PAT with `read:packages` and an `.npmrc` in the project root (the release runbook [docs/release.en.md](https://github.com/pattespatte/felix-ds/blob/main/docs/release.en.md) has the exact lines):
-
-```ini
-@pattespatte:registry=https://npm.pkg.github.com
-//npm.pkg.github.com/:_authToken=${GITHUB_PACKAGES_TOKEN}
-```
+**Path A – registry (primary).** The package is published as `@pattespatte/felix-ds` on GitHub Packages with restricted visibility. It requires a PAT with `read:packages`, exported as the environment variable `GITHUB_PACKAGES_TOKEN` (token handling is described in the release runbook [docs/release.en.md](https://github.com/pattespatte/felix-ds/blob/main/docs/release.en.md)). Run the block below in the project root – it writes `.npmrc` and installs the package. If you already have an `.npmrc`, add the two lines to it instead:
 
 ```bash
+# requires GITHUB_PACKAGES_TOKEN to be exported (PAT with read:packages)
+cat > .npmrc <<'EOF'
+@pattespatte:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${GITHUB_PACKAGES_TOKEN}
+EOF
 bun add @pattespatte/felix-ds
 ```
 

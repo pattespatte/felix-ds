@@ -22,14 +22,14 @@ bun add -d vite @vitejs/plugin-vue sass typescript vue-tsc @types/node
 
 felix-ds is installed one of two ways – the registry version is the primary path:
 
-**Path A – registry (primary).** The package is published as `@pattespatte/felix-ds` on GitHub Packages with restricted visibility. Put an `.npmrc` in the project root with a PAT that has `read:packages` (exact lines and token handling are described in the theme repo's release documentation, `docs/release.en.md`):
-
-```ini
-@pattespatte:registry=https://npm.pkg.github.com
-//npm.pkg.github.com/:_authToken=${GITHUB_PACKAGES_TOKEN}
-```
+**Path A – registry (primary).** The package is published as `@pattespatte/felix-ds` on GitHub Packages with restricted visibility. It requires a PAT with `read:packages`, exported as the environment variable `GITHUB_PACKAGES_TOKEN` (token handling is described in the theme repo's release documentation, `docs/release.en.md`). Run the block below in the project root – it writes `.npmrc` and installs the package. If you already have an `.npmrc`, add the two lines to it instead:
 
 ```bash
+# requires GITHUB_PACKAGES_TOKEN to be exported (PAT with read:packages)
+cat > .npmrc <<'EOF'
+@pattespatte:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${GITHUB_PACKAGES_TOKEN}
+EOF
 bun add @pattespatte/felix-ds
 ```
 
