@@ -1,0 +1,108 @@
+# Design tokens in DTCG format
+
+*Detta dokument finns också på svenska: [tokens.sv.md](tokens.sv.md).*
+
+felix-ds ships the theme tokens as JSON in the [W3C Design Tokens](https://design-tokens.github.io/community-group/) draft format (DTCG). This makes the theme tokens readable to tooling outside the CSS world – among others Tokens Studio (Figma), Style Dictionary and documentation generators – without any hand copying.
+
+## The files
+
+The package contains two complete files, one per color mode:
+
+- `@pattespatte/felix-ds/tokens/light.json`
+- `@pattespatte/felix-ds/tokens/dark.json`
+
+Each file is self-contained and contains the **composed theme** for its mode: the upstream `@fkui/theme-default` plus the felix profile's overrides, in other words exactly the values the theme mixins emit (see the README section on [dark mode](https://github.com/pattespatte/felix-ds#dark-mode)). Shared tokens (typography, borders, shadows) appear in both files. The files are committed to the repo and shipped with the npm package.
+
+## The format
+
+The files follow the DTCG draft: tokens are objects with `$value` and optional `$type` and `$description`; groups are objects without `$value`. The following types are used:
+
+| `$type` | Example |
+| --- | --- |
+| `color` | `#081130`, `rgba(0, 0, 0, 0.8)` |
+| `dimension` | `3rem`, `1px`, `100%` |
+| `duration` | `100ms` |
+| `number` | `400` (font weight), `1.5` (line height) |
+| `fontFamily` | `["Noto Sans", "system-ui", "sans-serif"]` |
+| `shadow` | shadow object, see [Exclusions and deviations](#exclusions-and-deviations) |
+
+DTCG is still a draft; the files are valid against the draft as of writing, but the format may change upstream.
+
+## Naming and grouping
+
+The CSS custom-property name maps mechanically: the name without the leading `--` splits on hyphens into a nested path, and conversely the path segments join back with hyphens:
+
+- `--fkds-color-action-text-primary-default` → `fkds.color.action.text.primary.default`
+- `--f-font-size-xxx-large` → `f.font.size.xxx.large`
+- `f.font.size.xxx.large` → `--f-font-size-xxx-large`
+
+A token can be both a leaf and a group when a longer name extends a shorter one (a ”mixed node”). In JSON this is an object with both `$value` and child keys:
+
+```json
+"warning": {
+    "$type": "color",
+    "$value": "#fff3c6",
+    "strong": {
+        "$type": "color",
+        "$value": "#ffc108"
+    }
+}
+```
+
+This corresponds to `--fkds-color-feedback-background-warning` and `--fkds-color-feedback-background-warning-strong`. Tools that only support strict trees may need to flatten mixed nodes.
+
+## Alias references
+
+Tokens that point at another token in CSS are expressed as DTCG aliases `{$path}`:
+
+- `--f-page-layout-background` → `"{$fkds.color.background.tertiary}"` (both modes)
+- `--f-color-focus` → `"{$fkds.focus.indicator.color}"`
+- `--f-tooltip-border-width` → `"{$f.border.width.medium}"`
+- The focus indicator's shadow consists of two rings whose colors are aliases: `"{$fkds.focus.indicator.color.background}"` and `"{$fkds.focus.indicator.color}"`.
+
+All aliases resolve within the same file.
+
+## Exclusions and deviations
+
+The export mirrors the theme 1:1 except for the following, all documented decisions:
+
+1. **The logo placeholders `--f-logo-image-small`/`--f-logo-image-large`** are not included. Their `url()` data URIs have no natural DTCG type. They reach consumers as usual via the CSS custom properties.
+2. **`--fkui-theme-default-version`** is not included. It is the upstream package's version metadata, not a design token.
+3. **24 tokens have no `$type`.** Their values are composite CSS shorthands or keywords without a DTCG equivalent: the heading colors (`f.text.color.heading.1`–`6`, value `inherit`), the buttons' reset paddings (`initial`), the `ease-out` animation curve, multi-part margins/sizes (e.g. `padding.input.fields`, `f.modal.close.button.margin`) and the transition shorthands (`f.animation.expand.open`/`close`). `$value` is the exact CSS value; `$type` is deliberately omitted rather than pretending to a wrong type.
+4. **`"none"` shadows are kept.** The profile is completely flat, so several shadow tokens have the value `none`. They are emitted as `$type: "shadow"` with `$value: "none"` – removing them would hide a design decision.
+
+## Consuming the tokens
+
+**As JSON** (Node/Bun; a conditional alias resolver is simple):
+
+```ts
+import light from "@pattespatte/felix-ds/tokens/light.json";
+
+const primary = light.fkds.color.text.primary.$value; // "#081130"
+```
+
+**With Style Dictionary** (illustration, not part of the package):
+
+```js
+export default {
+    source: ["node_modules/@pattespatte/felix-ds/tokens/light.json"],
+    platforms: {
+        css: {
+            transformGroup: "css",
+            files: [{ destination: "tokens.css", format: "css/variables" }],
+        },
+    },
+};
+```
+
+**In Tokens Studio:** import the file as a token set (DTCG format).
+
+## Generation and parity
+
+The files are generated by `scripts/tokens.ts`:
+
+```bash
+bun run tokens:build
+```
+
+The script compiles both color modes from the SCSS sources and types every value. The files are committed, and `bun test` (the parity suite) fails them if they do not match freshly compiled CSS: the same name set, the same values, valid structure, resolved aliases and not stale. After an FKUI upgrade: run `bun run fkui upgrade` and then `bun run tokens:build`, and review the diff – new tokens will appear and changed upstream values propagate into the export.
