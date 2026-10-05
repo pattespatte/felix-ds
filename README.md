@@ -135,6 +135,17 @@ Varje scope skriver ut hela tokenytan. Specificitetssteget (`:root` < `html.them
 
 I playgrounden gör färglägesknappen (sol/måne) uppe till höger exakt detta. Den följer systeminställningen tills användaren väljer själv. Valet sparas då i `localStorage`.
 
+### Design tokens i DTCG-format
+
+Paketet skickar med tematokens som [W3C Design Tokens](https://design-tokens.github.io/community-group/) i utkastformatets JSON – två kompletta filer, en per färgläge:
+
+- `@pattespatte/felix-ds/tokens/light.json` – det sammansatta temat i ljust läge
+- `@pattespatte/felix-ds/tokens/dark.json` – det sammansatta temat i mörkt läge
+
+”Sammansatt tema” är uppströms `@fkui/theme-default` plus felix-profilens överskrivningar, alltså exakt det som temats mixins skriver ut. Filerna genereras ur SCSS-källorna (i repot: `bun run tokens:build`) och paritetstesten (`bun test`) fäller filer som inte längre stämmer med temat. Formatet är verktygsneutralt och passar bland annat Tokens Studio och Style Dictionary.
+
+Namngivning, aliaser, undantag och konsumtionsvägar finns i guiden [Design tokens](https://github.com/pattespatte/felix-ds/blob/main/docs/tokens.sv.md).
+
 ### Kompatibilitet
 
 Temat har ett enda peer-beroende: `@fkui/theme-default` i intervallet `>=6.57.0 <7.0.0`. Intervallet gäller temalagret. Vi testar och stöder Sass-tokenytan i `@fkui/theme-default`, alltså de variabler som temats ingång laddar konfigurerat (`@use` i `src/theme/_default.scss`). Vi testar och stöder inte FKUI-komponenternas interna delar.
@@ -174,6 +185,7 @@ bun run dev        # startar playgrounden (Vite)
 | `bun run dev` | Starta playgrounden lokalt |
 | `bun run build` | Bygg playgrounden för produktion |
 | `bun run build:theme` | Kompilera temalagret till `dist/felix.css` (typsnittsfilerna hamnar bredvid i `dist/files/`) |
+| `bun run tokens:build` | Generera `tokens/light.json` och `tokens/dark.json` ur temats SCSS-källor |
 | `bun run fkui …` | Visa och uppgradera `@fkui/*`-beroendena (se [Uppgradera FKUI-beroendena](#uppgradera-fkui-beroendena)) |
 
 ## Utveckla felix-ds
@@ -414,6 +426,17 @@ html.theme-felix[data-color-mode="dark"] {
 Every scope emits the complete token surface. The specificity ladder (`:root` < `html.theme-felix` / `html[data-color-mode="dark"]` < the combined selector) resolves all combinations without `!important`. The mixins also set `color-scheme` per mode, so native controls and scrollbars follow along.
 
 In the playground, the color mode button (sun/moon) in the top right does exactly this. It follows the system preference until the user makes an explicit choice. The choice is then saved to `localStorage`.
+
+### Design tokens in DTCG format
+
+The package ships the theme tokens as [W3C Design Tokens](https://design-tokens.github.io/community-group/) in the draft format's JSON – two complete files, one per color mode:
+
+- `@pattespatte/felix-ds/tokens/light.json` – the composed theme in light mode
+- `@pattespatte/felix-ds/tokens/dark.json` – the composed theme in dark mode
+
+”Composed theme” means the upstream `@fkui/theme-default` plus the felix profile's overrides, in other words exactly what the theme mixins emit. The files are generated from the SCSS sources (in the repo: `bun run tokens:build`), and the parity test (`bun test`) fails files that no longer match the theme. The format is tool-agnostic and fits, among others, Tokens Studio and Style Dictionary.
+
+Naming, aliases, exclusions and consumption paths are covered in the [Design tokens](https://github.com/pattespatte/felix-ds/blob/main/docs/tokens.en.md) guide.
 
 ### Compatibility
 

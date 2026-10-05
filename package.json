@@ -27,6 +27,7 @@
   "sass": "./src/index.scss",
   "files": [
     "src",
+    "tokens",
     "README.md"
   ],
   "peerDependencies": {
