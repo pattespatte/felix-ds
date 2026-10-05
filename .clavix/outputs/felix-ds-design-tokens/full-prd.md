@@ -60,3 +60,18 @@ The goal is a one-way, reproducible export of the **full composed theme** (upstr
 
 *Generated with Clavix Planning Mode*
 *Generated: 2026-10-05*
+
+## Implementation Addendum (2026-10-05, from the verify audit)
+
+The fail-loud value-shape audit in task phase-1-extract-01 discovered facts that extend the requirement sections above. All decisions remain within the PRD's fail-loud protocol (uncovered shapes require a documented decision) and are recorded in tasks.md and docs/tokens.*.md:
+
+1. **One additional exclusion:** `--fkui-theme-default-version` (a quoted version string emitted by upstream, package metadata rather than a design token) is excluded alongside the two logo tokens. Without this the "only planned exclusion" statement above is outdated.
+2. **24 tokens ship without `$type`:** composite CSS shorthands and keywords without a DTCG equivalent (`inherit`, `initial`, `ease-out`, multi-part margins/sizes, transition shorthands). `$value` carries the exact CSS value; `$type` is deliberately omitted.
+3. **Naming reality:** top-level groups are `f`, `fkds`, plus the unprefixed upstream tokens `i.*`, `padding.*` and the root-level leaves `size`, `min`, `max` – the mechanical hyphen-split handles all of them.
+4. **Alias count:** four whole-value `var()` aliases exist in the composed theme (not two as stated in Technical Requirements); the alias mechanism covers whole-value and part-aliases uniformly.
+5. **`:root` structure:** the composed theme splits its variables across several exact `:root` blocks (sass reopens the block after nested rules); the parser merges them with last-wins cascade.
+
+---
+
+*Generated with Clavix Planning Mode*
+*Generated: 2026-10-05*
