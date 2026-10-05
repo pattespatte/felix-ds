@@ -42,12 +42,12 @@
 
 ## Phase 2: Parity test suite (`scripts/tokens.test.ts`)
 
-- [ ] **Value parity against freshly compiled CSS** (ref: PRD Must-Have 3)
+- [x] **Value parity against freshly compiled CSS** (ref: PRD Must-Have 3) – `scripts/tokens.test.ts` (första bun test-sviten i repot; `bunfig.toml` avgränsar `bun test` till scripts/ så Playwright-specarna inte krockar). Namnmängd + varje värde jäörs typmedvetet mot färskt kompilerad CSS (alias löses på båda sidor); fel nämner token. Check: `bun test` 12/12 grönt, 1067 assertions; negativcheck – manipulerat hex i tokens/light.json fäller med `token --fkds-color-feedback-text-on-warning avviker…`.
   Task ID: phase-2-parity-01
   > **Implementation**: Create `scripts/tokens.test.ts` (bun test; import the exported functions from `scripts/tokens.ts`).
   > **Details**: For each mode: compile fresh via `compileMode`, flatten the committed JSON back to name → resolved value (recursively resolve alias references), serialize typed values to their CSS string form (fontFamily arrays joined with quotes around names containing whitespace; shadow objects joined as `x y blur spread color` with alias colours resolved and `"none"` verbatim; numbers as strings) and assert the name set (minus `EXCLUDED`) and every value equal the compiled declarations. Fail with a diff naming each mismatching token. Check: `bun test` passes; deliberately editing one value in `tokens/light.json` makes it fail naming that token.
 
-- [ ] **Structure self-checks and staleness guard** (ref: PRD Must-Have 3)
+- [x] **Structure self-checks and staleness guard** (ref: PRD Must-Have 3) – strukturtest: tomma grupper fäller, blad kräver `$value` (och `$type` utanför whitelistan), alla `{$alias}`-referenser måste lösa sig till ett blad i samma fil; föråldrarvakt: omgenererad fil måste vara byte-identisk med den committade. Check: `bun test` grönt; negativcheck – ändrat värde i `src/theme/light/_variables.scss` fäller med `tokens/light.json är föråldrad – kör bun run tokens:build och committa`. Samma commit som parity-01 (båda tasksen ligger i en svit): 86d5f86.
   Task ID: phase-2-parity-02
   > **Implementation**: Extend `scripts/tokens.test.ts`.
   > **Details**: Walk both files asserting every group child is a group or a typed token leaf, no empty groups, and every alias reference (whole-value and inside composite values) resolves to an existing token path in the same file. Staleness: generate both files in memory through the same emission path (or into a temp dir) and require byte-identical equality with the committed files; on mismatch fail with the message "kör `bun scripts/tokens.ts` och committa". Check: `bun test` green; touching `src/theme/light/_variables.scss` (e.g. a temporary hex change) makes the staleness test fail.

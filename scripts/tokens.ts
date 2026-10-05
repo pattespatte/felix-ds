@@ -173,7 +173,7 @@ function fail(message: string): never {
 // ---------------------------------------------------------------------------
 
 /** Delar ett värde på toppnivåkommatecken (parenteser i rgb()/var() respekteras). */
-function splitTopLevel(value: string, separator: string): string[] {
+export function splitTopLevel(value: string, separator: string): string[] {
     const parts: string[] = [];
     let depth = 0;
     let current = "";

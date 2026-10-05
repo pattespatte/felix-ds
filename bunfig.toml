@@ -1,0 +1,4 @@
+# Avgränsar `bun test` till enhetstesten under scripts/ – e2e-specarna i
+# e2e/ kör med Playwrights egen runner (`bun run test:visual`), inte bun test.
+[test]
+root = "./scripts"
