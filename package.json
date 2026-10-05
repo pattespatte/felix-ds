@@ -19,6 +19,7 @@
     "build": "vite build --config playground/vite.config.ts",
     "build:theme": "sass --load-path=node_modules src/index.scss dist/felix.css && cp -R src/fonts/files dist/files",
     "fkui": "bun scripts/fkui.ts",
+    "tokens:build": "bun scripts/tokens.ts",
     "changelog": "bunx git-cliff -o CHANGELOG.md",
     "test:visual": "playwright test",
     "test:visual:update": "playwright test --update-snapshots"

@@ -16,6 +16,7 @@
  */
 
 import { compileString } from "sass";
+import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -328,60 +329,78 @@ export function collectMode(mode: Mode): Map<string, TokenLeaf> {
 }
 
 // ---------------------------------------------------------------------------
-// Granskning (task phase-1-extract-02): skriv ut typfördelningen per läge och
-// kontrollera de känsliga klassificeringarna explicit.
+// Utmatning: nästla token under toppnivågrupper och skriv deterministisk JSON
+// (task phase-1-extract-03).
 // ---------------------------------------------------------------------------
 
-if (import.meta.main) {
-    for (const mode of ["light", "dark"] as Mode[]) {
-        const leaves = collectMode(mode);
-        const distribution = new Map<string, number>();
-        for (const leaf of leaves.values()) {
-            const label = leaf.$type ?? "(utan $type)";
-            distribution.set(label, (distribution.get(label) ?? 0) + 1);
-        }
-        console.log(`\n=== ${mode}: ${leaves.size} token ===`);
-        for (const [label, count] of [...distribution.entries()].sort()) {
-            console.log(`  ${label}: ${count}`);
-        }
+type TokenNode = TokenLeaf | { [key: string]: TokenNode };
 
-        const pageLayout = leaves.get("f-page-layout-background");
-        if (pageLayout?.$type !== "color" || pageLayout.$value !== "{$fkds.color.background.tertiary}") {
-            fail(`f-page-layout-background felaktigt klassificerad: ${JSON.stringify(pageLayout)}`);
-        }
-        const focus = leaves.get("f-focus-box-shadow");
-        if (
-            focus?.$type !== "shadow" ||
-            !Array.isArray(focus.$value) ||
-            focus.$value.length !== 2 ||
-            focus.$value[0].color !== "{$fkds.focus.indicator.color.background}" ||
-            focus.$value[1].color !== "{$fkds.focus.indicator.color}"
-        ) {
-            fail(`f-focus-box-shadow felaktigt klassificerad: ${JSON.stringify(focus)}`);
-        }
-        const buttonShadow = leaves.get("f-button-shadow");
-        if (buttonShadow?.$type !== "shadow" || buttonShadow.$value !== "none") {
-            fail(`f-button-shadow felaktigt klassificerad: ${JSON.stringify(buttonShadow)}`);
-        }
-        const fontFamily = leaves.get("f-font-family");
-        if (
-            fontFamily?.$type !== "fontFamily" ||
-            JSON.stringify(fontFamily.$value) !== JSON.stringify(["Noto Sans", "system-ui", "sans-serif"])
-        ) {
-            fail(`f-font-family felaktigt klassificerad: ${JSON.stringify(fontFamily)}`);
-        }
-        const fontWeight = leaves.get("f-font-weight-bold");
-        if (fontWeight?.$type !== "number" || fontWeight.$value !== 600) {
-            fail(`f-font-weight-bold felaktigt klassificerad: ${JSON.stringify(fontWeight)}`);
-        }
-        for (const [name, leaf] of leaves) {
-            if (leaf.$value === undefined) {
-                fail(`token --${name} saknar $value`);
+const FILE_DESCRIPTIONS: Record<Mode, string> = {
+    light: "Genererad av scripts/tokens.ts – redigera inte för hand. Det sammansatta temats fullständiga tokenmängd i ljust läge (uppströms @fkui/theme-default plus felix-profilens överskrivningar) som W3C Design Tokens (DTCG-utkast). Generera om med `bun run tokens:build`; paritetstesten i scripts/tokens.test.ts fäller föråldrade filer.",
+    dark: "Genererad av scripts/tokens.ts – redigera inte för hand. Det sammansatta temats fullständiga tokenmängd i mörkt läge (uppströms @fkui/theme-default plus felix-profilens överskrivningar) som W3C Design Tokens (DTCG-utkast). Generera om med `bun run tokens:build`; paritetstesten i scripts/tokens.test.ts fäller föråldrade filer.",
+};
+
+/**
+ * Nästlar token via avstavning: --f-font-size-h1 → f.font.size.h1. En nod kan
+ * vara både token och grupp (t.ex. fkds.color.feedback.background.warning med
+ * undergruppen strong) – bladets $-egenskaper slås samman med gruppen, vilket
+ * bevarar den mekaniska rundturen namn ↔ sökväg.
+ */
+export function buildTokenTree(mode: Mode): Record<string, TokenNode> {
+    const root: Record<string, TokenNode> = {
+        $description: FILE_DESCRIPTIONS[mode],
+    };
+    for (const [name, leaf] of collectMode(mode)) {
+        const parts = name.split("-");
+        let node = root as Record<string, TokenNode>;
+        for (const part of parts.slice(0, -1)) {
+            const existing = node[part];
+            if (existing === undefined) {
+                node[part] = {};
             }
-            if (UNTYPED.includes(name) && leaf.$type !== undefined) {
-                fail(`otypad token --${name} fick en $type`);
-            }
+            // Att går ner i ett befintligt blad är tillåtet: det skapar en
+            // blandnod (token med undergrupp), t.ex. fkds.focus.indicator.color
+            // med undergruppen background.
+            node = node[part] as Record<string, TokenNode>;
         }
-        console.log("  alla explicita kontroller ok");
+        const last = parts[parts.length - 1];
+        const existing = node[last];
+        if (existing === undefined) {
+            node[last] = leaf;
+        } else if ("$value" in existing) {
+            fail(`duplicerat blad för --${name}`);
+        } else {
+            // Blandnod: token med undergrupper – $-egenskaperna läggs till gruppen.
+            node[last] = { ...leaf, ...existing };
+        }
     }
+    return sortDeep(root);
+}
+
+/** Sorterar alla objektnycklar rekursivt ($-nycklar först via ASCII-ordningen). */
+function sortDeep(node: TokenNode): TokenNode {
+    if (Array.isArray(node)) {
+        return node.map(sortDeep);
+    }
+    if (typeof node !== "object" || node === null) {
+        return node;
+    }
+    const sorted: Record<string, TokenNode> = {};
+    for (const key of Object.keys(node).sort()) {
+        sorted[key] = sortDeep((node as Record<string, TokenNode>)[key]);
+    }
+    return sorted;
+}
+
+function emit(mode: Mode): void {
+    const json = JSON.stringify(buildTokenTree(mode), null, 2) + "\n";
+    const target = join(ROOT, "tokens", `${mode}.json`);
+    writeFileSync(target, json);
+    console.log(`skrev ${target}`);
+}
+
+if (import.meta.main) {
+    mkdirSync(join(ROOT, "tokens"), { recursive: true });
+    emit("light");
+    emit("dark");
 }

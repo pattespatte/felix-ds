@@ -1,0 +1,996 @@
+{
+  "$description": "Genererad av scripts/tokens.ts – redigera inte för hand. Det sammansatta temats fullständiga tokenmängd i mörkt läge (uppströms @fkui/theme-default plus felix-profilens överskrivningar) som W3C Design Tokens (DTCG-utkast). Generera om med `bun run tokens:build`; paritetstesten i scripts/tokens.test.ts fäller föråldrade filer.",
+  "f": {
+    "animation": {
+      "duration": {
+        "extra": {
+          "short": {
+            "$type": "duration",
+            "$value": "100ms"
+          }
+        },
+        "long": {
+          "$type": "duration",
+          "$value": "500ms"
+        },
+        "medium": {
+          "$type": "duration",
+          "$value": "350ms"
+        },
+        "short": {
+          "$type": "duration",
+          "$value": "150ms"
+        }
+      },
+      "expand": {
+        "close": {
+          "$value": "all 500ms cubic-bezier(0.46, 0.03, 0.52, 0.96) 0s"
+        },
+        "open": {
+          "$value": "all 400ms cubic-bezier(0.46, 0.03, 0.52, 0.96) 0s"
+        }
+      }
+    },
+    "background": {
+      "overlay": {
+        "$type": "color",
+        "$value": "rgba(0, 0, 0, 0.8)"
+      },
+      "sidepanel": {
+        "button": {
+          "tertiary": {
+            "hover": {
+              "$type": "color",
+              "$value": "{$fkds.color.action.background.secondary.hover}"
+            }
+          }
+        }
+      }
+    },
+    "border": {
+      "radius": {
+        "medium": {
+          "$type": "dimension",
+          "$value": "8px"
+        },
+        "small": {
+          "$type": "dimension",
+          "$value": "6px"
+        }
+      },
+      "width": {
+        "medium": {
+          "$type": "dimension",
+          "$value": "1px"
+        },
+        "small": {
+          "$type": "dimension",
+          "$value": "1px"
+        }
+      }
+    },
+    "box": {
+      "modal": {
+        "shadow": {
+          "$type": "shadow",
+          "$value": "none"
+        }
+      }
+    },
+    "button": {
+      "animation": {
+        "curve": {
+          "$value": "ease-out"
+        }
+      },
+      "default": {
+        "line": {
+          "height": {
+            "$type": "dimension",
+            "$value": "1.5rem"
+          }
+        }
+      },
+      "discrete": {
+        "black": {
+          "padding": {
+            "bottom": {
+              "$value": "initial"
+            },
+            "left": {
+              "$value": "initial"
+            },
+            "right": {
+              "$value": "initial"
+            },
+            "top": {
+              "$value": "initial"
+            }
+          }
+        },
+        "padding": {
+          "bottom": {
+            "$value": "initial"
+          },
+          "left": {
+            "$value": "initial"
+          },
+          "right": {
+            "$value": "initial"
+          },
+          "top": {
+            "$value": "initial"
+          }
+        },
+        "radius": {
+          "hover": {
+            "$type": "shadow",
+            "$value": "none"
+          }
+        }
+      },
+      "letter": {
+        "spacing": {
+          "$type": "dimension",
+          "$value": "0.01rem"
+        }
+      },
+      "min": {
+        "width": {
+          "$type": "dimension",
+          "$value": "9.5rem"
+        }
+      },
+      "primary": {
+        "padding": {
+          "bottom": {
+            "$type": "dimension",
+            "$value": "1rem"
+          },
+          "left": {
+            "$type": "dimension",
+            "$value": "1.5rem"
+          },
+          "right": {
+            "$type": "dimension",
+            "$value": "1.5rem"
+          },
+          "top": {
+            "$type": "dimension",
+            "$value": "1rem"
+          }
+        }
+      },
+      "secondary": {
+        "padding": {
+          "bottom": {
+            "$type": "dimension",
+            "$value": "1rem"
+          },
+          "left": {
+            "$type": "dimension",
+            "$value": "1.5rem"
+          },
+          "right": {
+            "$type": "dimension",
+            "$value": "1.5rem"
+          },
+          "top": {
+            "$type": "dimension",
+            "$value": "1rem"
+          }
+        }
+      },
+      "shadow": {
+        "$type": "shadow",
+        "$value": "none",
+        "active": {
+          "$type": "shadow",
+          "$value": "none"
+        },
+        "hover": {
+          "$type": "shadow",
+          "$value": "none"
+        }
+      },
+      "tertiary": {
+        "padding": {
+          "bottom": {
+            "$type": "dimension",
+            "$value": "1rem"
+          },
+          "left": {
+            "$type": "dimension",
+            "$value": "1.5rem"
+          },
+          "right": {
+            "$type": "dimension",
+            "$value": "1.5rem"
+          },
+          "top": {
+            "$type": "dimension",
+            "$value": "1rem"
+          }
+        },
+        "table": {
+          "column": {
+            "action": {
+              "icon": {
+                "margin": {
+                  "$value": "0 8px 0 2px"
+                }
+              },
+              "margin": {
+                "$value": "0 0 0 0.5rem"
+              }
+            }
+          }
+        }
+      }
+    },
+    "calendar": {
+      "height": {
+        "$type": "dimension",
+        "$value": "21rem"
+      }
+    },
+    "color": {
+      "focus": {
+        "$type": "color",
+        "$value": "{$fkds.focus.indicator.color}"
+      }
+    },
+    "density": {
+      "factor": {
+        "$type": "number",
+        "$value": 1
+      }
+    },
+    "focus": {
+      "box": {
+        "shadow": {
+          "$type": "shadow",
+          "$value": [
+            {
+              "blur": "0",
+              "color": "{$fkds.focus.indicator.color.background}",
+              "offsetX": "0",
+              "offsetY": "0",
+              "spread": "2px"
+            },
+            {
+              "blur": "0",
+              "color": "{$fkds.focus.indicator.color}",
+              "offsetX": "0",
+              "offsetY": "0",
+              "spread": "4px"
+            }
+          ]
+        }
+      }
+    },
+    "font": {
+      "family": {
+        "$type": "fontFamily",
+        "$value": [
+          "Noto Sans",
+          "system-ui",
+          "sans-serif"
+        ],
+        "code": {
+          "$type": "fontFamily",
+          "$value": [
+            "Consolas",
+            "Liberation Mono",
+            "Courier",
+            "monospace"
+          ]
+        }
+      },
+      "size": {
+        "default": {
+          "large": {
+            "up": {
+              "rem": {
+                "$type": "dimension",
+                "$value": "16px"
+              }
+            }
+          },
+          "rem": {
+            "$type": "dimension",
+            "$value": "16px"
+          }
+        },
+        "h1": {
+          "$type": "dimension",
+          "$value": "3rem"
+        },
+        "h2": {
+          "$type": "dimension",
+          "$value": "1.5rem"
+        },
+        "h3": {
+          "$type": "dimension",
+          "$value": "1.25rem"
+        },
+        "h4": {
+          "$type": "dimension",
+          "$value": "1.125rem"
+        },
+        "large": {
+          "$type": "dimension",
+          "$value": "1rem"
+        },
+        "standard": {
+          "$type": "dimension",
+          "$value": "1rem"
+        },
+        "xxx": {
+          "large": {
+            "$type": "dimension",
+            "$value": "1.25rem"
+          }
+        }
+      },
+      "weight": {
+        "bold": {
+          "$type": "number",
+          "$value": 600
+        },
+        "medium": {
+          "$type": "number",
+          "$value": 600
+        },
+        "normal": {
+          "$type": "number",
+          "$value": 400
+        }
+      }
+    },
+    "height": {
+      "large": {
+        "$type": "dimension",
+        "$value": "2.5rem"
+      },
+      "medium": {
+        "$type": "dimension",
+        "$value": "1.25rem"
+      },
+      "small": {
+        "$type": "dimension",
+        "$value": "0.75rem"
+      }
+    },
+    "icon": {
+      "size": {
+        "large": {
+          "$type": "dimension",
+          "$value": "1.5rem"
+        },
+        "medium": {
+          "$type": "dimension",
+          "$value": "1.25rem"
+        },
+        "small": {
+          "$type": "dimension",
+          "$value": "1rem"
+        },
+        "x": {
+          "large": {
+            "$type": "dimension",
+            "$value": "2rem"
+          },
+          "small": {
+            "$type": "dimension",
+            "$value": "0.75rem"
+          }
+        }
+      }
+    },
+    "input": {
+      "shadow": {
+        "inset": {
+          "$type": "shadow",
+          "$value": "none"
+        }
+      }
+    },
+    "label": {
+      "message": {
+        "margin": {
+          "top": {
+            "$type": "dimension",
+            "$value": "0.25rem"
+          }
+        }
+      }
+    },
+    "line": {
+      "height": {
+        "large": {
+          "$type": "number",
+          "$value": 1.5
+        },
+        "medium": {
+          "$type": "number",
+          "$value": 1.5
+        },
+        "small": {
+          "$type": "number",
+          "$value": 1.5
+        }
+      }
+    },
+    "list": {
+      "item": {
+        "itempane": {
+          "padding": {
+            "$type": "dimension",
+            "$value": "1.25rem"
+          }
+        }
+      }
+    },
+    "loader": {
+      "margin": {
+        "$value": "0 auto 3rem auto"
+      },
+      "size": {
+        "$type": "dimension",
+        "$value": "4rem"
+      }
+    },
+    "logo": {
+      "size": {
+        "large": {
+          "$value": "0.8rem 6.195rem"
+        },
+        "small": {
+          "$type": "dimension",
+          "$value": "0.8rem"
+        }
+      }
+    },
+    "margin": {
+      "component": {
+        "bottom": {
+          "$type": "dimension",
+          "$value": "1.5rem"
+        }
+      }
+    },
+    "modal": {
+      "close": {
+        "button": {
+          "margin": {
+            "$value": "1rem 1rem 0"
+          },
+          "padding": {
+            "$type": "shadow",
+            "$value": "none"
+          }
+        }
+      },
+      "size": {
+        "fullwidth": {
+          "$type": "dimension",
+          "$value": "100%"
+        },
+        "large": {
+          "$type": "dimension",
+          "$value": "1200px"
+        },
+        "medium": {
+          "$type": "dimension",
+          "$value": "700px"
+        },
+        "small": {
+          "$type": "dimension",
+          "$value": "500px"
+        }
+      },
+      "title": {
+        "font": {
+          "size": {
+            "$type": "dimension",
+            "$value": "1.25rem"
+          }
+        }
+      }
+    },
+    "page": {
+      "layout": {
+        "background": {
+          "$description": "Paneler läser profilens tertiära bakgrund; samma bindning som i ljust läge.",
+          "$type": "color",
+          "$value": "{$fkds.color.background.tertiary}"
+        }
+      }
+    },
+    "table": {
+      "body": {
+        "row": {
+          "padding": {
+            "$type": "dimension",
+            "$value": "0.5rem"
+          }
+        }
+      }
+    },
+    "text": {
+      "color": {
+        "heading": {
+          "1": {
+            "$value": "inherit"
+          },
+          "2": {
+            "$value": "inherit"
+          },
+          "3": {
+            "$value": "inherit"
+          },
+          "4": {
+            "$value": "inherit"
+          },
+          "5": {
+            "$value": "inherit"
+          },
+          "6": {
+            "$value": "inherit"
+          }
+        }
+      }
+    },
+    "tooltip": {
+      "border": {
+        "width": {
+          "$type": "dimension",
+          "$value": "{$f.border.width.medium}"
+        }
+      },
+      "close": {
+        "button": {
+          "margin": {
+            "$value": "0.375rem 0.375rem 0.625rem 0.625rem"
+          }
+        }
+      },
+      "icon": {
+        "size": {
+          "$type": "dimension",
+          "$value": "0px"
+        }
+      },
+      "offset": {
+        "$type": "dimension",
+        "$value": "0px"
+      }
+    },
+    "width": {
+      "full": {
+        "$type": "dimension",
+        "$value": "100%"
+      }
+    }
+  },
+  "fkds": {
+    "color": {
+      "action": {
+        "background": {
+          "primary": {
+            "active": {
+              "$type": "color",
+              "$value": "#3d509e"
+            },
+            "default": {
+              "$type": "color",
+              "$value": "#4c6ac4"
+            },
+            "focus": {
+              "$type": "color",
+              "$value": "#3d509e"
+            },
+            "hover": {
+              "$type": "color",
+              "$value": "#3d509e"
+            }
+          },
+          "secondary": {
+            "active": {
+              "$type": "color",
+              "$value": "#3e424e"
+            },
+            "default": {
+              "$type": "color",
+              "$value": "#ffffff03"
+            },
+            "focus": {
+              "$type": "color",
+              "$value": "#ffffff03"
+            },
+            "hover": {
+              "$type": "color",
+              "$value": "#3e424e"
+            }
+          }
+        },
+        "border": {
+          "primary": {
+            "active": {
+              "$type": "color",
+              "$value": "#4c6ac4"
+            },
+            "default": {
+              "$type": "color",
+              "$value": "#4c6ac4"
+            },
+            "focus": {
+              "$type": "color",
+              "$value": "#4c6ac4"
+            },
+            "hover": {
+              "$type": "color",
+              "$value": "#4c6ac4"
+            }
+          }
+        },
+        "text": {
+          "inverted": {
+            "active": {
+              "$type": "color",
+              "$value": "#ffffff"
+            },
+            "default": {
+              "$type": "color",
+              "$value": "#ffffff"
+            },
+            "focus": {
+              "$type": "color",
+              "$value": "#ffffff"
+            },
+            "hover": {
+              "$type": "color",
+              "$value": "#ffffff"
+            }
+          },
+          "primary": {
+            "active": {
+              "$type": "color",
+              "$value": "#e2eaf7"
+            },
+            "default": {
+              "$type": "color",
+              "$value": "#7ea2dc"
+            },
+            "focus": {
+              "$type": "color",
+              "$value": "#e2eaf7"
+            },
+            "hover": {
+              "$type": "color",
+              "$value": "#e2eaf7"
+            }
+          },
+          "secondary": {
+            "active": {
+              "$type": "color",
+              "$value": "#e2eaf7"
+            },
+            "default": {
+              "$type": "color",
+              "$value": "#e2eaf7"
+            },
+            "focus": {
+              "$type": "color",
+              "$value": "#e2eaf7"
+            },
+            "hover": {
+              "$type": "color",
+              "$value": "#e2eaf7"
+            }
+          }
+        }
+      },
+      "background": {
+        "disabled": {
+          "$type": "color",
+          "$value": "#3e424e"
+        },
+        "primary": {
+          "$type": "color",
+          "$value": "#000000"
+        },
+        "secondary": {
+          "$type": "color",
+          "$value": "#16171b"
+        },
+        "tertiary": {
+          "$type": "color",
+          "$value": "#1e222e"
+        }
+      },
+      "border": {
+        "disabled": {
+          "$type": "color",
+          "$value": "#3e424e"
+        },
+        "inverted": {
+          "$type": "color",
+          "$value": "#ffffff"
+        },
+        "primary": {
+          "$type": "color",
+          "$value": "#8c93a4"
+        },
+        "strong": {
+          "$type": "color",
+          "$value": "#d7d9e0"
+        },
+        "weak": {
+          "$type": "color",
+          "$value": "#585f71"
+        }
+      },
+      "feedback": {
+        "background": {
+          "info": {
+            "$type": "color",
+            "$value": "#1e222e",
+            "strong": {
+              "$type": "color",
+              "$value": "#02478a"
+            }
+          },
+          "negative": {
+            "$type": "color",
+            "$value": "#1e222e",
+            "strong": {
+              "$type": "color",
+              "$value": "#c7311a"
+            }
+          },
+          "neutral": {
+            "$type": "color",
+            "$value": "#1e222e",
+            "strong": {
+              "$type": "color",
+              "$value": "#6e7689"
+            }
+          },
+          "positive": {
+            "$type": "color",
+            "$value": "#1e222e",
+            "strong": {
+              "$type": "color",
+              "$value": "#217424"
+            }
+          },
+          "warning": {
+            "$type": "color",
+            "$value": "#1e222e",
+            "strong": {
+              "$type": "color",
+              "$value": "#ffc108"
+            }
+          }
+        },
+        "border": {
+          "info": {
+            "$type": "color",
+            "$value": "#0586f2"
+          },
+          "negative": {
+            "$type": "color",
+            "$value": "#f35840"
+          },
+          "neutral": {
+            "$type": "color",
+            "$value": "#6e7689"
+          },
+          "positive": {
+            "$type": "color",
+            "$value": "#5bcd5f"
+          },
+          "warning": {
+            "$type": "color",
+            "$value": "#ffd248"
+          }
+        },
+        "text": {
+          "negative": {
+            "$type": "color",
+            "$value": "#f35840"
+          },
+          "on": {
+            "warning": {
+              "$description": "Använder varningens mörka på-ljus-yta-värde även i mörkt läge – inte det nästan vita varningstextsvärdet.",
+              "$type": "color",
+              "$value": "#081130"
+            }
+          },
+          "positive": {
+            "$type": "color",
+            "$value": "#f1fcf1"
+          }
+        }
+      },
+      "header": {
+        "background": {
+          "primary": {
+            "$type": "color",
+            "$value": "#16171b"
+          }
+        },
+        "text": {
+          "primary": {
+            "$description": "Headern har mörk bakgrund i profilen, så headertext använder primär textfärg (vit).",
+            "$type": "color",
+            "$value": "#ffffff"
+          }
+        }
+      },
+      "interactive": {
+        "surface": {
+          "background": {
+            "primary": {
+              "active": {
+                "$type": "color",
+                "$value": "#414d67"
+              },
+              "default": {
+                "$type": "color",
+                "$value": "#414d67"
+              },
+              "focus": {
+                "$type": "color",
+                "$value": "#4d5b80"
+              },
+              "hover": {
+                "$type": "color",
+                "$value": "#4d5b80"
+              }
+            }
+          }
+        }
+      },
+      "navigation": {
+        "background": {
+          "hover": {
+            "$type": "color",
+            "$value": "#232948"
+          },
+          "selected": {
+            "$type": "color",
+            "$value": "#334075"
+          }
+        },
+        "border": {
+          "hover": {
+            "$type": "color",
+            "$value": "#4c6ac4"
+          },
+          "selected": {
+            "$type": "color",
+            "$value": "#334075"
+          }
+        }
+      },
+      "select": {
+        "background": {
+          "primary": {
+            "active": {
+              "$type": "color",
+              "$value": "#3e424e"
+            },
+            "default": {
+              "$type": "color",
+              "$value": "#585f71"
+            },
+            "focus": {
+              "$type": "color",
+              "$value": "#3e424e"
+            },
+            "hover": {
+              "$type": "color",
+              "$value": "#3e424e"
+            }
+          },
+          "secondary": {
+            "active": {
+              "$type": "color",
+              "$value": "#484d5c"
+            },
+            "default": {
+              "$type": "color",
+              "$value": "#3e424e"
+            },
+            "focus": {
+              "$type": "color",
+              "$value": "#484d5c"
+            },
+            "hover": {
+              "$type": "color",
+              "$value": "#484d5c"
+            }
+          }
+        }
+      },
+      "text": {
+        "disabled": {
+          "$type": "color",
+          "$value": "#585f71"
+        },
+        "inverted": {
+          "$type": "color",
+          "$value": "#ffffff"
+        },
+        "primary": {
+          "$type": "color",
+          "$value": "#ffffff"
+        },
+        "secondary": {
+          "$type": "color",
+          "$value": "#d7d9e0"
+        }
+      }
+    },
+    "focus": {
+      "indicator": {
+        "color": {
+          "$type": "color",
+          "$value": "#ffffff",
+          "background": {
+            "$type": "color",
+            "$value": "#1b1e23"
+          }
+        }
+      }
+    }
+  },
+  "i": {
+    "popup": {
+      "error": {
+        "offset": {
+          "$type": "dimension",
+          "$value": "24px"
+        }
+      }
+    },
+    "textarea": {
+      "field": {
+        "max": {
+          "height": {
+            "$type": "dimension",
+            "$value": "4lh"
+          }
+        },
+        "min": {
+          "height": {
+            "$type": "dimension",
+            "$value": "4lh"
+          }
+        }
+      }
+    }
+  },
+  "max": {
+    "$type": "number",
+    "$value": 0
+  },
+  "min": {
+    "$type": "number",
+    "$value": 0
+  },
+  "padding": {
+    "input": {
+      "fields": {
+        "$value": "0 2.25rem 0 0.75rem"
+      }
+    }
+  },
+  "size": {
+    "$type": "number",
+    "$value": 0
+  }
+}
