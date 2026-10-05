@@ -23,7 +23,7 @@ The goal is a one-way, reproducible export of the **full composed theme** (upstr
 - **Token universe:** every custom property emitted by the composed `light` and `dark` mixins of `src/theme/_default.scss` (upstream defaults via the pinned `@fkui/theme-default` plus the felix light/dark/shared overrides). The authoritative set is whatever the mixins actually emit – the script discovers it by compiling, not by maintaining a name list. Deprecated upstream variables are not special-cased: if the composed mixins emit them, they are exported.
 - **Exclusions:** `--f-logo-image-small` and `--f-logo-image-large` (url() data URIs, no native DTCG type) are omitted; the omission is noted in the docs. This is the only planned exclusion; any other value the classifier cannot type must **fail the build loudly**, never silently drop.
 - **Type mapping:** color (hex, rgb/rgba, hsl) → `color`; px/rem/em lengths → `dimension`; font stacks → `fontFamily` array (quoted names preserved); `--f-font-weight-*` → `fontWeight` number; unitless line-heights → `number`; box-shadows → `shadow` (composite object; multiple shadows as an array). Shadows whose value is `none` (the profile's flat-surface decision) are kept with `$value: "none"` and `$type: "shadow"` – a documented deviation from strict DTCG, since dropping them would hide a real design decision.
-- **Aliases:** `var()` references between tokens become DTCG alias references (`"{$group.$path}"`). Exactly two exist today (`--f-page-layout-background` in both modes); the focus box-shadow's two ring colours are expressed as alias references inside the composite shadow value.
+- **Aliases:** `var()` references between tokens become DTCG alias references (`"{group.path}"` – no `$` inside the braces; `$` is reserved for property names like `$value`). Exactly two exist today (`--f-page-layout-background` in both modes); the focus box-shadow's two ring colours are expressed as alias references inside the composite shadow value.
 - **Naming:** the custom-property name minus the leading `--`, nested into groups by splitting on hyphens; top-level groups are `f` and `fkds`. Round-trip mapping is mechanical (hyphen-join). Known cosmetic case: `--f-font-size-xxx-large` nests as `f.font.size.xxx.large`.
 - **Descriptions:** `$description` only where a felix SCSS comment directly documents that single token, plus a file-level `$description`. No bulk authoring of descriptions for the ~490 upstream tokens.
 
@@ -58,18 +58,16 @@ The goal is a one-way, reproducible export of the **full composed theme** (upstr
 
 ---
 
-*Generated with Clavix Planning Mode*
-*Generated: 2026-10-05*
-
 ## Implementation Addendum (2026-10-05, from the verify audit)
 
 The fail-loud value-shape audit in task phase-1-extract-01 discovered facts that extend the requirement sections above. All decisions remain within the PRD's fail-loud protocol (uncovered shapes require a documented decision) and are recorded in tasks.md and docs/tokens.*.md:
 
 1. **One additional exclusion:** `--fkui-theme-default-version` (a quoted version string emitted by upstream, package metadata rather than a design token) is excluded alongside the two logo tokens. Without this the "only planned exclusion" statement above is outdated.
-2. **24 tokens ship without `$type`:** composite CSS shorthands and keywords without a DTCG equivalent (`inherit`, `initial`, `ease-out`, multi-part margins/sizes, transition shorthands). `$value` carries the exact CSS value; `$type` is deliberately omitted.
+2. **26 tokens ship without `$type`:** composite CSS shorthands and keywords without a DTCG equivalent (`inherit`, `initial`, `ease-out`, `none` on non-shadow properties, multi-part margins/sizes, transition shorthands). `$value` carries the exact CSS value; `$type` is deliberately omitted.
 3. **Naming reality:** top-level groups are `f`, `fkds`, plus the unprefixed upstream tokens `i.*`, `padding.*` and the root-level leaves `size`, `min`, `max` – the mechanical hyphen-split handles all of them.
 4. **Alias count:** four whole-value `var()` aliases exist in the composed theme (not two as stated in Technical Requirements); the alias mechanism covers whole-value and part-aliases uniformly.
 5. **`:root` structure:** the composed theme splits its variables across several exact `:root` blocks (sass reopens the block after nested rules); the parser merges them with last-wins cascade.
+6. **Post-verification correction (owner's external DTCG validation, 2026-10-05):** two true errors were found and fixed before release – (a) alias references had been emitted as `{$path}` with a stray `$` (the example in Technical Requirements above originally showed it; the DTCG spec has no `$` inside alias braces), reported by the validator as DANGLING_REFERENCE; (b) the two non-shadow `none` tokens (`--f-button-discrete-radius-hover`, `--f-modal-close-button-padding`) had been mis-typed as `shadow` and now ship untyped, reported as INVALID_COMPOSITE_FIELD. The remaining validator warnings (missing `$type` on 26 tokens; `"none"` values on the 5 genuine none-shadow tokens) are documented deviations, not defects. Post-fix distribution: 79 color, 55 dimension, 4 duration, 2 fontFamily, 10 number, 6 shadow, 26 untyped (182 per mode).
 
 ---
 

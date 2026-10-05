@@ -37,9 +37,10 @@ export const EXCLUDED: readonly string[] = [
 
 /**
  * Token utan naturlig DTCG-typ som ändå behålls (utan `$type`) med sitt
- * råa CSS-värde: CSS-nyckelord (inherit/initial/ease-out), flerdelade
- * kortformer (marginaler, storlekar) och transition-kortformer. Allt annat
- * som inte kan typas kastar – tyst bortfall är förbjudet.
+ * råa CSS-värde: CSS-nyckelord (inherit/initial/ease-out/none på
+ * icke-skuggegenskaper), flerdelade kortformer (marginaler, storlekar) och
+ * transition-kortformer. Allt annat som inte kan typas kastar – tyst
+ * bortfall är förbjudet.
  */
 export const UNTYPED: readonly string[] = [
     "f-text-color-heading-1",
@@ -66,6 +67,10 @@ export const UNTYPED: readonly string[] = [
     "f-logo-size-large",
     "f-animation-expand-open",
     "f-animation-expand-close",
+    // ”none” på egenskaper som inte är skuggor: radien och paddingen är
+    // borttagna med CSS-nyckelordet, inte med en nollskugga.
+    "f-button-discrete-radius-hover",
+    "f-modal-close-button-padding",
 ];
 
 /**
@@ -237,13 +242,13 @@ function parseShadowPart(part: string): Record<string, string> | null {
     return shadow;
 }
 
-/** var(--x) → DTCG-alias {$x.med.punkter}; annat värde oförändrat. */
+/** var(--x) → DTCG-alias {x.med.punkter} (utan $ – dollar är förbehållet $-egenskaper); annat värde oförändrat. */
 function toAlias(color: string): string {
     const match = color.match(WHOLE_ALIAS_PATTERN);
     if (match === null) {
         return color;
     }
-    return `{$${match[1].split("-").join(".")}}`;
+    return `{${match[1].split("-").join(".")}}`;
 }
 
 /** Klassificerar ett CSS-värde till DTCG-blad; kastar på otypbara former. */
@@ -271,9 +276,11 @@ export function classify(name: string, value: string): TokenLeaf {
             $value: fontParts.map((p) => p.replace(/^"|"$/g, "")),
         };
     }
-    if (value === "none") {
+    if (value === "none" && name.includes("shadow")) {
         // Dokumenterad avvikelse: profilen är helt platt (inga skuggor), och
-        // att ta bort token skulle dölja det designbeslutet (PRD).
+        // att ta bort token skulle dölja det designbeslutet (PRD). ”none” på
+        // egenskaper som inte är skuggor (radie, padding) hamnar i stället i
+        // UNTYPED-whitelisten ovan.
         return { $type: "shadow", $value: "none" };
     }
     const shadowParts = splitTopLevel(value, ",");
@@ -304,10 +311,10 @@ export function collectMode(mode: Mode): Map<string, TokenLeaf> {
         leaves.set(name, classify(name, value));
     }
     for (const [name, leaf] of leaves) {
-        if (typeof leaf.$value !== "string" || !leaf.$value.startsWith("{$")) {
+        if (typeof leaf.$value !== "string" || !/^\{[a-zA-Z0-9.]+\}$/.test(leaf.$value)) {
             continue;
         }
-        const targetName = leaf.$value.slice(2, -1).split(".").join("-");
+        const targetName = leaf.$value.slice(1, -1).split(".").join("-");
         const target = leaves.get(targetName);
         if (target === undefined || target.$type === undefined) {
             fail(`alias --${name} pekar på okänd eller otypad token --${targetName}`);

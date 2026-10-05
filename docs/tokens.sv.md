@@ -53,12 +53,12 @@ Det motsvarar `--fkds-color-feedback-background-warning` och `--fkds-color-feedb
 
 ## Aliasreferenser
 
-Token som i CSS:t pekar på en annan token uttrycks som DTCG-alias `{$sökväg}`:
+Token som i CSS:t pekar på en annan token uttrycks som DTCG-alias `{sökväg}` (utan dollartecken – `$` är förbehållet egenskapsnamn som `$value`):
 
-- `--f-page-layout-background` → `"{$fkds.color.background.tertiary}"` (båda lägena)
-- `--f-color-focus` → `"{$fkds.focus.indicator.color}"`
-- `--f-tooltip-border-width` → `"{$f.border.width.medium}"`
-- Fokusindikatorns skugga är sammansatt av två ringar vars färger är alias: `"{$fkds.focus.indicator.color.background}"` och `"{$fkds.focus.indicator.color}"`.
+- `--f-page-layout-background` → `"{fkds.color.background.tertiary}"` (båda lägena)
+- `--f-color-focus` → `"{fkds.focus.indicator.color}"`
+- `--f-tooltip-border-width` → `"{f.border.width.medium}"`
+- Fokusindikatorns skugga är sammansatt av två ringar vars färger är alias: `"{fkds.focus.indicator.color.background}"` och `"{fkds.focus.indicator.color}"`.
 
 Alla alias löser sig inom samma fil.
 
@@ -68,8 +68,8 @@ Exporten speglar temat 1:1 utom följande, som alla är dokumenterade beslut:
 
 1. **Logoplatshållarna `--f-logo-image-small`/`--f-logo-image-large`** ingår inte. Deras `url()`-data-URI:er har ingen naturlig DTCG-typ. De når konsumenterna som vanligt via CSS-variablerna.
 2. **`--fkui-theme-default-version`** ingår inte. Det är upstream-paketets versionsmetadata, ingen designtoken.
-3. **24 token saknar `$type`.** Deras värden är sammansatta CSS-kortformer eller nyckelord utan DTCG-motsvarighet: rubrikfärgerna (`f.text.color.heading.1`–`6`, värdet `inherit`), knapparnas återställda paddingar (`initial`), animationskurvan `ease-out`, flerdelade marginaler/storlekar (t.ex. `padding.input.fields`, `f.modal.close.button.margin`) och transition-kortformerna (`f.animation.expand.open`/`close`). `$value` är det exakta CSS-värdet; `$type` är medvetet utelämnat i stället för att lura till en fel typ.
-4. **`"none"`-skuggor behålls.** Profilen är helt platt, så flera skuggtoken har värdet `none`. De skrivs som `$type: "shadow"` med `$value: "none"` – att ta bort dem skulle dölja ett designbeslut.
+3. **26 token saknar `$type`.** Deras värden är sammansatta CSS-kortformer eller nyckelord utan DTCG-motsvarighet: rubrikfärgerna (`f.text.color.heading.1`–`6`, värdet `inherit`), knapparnas återställda paddingar (`initial`), animationskurvan `ease-out`, flerdelade marginaler/storlekar (t.ex. `padding.input.fields`, `f.modal.close.button.margin`), transition-kortformerna (`f.animation.expand.open`/`close`) samt `none` på egenskaper som inte är skuggor (`f.button.discrete.radius.hover`, `f.modal.close.button.padding`). `$value` är det exakta CSS-värdet; `$type` är medvetet utelämnat i stället för att lura till en fel typ. En strikt DTCG-validerare flaggar dem som varningar (saknad `$type`) – väntat och dokumenterat.
+4. **`"none"`-skuggor behålls.** Profilen är helt platt, så skuggtoken med värdet `none` (`f.button.shadow` med deltoken, `f.box.modal.shadow`, `f.input.shadow.inset`) skrivs som `$type: "shadow"` med `$value: "none"` – att ta bort dem skulle dölja ett designbeslut. En strikt validerare flaggar själva värdet (väntat varningsmeddelande); konsumenter som inte kan tolka `"none"` kan hoppa över just dessa token.
 
 ## Konsumera tokens
 

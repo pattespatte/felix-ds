@@ -41,7 +41,7 @@
           "tertiary": {
             "hover": {
               "$type": "color",
-              "$value": "{$fkds.color.action.background.secondary.hover}"
+              "$value": "{fkds.color.action.background.secondary.hover}"
             }
           }
         }
@@ -124,7 +124,6 @@
         },
         "radius": {
           "hover": {
-            "$type": "shadow",
             "$value": "none"
           }
         }
@@ -237,7 +236,7 @@
     "color": {
       "focus": {
         "$type": "color",
-        "$value": "{$fkds.focus.indicator.color}"
+        "$value": "{fkds.focus.indicator.color}"
       }
     },
     "density": {
@@ -253,14 +252,14 @@
           "$value": [
             {
               "blur": "0",
-              "color": "{$fkds.focus.indicator.color.background}",
+              "color": "{fkds.focus.indicator.color.background}",
               "offsetX": "0",
               "offsetY": "0",
               "spread": "2px"
             },
             {
               "blur": "0",
-              "color": "{$fkds.focus.indicator.color}",
+              "color": "{fkds.focus.indicator.color}",
               "offsetX": "0",
               "offsetY": "0",
               "spread": "4px"
@@ -467,7 +466,6 @@
             "$value": "1rem 1rem 0"
           },
           "padding": {
-            "$type": "shadow",
             "$value": "none"
           }
         }
@@ -504,7 +502,7 @@
         "background": {
           "$description": "Paneler läser profilens tertiära bakgrund; samma bindning som i ljust läge.",
           "$type": "color",
-          "$value": "{$fkds.color.background.tertiary}"
+          "$value": "{fkds.color.background.tertiary}"
         }
       }
     },
@@ -546,7 +544,7 @@
       "border": {
         "width": {
           "$type": "dimension",
-          "$value": "{$f.border.width.medium}"
+          "$value": "{f.border.width.medium}"
         }
       },
       "close": {

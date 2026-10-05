@@ -53,12 +53,12 @@ This corresponds to `--fkds-color-feedback-background-warning` and `--fkds-color
 
 ## Alias references
 
-Tokens that point at another token in CSS are expressed as DTCG aliases `{$path}`:
+Tokens that point at another token in CSS are expressed as DTCG aliases `{path}` (no dollar sign – `$` is reserved for property names like `$value`):
 
-- `--f-page-layout-background` → `"{$fkds.color.background.tertiary}"` (both modes)
-- `--f-color-focus` → `"{$fkds.focus.indicator.color}"`
-- `--f-tooltip-border-width` → `"{$f.border.width.medium}"`
-- The focus indicator's shadow consists of two rings whose colors are aliases: `"{$fkds.focus.indicator.color.background}"` and `"{$fkds.focus.indicator.color}"`.
+- `--f-page-layout-background` → `"{fkds.color.background.tertiary}"` (both modes)
+- `--f-color-focus` → `"{fkds.focus.indicator.color}"`
+- `--f-tooltip-border-width` → `"{f.border.width.medium}"`
+- The focus indicator's shadow consists of two rings whose colors are aliases: `"{fkds.focus.indicator.color.background}"` and `"{fkds.focus.indicator.color}"`.
 
 All aliases resolve within the same file.
 
@@ -68,8 +68,8 @@ The export mirrors the theme 1:1 except for the following, all documented decisi
 
 1. **The logo placeholders `--f-logo-image-small`/`--f-logo-image-large`** are not included. Their `url()` data URIs have no natural DTCG type. They reach consumers as usual via the CSS custom properties.
 2. **`--fkui-theme-default-version`** is not included. It is the upstream package's version metadata, not a design token.
-3. **24 tokens have no `$type`.** Their values are composite CSS shorthands or keywords without a DTCG equivalent: the heading colors (`f.text.color.heading.1`–`6`, value `inherit`), the buttons' reset paddings (`initial`), the `ease-out` animation curve, multi-part margins/sizes (e.g. `padding.input.fields`, `f.modal.close.button.margin`) and the transition shorthands (`f.animation.expand.open`/`close`). `$value` is the exact CSS value; `$type` is deliberately omitted rather than pretending to a wrong type.
-4. **`"none"` shadows are kept.** The profile is completely flat, so several shadow tokens have the value `none`. They are emitted as `$type: "shadow"` with `$value: "none"` – removing them would hide a design decision.
+3. **26 tokens have no `$type`.** Their values are composite CSS shorthands or keywords without a DTCG equivalent: the heading colors (`f.text.color.heading.1`–`6`, value `inherit`), the buttons' reset paddings (`initial`), the `ease-out` animation curve, multi-part margins/sizes (e.g. `padding.input.fields`, `f.modal.close.button.margin`), the transition shorthands (`f.animation.expand.open`/`close`) and `none` on non-shadow properties (`f.button.discrete.radius.hover`, `f.modal.close.button.padding`). `$value` is the exact CSS value; `$type` is deliberately omitted rather than pretending to a wrong type. A strict DTCG validator flags these as warnings (missing `$type`) – expected and documented.
+4. **`"none"` shadows are kept.** The profile is completely flat, so shadow tokens with value `none` (`f.button.shadow` with subtokens, `f.box.modal.shadow`, `f.input.shadow.inset`) are emitted as `$type: "shadow"` with `$value: "none"` – removing them would hide a design decision. A strict validator flags the value itself (expected warning); consumers that cannot interpret `"none"` may skip these tokens.
 
 ## Consuming the tokens
 

@@ -50,10 +50,10 @@ function flattenTokenTree(node: unknown, prefix = ""): Map<string, TokenLeaf> {
     return leaves;
 }
 
-/** Löser {$alias}-referenser i ett JSON-värde mot samma fils token-träd. */
+/** Löser {alias}-referenser i ett JSON-värde mot samma fils token-träd. */
 function resolveJsonAliases(value: unknown, tree: JsonNode): unknown {
     if (typeof value === "string") {
-        return value.replace(/\{\$([a-zA-Z0-9.]+)\}/g, (_, path: string) => {
+        return value.replace(/\{([a-zA-Z0-9.]+)\}/g, (_, path: string) => {
             let node: unknown = tree;
             for (const part of path.split(".")) {
                 node = (node as JsonNode)[part];
@@ -200,7 +200,7 @@ describe.each(MODES)("tokenfilens struktur (%s)", (mode) => {
                 return;
             }
             if (typeof node.$value === "string") {
-                for (const match of node.$value.matchAll(/\{\$([a-zA-Z0-9.]+)\}/g)) {
+                for (const match of node.$value.matchAll(/\{([a-zA-Z0-9.]+)\}/g)) {
                     aliases.push(match[1]);
                 }
             }
@@ -236,8 +236,8 @@ describe("känsliga klassificeringar (ljust läge)", () => {
         const boxShadow = ((focus.box as JsonNode).shadow as JsonNode) as unknown as TokenLeaf;
         expect(boxShadow.$type).toBe("shadow");
         expect(boxShadow.$value).toEqual([
-            { offsetX: "0", offsetY: "0", blur: "0", spread: "2px", color: "{$fkds.focus.indicator.color.background}" },
-            { offsetX: "0", offsetY: "0", blur: "0", spread: "4px", color: "{$fkds.focus.indicator.color}" },
+            { offsetX: "0", offsetY: "0", blur: "0", spread: "2px", color: "{fkds.focus.indicator.color.background}" },
+            { offsetX: "0", offsetY: "0", blur: "0", spread: "4px", color: "{fkds.focus.indicator.color}" },
         ]);
         const button = (tree.f as JsonNode).button as JsonNode;
         expect(((button.shadow as JsonNode) as unknown as TokenLeaf).$value).toBe("none");
@@ -245,7 +245,17 @@ describe("känsliga klassificeringar (ljust läge)", () => {
 
     test("sidopanelens tertiärbakgrund är en aliasreferens som löser sig", () => {
         const pageLayout = collectMode("light").get("f-page-layout-background");
-        expect(pageLayout?.$value).toBe("{$fkds.color.background.tertiary}");
+        expect(pageLayout?.$value).toBe("{fkds.color.background.tertiary}");
         expect(pageLayout?.$type).toBe("color");
+    });
+
+    test("”none” på icke-skuggor är otypade, inte skuggor", () => {
+        const leaves = collectMode("light");
+        for (const name of ["f-button-discrete-radius-hover", "f-modal-close-button-padding"]) {
+            const leaf = leaves.get(name);
+            expect(leaf?.$type, `--${name} ska sakna $type`).toBeUndefined();
+            expect(leaf?.$value).toBe("none");
+        }
+        expect(leaves.get("f-button-shadow")?.$type).toBe("shadow");
     });
 });

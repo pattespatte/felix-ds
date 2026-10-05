@@ -31,3 +31,23 @@ No 🔴 CRITICAL or 🟠 MAJOR findings. Code-level checks: no secrets, no `any`
 ## Out of scope confirmed untouched
 
 No reverse import, no shipped Style Dictionary config, no Figma publishing workflow, no site migrations, no composite heading typography tokens, no bulk descriptions, no multi-theme scheme beyond the two files.
+
+## Post-verification fix round (2026-10-05 – owner's external DTCG validation)
+
+The owner validated the generated files with an external DTCG validator before releasing. Verdict per finding class:
+
+| Validator finding | Verdict | Action |
+|---|---|---|
+| 6 × DANGLING_REFERENCE on all alias tokens | **True error** – aliases were emitted as `{$path}` with a stray `$`; the DTCG spec reserves `$` for property names, so the validator looked for `$fkds…` and found nothing. (The PRD's inline alias example carried the wrong syntax; the plan's was correct. The parity suite used the same wrong regex on both sides and could not catch it.) | **Fixed**: `toAlias()` now emits `{path}`; all regexes/expectations in `scripts/tokens.test.ts` updated to the spec syntax. |
+| 2 × INVALID_COMPOSITE_FIELD on `f.button.discrete.radius.hover`, `f.modal.close.button.padding` | **True error** – these `none` values belong to a radius and a padding; the classifier had typed every `none` as `shadow`. | **Fixed**: `none` is shadow-typed only for shadow-named tokens; the two moved to UNTYPED (now 26). |
+| 3 × INVALID_COMPOSITE_FIELD on `f.button.shadow`, `f.box.modal.shadow`, `f.input.shadow.inset` | Documented deviation (PRD: `"none"` shadows kept as `$type: "shadow"`, `$value: "none"`). | Kept; docs now state the warning is expected. |
+| 24 × MISSING_TYPE | Documented decision (composite shorthands/keywords without `$type`). | Kept; now 26 after the reclassification, docs updated. |
+
+Post-fix state: distribution per mode 79 color / 55 dimension / 4 duration / 2 fontFamily / 10 number / 6 shadow / 26 untyped (182 tokens); all aliases are `{group.path}` and resolve in-file.
+
+Re-verified after the fixes:
+- `bun test`: 13 pass / 0 fail (1076 assertions; +1 regression test for the two untyped `none` tokens)
+- `bun scripts/tokens.ts` ×2: zero `git diff` on the second run
+- `command npm pack --dry-run`: lists `tokens/light.json` + `tokens/dark.json`
+
+Files changed: `scripts/tokens.ts`, `scripts/tokens.test.ts`, `tokens/light.json`, `tokens/dark.json`, `docs/tokens.sv.md`, `docs/tokens.en.md`, PRD (alias example corrected + addendum item 6), `tasks.md` correction note, this report.
