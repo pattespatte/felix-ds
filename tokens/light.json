@@ -181,8 +181,10 @@
         }
       },
       "shadow": {
-        "$type": "shadow",
-        "$value": "none",
+        "_self": {
+          "$type": "shadow",
+          "$value": "none"
+        },
         "active": {
           "$type": "shadow",
           "$value": "none"
@@ -236,7 +238,7 @@
     "color": {
       "focus": {
         "$type": "color",
-        "$value": "{fkds.focus.indicator.color}"
+        "$value": "{fkds.focus.indicator.color._self}"
       }
     },
     "density": {
@@ -259,7 +261,7 @@
             },
             {
               "blur": "0",
-              "color": "{fkds.focus.indicator.color}",
+              "color": "{fkds.focus.indicator.color._self}",
               "offsetX": "0",
               "offsetY": "0",
               "spread": "4px"
@@ -270,12 +272,14 @@
     },
     "font": {
       "family": {
-        "$type": "fontFamily",
-        "$value": [
-          "Noto Sans",
-          "system-ui",
-          "sans-serif"
-        ],
+        "_self": {
+          "$type": "fontFamily",
+          "$value": [
+            "Noto Sans",
+            "system-ui",
+            "sans-serif"
+          ]
+        },
         "code": {
           "$type": "fontFamily",
           "$value": [
@@ -733,40 +737,50 @@
       "feedback": {
         "background": {
           "info": {
-            "$type": "color",
-            "$value": "#e7f2ff",
+            "_self": {
+              "$type": "color",
+              "$value": "#e7f2ff"
+            },
             "strong": {
               "$type": "color",
               "$value": "#0053a7"
             }
           },
           "negative": {
-            "$type": "color",
-            "$value": "#ffe5e1",
+            "_self": {
+              "$type": "color",
+              "$value": "#ffe5e1"
+            },
             "strong": {
               "$type": "color",
               "$value": "#c7311a"
             }
           },
           "neutral": {
-            "$type": "color",
-            "$value": "#ededf1",
+            "_self": {
+              "$type": "color",
+              "$value": "#ededf1"
+            },
             "strong": {
               "$type": "color",
               "$value": "#585f71"
             }
           },
           "positive": {
-            "$type": "color",
-            "$value": "#e0f8e0",
+            "_self": {
+              "$type": "color",
+              "$value": "#e0f8e0"
+            },
             "strong": {
               "$type": "color",
               "$value": "#217424"
             }
           },
           "warning": {
-            "$type": "color",
-            "$value": "#fff3c6",
+            "_self": {
+              "$type": "color",
+              "$value": "#fff3c6"
+            },
             "strong": {
               "$type": "color",
               "$value": "#ffc108"
@@ -935,9 +949,11 @@
     "focus": {
       "indicator": {
         "color": {
-          "$description": "Yttre fokusringens färg – svart, enligt profilens tvåringsindikator (se f.focus.box.shadow).",
-          "$type": "color",
-          "$value": "#000000",
+          "_self": {
+            "$description": "Yttre fokusringens färg – svart, enligt profilens tvåringsindikator (se f.focus.box.shadow).",
+            "$type": "color",
+            "$value": "#000000"
+          },
           "background": {
             "$description": "Inre fokusringens färg – vit, enligt profilens tvåringsindikator (se f.focus.box.shadow).",
             "$type": "color",

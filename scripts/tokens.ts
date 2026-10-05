@@ -231,7 +231,7 @@ function parseShadowPart(part: string): Record<string, string> | null {
     const shadow: Record<string, string> = {
         offsetX: lengths[0],
         offsetY: lengths[1],
-        color: toAlias(color),
+        color: color,
     };
     if (lengths.length >= 3) {
         shadow.blur = lengths[2];
@@ -242,20 +242,43 @@ function parseShadowPart(part: string): Record<string, string> | null {
     return shadow;
 }
 
-/** var(--x) → DTCG-alias {x.med.punkter} (utan $ – dollar är förbehållet $-egenskaper); annat värde oförändrat. */
-function toAlias(color: string): string {
-    const match = color.match(WHOLE_ALIAS_PATTERN);
-    if (match === null) {
-        return color;
+/** var(--x) lämnas rått i klassificeringen; aliasrisningen sker i collectMode när hela namnmängden är känd. */
+
+/**
+ * Namn som är äkta prefix av ett annat tokennamn (`f-font-family` före
+ * `f-font-family-code`). I en strikt DTCG-gruppträdkan en token inte samtidigt
+ * vara grupp, så dessa token bogseras under det reserverade segmentet `_self`
+ * – namnförrådet innehåller aldrig understreck, så regeln är entydig i båda
+ * riktningarna (namn ↔ sökväg).
+ */
+function collectPrefixParents(names: Iterable<string>): Set<string> {
+    const all = [...names];
+    const prefixParents = new Set<string>();
+    for (const name of all) {
+        if (all.some((other) => other !== name && other.startsWith(`${name}-`))) {
+            prefixParents.add(name);
+        }
     }
-    return `{${match[1].split("-").join(".")}}`;
+    return prefixParents;
+}
+
+/** Tokennamn → sökvägssegment, med `_self` för prefixkrockar. */
+function pathFor(name: string, prefixParents: Set<string>): string[] {
+    const segments = name.split("-");
+    return prefixParents.has(name) ? [...segments, "_self"] : segments;
+}
+
+/** Ett tokennamn som DTCG-aliasreferens `{sökväg.med.punkter}`. */
+function aliasFor(name: string, prefixParents: Set<string>): string {
+    return `{${pathFor(name, prefixParents).join(".")}}`;
 }
 
 /** Klassificerar ett CSS-värde till DTCG-blad; kastar på otypbara former. */
 export function classify(name: string, value: string): TokenLeaf {
     if (WHOLE_ALIAS_PATTERN.test(value)) {
-        // $type sätts i efterhand ur måltoken (se collectMode).
-        return { $value: toAlias(value) };
+        // Hela värdet är en var()-referens; $type och DTCG-formen sätts i
+        // efterhand i collectMode, när hela namnmängden är känd.
+        return { $value: value };
     }
     if (isColor(value)) {
         return { $type: "color", $value: value };
@@ -298,11 +321,15 @@ export function classify(name: string, value: string): TokenLeaf {
 }
 
 /**
- * Samlar och klassificerar alla token för ett läge. Helvärdesalias får sin
- * $type av måltoken (och kastar om målet saknas eller inte är typat).
+ * Samlar och klassificerar alla token för ett läge: klassificera, härled
+ * `$type` för helvärdesalias ur måltoken och översätt alla var()-referenser
+ * (hela värden och skuggfärger) till DTCG-alias med `_self`-regeln.
  */
 export function collectMode(mode: Mode): Map<string, TokenLeaf> {
     const declarations = parseRootDeclarations(compileMode(mode));
+    const prefixParents = collectPrefixParents(
+        [...declarations.keys()].filter((name) => !EXCLUDED.includes(name)),
+    );
     const leaves = new Map<string, TokenLeaf>();
     for (const [name, value] of declarations) {
         if (EXCLUDED.includes(name)) {
@@ -311,10 +338,10 @@ export function collectMode(mode: Mode): Map<string, TokenLeaf> {
         leaves.set(name, classify(name, value));
     }
     for (const [name, leaf] of leaves) {
-        if (typeof leaf.$value !== "string" || !/^\{[a-zA-Z0-9.]+\}$/.test(leaf.$value)) {
+        if (typeof leaf.$value !== "string" || !WHOLE_ALIAS_PATTERN.test(leaf.$value)) {
             continue;
         }
-        const targetName = leaf.$value.slice(1, -1).split(".").join("-");
+        const targetName = leaf.$value.match(WHOLE_ALIAS_PATTERN)![1];
         const target = leaves.get(targetName);
         if (target === undefined || target.$type === undefined) {
             fail(`alias --${name} pekar på okänd eller otypad token --${targetName}`);
@@ -325,6 +352,9 @@ export function collectMode(mode: Mode): Map<string, TokenLeaf> {
             leaf.$description = description;
         }
     }
+    for (const [name, leaf] of leaves) {
+        leaf.$value = convertAliases(leaf.$value, prefixParents);
+    }
     for (const [name, description] of Object.entries(DESCRIPTIONS[mode])) {
         const leaf = leaves.get(name);
         if (leaf === undefined) {
@@ -333,6 +363,29 @@ export function collectMode(mode: Mode): Map<string, TokenLeaf> {
         leaf.$description = description;
     }
     return leaves;
+}
+
+/** Ersätter var()-referenser i sträng- och skuggvärden med DTCG-alias. */
+function convertAliases(value: unknown, prefixParents: Set<string>): unknown {
+    if (typeof value === "string") {
+        const match = value.match(WHOLE_ALIAS_PATTERN);
+        return match === null ? value : aliasFor(match[1], prefixParents);
+    }
+    if (Array.isArray(value)) {
+        return value.map((part) => convertAliases(part, prefixParents));
+    }
+    if (typeof value === "object" && value !== null) {
+        return Object.fromEntries(
+            Object.entries(value).map(([key, child]) => {
+                if (key !== "color" || typeof child !== "string") {
+                    return [key, child];
+                }
+                const match = child.match(WHOLE_ALIAS_PATTERN);
+                return [key, match === null ? child : aliasFor(match[1], prefixParents)];
+            }),
+        );
+    }
+    return value;
 }
 
 // ---------------------------------------------------------------------------
@@ -348,40 +401,55 @@ const FILE_DESCRIPTIONS: Record<Mode, string> = {
 };
 
 /**
- * Nästlar token via avstavning: --f-font-size-h1 → f.font.size.h1. En nod kan
- * vara både token och grupp (t.ex. fkds.color.feedback.background.warning med
- * undergruppen strong) – bladets $-egenskaper slås samman med gruppen, vilket
- * bevarar den mekaniska rundturen namn ↔ sökväg.
+ * Nästlar token via `_self`-regeln: `--f-font-size-h1` → `f.font.size.h1`,
+ * medan `--f-font-family` (prefix till `--f-font-family-code`) →
+ * `f.font.family._self`. Trädet är strikt – en nod är antingen token eller
+ * grupp, aldrig båda – vilket DTCG-konsumenter kräver för att se alla token.
+ * Rundturen är mekanisk: segmenten fogas samman med bindestreck och `_self`-
+ * segment stryks.
  */
 export function buildTokenTree(mode: Mode): Record<string, TokenNode> {
+    const leaves = collectMode(mode);
+    const prefixParents = collectPrefixParents(leaves.keys());
     const root: Record<string, TokenNode> = {
         $description: FILE_DESCRIPTIONS[mode],
     };
-    for (const [name, leaf] of collectMode(mode)) {
-        const parts = name.split("-");
+    for (const [name, leaf] of leaves) {
+        const parts = pathFor(name, prefixParents);
         let node = root as Record<string, TokenNode>;
         for (const part of parts.slice(0, -1)) {
-            const existing = node[part];
-            if (existing === undefined) {
+            if (node[part] === undefined) {
                 node[part] = {};
+            } else if ("$value" in node[part]) {
+                fail(`token --${name} skulle nästlas in i bladet "${part}" – _self-regeln har en lucka`);
             }
-            // Att går ner i ett befintligt blad är tillåtet: det skapar en
-            // blandnod (token med undergrupp), t.ex. fkds.focus.indicator.color
-            // med undergruppen background.
             node = node[part] as Record<string, TokenNode>;
         }
         const last = parts[parts.length - 1];
-        const existing = node[last];
-        if (existing === undefined) {
-            node[last] = leaf;
-        } else if ("$value" in existing) {
-            fail(`duplicerat blad för --${name}`);
-        } else {
-            // Blandnod: token med undergrupper – $-egenskaperna läggs till gruppen.
-            node[last] = { ...leaf, ...existing };
+        if (node[last] !== undefined) {
+            fail(`duplicerad sökväg för --${name}`);
         }
+        node[last] = leaf;
     }
+    assertStrictTree(root, "$");
     return sortDeep(root);
+}
+
+/** Trädet får inte innehålla blandnoder (token med underordnade) eller tomma grupper. */
+function assertStrictTree(node: unknown, path: string): void {
+    if (typeof node !== "object" || node === null) {
+        return;
+    }
+    const children = Object.entries(node as Record<string, unknown>).filter(([key]) => !key.startsWith("$"));
+    if ("$value" in node && children.length > 0) {
+        fail(`blandnod vid ${path} – en token får inte ha underordnade`);
+    }
+    if (!("$value" in node) && children.length === 0) {
+        fail(`tom grupp vid ${path}`);
+    }
+    for (const [key, child] of children) {
+        assertStrictTree(child, `${path}.${key}`);
+    }
 }
 
 /** Sorterar alla objektnycklar rekursivt ($-nycklar först via ASCII-ordningen). */

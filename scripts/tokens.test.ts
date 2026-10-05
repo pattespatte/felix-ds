@@ -29,7 +29,7 @@ const MODES = ["light", "dark"] as const;
 type Mode = (typeof MODES)[number];
 type JsonNode = Record<string, unknown>;
 
-/** Plockar blad ur token-trädet; blandnoder är både blad och grupp. */
+/** Plockar blad ur token-trädet; `_self`-segment stryks (rundtur till CSS-namnet). */
 function flattenTokenTree(node: unknown, prefix = ""): Map<string, TokenLeaf> {
     const leaves = new Map<string, TokenLeaf>();
     if (Array.isArray(node) || typeof node !== "object" || node === null) {
@@ -42,7 +42,7 @@ function flattenTokenTree(node: unknown, prefix = ""): Map<string, TokenLeaf> {
         if (key.startsWith("$")) {
             continue;
         }
-        const name = prefix === "" ? key : `${prefix}-${key}`;
+        const name = key === "_self" ? prefix : prefix === "" ? key : `${prefix}-${key}`;
         for (const [nested, leaf] of flattenTokenTree(child, name)) {
             leaves.set(nested, leaf);
         }
@@ -53,7 +53,7 @@ function flattenTokenTree(node: unknown, prefix = ""): Map<string, TokenLeaf> {
 /** Löser {alias}-referenser i ett JSON-värde mot samma fils token-träd. */
 function resolveJsonAliases(value: unknown, tree: JsonNode): unknown {
     if (typeof value === "string") {
-        return value.replace(/\{([a-zA-Z0-9.]+)\}/g, (_, path: string) => {
+        return value.replace(/\{([a-zA-Z0-9._]+)\}/g, (_, path: string) => {
             let node: unknown = tree;
             for (const part of path.split(".")) {
                 node = (node as JsonNode)[part];
@@ -200,7 +200,7 @@ describe.each(MODES)("tokenfilens struktur (%s)", (mode) => {
                 return;
             }
             if (typeof node.$value === "string") {
-                for (const match of node.$value.matchAll(/\{([a-zA-Z0-9.]+)\}/g)) {
+                for (const match of node.$value.matchAll(/\{([a-zA-Z0-9._]+)\}/g)) {
                     aliases.push(match[1]);
                 }
             }
@@ -237,10 +237,10 @@ describe("känsliga klassificeringar (ljust läge)", () => {
         expect(boxShadow.$type).toBe("shadow");
         expect(boxShadow.$value).toEqual([
             { offsetX: "0", offsetY: "0", blur: "0", spread: "2px", color: "{fkds.focus.indicator.color.background}" },
-            { offsetX: "0", offsetY: "0", blur: "0", spread: "4px", color: "{fkds.focus.indicator.color}" },
+            { offsetX: "0", offsetY: "0", blur: "0", spread: "4px", color: "{fkds.focus.indicator.color._self}" },
         ]);
         const button = (tree.f as JsonNode).button as JsonNode;
-        expect(((button.shadow as JsonNode) as unknown as TokenLeaf).$value).toBe("none");
+        expect((((button.shadow as JsonNode)._self as JsonNode) as unknown as TokenLeaf).$value).toBe("none");
     });
 
     test("sidopanelens tertiärbakgrund är en aliasreferens som löser sig", () => {
@@ -257,5 +257,29 @@ describe("känsliga klassificeringar (ljust läge)", () => {
             expect(leaf?.$value).toBe("none");
         }
         expect(leaves.get("f-button-shadow")?.$type).toBe("shadow");
+    });
+
+    test("trädet är strikt – inga blandnoder – och `_self`-token finns som riktiga blad", () => {
+        (function walk(node: unknown, path: string): void {
+            if (Array.isArray(node) || typeof node !== "object" || node === null) {
+                return;
+            }
+            const children = Object.entries(node as JsonNode).filter(([key]) => !key.startsWith("$"));
+            if ("$value" in node) {
+                expect(children.length, `blandnod vid ${path}`).toBe(0);
+            } else {
+                expect(children.length > 0, `tom grupp vid ${path}`).toBe(true);
+            }
+            for (const [key, child] of children) {
+                walk(child, `${path}.${key}`);
+            }
+        })(tree, "$");
+        const f = tree.f as JsonNode;
+        expect(((f.font as JsonNode).family as JsonNode)._self).toMatchObject({ $type: "fontFamily" });
+        expect(((f.button as JsonNode).shadow as JsonNode)._self).toMatchObject({ $value: "none" });
+        const fkds = tree.fkds as JsonNode;
+        const focus = ((fkds.focus as JsonNode).indicator as JsonNode).color as JsonNode;
+        expect(focus._self).toMatchObject({ $value: "#000000" });
+        expect(focus.background).toMatchObject({ $value: "#ffffff" });
     });
 });

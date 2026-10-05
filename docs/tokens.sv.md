@@ -36,12 +36,14 @@ CSS-variabelnamnet avspeglas mekaniskt: namnet utan inledande `--` delas på bin
 - `--f-font-size-xxx-large` → `f.font.size.xxx.large`
 - `f.font.size.xxx.large` → `--f-font-size-xxx-large`
 
-En token kan vara både blad och grupp när ett längre namn förlänger ett kortare (”blandnod”). I JSON är det ett objekt med både `$value` och undernycklar:
+När ett tokennamn är äkta prefix av ett annat (`--f-font-family` före `--f-font-family-code`) kan namnet inte samtidigt vara blad och grupp – DTCG-konsumenter ser då undergrupperna som osynliga extraegenskaper. Kortnamnet bogseras därför under det reserverade segmentet `_self` (namnförrådet innehåller aldrig understreck, så regeln är entydig i båda riktningarna):
 
 ```json
 "warning": {
-    "$type": "color",
-    "$value": "#fff3c6",
+    "_self": {
+        "$type": "color",
+        "$value": "#fff3c6"
+    },
     "strong": {
         "$type": "color",
         "$value": "#ffc108"
@@ -49,16 +51,16 @@ En token kan vara både blad och grupp när ett längre namn förlänger ett kor
 }
 ```
 
-Det motsvarar `--fkds-color-feedback-background-warning` och `--fkds-color-feedback-background-warning-strong`. Verktyg som bara stöder rena träd kan behöva platta ut blandnoderna.
+Det motsvarar `--fkds-color-feedback-background-warning` och `--fkds-color-feedback-background-warning-strong`. Rundturen är mekanisk: segmenten fogas samman med bindestreck och `_self` stryks. Nio token berörs (typsnittsfamiljen, knappskuggan med deltoken, de fem `strong`-varianterna och fokusringens färger).
 
 ## Aliasreferenser
 
 Token som i CSS:t pekar på en annan token uttrycks som DTCG-alias `{sökväg}` (utan dollartecken – `$` är förbehållet egenskapsnamn som `$value`):
 
 - `--f-page-layout-background` → `"{fkds.color.background.tertiary}"` (båda lägena)
-- `--f-color-focus` → `"{fkds.focus.indicator.color}"`
+- `--f-color-focus` → `"{fkds.focus.indicator.color._self}"`
 - `--f-tooltip-border-width` → `"{f.border.width.medium}"`
-- Fokusindikatorns skugga är sammansatt av två ringar vars färger är alias: `"{fkds.focus.indicator.color.background}"` och `"{fkds.focus.indicator.color}"`.
+- Fokusindikatorns skugga är sammansatt av två ringar vars färger är alias: `"{fkds.focus.indicator.color.background}"` och `"{fkds.focus.indicator.color._self}"`.
 
 Alla alias löser sig inom samma fil.
 

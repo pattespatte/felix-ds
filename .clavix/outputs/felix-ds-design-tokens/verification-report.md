@@ -51,3 +51,11 @@ Re-verified after the fixes:
 - `command npm pack --dry-run`: lists `tokens/light.json` + `tokens/dark.json`
 
 Files changed: `scripts/tokens.ts`, `scripts/tokens.test.ts`, `tokens/light.json`, `tokens/dark.json`, `docs/tokens.sv.md`, `docs/tokens.en.md`, PRD (alias example corrected + addendum item 6), `tasks.md` correction note, this report.
+
+## Second validation round (2026-10-05 – strict tree, `_self` rule)
+
+The owner's second validator pass showed 173 of 182 tokens and one remaining ⛔ DANGLING_REFERENCE (`f.focus.box.shadow` → `fkds.focus.indicator.color.background`). Root cause: the emitter had allowed "mixed nodes" (a token object that also serves as a group). Per DTCG, a node with `$value` is a token and its non-`$` children are ignored by conformant tools – nine tokens were invisible (`f.font.family.code`, `f.button.shadow.hover/active`, the five `feedback.background.*.strong`, `fkds.focus.indicator.color.background`) and the alias into one of them dangled.
+
+**Fix**: strict tree with a reserved `_self` segment – a token whose name is a strict prefix of another token's name nests under `_self` (9 relocations; e.g. `f.font.family._self` beside `f.font.family.code`, `fkds.focus.indicator.color._self` beside `.background`). Round trip unchanged mechanically (hyphen-join, drop `_self`); underscore never occurs in the name vocabulary. The build now asserts no mixed nodes and no empty groups (`assertStrictTree`); the test suite gained a strict-tree test and `_self`-aware flattening.
+
+Re-verified: `bun test` 14/14 green (1418 assertions); regeneration byte-identical to committed files; `npm pack --dry-run` lists both token files. Expected external validation after this fix: 182 tokens, 0 errors, 29 warnings (26 missing `$type` + 3 `"none"` shadows) – all documented deviations.

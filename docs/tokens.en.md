@@ -36,12 +36,14 @@ The CSS custom-property name maps mechanically: the name without the leading `--
 - `--f-font-size-xxx-large` → `f.font.size.xxx.large`
 - `f.font.size.xxx.large` → `--f-font-size-xxx-large`
 
-A token can be both a leaf and a group when a longer name extends a shorter one (a ”mixed node”). In JSON this is an object with both `$value` and child keys:
+When a token's name is a strict prefix of another (`--f-font-family` before `--f-font-family-code`), the name cannot be both a leaf and a group at once – DTCG consumers would then see the subgroups as invisible extra properties. The shorter name is therefore nested under the reserved segment `_self` (the name vocabulary never contains underscores, so the rule is unambiguous in both directions):
 
 ```json
 "warning": {
-    "$type": "color",
-    "$value": "#fff3c6",
+    "_self": {
+        "$type": "color",
+        "$value": "#fff3c6"
+    },
     "strong": {
         "$type": "color",
         "$value": "#ffc108"
@@ -49,16 +51,16 @@ A token can be both a leaf and a group when a longer name extends a shorter one 
 }
 ```
 
-This corresponds to `--fkds-color-feedback-background-warning` and `--fkds-color-feedback-background-warning-strong`. Tools that only support strict trees may need to flatten mixed nodes.
+This corresponds to `--fkds-color-feedback-background-warning` and `--fkds-color-feedback-background-warning-strong`. The round trip is mechanical: join the segments with hyphens and drop `_self`. Nine tokens are affected (the font family, the button shadow with subtokens, the five `strong` variants and the focus ring colors).
 
 ## Alias references
 
 Tokens that point at another token in CSS are expressed as DTCG aliases `{path}` (no dollar sign – `$` is reserved for property names like `$value`):
 
 - `--f-page-layout-background` → `"{fkds.color.background.tertiary}"` (both modes)
-- `--f-color-focus` → `"{fkds.focus.indicator.color}"`
+- `--f-color-focus` → `"{fkds.focus.indicator.color._self}"`
 - `--f-tooltip-border-width` → `"{f.border.width.medium}"`
-- The focus indicator's shadow consists of two rings whose colors are aliases: `"{fkds.focus.indicator.color.background}"` and `"{fkds.focus.indicator.color}"`.
+- The focus indicator's shadow consists of two rings whose colors are aliases: `"{fkds.focus.indicator.color.background}"` and `"{fkds.focus.indicator.color._self}"`.
 
 All aliases resolve within the same file.
 

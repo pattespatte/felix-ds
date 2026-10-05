@@ -181,8 +181,10 @@
         }
       },
       "shadow": {
-        "$type": "shadow",
-        "$value": "none",
+        "_self": {
+          "$type": "shadow",
+          "$value": "none"
+        },
         "active": {
           "$type": "shadow",
           "$value": "none"
@@ -236,7 +238,7 @@
     "color": {
       "focus": {
         "$type": "color",
-        "$value": "{fkds.focus.indicator.color}"
+        "$value": "{fkds.focus.indicator.color._self}"
       }
     },
     "density": {
@@ -259,7 +261,7 @@
             },
             {
               "blur": "0",
-              "color": "{fkds.focus.indicator.color}",
+              "color": "{fkds.focus.indicator.color._self}",
               "offsetX": "0",
               "offsetY": "0",
               "spread": "4px"
@@ -270,12 +272,14 @@
     },
     "font": {
       "family": {
-        "$type": "fontFamily",
-        "$value": [
-          "Noto Sans",
-          "system-ui",
-          "sans-serif"
-        ],
+        "_self": {
+          "$type": "fontFamily",
+          "$value": [
+            "Noto Sans",
+            "system-ui",
+            "sans-serif"
+          ]
+        },
         "code": {
           "$type": "fontFamily",
           "$value": [
@@ -733,40 +737,50 @@
       "feedback": {
         "background": {
           "info": {
-            "$type": "color",
-            "$value": "#1e222e",
+            "_self": {
+              "$type": "color",
+              "$value": "#1e222e"
+            },
             "strong": {
               "$type": "color",
               "$value": "#02478a"
             }
           },
           "negative": {
-            "$type": "color",
-            "$value": "#1e222e",
+            "_self": {
+              "$type": "color",
+              "$value": "#1e222e"
+            },
             "strong": {
               "$type": "color",
               "$value": "#c7311a"
             }
           },
           "neutral": {
-            "$type": "color",
-            "$value": "#1e222e",
+            "_self": {
+              "$type": "color",
+              "$value": "#1e222e"
+            },
             "strong": {
               "$type": "color",
               "$value": "#6e7689"
             }
           },
           "positive": {
-            "$type": "color",
-            "$value": "#1e222e",
+            "_self": {
+              "$type": "color",
+              "$value": "#1e222e"
+            },
             "strong": {
               "$type": "color",
               "$value": "#217424"
             }
           },
           "warning": {
-            "$type": "color",
-            "$value": "#1e222e",
+            "_self": {
+              "$type": "color",
+              "$value": "#1e222e"
+            },
             "strong": {
               "$type": "color",
               "$value": "#ffc108"
@@ -936,8 +950,10 @@
     "focus": {
       "indicator": {
         "color": {
-          "$type": "color",
-          "$value": "#ffffff",
+          "_self": {
+            "$type": "color",
+            "$value": "#ffffff"
+          },
           "background": {
             "$type": "color",
             "$value": "#1b1e23"
