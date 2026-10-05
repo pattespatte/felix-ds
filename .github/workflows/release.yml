@@ -21,6 +21,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
       - run: bun install --frozen-lockfile
+      # Parity gate: the committed DTCG token files must match the
+      # SCSS sources; a stale tokens/*.json fails the release here.
+      - run: bun test
       - run: bun run build
       - run: bunx vue-tsc --noEmit
       - run: bunx playwright install --with-deps chromium

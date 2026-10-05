@@ -66,7 +66,7 @@
 
 ## Phase 4: Release (owner-gated)
 
-- [ ] **Prepare and hand over the 1.0.1 → 1.1.0 release** (ref: PRD Must-Have 5)
+- [ ] **Prepare and hand over the 1.0.1 → 1.1.0 release** (ref: PRD Must-Have 5) – FÖRBEREDELSEN KLAR, utgivningen väntar på ägaren: `release.yml` har ett paritetssteg (`bun test` efter `bun install --frozen-lockfile`, före build/publish) och CHANGELOG.md har en färdig Unreleased-sektion (commits 4434ee5–6951e6c). Ägaren genomför 1.0.1 → 1.1.0 exakt enligt runbooken `docs/release.en.md` (minor bump, tagga v1.1.0, pusha; arbetsflödet bygger, kör portarna inklusive den nya paritetsporten och publicerar). Agenten redigerar aldrig version, dispatchar aldrig arbetsflöden och pushar/publicerar aldrig.
   Task ID: phase-4-release-01
   > **Implementation**: Modify `.github/workflows/release.yml` (add parity step) and prepare the changelog; **OWNER-GATED – the bump, workflow dispatch and publish are executed by the owner via the runbook in `docs/release.en.md`, never by an agent.**
   > **Details**: Add a step before the publish job in `release.yml` that runs `bun install --frozen-lockfile` + `bun test` so a stale or non-paritoning token file cannot ship (flag this workflow change to the owner when handing over). Run `bun run changelog` (git-cliff) so the entry is staged. Then stop and hand over: version 1.0.1 → 1.1.0 (minor – new feature) following `docs/release.en.md` exactly. Check: owner confirms the published 1.1.0 tarball contains `tokens/light.json` + `tokens/dark.json` and the release run is green.
