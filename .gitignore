@@ -1,8 +1,34 @@
+# Dependencies
 node_modules/
+
+# Build output
 dist/
-.DS_Store
-*.local
-AGENTS.md
-graphify-out/
+*.tsbuildinfo
+
+# Test artifacts
+e2e/visual.spec.ts-snapshots/
 playwright-report/
 test-results/
+coverage/
+
+# Environment & secrets
+*.local
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor & AI tooling
+.claude/
+.clavix/
+.idea/
+graphify-out/
+
+# Local-only files
+AGENTS.md
