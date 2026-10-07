@@ -1,34 +1,21 @@
 <script setup lang="ts">
 import { FIcon } from "@fkui/vue";
 import ComponentHeading from "../../components/ComponentHeading.vue";
-
-const icons = [
-    { name: "bell", label: "bell" },
-    { name: "calendar", label: "calendar" },
-    { name: "search", label: "search" },
-    { name: "plus", label: "plus" },
-    { name: "pen", label: "pen" },
-    { name: "trashcan", label: "trashcan" },
-    { name: "success", label: "success" },
-    { name: "error", label: "error" },
-    { name: "alert", label: "alert" },
-    { name: "pdf", label: "pdf" },
-    { name: "arrow-right", label: "arrow-right" },
-    { name: "new-window", label: "new-window" },
-];
+import { PHOSPHOR_ICON_NAMES } from "../../../../src/icons/phosphor-spritesheet";
 </script>
 
 <template>
     <section id="ficon" aria-labelledby="ficon-heading" class="demo">
         <component-heading id="ficon-heading" :names="['FIcon']" />
         <p class="demo__description">
-            Ett urval ur standardikonbiblioteket. Ikonerna är teckensnittsbaserade
-            och följer textfärgen i det aktiva temat.
+            Temats ikonuppsättning – Phosphor Icons i vikten bold. Ikonerna är
+            SVG-spritebaserade, ersätter standardikonbibliotekets teckningar bakom
+            oförändrade FIcon-namn och följer textfärgen i det aktiva temat.
         </p>
         <ul class="icon-grid">
-            <li v-for="icon in icons" :key="icon.name" class="icon-grid__item">
-                <f-icon :name="icon.name" />
-                <span class="icon-grid__label">{{ icon.label }}</span>
+            <li v-for="name in PHOSPHOR_ICON_NAMES" :key="name" class="icon-grid__item">
+                <f-icon :name="name" />
+                <span class="icon-grid__label">{{ name }}</span>
             </li>
         </ul>
     </section>
