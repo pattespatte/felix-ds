@@ -47,10 +47,10 @@ git tag -a vX.Y.Z -m "felix-ds vX.Y.Z"
 
 ## 3. Post-release
 
-- Verify installability exactly the way a consumer would (see section 5 for the `.npmrc` lines):
+- Verify installability exactly the way a consumer would (see section 5 for the `.npmrc` lines). The package has restricted visibility, so the query needs a token – anonymous `npm view` returns `E401` by design. With the consumer PAT from section 5 in the environment (an `.npmrc` with the registry lines works too):
 
   ```bash
-  npm view @pattespatte/felix-ds@latest version --registry=https://npm.pkg.github.com
+  npm view @pattespatte/felix-ds@latest version --registry=https://npm.pkg.github.com --//npm.pkg.github.com/:_authToken=$GITHUB_PACKAGES_TOKEN
   ```
 
 - `deploy-playground.yml` also fires on this push (it triggers on every push to `main`). That is expected and harmless – the playground just deploys.

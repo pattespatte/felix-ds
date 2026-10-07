@@ -47,10 +47,10 @@ git tag -a vX.Y.Z -m "felix-ds vX.Y.Z"
 
 ## 3. Efter utgivningen
 
-- Kontrollera att paketet går att installera, precis som en konsument skulle göra (`.npmrc`-raderna står i avsnitt 5):
+- Kontrollera att paketet går att installera, precis som en konsument skulle göra (`.npmrc`-raderna står i avsnitt 5). Paketet har begränsad synlighet, så frågan kräver en token – anonym `npm view` svarar `E401`, och det är avsiktligt. Med konsument-PAT:en från avsnitt 5 i miljön (en `.npmrc` med registry-raderna fungerar lika bra):
 
   ```bash
-  npm view @pattespatte/felix-ds@latest version --registry=https://npm.pkg.github.com
+  npm view @pattespatte/felix-ds@latest version --registry=https://npm.pkg.github.com --//npm.pkg.github.com/:_authToken=$GITHUB_PACKAGES_TOKEN
   ```
 
 - `deploy-playground.yml` triggas också av pushen (den körs vid varje push till `main`). Det är väntat och harmlöst – playgrounden deployas bara.
