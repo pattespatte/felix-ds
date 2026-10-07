@@ -12,6 +12,11 @@ conventional commits.
 - Classify token values into DTCG types
 - Emit deterministic DTCG token files for both colour modes
 - Ship DTCG token files and document them in README
+- Add @phosphor-icons/vue dev dependency
+- Add phosphor spritesheet generator
+- Generate phosphor spritesheet for f-icon library (66 icons)
+- Replace default icon library with phosphor set
+- Ficon demo lists the full phosphor set
 
 ### Documentation
 
@@ -20,14 +25,28 @@ conventional commits.
 - Restructure README into clear usage tracks
 - Add DTCG design-token export PRD, plan and idle-task prompt
 - Add bilingual design-token guide
+- Record PRD addendum and verification report
+- Record confirmed validation result in verification report
+- Document phosphor icon set and consumption
 
 ### Fixed
 
 - Adjust view padding and mark intro sections
+- Emit spec-compliant alias references and untype non-shadow none values
+- Emit strict DTCG tree with _self nodes for prefix-colliding tokens
+- Drop underline on FNavigationMenu anchors
+- Drop duplicate underline on FErrorList links
+
+### Miscellaneous
+
+- Add parity gate to release workflow and stage changelog
+- Restructure .gitignore with sections and broader ignores
+- Remove visual regression baselines
 
 ### Testing
 
 - Add parity, structure and staleness suite for token files
+- Parity test against fkui icon metadata
 
 ## [1.0.1] – 2026-09-30
 
