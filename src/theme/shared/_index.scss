@@ -166,6 +166,15 @@
         text-decoration: none;
     }
 
+    // FErrorList renders each clickable error item as an anchor with the
+    // message in an inner span (error-list__link) that carries the
+    // component's own red error underline. The profile's anchor rule would
+    // draw a second underline in the link colour on top of it, so the
+    // anchor itself is left undecorated – the span keeps the red one.
+    .error-list__list a {
+        text-decoration: none;
+    }
+
     // Checkbox and radio glyphs draw their resting border with the weak
     // border colour instead of the regular component border.
     .checkbox__label::before,
