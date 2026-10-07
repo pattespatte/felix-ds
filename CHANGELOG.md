@@ -18,6 +18,10 @@ conventional commits.
 - Replace default icon library with phosphor set
 - Ficon demo lists the full phosphor set
 
+### CI
+
+- Gate on axe scans instead of visual baselines
+
 ### Documentation
 
 - Add Swedish release runbook, link both languages from README
@@ -28,6 +32,7 @@ conventional commits.
 - Record PRD addendum and verification report
 - Record confirmed validation result in verification report
 - Document phosphor icon set and consumption
+- Drop baseline steps from the runbook
 
 ### Fixed
 
@@ -42,6 +47,8 @@ conventional commits.
 - Add parity gate to release workflow and stage changelog
 - Restructure .gitignore with sections and broader ignores
 - Remove visual regression baselines
+- Prepare v1.0.2
+- Untrack .clavix design-token planning docs
 
 ### Testing
 
