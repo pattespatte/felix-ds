@@ -23,7 +23,8 @@
     "tokens:build": "bun scripts/tokens.ts",
     "changelog": "bunx git-cliff -o CHANGELOG.md",
     "test:visual": "playwright test",
-    "test:visual:update": "playwright test --update-snapshots"
+    "test:visual:update": "playwright test --update-snapshots",
+    "test:a11y": "playwright test e2e/a11y.spec.ts"
   },
   "sass": "./src/index.scss",
   "files": [

@@ -1,11 +1,11 @@
 import { defineConfig } from "@playwright/test";
 
 /**
- * Release-gate config: visual regression + axe over the playground matrix.
- *
- * Snapshot naming uses Playwright's per-platform defaults (e.g. -darwin-arm64
- * locally, -linux in the release workflow); only one platform's baselines are
- * committed at a time – see docs/release.en.md for the linux regeneration step.
+ * E2E config for the playground matrix. e2e/a11y.spec.ts is the release
+ * gate (24 axe scans, no artifacts); e2e/visual.spec.ts is local-only
+ * visual regression tooling whose snapshots in
+ * e2e/visual.spec.ts-snapshots/ stay untracked (see .gitignore) and are
+ * regenerated with `bun run test:visual:update`.
  */
 export default defineConfig({
     testDir: "e2e",
