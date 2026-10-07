@@ -154,6 +154,18 @@
         text-decoration: none;
     }
 
+    // FNavigationMenu renders its items (and the overflow "Mer" trigger) as
+    // anchors, and its overflow submenu renders plain anchors via the
+    // internal popup menu (also used by FWizardStep). Upstream keeps every
+    // one of them undecorated – the global anchor rule of the design
+    // package sets no underline and the component rules carry the colours –
+    // so the profile's link treatment is scoped back out for these menu
+    // surfaces.
+    .imenu__list__anchor,
+    .ipopupmenu__list__item a {
+        text-decoration: none;
+    }
+
     // Checkbox and radio glyphs draw their resting border with the weak
     // border colour instead of the regular component border.
     .checkbox__label::before,
