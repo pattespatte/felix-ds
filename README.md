@@ -101,6 +101,18 @@ import "@fkui/design/lib/fonts.css";
 
 Du har nu temat på plats. En komplett genomgång finns i guiden [Skapa en webbplats med felix-ds](https://github.com/pattespatte/felix-ds/blob/main/docs/create-a-site.sv.md). Den tar upp projektsetup, temaintegration, mörkt läge, ikoner, formulär, sök och prerendering.
 
+### Ikoner
+
+Paketet skickar med en kurerad ikonuppsättning från [Phosphor Icons](https://phosphoricons.com) (MIT-licens) i vikten bold. Uppsättningen ersätter standardikonbibliotekets teckningar bakom FIcons oförändrade namn – varje namn ur `@fkui/icon-lib-default` täcks (även de sammansatta `info`, `warning` och `tooltip`), maskinkontrollerat av paritetstestet i `scripts/icons.test.ts`, plus en kurerad utökning. Ikonerna är SVG-sprites som följer textfärgen i det aktiva temat.
+
+Byt ut standardbibliotekets import mot temats spritesheet i webbappens ingångspunkt – importera aldrig båda, eftersom dubbla `f-icon-*`-symbol-id:n löser sig till det blad som först hamnar i DOM:en:
+
+```ts
+import "@pattespatte/felix-ds/src/icons/phosphor-spritesheet";
+```
+
+FIcon används sedan som vanligt, till exempel `<f-icon name="house">`. Hela uppsättningen visas på [playgroundens ikonsida](https://pattespatte.github.io/felix-ds/#/knappar/ficon). Underhållare regenererar sheetet med `bun run icons:build` – mappningarna i `scripts/icons.ts` är källan.
+
 ### Mörkt läge
 
 Temat har även en mörk profil. `src/index.scss` skriver bara ut det ljusa temat. Du slår på mörkt läge med mixins:
@@ -186,6 +198,7 @@ bun run dev        # startar playgrounden (Vite)
 | `bun run build` | Bygg playgrounden för produktion |
 | `bun run build:theme` | Kompilera temalagret till `dist/felix.css` (typsnittsfilerna hamnar bredvid i `dist/files/`) |
 | `bun run tokens:build` | Generera `tokens/light.json` och `tokens/dark.json` ur temats SCSS-källor |
+| `bun run icons:build` | Generera om `src/icons/phosphor-spritesheet.ts` ur mappningarna i `scripts/icons.ts` |
 | `bun run fkui …` | Visa och uppgradera `@fkui/*`-beroendena (se [Uppgradera FKUI-beroendena](#uppgradera-fkui-beroendena)) |
 
 ## Utveckla felix-ds
@@ -281,6 +294,7 @@ En HTML/CSS-validerare (till exempel W3C:s Nu-validerare) rapporterar flera fynd
 ## Licenser
 
 - FKUI-beroendena (`@fkui/vue`, `@fkui/design`, `@fkui/theme-default`, `@fkui/date`, `@fkui/logic`, `@fkui/icon-lib-default`) har MIT-licens. Du använder dem som publika npm-paket.
+- Ikonuppsättningen är renderad från Phosphor Icons (MIT-licens) via utvecklingsberoendet `@phosphor-icons/vue`.
 - Noto Sans distribueras under SIL Open Font License 1.1. Licenstexten finns i `src/fonts/licenses/noto-sans-OFL.txt`.
 - Roboto Slab distribueras under Apache License 2.0. Licenstexten finns i `src/fonts/licenses/roboto-slab-LICENSE-APACHE-2.0.txt`.
 
@@ -393,6 +407,18 @@ import "@fkui/design/lib/fonts.css";
 
 The theme is now in place. A complete walkthrough is in the guide [Building a site with felix-ds](https://github.com/pattespatte/felix-ds/blob/main/docs/create-a-site.en.md). It covers project setup, theme integration, dark mode, icons, forms, search and prerendering.
 
+### Icons
+
+The package ships a curated icon set from [Phosphor Icons](https://phosphoricons.com) (MIT licensed) at the bold weight. The set replaces the default icon library's artwork behind FIcon's unchanged names – every name from `@fkui/icon-lib-default` is covered (including the stacked composites `info`, `warning` and `tooltip`), machine-checked by the parity test in `scripts/icons.test.ts`, plus a curated expansion. The icons are SVG sprites that follow the active theme's text color.
+
+Replace the default library's import with the theme's spritesheet in your web app's entry point – never import both, since duplicate `f-icon-*` symbol ids resolve to whichever sheet enters the DOM first:
+
+```ts
+import "@pattespatte/felix-ds/src/icons/phosphor-spritesheet";
+```
+
+FIcon is then used as usual, for example `<f-icon name="house">`. The full set is on the [playground's icon page](https://pattespatte.github.io/felix-ds/#/knappar/ficon). Maintainers regenerate the sheet with `bun run icons:build` – the mappings in `scripts/icons.ts` are the source.
+
 ### Dark mode
 
 The theme also ships a dark profile. `src/index.scss` emits only the light theme. You switch on dark mode with mixins:
@@ -477,6 +503,8 @@ Open the address printed in the terminal (usually `http://localhost:5173/`). Swi
 | `bun run dev` | Run the playground locally |
 | `bun run build` | Build the playground for production |
 | `bun run build:theme` | Compile the theme layer to `dist/felix.css` (the font files land next to it in `dist/files/`) |
+| `bun run tokens:build` | Generate `tokens/light.json` and `tokens/dark.json` from the theme's SCSS sources |
+| `bun run icons:build` | Regenerate `src/icons/phosphor-spritesheet.ts` from the mappings in `scripts/icons.ts` |
 | `bun run fkui …` | Show and upgrade the `@fkui/*` dependencies (see [Upgrading the FKUI dependencies](#upgrading-the-fkui-dependencies)) |
 
 ## Developing felix-ds
@@ -572,6 +600,7 @@ An HTML/CSS validator (for example the W3C Nu checker) reports several findings 
 ## Licenses
 
 - The FKUI dependencies (`@fkui/vue`, `@fkui/design`, `@fkui/theme-default`, `@fkui/date`, `@fkui/logic`, `@fkui/icon-lib-default`) are MIT licensed. You use them as public npm packages.
+- The icon set is rendered from Phosphor Icons (MIT licensed) via the `@phosphor-icons/vue` dev dependency.
 - Noto Sans is distributed under the SIL Open Font License 1.1. The license text is in `src/fonts/licenses/noto-sans-OFL.txt`.
 - Roboto Slab is distributed under the Apache License 2.0. The license text is in `src/fonts/licenses/roboto-slab-LICENSE-APACHE-2.0.txt`.
 
