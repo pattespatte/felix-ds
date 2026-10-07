@@ -15,36 +15,10 @@ Gå igenom listan innan du rör en tagg:
    npm view @fkui/theme-default version
    ```
 
-   Är versionen `>= 7.0.0` är utgivningen blockerad tills temat verifierats mot den nya majorversionen (och playgroundens låsta utvecklingsversioner höjts och baselines uppdaterats), eller tills peer-intervallet i `package.json` medvetet har snävats av. Läs också snabbt igenom changlogen för varje `@fkui/*`-utgivning inom det stödda intervallet sedan förra felix-ds-utgivningen, och håll utkik efter ändringar i tokensytan.
-3. **Porten grön lokalt.** `bun install`, `bun run build`, `bunx vue-tsc --noEmit` och framför allt `bun run test:visual` (36 visuella baselines + 24 axe-skanningar) passerar på din maskin.
-4. **Aktuella baselines.** Har playgrounden ändrats sedan förra utgivningen: generera om baselinesna och granska dem först:
+   Är versionen `>= 7.0.0` är utgivningen blockerad tills temat verifierats mot den nya majorversionen (och playgroundens låsta utvecklingsversioner höjts), eller tills peer-intervallet i `package.json` medvetet har snävats av. Läs också snabbt igenom changlogen för varje `@fkui/*`-utgivning inom det stödda intervallet sedan förra felix-ds-utgivningen, och håll utkik efter ändringar i tokensytan.
+3. **Porten grön lokalt.** `bun install`, `bun run build`, `bunx vue-tsc --noEmit` och framför allt `bun run test:a11y` (24 axe-skanningar) passerar på din maskin.
 
-   ```bash
-   bun run test:visual:update
-   git diff e2e/visual.spec.ts-snapshots   # granska png-diffarna noga
-   ```
-
-   En baseline-uppdatering är ett granskat beslut, aldrig en knapp för att ”få porten grön”: varje pixeländring ska gå att förklara.
-5. **Linux-baselines för CI.** Utgivningsarbetsflödet kör `bun run test:visual` på ubuntu-latest, vilket kräver baselines med suffixet `-linux`. Generera om dem när darwin-baselinesna har ändrats, via repots arbetsflöde **Generate linux visual baselines** (ingen docker behövs lokalt):
-
-   1. GitHub → Actions → *Generate linux visual baselines* → **Run workflow** på `main` (cirka 4 minuter; den kör `--update-snapshots` på en ubuntu-runner och laddar upp snapshot-mappen som artefakten `linux-baselines`). Den går också att starta från terminalen:
-
-      ```bash
-      gh workflow run generate-linux-baselines.yml --repo pattespatte/felix-ds --ref main
-      gh run watch --repo pattespatte/felix-ds   # valfritt, live-vy
-      ```
-
-   2. Ladda ner artefakten och kopiera **endast** filerna `*-linux.png` till `e2e/visual.spec.ts-snapshots/` (den innehåller även darwin-uppsättningen – strunta i den):
-
-      ```bash
-      gh run download --repo pattespatte/felix-ds -n linux-baselines -D /tmp/linux-baselines
-      cp /tmp/linux-baselines/*-linux.png e2e/visual.spec.ts-snapshots/
-      ls e2e/visual.spec.ts-snapshots/*-linux.png | wc -l   # väntat tal: 36
-      ```
-
-   3. Kör `bun run test:visual` lokalt (bekräftar att darwin-uppsättningen fortfarande godkänns) och committa linux-png:erna tillsammans med darwin-png:erna. Playwright väljer det suffix som matchar runner-plattformen när testerna körs.
-
-   Saknas linux-uppsättningen fallerar utgivningsporten med felet ”snapshot doesn't exist … `-chromium-linux.png`” – det är porten som gör sitt jobb; gå inte förbi den.
+Den visuella regressionssviten (`bun run test:visual`) är ett lokalt verktyg: baselinesna spåras inte av git (se `.gitignore`) och ingår inte i utgivningsporten. Generera om och granska lokala snapshots med `bun run test:visual:update` när playgrounden ändras.
 
 ## 2. Ge ut versionen
 
@@ -68,7 +42,7 @@ git tag -a vX.Y.Z -m "felix-ds vX.Y.Z"
    git push origin main --follow-tags
    ```
 
-4. Följ Actions-körningen för arbetsflödet **Release to GitHub Packages** (`.github/workflows/release.yml`). Den checkar ut repot, installerar med låst lockfile, bygger, typkontrollerar, kör den visuella porten mot linux-baselines, publicerar `@pattespatte/felix-ds` på npm.pkg.github.com och skapar GitHub-releasen med genererade versionsfakta.
+4. Följ Actions-körningen för arbetsflödet **Release to GitHub Packages** (`.github/workflows/release.yml`). Den checkar ut repot, installerar med låst lockfile, bygger, typkontrollerar, kör tillgänglighetsporten (axe-skanningarna), publicerar `@pattespatte/felix-ds` på npm.pkg.github.com och skapar GitHub-releasen med genererade versionsfakta.
 5. Granska versionsfakta i GitHub-releasen och redigera dem för läsbarhet om det behövs (de genereras från commits – CHANGELOG.md är den källa som underhålls för hand).
 
 ## 3. Efter utgivningen

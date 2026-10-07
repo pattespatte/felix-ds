@@ -15,36 +15,10 @@ Run through this list before touching a tag:
    npm view @fkui/theme-default version
    ```
 
-   If this is `>= 7.0.0`, the release is blocked until the theme is verified (and the playground's dev pins bumped and baselines refreshed) against the new major, or the peer range in `package.json` is deliberately narrowed. Also skim the changelog of every `@fkui/*` release inside the supported range since the last felix-ds release for token-surface changes.
-3. **Gate green locally.** `bun install`, `bun run build`, `bunx vue-tsc --noEmit` and especially `bun run test:visual` (36 visual baselines + 24 axe scans) all pass on your machine.
-4. **Baselines current.** If the playground changed since the last release, regenerate and review baselines first:
+   If this is `>= 7.0.0`, the release is blocked until the theme is verified against the new major (and the playground's dev pins bumped), or the peer range in `package.json` is deliberately narrowed. Also skim the changelog of every `@fkui/*` release inside the supported range since the last felix-ds release for token-surface changes.
+3. **Gate green locally.** `bun install`, `bun run build`, `bunx vue-tsc --noEmit` and especially `bun run test:a11y` (24 axe scans) all pass on your machine.
 
-   ```bash
-   bun run test:visual:update
-   git diff e2e/visual.spec.ts-snapshots   # review the PNG diffs deliberately
-   ```
-
-   A baseline update is a reviewed decision, never a "make the gate pass" button: every pixel change must be explainable.
-5. **Linux baselines for CI.** The release workflow runs `bun run test:visual` on ubuntu-latest, which needs `-linux` suffixed baselines. Regenerate them whenever the darwin baselines changed, via the repo's **Generate linux visual baselines** workflow (no docker needed locally):
-
-   1. GitHub → Actions → *Generate linux visual baselines* → **Run workflow** on `main` (about 4 minutes; it runs `--update-snapshots` on an ubuntu runner and uploads the snapshot folder as the `linux-baselines` artifact). Triggering it is also possible from a terminal:
-
-      ```bash
-      gh workflow run generate-linux-baselines.yml --repo pattespatte/felix-ds --ref main
-      gh run watch --repo pattespatte/felix-ds   # optional, live view
-      ```
-
-   2. Download the artifact and copy **only** the `*-linux.png` files into `e2e/visual.spec.ts-snapshots/` (it also contains the darwin set – ignore those):
-
-      ```bash
-      gh run download --repo pattespatte/felix-ds -n linux-baselines -D /tmp/linux-baselines
-      cp /tmp/linux-baselines/*-linux.png e2e/visual.spec.ts-snapshots/
-      ls e2e/visual.spec.ts-snapshots/*-linux.png | wc -l   # expect 36
-      ```
-
-   3. Run `bun run test:visual` locally (confirms the darwin set still passes side by side) and commit the linux PNGs together with the darwin ones. Playwright picks the suffix matching the runner platform at test time.
-
-   A missing linux set fails the release gate with "snapshot doesn't exist … `-chromium-linux.png`" – that is the gate doing its job; don't bypass it.
+The visual regression suite (`bun run test:visual`) is local-only tooling: snapshot baselines are untracked (see `.gitignore`), so it is not part of the release gate. Regenerate and review your local snapshots with `bun run test:visual:update` whenever the playground changes.
 
 ## 2. Release steps
 
@@ -68,7 +42,7 @@ git tag -a vX.Y.Z -m "felix-ds vX.Y.Z"
    git push origin main --follow-tags
    ```
 
-4. Watch the Actions run for the **Release to GitHub Packages** workflow (`.github/workflows/release.yml`). It checks out, installs with the frozen lockfile, builds, type-checks, runs the visual gate on linux baselines, publishes `@pattespatte/felix-ds` to npm.pkg.github.com and creates the GitHub Release with generated notes.
+4. Watch the Actions run for the **Release to GitHub Packages** workflow (`.github/workflows/release.yml`). It checks out, installs with the frozen lockfile, builds, type-checks, runs the axe accessibility gate, publishes `@pattespatte/felix-ds` to npm.pkg.github.com and creates the GitHub Release with generated notes.
 5. Review the GitHub Release notes; edit for readability if needed (notes are generated from commits – CHANGELOG.md is the curated source).
 
 ## 3. Post-release
