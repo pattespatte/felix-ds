@@ -31,12 +31,13 @@ function isCurrent(slug: string, anchor: string): boolean {
                 :aria-controls="`nav-tree-group-${view.slug}`"
                 @click="toggle(view.slug)"
             >
-                <f-icon
+                <span class="nav-tree__toggle-label">{{ view.title }}</span>
+                <span
                     class="nav-tree__chevron"
                     :class="{ 'nav-tree__chevron--open': isExpanded(view.slug) }"
-                    name="arrow-right"
-                />
-                <span class="nav-tree__toggle-label">{{ view.title }}</span>
+                >
+                    <f-icon name="caret-down" />
+                </span>
             </button>
             <ul
                 v-show="isExpanded(view.slug)"
@@ -70,9 +71,9 @@ function isCurrent(slug: string, anchor: string): boolean {
 
 <style scoped lang="scss">
 // Structure follows the reference site's left menu (full-width rows, hairline
-// separators between categories, fill on hover, inset bar on the current
-// link); colours stay on theme tokens so the two themes keep their own
-// palettes.
+// separators between categories, fill on hover, rounded chevron chip on the
+// row's far end, inset bar on the current link); colours stay on theme tokens
+// so the two themes keep their own palettes.
 .nav-tree,
 .nav-tree__group {
     margin: 0;
@@ -87,9 +88,10 @@ function isCurrent(slug: string, anchor: string): boolean {
 .nav-tree__toggle {
     display: flex;
     align-items: center;
-    gap: 0.375rem;
+    justify-content: space-between;
+    gap: 1rem;
     width: 100%;
-    padding: 0.625rem 1rem;
+    padding: 1rem;
     border: 0;
     background: none;
     font: inherit;
@@ -108,17 +110,34 @@ function isCurrent(slug: string, anchor: string): boolean {
     box-shadow: var(--f-focus-box-shadow);
 }
 
-// Muted expand indicator, rotated open – the only marker besides the bold
-// current link.
+// Rounded expand chip at the row's far end – the only marker besides the bold
+// current link. Collapsed: light surface, chevron pointing down; expanded:
+// dark surface, light chevron rotated to point up. On hover the chip blends
+// into the row fill (same token) – the reference behaves the same.
 .nav-tree__chevron {
     flex: none;
-    font-size: 0.75rem;
-    color: var(--fkds-color-text-secondary, #6e7689);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 0.375rem;
+    font-size: 1rem;
+    background-color: var(--fkds-color-navigation-background-hover, #dbe9e2);
+    color: var(--fkds-color-text-primary, #1b1e23);
+}
+
+.nav-tree__chevron .icon {
     transition: transform var(--f-animation-duration-fast, 150ms) ease-out;
 }
 
 .nav-tree__chevron--open {
-    transform: rotate(90deg);
+    background-color: var(--fkds-color-navigation-background-selected, #1b1e23);
+    color: var(--fkds-color-text-inverted, #ffffff);
+}
+
+.nav-tree__chevron--open .icon {
+    transform: rotate(180deg);
 }
 
 .nav-tree__toggle-label {
