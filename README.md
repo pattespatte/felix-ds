@@ -17,6 +17,7 @@ Du kan använda felix-ds på två sätt. Välj det som passar ditt mål:
 | Du vill … | Gå till |
 | --- | --- |
 | använda felix-temat i din egen webbapp | [Installation i en webbapp](#installation-i-en-webbapp) |
+| testa playgrounden på GitHub Pages | [Känn på playgrounden](https://pattespatte.github.io/felix-ds/) |
 | köra playgrounden på din dator, utforska komponenterna eller utveckla temat | [Kom igång med playgrounden](#kom-igång-med-playgrounden) |
 | se ett färdigt exempel på en webbapp med felix-temat | [Exempelsidan](https://pattespatte.github.io/felix-ds-demo-site/) |
 
@@ -323,6 +324,7 @@ You can use felix-ds in two ways. Pick the one that matches your goal:
 | You want to … | Go to |
 | --- | --- |
 | use the felix theme in your own web app | [Installation in a web app](#installation-in-a-web-app) |
+| test the playground at GitHub Pages | [Check out the playground](https://pattespatte.github.io/felix-ds/) |
 | run the playground on your machine, explore the components or develop the theme | [Getting started with the playground](#getting-started-with-the-playground) |
 | see a finished example of a web app with the felix theme | [Example site](https://pattespatte.github.io/felix-ds-demo-site/) |
 

@@ -8,8 +8,8 @@ import { PHOSPHOR_ICON_NAMES } from "../../../../src/icons/phosphor-spritesheet"
     <section id="ficon" aria-labelledby="ficon-heading" class="demo">
         <component-heading id="ficon-heading" :names="['FIcon']" />
         <p class="demo__description">
-            Temats ikonuppsättning – Phosphor Icons i vikten bold. Ikonerna är
-            SVG-spritebaserade, ersätter standardikonbibliotekets teckningar bakom
+            felix-temats ikonuppsättning – Phosphor Icons i vikten bold. Ikonerna är
+            SVG-spritebaserade, ersätter standardikonbibliotekets presentation bakom
             oförändrade FIcon-namn och följer textfärgen i det aktiva temat.
         </p>
         <ul class="icon-grid">
