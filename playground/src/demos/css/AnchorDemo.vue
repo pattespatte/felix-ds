@@ -1,6 +1,14 @@
+<script setup lang="ts">
+import StatusBadge from "../../components/StatusBadge.vue";
+import { cssPatternStatuses } from "../../componentStatus";
+</script>
+
 <template>
     <section id="anchor" aria-labelledby="anchor-heading" class="demo">
-        <h2 id="anchor-heading">Anchor (länk)</h2>
+        <div class="component-heading">
+            <h2 id="anchor-heading">Anchor (länk)</h2>
+            <status-badge :status="cssPatternStatuses.anchor" />
+        </div>
         <p class="demo__description">
             Ren SCSS-komponent för länkar – fristående blocklänk samt länk i
             löptext.

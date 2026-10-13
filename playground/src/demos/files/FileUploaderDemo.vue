@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { FFileItem, FFileSelector, FMessageBox } from "@fkui/vue";
+import StatusBadge from "../../components/StatusBadge.vue";
+import { cssPatternStatuses } from "../../componentStatus";
 
 const files = ref<{ name: string; mime: string }[]>([]);
 const error = ref("");
@@ -23,7 +25,10 @@ function remove(index: number): void {
 
 <template>
     <section id="file-uploader" aria-labelledby="file-uploader-heading" class="demo">
-        <h2 id="file-uploader-heading">file-uploader (SCSS-only)</h2>
+        <div class="component-heading">
+            <h2 id="file-uploader-heading">file-uploader (SCSS-only)</h2>
+            <status-badge :status="cssPatternStatuses.fileUploader" />
+        </div>
         <p class="demo__description">
             Mönstret <code>file-uploader</code> från designpaketet saknar
             Vue-komponent – det är en CSS-klass som ger meddelanderutan i en

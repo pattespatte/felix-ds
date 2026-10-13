@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { FButton } from "@fkui/vue";
+import StatusBadge from "../../components/StatusBadge.vue";
+import { cssPatternStatuses } from "../../componentStatus";
 
 const synlig = ref(true);
 const stangdMeddelande = ref("");
@@ -8,7 +10,10 @@ const stangdMeddelande = ref("");
 
 <template>
     <section id="close-button" aria-labelledby="close-button-heading" class="demo">
-        <h2 id="close-button-heading">Close button (stängknapp)</h2>
+        <div class="component-heading">
+            <h2 id="close-button-heading">Close button (stängknapp)</h2>
+            <status-badge :status="cssPatternStatuses.closeButton" />
+        </div>
         <p class="demo__description">
             Ren SCSS-komponent för stängknappar – här som avvisbar notis med
             synlig text.

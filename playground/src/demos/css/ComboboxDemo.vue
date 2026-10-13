@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
+import StatusBadge from "../../components/StatusBadge.vue";
+import { cssPatternStatuses } from "../../componentStatus";
 
 const kommuner = [
     "Botkyrka",
@@ -100,7 +102,10 @@ function onKeydown(event: KeyboardEvent): void {
 
 <template>
     <section id="combobox" aria-labelledby="combobox-heading" class="demo">
-        <h2 id="combobox-heading">Combobox (kombinationsruta)</h2>
+        <div class="component-heading">
+            <h2 id="combobox-heading">Combobox (kombinationsruta)</h2>
+            <status-badge :status="cssPatternStatuses.combobox" />
+        </div>
         <p class="demo__description">
             Ren SCSS-komponent – textfält med förslagslista (.combobox__listbox).
             Skriv för att filtrera, pil upp/ner för att navigera, Enter för att

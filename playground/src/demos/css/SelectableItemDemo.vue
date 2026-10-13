@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { FCheckboxField, FFieldset, FRadioField } from "@fkui/vue";
+import StatusBadge from "../../components/StatusBadge.vue";
+import { cssPatternStatuses } from "../../componentStatus";
 
 const leveranssatt = ref("");
 const extran = ref<string[]>([]);
@@ -8,7 +10,10 @@ const extran = ref<string[]>([]);
 
 <template>
     <section id="selectable-item" aria-labelledby="selectable-item-heading" class="demo">
-        <h2 id="selectable-item-heading">Selectable item (valbart listobjekt)</h2>
+        <div class="component-heading">
+            <h2 id="selectable-item-heading">Selectable item (valbart listobjekt)</h2>
+            <status-badge :status="cssPatternStatuses.selectableItem" />
+        </div>
         <p class="demo__description">
             SCSS-komponenten selectable item – kryssrutor och radioknappar som
             fullbreddsobjekt med ram och beskrivningstext via FFieldset.

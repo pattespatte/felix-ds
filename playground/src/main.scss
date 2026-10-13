@@ -146,6 +146,25 @@ html[data-color-mode="dark"]:not(.theme-felix) .badge--default {
     margin-top: 2.5rem;
 }
 
+// Heading row: component heading left, status badge right (mirrors the
+// reference profile's component pages). Global so the hand-written CSS
+// pattern headings reuse it; the h2 keeps its id, so the anchor and
+// scroll-margin rules above are unaffected. The h2's own margins are
+// replaced by the row's (upstream headings carry margin-bottom 0.25rem and
+// no margin-top), keeping the spacing identical to the unwrapped heading.
+.component-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    margin-bottom: 0.25rem;
+}
+
+.component-heading h2 {
+    margin: 0;
+}
+
 .demo__description {
     max-width: 46rem;
 }

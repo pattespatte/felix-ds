@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { FCheckboxField, FFieldset, FRadioField } from "@fkui/vue";
+import StatusBadge from "../../components/StatusBadge.vue";
+import { cssPatternStatuses } from "../../componentStatus";
 
 const chipAlternativ = ref("");
 const chipVal = ref<string[]>([]);
@@ -8,7 +10,10 @@ const chipVal = ref<string[]>([]);
 
 <template>
     <section id="chip" aria-labelledby="chip-heading" class="demo">
-        <h2 id="chip-heading">Chip</h2>
+        <div class="component-heading">
+            <h2 id="chip-heading">Chip</h2>
+            <status-badge :status="cssPatternStatuses.chip" />
+        </div>
         <p class="demo__description">
             SCSS-komponenten chip – radioknappar och kryssrutor i chip-layout
             via FFieldset.

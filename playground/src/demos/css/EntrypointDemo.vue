@@ -1,6 +1,14 @@
+<script setup lang="ts">
+import StatusBadge from "../../components/StatusBadge.vue";
+import { cssPatternStatuses } from "../../componentStatus";
+</script>
+
 <template>
     <section id="entrypoint" aria-labelledby="entrypoint-heading" class="demo">
-        <h2 id="entrypoint-heading">Entrypoint (startpunkt)</h2>
+        <div class="component-heading">
+            <h2 id="entrypoint-heading">Entrypoint (startpunkt)</h2>
+            <status-badge :status="cssPatternStatuses.entrypoint" />
+        </div>
         <p class="demo__description">
             Ren SCSS-komponent som framhäver en ingång till en tjänst –
             alltid 100 % tillgänglig bredd.

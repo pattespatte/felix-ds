@@ -1,6 +1,14 @@
+<script setup lang="ts">
+import StatusBadge from "../../components/StatusBadge.vue";
+import { cssPatternStatuses } from "../../componentStatus";
+</script>
+
 <template>
     <section id="indent" aria-labelledby="indent-heading" class="demo">
-        <h2 id="indent-heading">Indent (indrag)</h2>
+        <div class="component-heading">
+            <h2 id="indent-heading">Indent (indrag)</h2>
+            <status-badge :status="cssPatternStatuses.indent" />
+        </div>
         <p class="demo__description">
             Ren SCSS-komponent för indragna block – här som citerat
             tidigare meddelande med ett svar på nivån under.

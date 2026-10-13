@@ -7,6 +7,8 @@ import {
     fkuiComponentLinks,
     type FkuiComponentName,
 } from "../fkuiComponentLinks";
+import { statusesFor } from "../componentStatus";
+import StatusBadge from "./StatusBadge.vue";
 
 const props = defineProps<{
     /** Id of the h2 – also the navigation anchor target. */
@@ -25,6 +27,10 @@ function joinNames(names: FkuiComponentName[]): string {
     }
     return `${names.slice(0, -1).join(", ")} och ${names[names.length - 1]}`;
 }
+
+// Grouped headings (e.g. FCalendar och FCalendarDay) share a status, so the
+// deduplication keeps the row to one badge per distinct status.
+const statuses = computed(() => statusesFor(props.names));
 </script>
 
 <template>
@@ -35,10 +41,13 @@ function joinNames(names: FkuiComponentName[]): string {
          FKUI's own link style: the stylesheet resets bare <a> to no
          underline, so without it the links lose the FKUI-standard look (and
          the token colour) that must survive both color modes. -->
-    <h2 :id="id">
-        <template v-if="currentTheme === 'fkui'">
-            <template v-for="(name, index) in names" :key="name"><template v-if="index > 0">{{ index === names.length - 1 ? " och " : ", " }}</template><a class="anchor" :href="FKUI_DOCS_BASE + fkuiComponentLinks[name].docsPath">{{ name }}</a> <a class="anchor" :href="FKUI_SOURCE_BASE + fkuiComponentLinks[name].sourcePath">(kod)</a></template>
-        </template>
-        <template v-else>{{ headingText }}</template>
-    </h2>
+    <div class="component-heading">
+        <h2 :id="id">
+            <template v-if="currentTheme === 'fkui'">
+                <template v-for="(name, index) in names" :key="name"><template v-if="index > 0">{{ index === names.length - 1 ? " och " : ", " }}</template><a class="anchor" :href="FKUI_DOCS_BASE + fkuiComponentLinks[name].docsPath">{{ name }}</a> <a class="anchor" :href="FKUI_SOURCE_BASE + fkuiComponentLinks[name].sourcePath">(kod)</a></template>
+            </template>
+            <template v-else>{{ headingText }}</template>
+        </h2>
+        <status-badge v-for="status in statuses" :key="status.label" :status="status" />
+    </div>
 </template>
