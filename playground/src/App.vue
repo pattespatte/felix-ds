@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, type Component } from "vue";
+import { computed, onMounted, provide, ref, type Component } from "vue";
 import { FLayoutApplicationTemplate, FLayoutLeftPanel, FPageHeader } from "@fkui/vue";
 import ThemeToggle from "./components/ThemeToggle.vue";
 import ColorModeToggle from "./components/ColorModeToggle.vue";
@@ -39,6 +39,29 @@ const viewComponents: Record<string, Component> = {
 const currentViewComponent = computed<Component>(
     () => viewComponents[currentRoute.value.slug] ?? ActionsView,
 );
+
+// Same breakpoint as the header rules in main.scss (FKUI medium, 640px).
+const MOBILE = "(max-width: 39.99em)";
+
+// FLayoutLeftPanel keeps its open state internal (no prop upstream) and
+// mounts open at its full pixel width – on a phone that covers nearly the
+// whole viewport, since the panel's 50%-viewport clamp only runs on window
+// resize, never on load. Flipping the state directly runs before first
+// paint, so phones never see the open panel.
+const leftPanel = ref<InstanceType<typeof FLayoutLeftPanel> | null>(null);
+const mobileViewport = window.matchMedia(MOBILE);
+
+// Shared close callback: used at mount (collapse on small screens), by the
+// scrim's click handler and by NavTree after a navigation. On desktop it is
+// a no-op – the panel there is a permanent column, not a drawer.
+function closeMobileNav(): void {
+    if (mobileViewport.matches && leftPanel.value?.isOpen) {
+        leftPanel.value.isOpen = false;
+    }
+}
+
+onMounted(closeMobileNav);
+provide("close-mobile-nav", closeMobileNav);
 </script>
 
 <template>
@@ -60,7 +83,7 @@ const currentViewComponent = computed<Component>(
             </f-page-header>
         </template>
 
-        <f-layout-left-panel nav-label="Komponenter" initial-width="320">
+        <f-layout-left-panel ref="leftPanel" nav-label="Komponenter" initial-width="320">
             <template #heading>
                 <p class="shell-nav-title">Komponenter</p>
             </template>
@@ -76,6 +99,10 @@ const currentViewComponent = computed<Component>(
             <page-footer />
         </template>
     </f-layout-application-template>
+
+    <!-- Backdrop behind the open navigation drawer on small screens; kept
+         inert by CSS (main.scss) everywhere else. -->
+    <div class="mobile-nav-scrim" aria-hidden="true" @click="closeMobileNav()"></div>
 </template>
 
 <style scoped lang="scss">

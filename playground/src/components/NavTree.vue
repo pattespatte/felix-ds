@@ -1,8 +1,18 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { inject, ref } from "vue";
 import { FIcon } from "@fkui/vue";
 import { views } from "../navigation";
 import { currentRoute, navigate } from "../router";
+
+// App-level callback: on small screens the panel is a drawer, so a
+// navigation should close it (the injected default keeps this component
+// usable standalone).
+const closeMobileNav = inject<() => void>("close-mobile-nav", () => {});
+
+function onNavigate(slug: string, anchor = ""): void {
+    navigate(slug, anchor);
+    closeMobileNav();
+}
 
 // Explicit user toggles; a view without an entry follows the default rule
 // "expanded while it is the active view".
@@ -49,7 +59,7 @@ function isCurrent(slug: string, anchor: string): boolean {
                         class="nav-tree__link"
                         :href="`#/${view.slug}`"
                         :aria-current="isCurrent(view.slug, '') ? 'page' : undefined"
-                        @click.prevent="navigate(view.slug)"
+                        @click.prevent="onNavigate(view.slug)"
                     >
                         Översikt
                     </a>
@@ -59,7 +69,7 @@ function isCurrent(slug: string, anchor: string): boolean {
                         class="nav-tree__link"
                         :href="`#/${view.slug}/${anchor.id}`"
                         :aria-current="isCurrent(view.slug, anchor.id) ? 'page' : undefined"
-                        @click.prevent="navigate(view.slug, anchor.id)"
+                        @click.prevent="onNavigate(view.slug, anchor.id)"
                     >
                         {{ anchor.title }}
                     </a>

@@ -143,6 +143,49 @@ html[data-color-mode="dark"]:not(.theme-felix) .badge--default {
     display: none;
 }
 
+// Mobile drawer for the left panel. FKUI's panel has no responsive mode of
+// its own: it mounts open at its inline pixel width (the 50%-viewport clamp
+// only runs on window resize, never on load), which on a phone covers
+// nearly the whole viewport. Below the medium breakpoint – where App.vue
+// also collapses the panel on load – the open panel instead becomes a fixed
+// drawer over the content, while the collapsed state keeps the static
+// hamburger rail it has on desktop. The drawer's top offset is the header
+// height the component measured at mount; crossing the breakpoint by
+// resizing keeps that measurement until the next reload.
+@media (max-width: 39.99em) {
+    .layout-navigation__navigation[aria-expanded="true"] {
+        position: fixed;
+        // Beats the component's inline width (initial-width, 320px).
+        width: min(85vw, 320px) !important;
+    }
+
+    // Drag-to-resize is a desktop affordance; the drawer is fixed-width.
+    .layout-navigation__navigation__border {
+        display: none;
+    }
+
+    // Backdrop for the open drawer, shown only while the panel reports
+    // itself expanded (the element itself is an empty, height-less div in
+    // every other state). Taps close the drawer via App.vue; keyboard users
+    // have the panel's own Stäng button. Sits one step below the panel
+    // (FKUI 9994) and below the header band (9995), and reuses the modal
+    // overlay token so both color modes keep their shared overlay value.
+    body:has(.layout-navigation__navigation[aria-expanded="true"]) .mobile-nav-scrim {
+        display: block;
+        position: fixed;
+        inset: 0;
+        z-index: 9993;
+        background: var(--f-background-overlay, rgba(0, 0, 0, 0.8));
+        cursor: pointer;
+    }
+
+    // Freeze the page behind the open drawer (same state selector); the
+    // drawer's own list keeps scrolling independently.
+    body:has(.layout-navigation__navigation[aria-expanded="true"]) {
+        overflow: hidden;
+    }
+}
+
 // Routed views: page container that previously sat on the main element
 // (the shell owns the main element now and spans the full viewport).
 .view {
