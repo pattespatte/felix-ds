@@ -246,6 +246,13 @@
             appearance: base-select;
         }
 
+        // The customizable button rendering is a flex container that
+        // stretches its content, leaving the selected value top-aligned in
+        // the control; the classic rendering centres it, so centre here too.
+        .select-field__select {
+            align-items: center;
+        }
+
         .select-field__select::picker(select) {
             background-color: var(--fkds-color-background-primary);
             border: var(--f-border-width-medium) solid var(--fkds-color-border-weak);
