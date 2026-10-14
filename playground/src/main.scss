@@ -58,6 +58,25 @@ body {
     border-bottom: 1px solid var(--fkds-color-border-weak, #d7d9e0);
 }
 
+// FKUI's page header is a single non-wrapping flex row with overflow hidden:
+// below roughly 520px the controls overflow and are clipped by the right edge
+// (the color mode button disappears entirely). At FKUI's medium breakpoint the
+// app name keeps the first row and the controls drop to their own
+// right-aligned row; row-gap only applies between flex lines, so wide screens
+// are unaffected.
+@media (max-width: 39.99em) {
+    .page-header {
+        flex-wrap: wrap;
+        row-gap: 0.5rem;
+    }
+
+    // Flex-basis 100% forces the wrap deterministically, regardless of how
+    // much width the app name occupies.
+    .page-header__right {
+        flex-basis: 100%;
+    }
+}
+
 // Progress meters run in the profile blue (the info scale) instead of the
 // upstream positive green, in both the base theme and the felix theme.
 .progress {

@@ -13,7 +13,10 @@ import { applyTheme, currentTheme } from "../theme";
                 :checked="currentTheme === 'fkui'"
                 @change="applyTheme('fkui')"
             />
-            <span class="theme-toggle__label">FKUI grundtema</span>
+            <span class="theme-toggle__label">
+                <span class="theme-toggle__label--full">FKUI grundtema</span>
+                <span class="theme-toggle__label--short">FKUI</span>
+            </span>
         </label>
         <label class="theme-toggle__option">
             <input
@@ -24,7 +27,10 @@ import { applyTheme, currentTheme } from "../theme";
                 :checked="currentTheme === 'felix'"
                 @change="applyTheme('felix')"
             />
-            <span class="theme-toggle__label">felix-tema</span>
+            <span class="theme-toggle__label">
+                <span class="theme-toggle__label--full">felix-tema</span>
+                <span class="theme-toggle__label--short">felix</span>
+            </span>
         </label>
     </div>
 </template>
@@ -72,6 +78,25 @@ import { applyTheme, currentTheme } from "../theme";
     border-radius: 999px;
     color: var(--fkds-color-header-text-primary, inherit);
     white-space: nowrap;
+}
+
+// On portrait phones even the controls' own header row is too narrow for the
+// full names (the row needs ~330px plus the header's own padding). Below
+// 416px the distinctive parts of the names stand in; both variants contain
+// the other, so the visible label keeps matching the accessible name
+// (WCAG 2.5.3) whichever one is displayed.
+.theme-toggle__label--short {
+    display: none;
+}
+
+@media (max-width: 25.99em) {
+    .theme-toggle__label--full {
+        display: none;
+    }
+
+    .theme-toggle__label--short {
+        display: inline;
+    }
 }
 
 // Dark translucent overlay instead of a theme token: the header text token
