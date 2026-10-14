@@ -17,6 +17,7 @@ const kommuner = [
 ];
 
 const query = ref("");
+const valdKommun = ref("");
 const oppen = ref(false);
 const aktivIndex = ref(0);
 
@@ -110,7 +111,11 @@ function onKeydown(event: KeyboardEvent): void {
             Ren SCSS-komponent – textfält med förslagslista (.combobox__listbox).
             Skriv för att filtrera, pil upp/ner för att navigera, Enter för att
             välja och Esc för att stänga. Listbox-markeringen
-            (listbox-komponentens yta och alternativ) ingår i demon.
+            (listbox-komponentens yta och alternativ) ingår i demon. Därunder
+            följer en kombinationsruta på ett native select-element
+            (.select-field): dess öppna lista får samma utseende i webbläsare
+            som stödjer appearance: base-select, medan övriga webbläsare
+            behåller den inbyggda rullistan oförändrad.
         </p>
         <div class="combobox-demo__field">
             <div class="text-field">
@@ -185,12 +190,42 @@ function onKeydown(event: KeyboardEvent): void {
             </div>
         </div>
         <p>Valt värde: {{ query === "" ? "–" : query }}</p>
+
+        <div class="combobox-demo__field">
+            <div class="select-field">
+                <label class="label" for="combobox-demo__select">Kommun (select-element)</label>
+                <div class="select-field__icon-wrapper">
+                    <select
+                        id="combobox-demo__select"
+                        v-model="valdKommun"
+                        class="select-field__select"
+                    >
+                        <option value="">Välj kommun</option>
+                        <option v-for="kommun in kommuner" :key="kommun" :value="kommun">
+                            {{ kommun }}
+                        </option>
+                    </select>
+                    <svg
+                        class="select-field__icon f-icon f-icon-arrow-down"
+                        focusable="false"
+                        aria-hidden="true"
+                    >
+                        <use href="#f-icon-arrow-down"></use>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        <p>Valt värde: {{ valdKommun === "" ? "–" : valdKommun }}</p>
     </section>
 </template>
 
 <style scoped lang="scss">
 .combobox-demo__field {
     max-width: 24rem;
+
+    & + .combobox-demo__field {
+        margin-top: 1.5rem;
+    }
 }
 
 // Upstream anchors .text-field__append-inner to the nearest positioned

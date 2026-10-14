@@ -175,6 +175,135 @@
         text-decoration: none;
     }
 
+    // Dropdown pickers. The open surfaces of the combobox pattern and of
+    // native selects follow the supplied reference design: an elevated
+    // card with the weak border colour (the profile is otherwise flat –
+    // the elevation is deliberately scoped to pickers, the modal shadow
+    // token stays `none`), option rows as highlight pills of the select
+    // hover tint, and the select accent as a checkmark at the active
+    // row's far end. The shadow and scrollbar alphas come from the same
+    // reference; option rows target the reference's 40px height.
+    .popup .popup__wrapper.combobox__listbox {
+        border-color: var(--fkds-color-border-weak);
+        box-shadow:
+            0 2px 1px rgba(10, 13, 18, 0.04),
+            0 4px 3px rgba(10, 13, 18, 0.03),
+            0 12px 8px rgba(10, 13, 18, 0.08);
+        max-height: calc(6 * 2.5rem + 0.5rem);
+        overflow-y: auto;
+        padding: 0.25rem;
+        scrollbar-color: rgba(110, 118, 137, 0.3) transparent;
+        scrollbar-width: thin;
+    }
+
+    .combobox__listbox__option {
+        align-items: center;
+        border-radius: var(--f-border-radius-small);
+        display: flex;
+        margin: 0 0.125rem;
+        min-height: 2.5rem;
+        padding: 0 0.625rem;
+        white-space: nowrap;
+    }
+
+    // Upstream renders the selected row as the dark select surface with
+    // inverted text. The reference marks the active row with the light
+    // hover tint, primary text and the accent checkmark instead (the
+    // select background token itself is left alone – other components,
+    // e.g. the expandable paragraph disc, read it).
+    .combobox__listbox__option--highlight {
+        background-color: var(--fkds-color-select-background-primary-hover);
+        color: var(--fkds-color-text-primary);
+
+        &::after {
+            background-color: var(--fkds-color-select-background-primary-default);
+            content: "";
+            height: 1rem;
+            margin-left: auto;
+            mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8.5 6.5 12 13 4.5' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            mask-position: center;
+            mask-repeat: no-repeat;
+            mask-size: contain;
+            width: 1rem;
+        }
+    }
+
+    // Dropdown arrows use the select accent instead of the action colour
+    // they inherit upstream.
+    .combobox__button,
+    .select-field__icon {
+        color: var(--fkds-color-select-background-primary-default);
+    }
+
+    // Native selects: opt into the customizable rendering where it exists
+    // so the open list gets the same picker surface as the combobox
+    // pattern. Browsers without support ignore the whole block and keep
+    // the classic OS-rendered dropdown – the markup is unchanged either
+    // way, so this is pure progressive enhancement.
+    @supports (appearance: base-select) {
+        .select-field__select,
+        .select-field__select::picker(select) {
+            appearance: base-select;
+        }
+
+        .select-field__select::picker(select) {
+            background-color: var(--fkds-color-background-primary);
+            border: var(--f-border-width-medium) solid var(--fkds-color-border-weak);
+            border-radius: var(--f-border-radius-medium);
+            box-shadow:
+                0 2px 1px rgba(10, 13, 18, 0.04),
+                0 4px 3px rgba(10, 13, 18, 0.03),
+                0 12px 8px rgba(10, 13, 18, 0.08);
+            max-height: calc(6 * 2.5rem + 0.5rem);
+            padding: 0.25rem;
+            scrollbar-color: rgba(110, 118, 137, 0.3) transparent;
+            scrollbar-width: thin;
+        }
+
+        .select-field__select option {
+            align-items: center;
+            border-radius: var(--f-border-radius-small);
+            color: var(--fkds-color-text-primary);
+            display: flex;
+            min-height: 2.5rem;
+            padding: 0 0.625rem;
+            white-space: nowrap;
+        }
+
+        .select-field__select option:hover,
+        .select-field__select option:focus,
+        .select-field__select option:checked {
+            background-color: var(--fkds-color-select-background-primary-hover);
+            color: var(--fkds-color-text-primary);
+        }
+
+        .select-field__select option:checked {
+            font-weight: var(--f-font-weight-medium);
+        }
+
+        // The browser places its checkmark at the row's start; the
+        // reference marks the chosen value at the far end, so the pseudo
+        // is reordered like the combobox pattern's checkmark above.
+        .select-field__select option::checkmark {
+            background-color: var(--fkds-color-select-background-primary-default);
+            content: "";
+            height: 1rem;
+            margin-left: auto;
+            mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8.5 6.5 12 13 4.5' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            mask-position: center;
+            mask-repeat: no-repeat;
+            mask-size: contain;
+            order: 1;
+            width: 1rem;
+        }
+
+        // The component already draws its own arrow (and rotates it via
+        // :open); the browser's built-in one would double it.
+        .select-field__select::picker-icon {
+            display: none;
+        }
+    }
+
     // Checkbox and radio glyphs draw their resting border with the weak
     // border colour instead of the regular component border.
     .checkbox__label::before,
