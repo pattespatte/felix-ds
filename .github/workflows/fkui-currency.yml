@@ -1,0 +1,85 @@
+name: FKUI currency check
+
+# Weekly proof that felix-ds stays current with the mother library: bump the
+# six @fkui/* dev pins to the latest published version (scripts/fkui.ts
+# lockstep logic), run the full release gate, and open a pull request with
+# the bump on green. A no-op week (already current) exits green without a PR.
+#
+# Preconditions: the committed linux visual baselines (including the
+# firefox/webkit cross-browser set from generate-linux-baselines) must exist,
+# or the visual steps fail with "snapshot doesn't exist" until they are
+# committed via the runbook flow.
+#
+# Schedule note: scheduled workflows only arm once this file exists on the
+# default branch after a push, so the first run happens after the owner's
+# next push. Never runs as part of a release.
+
+on:
+  schedule:
+    - cron: "0 6 * * 1" # Mondays 06:00 UTC = 08:00 Stockholm
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: fkui-currency
+  cancel-in-progress: false
+
+jobs:
+  currency:
+    # Same pinned image as the release gate: the committed linux baselines
+    # were rendered on 24.04. Changing either side requires a baseline regen.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - name: Record current FKUI version
+        run: |
+          OLD=$(bun -e "console.log(JSON.parse(await Bun.file('package.json').text()).devDependencies['@fkui/vue'])")
+          echo "FKUI_OLD=$OLD" >> "$GITHUB_ENV"
+      - run: bun install --frozen-lockfile
+      - run: bun run fkui upgrade
+      - name: Record new FKUI version
+        run: |
+          NEW=$(bun -e "console.log(JSON.parse(await Bun.file('package.json').text()).devDependencies['@fkui/vue'])")
+          echo "FKUI_NEW=$NEW" >> "$GITHUB_ENV"
+      # Parity gate: DTCG tokens, icons, prebuilt CSS must match the sources.
+      - run: bun test
+      - run: bun run build
+      - run: bunx vue-tsc --noEmit
+      - run: bunx playwright install --with-deps chromium firefox webkit
+      - run: bun run test:visual
+      - run: bun run test:visual:cross
+      - run: bun run test:a11y
+      - name: Open currency pull request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if git diff --exit-code --quiet package.json; then
+            echo "FKUI devDeps already current at ${FKUI_NEW:-unknown} – nothing to do"
+            exit 0
+          fi
+          BRANCH="fkui-currency/${FKUI_NEW}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add package.json bun.lockb
+          git commit -m "chore(deps): bump @fkui/* ${FKUI_OLD} -> ${FKUI_NEW} (currency run)"
+          git push origin "$BRANCH"
+          gh pr create \
+            --base main \
+            --head "$BRANCH" \
+            --title "chore(deps): bump @fkui/* to ${FKUI_NEW}" \
+            --body "Scheduled FKUI-currency run. Dev pins bumped ${FKUI_OLD} → ${FKUI_NEW} via \`bun run fkui upgrade\` and the full release gate passed on ubuntu-24.04: parity tests, build, vue-tsc, 42 chromium comparisons, 32 firefox/webkit cross-browser comparisons, 28 axe scans. Peer range \`>=6.57.0 <7.0.0\` still covers the new version. Review, merge, then cut the next release per docs/release.en.md."
+      - name: Upload gate report on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: currency-gate-failure
+          path: |
+            test-results
+            playwright-report
+          retention-days: 14
