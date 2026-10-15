@@ -1,8 +1,8 @@
 # Dependencies
 node_modules/
 
-# Build output
-dist/
+# Build output (root dist/ holds the committed prebuilt css and stays tracked)
+playground/dist/
 *.tsbuildinfo
 
 # Test artifacts

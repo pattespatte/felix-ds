@@ -3,6 +3,7 @@
   "version": "1.0.2",
   "type": "module",
   "description": "A thin, organisation-neutral theme layer (CSS custom properties + self-hosted fonts) on top of FKUI's public npm packages.",
+  "main": "./dist/felix.css",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pattespatte/felix-ds.git"
@@ -17,7 +18,7 @@
   "scripts": {
     "dev": "vite --config playground/vite.config.ts",
     "build": "vite build --config playground/vite.config.ts",
-    "build:theme": "sass --load-path=node_modules src/index.scss dist/felix.css && cp -R src/fonts/files dist/files",
+    "build:theme": "bun scripts/build-css.ts",
     "fkui": "bun scripts/fkui.ts",
     "icons:build": "bun scripts/icons.ts",
     "tokens:build": "bun scripts/tokens.ts",
@@ -28,9 +29,14 @@
   },
   "sass": "./src/index.scss",
   "files": [
+    "dist",
     "src",
     "tokens",
     "README.md"
+  ],
+  "sideEffects": [
+    "./dist/**/*.css",
+    "./src/**/*.scss"
   ],
   "peerDependencies": {
     "@fkui/theme-default": ">=6.57.0 <7.0.0"

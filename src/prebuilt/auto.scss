@@ -1,0 +1,16 @@
+// Prebuilt auto entry: system color preference, no Sass required.
+//
+// Self-hosted fonts plus both composed themes behind prefers-color-scheme
+// media queries (color-scheme: light dark). Media queries cannot be toggled
+// by the page, so consumers switching color mode themselves should use
+// dist/felix.css instead. Compiled to dist/felix-auto.css by
+// scripts/build-css.ts.
+
+@use "../fonts/fonts";
+@use "../theme/default" as felix with (
+    $global: false
+);
+
+:root {
+    @include felix.auto;
+}

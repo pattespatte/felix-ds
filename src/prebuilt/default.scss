@@ -1,0 +1,20 @@
+// Prebuilt default entry: one stylesheet, no Sass required.
+//
+// Self-hosted fonts plus the composed light theme on :root and the composed
+// dark theme on the color-mode attribute – the same ladder the SCSS guide
+// documents for consumers, emitted here with the scope selectors baked in.
+// Compiled to dist/felix.css by scripts/build-css.ts; the SCSS mixins remain
+// the way to scope the theme to a custom selector.
+
+@use "../fonts/fonts";
+@use "../theme/default" as felix with (
+    $global: false
+);
+
+:root {
+    @include felix.light;
+}
+
+html[data-color-mode="dark"] {
+    @include felix.dark;
+}
