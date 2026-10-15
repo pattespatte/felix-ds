@@ -98,7 +98,7 @@ bun run parity:capture after
 bun run parity:compare before after
 ```
 
-Exit-kod 0 betyder pixelidentiskt – bumpen kan släppas ut med rent samvete. Exit-kod 1 betyder synliga skillnader: läs versionsfakta förutgående utgivning och förklara varje diff därifrån, eller stoppa bumpen.
+Exit-kod 0 betyder pixelidentiskt – bumpen kan ges ut med rent samvete. Exit-kod 1 betyder synliga skillnader: läs versionsfakta förutgående utgivning och förklara varje diff därifrån, eller stoppa bumpen.
 
 ## 4. I CI (GitHub Actions)
 

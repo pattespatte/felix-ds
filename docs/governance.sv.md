@@ -31,12 +31,12 @@ Motsvarande gäller ikonnammn: ett namn som lämnar uppsättningen aviseras på 
 
 Utgivningar sker när det finns något att ge ut: ackumulerade ändringar, en FKUI-uppgradering som verifierats enligt repetitionsmönstret i README, eller en buggfix. Det finns inget fast datumintervall – takten styrs av behovet, inte kalendern.
 
-Varje utgivning dokumenterar uppgraderarens perspektiv i release-anteckningarna (mallen ligger i utgivningsrunbook:en): vad som ändrats, vilka konsumentåtgärder som krävs (oftast inga), avvecklade token om några, och vilka FKUI-ändpunkter som testats. Konsumentens uppdatering ska vara en radversion-bump, och visuella förändringar ska alltid vara förklarade i förväg.
+Varje utgivning dokumenterar uppgraderarens perspektiv i versionsfakta (mallen ligger i utgivningsrunbook:en): vad som ändrats, vilka konsumentåtgärder som krävs (oftast inga), avvecklade token om några, och vilka FKUI-ändpunkter som testats. Konsumentens uppdatering ska vara en radversion-bump, och visuella förändringar ska alltid vara förklarade i förväg.
 
 ## Stöd
 
-Senaste minor-versionen stöds. Äldre versioner får inte fler patchar – uppgradera enligt release-anteckningarna. Felrapporter förväntas motverkas i senaste versionen; ett fel som bara går att återskapa i en äldre version åtgärdas genom uppgradering.
+Senaste minor-versionen stöds. Äldre versioner får inte fler patchar – uppgradera enligt versionsfakta. Felrapporter förväntas motverkas i senaste versionen, och ett fel som bara går att återskapa i en äldre version åtgärdas genom uppgradering.
 
 ## Ändringar av det här dokumentet
 
-Det här dokumentet är en del av projektets kontrakt och ändras med samma öppenhet som koden: ändringar nämns i release-anteckningarna för den utgivning där de landar.
+Det här dokumentet är en del av projektets kontrakt och ändras med samma öppenhet som koden: ändringar nämns i versionsfakta för den utgivning där de landar.
