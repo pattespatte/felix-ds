@@ -16,7 +16,10 @@ permissions:
 
 jobs:
   release:
-    runs-on: ubuntu-latest
+    # Pinned: the committed linux visual baselines were rendered on 24.04.
+    # Moving to 26.04 (or any newer image) requires a full baseline regen
+    # via generate-linux-baselines + the runbook artifact flow.
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
