@@ -1,10 +1,13 @@
 name: Generate linux visual baselines
 
 # Manual helper for the release runbook: regenerates the -linux.png visual
-# baselines on an ubuntu runner and uploads them as an artifact. The owner
-# downloads the artifact, copies the *-linux.png files into
-# e2e/visual.spec.ts-snapshots/ and commits them (docs/release.en.md,
+# baselines (chromium full matrix + the firefox/webkit cross-browser subset)
+# on an ubuntu runner and uploads them as an artifact. The owner downloads
+# the artifact, copies the *-linux.png files into the snapshot directories,
+# losslessly recompresses them (AE=0) and commits them (docs/release.en.md,
 # preconditions, step 5). Never runs automatically; publishes nothing.
+# The cross browsers run as separate steps so one failing browser cannot
+# hide the other's snapshots.
 
 on:
   workflow_dispatch:
@@ -21,10 +24,14 @@ jobs:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
       - run: bun install --frozen-lockfile
-      - run: bunx playwright install --with-deps chromium
-      - run: bunx playwright test visual.spec.ts --update-snapshots
+      - run: bunx playwright install --with-deps chromium firefox webkit
+      - run: bunx playwright test visual.spec.ts --project=chromium --update-snapshots
+      - run: bunx playwright test visual-cross.spec.ts --project=webkit --update-snapshots
+      - run: bunx playwright test visual-cross.spec.ts --project=firefox --update-snapshots
       - uses: actions/upload-artifact@v4
         with:
           name: linux-baselines
-          path: e2e/visual.spec.ts-snapshots
+          path: |
+            e2e/visual.spec.ts-snapshots
+            e2e/visual-cross.spec.ts-snapshots
           retention-days: 7

@@ -16,7 +16,7 @@ Run through this list before touching a tag:
    ```
 
    If this is `>= 7.0.0`, the release is blocked until the theme is verified against the new major (and the playground's dev pins bumped), or the peer range in `package.json` is deliberately narrowed. Also skim the changelog of every `@fkui/*` release inside the supported range since the last felix-ds release for token-surface changes.
-3. **Gate green locally.** `bun install`, `bun run build`, `bunx vue-tsc --noEmit` and especially `bun run test:visual` (36 visual baselines + 24 axe scans) all pass on your machine.
+3. **Gate green locally.** `bun install`, `bun run build`, `bunx vue-tsc --noEmit` and especially `bun run test:visual` (42 visual baselines + 28 axe scans) all pass on your machine. `bun run test:visual:cross` runs the firefox/webkit half of the gate; on macOS only the webkit half can run locally – firefox's Playwright build does not launch on darwin 27 ("Could not find profile folder"), so firefox is first exercised on the linux runner (step 5).
 4. **Baselines current.** If the playground changed since the last release, regenerate and review baselines first:
 
    ```bash
@@ -25,26 +25,28 @@ Run through this list before touching a tag:
    ```
 
    A baseline update is a reviewed decision, never a "make the gate pass" button: every pixel change must be explainable.
-5. **Linux baselines for CI.** The release workflow runs `bun run test:visual` on ubuntu-latest, which needs `-linux` suffixed baselines. Regenerate them whenever the darwin baselines changed, via the repo's **Generate linux visual baselines** workflow (no docker needed locally):
+5. **Linux baselines for CI.** The release workflow runs `bun run test:visual` and `bun run test:visual:cross` on ubuntu-24.04 (pinned, so regenerated baselines always match the release runner's image), which needs `-linux` suffixed baselines. Regenerate them whenever the darwin baselines changed, via the repo's **Generate linux visual baselines** workflow (no docker needed locally):
 
-   1. GitHub → Actions → *Generate linux visual baselines* → **Run workflow** on `main` (about 4 minutes; it runs `--update-snapshots` on an ubuntu runner and uploads the snapshot folder as the `linux-baselines` artifact). Triggering it is also possible from a terminal:
+   1. GitHub → Actions → *Generate linux visual baselines* → **Run workflow** on `main` (about 10 minutes; it runs `--update-snapshots` for chromium, webkit and firefox on an ubuntu runner and uploads both snapshot folders as the `linux-baselines` artifact). Triggering it is also possible from a terminal:
 
       ```bash
       gh workflow run generate-linux-baselines.yml --repo pattespatte/felix-ds --ref main
       gh run watch --repo pattespatte/felix-ds   # optional, live view
       ```
 
-   2. Download the artifact and copy **only** the `*-linux.png` files into `e2e/visual.spec.ts-snapshots/` (it also contains the darwin set – ignore those):
+   2. Download the artifact and copy **only** the `*-linux.png` files into the two snapshot directories (it also contains the darwin set – ignore those):
 
       ```bash
       gh run download --repo pattespatte/felix-ds -n linux-baselines -D /tmp/linux-baselines
-      cp /tmp/linux-baselines/*-linux.png e2e/visual.spec.ts-snapshots/
-      ls e2e/visual.spec.ts-snapshots/*-linux.png | wc -l   # expect 36
+      cp /tmp/linux-baselines/visual.spec.ts-snapshots/*-linux.png e2e/visual.spec.ts-snapshots/
+      cp /tmp/linux-baselines/visual-cross.spec.ts-snapshots/*-linux.png e2e/visual-cross.spec.ts-snapshots/
+      ls e2e/visual.spec.ts-snapshots/*-linux.png | wc -l        # expect 42 (14 views × 3 configs)
+      ls e2e/visual-cross.spec.ts-snapshots/*-linux.png | wc -l  # expect 32 (8 views × 2 modes × 2 browsers)
       ```
 
-   3. Run `bun run test:visual` locally (confirms the darwin set still passes side by side) and commit the linux PNGs together with the darwin ones. Playwright picks the suffix matching the runner platform at test time.
+   3. Recompress every new PNG losslessly and verify the result against the original with `compare -metric AE original.png recompressed.png null:` (must print `0 (0)`), then run `bun run test:visual` locally (confirms the darwin set still passes side by side) and commit the linux PNGs together with the darwin ones. Playwright picks the suffix matching the runner platform at test time.
 
-   A missing linux set fails the release gate with "snapshot doesn't exist … `-chromium-linux.png`" – that is the gate doing its job; don't bypass it.
+   A missing linux set fails the release gate with "snapshot doesn't exist … `-chromium-linux.png`" – that is the gate doing its job; don't bypass it. If the firefox half of the cross gate fails on the linux runner, treat it as a release blocker: linux is the first environment where firefox runs at all (see step 3).
 
 ## 2. Release steps
 
@@ -68,7 +70,7 @@ git tag -a vX.Y.Z -m "felix-ds vX.Y.Z"
    git push origin main --follow-tags
    ```
 
-4. Watch the Actions run for the **Release to GitHub Packages** workflow (`.github/workflows/release.yml`). It checks out, installs with the frozen lockfile, builds, type-checks, runs the visual gate (36 screenshot comparisons against the linux baselines + 24 axe scans), publishes `@pattespatte/felix-ds` to npm.pkg.github.com and creates the GitHub Release with generated notes.
+4. Watch the Actions run for the **Release to GitHub Packages** workflow (`.github/workflows/release.yml`). It checks out, installs with the frozen lockfile, builds, type-checks, runs the visual gate (42 chromium screenshot comparisons + 32 firefox/webkit cross-browser comparisons against the linux baselines + 28 axe scans), publishes `@pattespatte/felix-ds` to npm.pkg.github.com and creates the GitHub Release with generated notes.
 5. Review the GitHub Release notes; edit for readability if needed (notes are generated from commits – CHANGELOG.md is the curated source).
 
 ## 3. Post-release
