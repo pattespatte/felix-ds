@@ -68,7 +68,7 @@ git tag -a vX.Y.Z -m "felix-ds vX.Y.Z"
    git push origin main --follow-tags
    ```
 
-4. Watch the Actions run for the **Release to GitHub Packages** workflow (`.github/workflows/release.yml`). It checks out, installs with the frozen lockfile, builds, type-checks, runs the axe accessibility gate, publishes `@pattespatte/felix-ds` to npm.pkg.github.com and creates the GitHub Release with generated notes.
+4. Watch the Actions run for the **Release to GitHub Packages** workflow (`.github/workflows/release.yml`). It checks out, installs with the frozen lockfile, builds, type-checks, runs the visual gate (36 screenshot comparisons against the linux baselines + 24 axe scans), publishes `@pattespatte/felix-ds` to npm.pkg.github.com and creates the GitHub Release with generated notes.
 5. Review the GitHub Release notes; edit for readability if needed (notes are generated from commits – CHANGELOG.md is the curated source).
 
 ## 3. Post-release

@@ -68,7 +68,7 @@ git tag -a vX.Y.Z -m "felix-ds vX.Y.Z"
    git push origin main --follow-tags
    ```
 
-4. Följ Actions-körningen för arbetsflödet **Release to GitHub Packages** (`.github/workflows/release.yml`). Den checkar ut repot, installerar med låst lockfile, bygger, typkontrollerar, kör tillgänglighetsporten (axe-skanningarna), publicerar `@pattespatte/felix-ds` på npm.pkg.github.com och skapar GitHub-releasen med genererade versionsfakta.
+4. Följ Actions-körningen för arbetsflödet **Release to GitHub Packages** (`.github/workflows/release.yml`). Den checkar ut repot, installerar med låst lockfile, bygger, typkontrollerar, kör den visuella porten (36 skärmdumpsjämförelser mot linux-baselinesna + 24 axe-skanningar), publicerar `@pattespatte/felix-ds` på npm.pkg.github.com och skapar GitHub-releasen med genererade versionsfakta.
 5. Granska versionsfakta i GitHub-releasen och redigera dem för läsbarhet om det behövs (de genereras från commits – CHANGELOG.md är den källa som underhålls för hand).
 
 ## 3. Efter utgivningen
