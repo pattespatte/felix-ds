@@ -17,8 +17,10 @@ Create a Vite project from the vue-ts template and add the dependencies:
 ```bash
 bun add vue vue-router@^4
 bun add @fkui/vue@6.60.0 @fkui/design@6.60.0 @fkui/theme-default@6.60.0 @fkui/date@6.60.0 @fkui/logic@6.60.0 @fkui/icon-lib-default@6.60.0
-bun add -d vite @vitejs/plugin-vue sass typescript vue-tsc @types/node
+bun add -d vite @vitejs/plugin-vue typescript vue-tsc @types/node
 ```
+
+Sass is not needed for the theme – it is consumed as prebuilt CSS. Add `sass` to the dev dependencies only if you write your own SCSS (see Theme integration).
 
 felix-ds is installed one of two ways – the registry version is the primary path:
 
@@ -44,7 +46,7 @@ Four things are worth knowing:
 - **FKUI packages are pinned exactly.** All six `@fkui/*` packages pin to the same exact version, in lockstep with how upstream publishes them. felix-ds supports `@fkui/theme-default` within the range `>=6.57.0 <7.0.0` (see the compatibility section in the theme repo's README) – pin the latest version inside the range.
 - **The module specifier follows the package name.** Path A yields `@pattespatte/felix-ds/src/...` in `@use` and import paths, path B yields `felix-ds/src/...`. Everything else in this guide is identical between the paths.
 - **Point at a specific commit, not a branch** (path B), so the build is identical locally and in CI.
-- **The package contains only `src/`.** The build artifact `dist/felix.css` is not shipped – consume the SCSS sources under `src/`, which is in any case the only entry that supports dark mode (see the next section).
+- **Both prebuilt CSS and SCSS ship.** `dist/felix.css` and `dist/felix-auto.css` are precompiled and require no Sass. The SCSS sources under `src/` are only needed to scope the theme to your own selector (see the next section).
 
 In `vite.config.ts` you need two things beyond the vue plugin: an `@` alias to `./src` and `isCustomElement: (tag) => tag.startsWith("ce-")`, because FKUI registers its own custom elements (ce-page-layout among others) at runtime.
 
@@ -56,11 +58,14 @@ The app entry point loads FKUI's component CSS first:
 import "@fkui/icon-lib-default/dist/f";
 import "@fkui/design/lib/fkui.css";
 import "@fkui/design/lib/fonts.css";
-import "./assets/main.scss";
+import "felix-ds/dist/felix.css";
+import "./assets/main.css";
 import "./fkui-patches";
 ```
 
-The theme itself is applied in `main.scss` using the documented scoped mixin pair. Every scope emits the complete token surface and the specificity ladder (`:root` (0,1,0) < `html[data-color-mode="dark"]` (0,1,1)) resolves both modes without `!important`:
+The theme is applied through the prebuilt entry `dist/felix.css` – no Sass required. The file contains `@font-face`, the light theme on `:root` and the dark theme on `html[data-color-mode="dark"]`. Every scope emits the complete token surface and the specificity ladder (`:root` (0,1,0) < `html[data-color-mode="dark"]` (0,1,1)) resolves both modes without `!important`. Prefer to follow the system preference instead of controlling the color mode yourself? Use `dist/felix-auto.css` (both themes behind `prefers-color-scheme`).
+
+Need to scope the theme to your own selector? Use the SCSS mixins instead – the project then needs `sass` as a dev dependency:
 
 ```scss
 @use "felix-ds/src/fonts/fonts";
@@ -77,13 +82,13 @@ html[data-color-mode="dark"] {
 }
 ```
 
-Why not the simpler entries? The global `@use "felix-ds/src/index"` and the prebuilt `dist/felix.css` both emit only the light theme hardcoded to `:root` – they cannot express the attribute-scoped dark mode. The `felix.light` and `felix.dark` mixins also declare `color-scheme` per mode, so native controls and scrollbars follow automatically. Never configure `@fkui/theme-default` yourself in the consumer – the felix module already configures its own load of it, and a double configuration collides.
+The global `@use "felix-ds/src/index"` emits only the light theme on `:root` – it cannot express the attribute-scoped dark mode and only fits entirely light sites. The `felix.light` and `felix.dark` mixins also declare `color-scheme` per mode, so native controls and scrollbars follow automatically – the prebuilt file contains the same declarations. Never configure `@fkui/theme-default` yourself in the consumer – the felix module already configures its own load of it, and a double configuration collides.
 
-Custom layout SCSS is written with tokens only – `--fkds-*` and `--f-*` – and no raw hex values. Every custom surface (cards, panels, table stripes) then flips with the color mode for free, and dark-mode contrast is never half handmade. Dimensions (margins, breakpoints) are of course plain rem values.
+Custom layout CSS is written with tokens only – `--fkds-*` and `--f-*` – and no raw hex values. Every custom surface (cards, panels, table stripes) then flips with the color mode for free, and dark-mode contrast is never half handmade. Dimensions (margins, breakpoints) are of course plain rem values.
 
 ## Typography
 
-The theme self-hosts all typefaces: Noto Sans for body text (400, 600 + italics) and Roboto Slab for headings, with bold mapped to weight 600. `@use "felix-ds/src/fonts/fonts"` provides the @font-face rules with woff2 files that Vite bundles – no CDN calls, no Google Fonts, no privacy review. Verify in the build that `dist/assets/*.woff2` exists and that no `fonts.googleapis.com` reference has slipped in.
+The theme self-hosts all typefaces: Noto Sans for body text (400, 600 + italics) and Roboto Slab for headings, with bold mapped to weight 600. The prebuilt `dist/felix.css` contains the @font-face rules with woff2 references that Vite bundles (the SCSS path gets the same rules via `@use "felix-ds/src/fonts/fonts"`) – no CDN calls, no Google Fonts, no privacy review. Verify in the build that `dist/assets/*.woff2` exists and that no `fonts.googleapis.com` reference has slipped in.
 
 ## Dark mode
 
@@ -145,7 +150,7 @@ Because a demo site's content is fictional, indexing protection comes along: `no
 ## Checklist
 
 - [ ] FKUI packages pinned exactly, felix-ds as a git dependency at a commit
-- [ ] FKUI CSS + scoped mixin pair in main.scss; custom SCSS with tokens only
+- [ ] FKUI CSS + prebuilt felix CSS (or the scoped SCSS mixin pair); custom CSS with tokens only
 - [ ] Color-mode module + inline script + toggle; `color-scheme` verified in both modes
 - [ ] Fonts self-hosted; no font CDN in the build
 - [ ] Forms on FValidationForm with typed fields and chained validators

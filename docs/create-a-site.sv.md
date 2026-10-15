@@ -17,8 +17,10 @@ Skapa ett Vite-projekt med vue-ts-mallen och lägg till beroendena:
 ```bash
 bun add vue vue-router@^4
 bun add @fkui/vue@6.60.0 @fkui/design@6.60.0 @fkui/theme-default@6.60.0 @fkui/date@6.60.0 @fkui/logic@6.60.0 @fkui/icon-lib-default@6.60.0
-bun add -d vite @vitejs/plugin-vue sass typescript vue-tsc @types/node
+bun add -d vite @vitejs/plugin-vue typescript vue-tsc @types/node
 ```
+
+Sass behövs inte för temat – det konsumeras som förbyggd CSS. Lägg till `sass` bland utvecklingsberoendena först om du skriver egen SCSS (se Temaintegration).
 
 felix-ds installeras på två sätt – registerversionen är den huvudsakliga:
 
@@ -44,7 +46,7 @@ Fyra saker är värda att känna till:
 - **FKUI paket låses exakt.** Alla sex `@fkui/*`-paket pinas till samma exakta version, i takt med hur uppströms publicerar dem. felix-ds stödjer `@fkui/theme-default` inom intervallet `>=6.57.0 <7.0.0` (se kompatibilitetsavsnittet i temarepots README) – pinna senaste versionen inom intervallet.
 - **Modulspecificeraren följer paketnamnet.** Väg A ger `@pattespatte/felix-ds/src/...` i `@use` och importvägar, väg B ger `felix-ds/src/...`. I övrigt är guiden identisk mellan vägarna.
 - **Peka på en specifik commit, inte en gren** (väg B), så att bygget blir identiskt lokalt och i CI.
-- **Paketet innehåller bara `src/`.** Byggprodukten `dist/felix.css` följer inte med – konsumera SCSS-källorna under `src/`, vilket ändå är det enda som stödjer mörkt läge (se nästa avsnitt).
+- **Både förbyggd CSS och SCSS följer med.** `dist/felix.css` och `dist/felix-auto.css` är färdigkompilerade och kräver ingen Sass. SCSS-källorna under `src/` behövs bara för att scopea temat till en egen selektor (se nästa avsnitt).
 
 I `vite.config.ts` behövs två saker utöver vue-pluginen: en `@`-alias till `./src` och `isCustomElement: (tag) => tag.startsWith("ce-")`, eftersom FKUI registrerar sina egna custom elements (ce-page-layout med flera) i runtime.
 
@@ -56,11 +58,14 @@ Appens ingångspunkt laddar FKUI:s komponent-CSS först:
 import "@fkui/icon-lib-default/dist/f";
 import "@fkui/design/lib/fkui.css";
 import "@fkui/design/lib/fonts.css";
-import "./assets/main.scss";
+import "felix-ds/dist/felix.css";
+import "./assets/main.css";
 import "./fkui-patches";
 ```
 
-Själva temat appliceras i `main.scss` med det dokumenterade scoped mixin-paret. Varje scope emitterar den kompletta tokensytan och specificitetsstegen (`:root` (0,1,0) < `html[data-color-mode="dark"]` (0,1,1)) löser båda lägena utan `!important`:
+Temat appliceras med den förbyggda posten `dist/felix.css` – ingen Sass behövs. Filen innehåller `@font-face`, det ljusa temat på `:root` och det mörka temat på `html[data-color-mode="dark"]`. Varje scope emitterar den kompletta tokensytan och specificitetsstegen (`:root` (0,1,0) < `html[data-color-mode="dark"]` (0,1,1)) löser båda lägena utan `!important`. Vill du följa systeminställningen i stället för att styra färgläget själv, använd `dist/felix-auto.css` (båda temana bakom `prefers-color-scheme`).
+
+Behöver du scopea temat till en egen selektor? Då använder du SCSS-mixinerna i stället, och projektet behöver då `sass` som utvecklingsberoende:
 
 ```scss
 @use "felix-ds/src/fonts/fonts";
@@ -77,13 +82,13 @@ html[data-color-mode="dark"] {
 }
 ```
 
-Varför inte de enklare ingångarna? Den globala `@use "felix-ds/src/index"` och den färdigbyggda `dist/felix.css` emitterar båda endast det ljusa temat hårdkodat på `:root` – de kan inte uttrycka det attributstyrda mörka scopet. Mixinerna `felix.light` och `felix.dark` deklarerar dessutom `color-scheme` per läge, så nativa kontroller och rullistor följer med automatiskt. Konfigurera aldrig `@fkui/theme-default` själv i konsumenten – felix-modulen konfigurerar redan sin egen load av den, och en dubbel konfiguration kolliderar.
+Den globala `@use "felix-ds/src/index"` emitterar bara det ljusa temat på `:root` – den kan inte uttrycka det attributstyrda mörka scopet och passar bara helt ljusa sajter. Mixinerna `felix.light` och `felix.dark` deklarerar dessutom `color-scheme` per läge, så nativa kontroller och rullistor följer med automatiskt – den förbyggda filen innehåller samma deklarationer. Konfigurera aldrig `@fkui/theme-default` själv i konsumenten – felix-modulen konfigurerar redan sin egen load av den, och en dubbel konfiguration kolliderar.
 
-Egen layout-SCSS skrivs med tokens endast – `--fkds-*` och `--f-*` – utan råa hexvärden. Då flippar varje egen yta (kort, paneler, tabellistriper) med färgläget gratis, och kontrasten i mörkt läge blir aldrig halvhandgjord. Dimensioner (marginaler, brytpunkter) är förstås vanliga remvärden.
+Egen layout-css skrivs med tokens endast – `--fkds-*` och `--f-*` – utan råa hexvärden. Då flippar varje egen yta (kort, paneler, tabellistriper) med färgläget gratis, och kontrasten i mörkt läge blir aldrig halvhandgjord. Dimensioner (marginaler, brytpunkter) är förstås vanliga remvärden.
 
 ## Typsnitt
 
-Temat self-hostar alla typsnitt: Noto Sans för brödtext (400, 600 + kursiv) och Roboto Slab för rubriker, med fet stil mappad på vikt 600. `@use "felix-ds/src/fonts/fonts"` ger @font-face-reglerna med woff2-filer som Vite bundle:ar – inga CDN-anrop, inga Google Fonts, inga integritetsbrewer. Kontrollera gärna i bygget att `dist/assets/*.woff2` finns och att ingen `fonts.googleapis.com`-referens smugit sig in.
+Temat self-hostar alla typsnitt: Noto Sans för brödtext (400, 600 + kursiv) och Roboto Slab för rubriker, med fet stil mappad på vikt 600. Den förbyggda `dist/felix.css` innehåller @font-face-reglerna med woff2-referenser som Vite bundle:ar (SCSS-flödet får samma regler via `@use "felix-ds/src/fonts/fonts"`) – inga CDN-anrop, inga Google Fonts, inga integritetsbrewer. Kontrollera gärna i bygget att `dist/assets/*.woff2` finns och att ingen `fonts.googleapis.com`-referens smugit sig in.
 
 ## Mörkt läge
 
@@ -145,7 +150,7 @@ Eftersom innehållet på en demosajt är fiktivt följer indexeringsskydd med: `
 ## Checklista
 
 - [ ] FKUI paket pinade exakt, felix-ds som git-beroende på en commit
-- [ ] FKUI-css + scoped mixin-par i main.scss; egen SCSS med tokens endast
+- [ ] FKUI-css + förbyggd felix-css (eller scoped mixin-par i SCSS); egen css med tokens endast
 - [ ] Color-modul + inline-skript + växlingsknapp; `color-scheme` verifierad i båda lägen
 - [ ] Typsnitt self-hostade; ingen font-CDN i bygget
 - [ ] Formulär på FValidationForm med typade fält och kedjade validatorer

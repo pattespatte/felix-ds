@@ -69,15 +69,21 @@ Läs [Kompatibilitet](#kompatibilitet) innan du skriver egen Sass som rör `@fku
 
 ### 3. Importera temat
 
-Du importerar temat som SCSS. Paketet pekar ut `src/index.scss` via nyckeln `sass`.
+Standardvägen är förbyggd CSS – den kräver ingen Sass. Importera en fil i webbappens ingångspunkt:
 
-Vill du ha ett globalt tema? Då skriver `@use` ut `@font-face` och `:root`-variabler:
+```ts
+import "@pattespatte/felix-ds/dist/felix.css";
+```
+
+Filen innehåller `@font-face`, det ljusa temat på `:root` och det mörka temat på `html[data-color-mode="dark"]`. Vill du följa systeminställningen i stället för att styra färgläget själv finns `dist/felix-auto.css`. Paketets `main`-nyckel pekar på `dist/felix.css`, så den korta importen `import "@pattespatte/felix-ds"` fungerar också.
+
+Behöver du avgränsa temat till en egen selektor, till exempel för att växla tema i körtid? Då använder du SCSS-posterna i stället. Paketet pekar ut `src/index.scss` via nyckeln `sass`. Ett globalt tema:
 
 ```scss
 @use "@pattespatte/felix-ds/src/index";
 ```
 
-Vill du kunna växla tema i körtid? Då avgränsar du temat till en klass. Playgrounden gör så:
+Körningsväxling med en klass – så här gör playgrounden:
 
 ```scss
 @use "@pattespatte/felix-ds/src/theme/default" as felix with ($global: false);
@@ -116,7 +122,7 @@ FIcon används sedan som vanligt, till exempel `<f-icon name="house">`. Hela upp
 
 ### Mörkt läge
 
-Temat har även en mörk profil. `src/index.scss` skriver bara ut det ljusa temat. Du slår på mörkt läge med mixins:
+Temat har även en mörk profil. Den förbyggda `dist/felix.css` har båda lägena inbyggda – ljust på `:root`, mörkt på `html[data-color-mode="dark"]`. På SCSS-sidan skriver `src/index.scss` bara ut det ljusa temat; du slår på mörkt läge med mixins:
 
 - `base` / `light` – uppströms ljusa tema utan respektive med felix-variablerna.
 - `base-dark` / `dark` – samma par för mörkt läge (`base-dark` är FKUI:s eget mörka tema).
@@ -197,7 +203,7 @@ bun run dev        # startar playgrounden (Vite)
 | --- | --- |
 | `bun run dev` | Starta playgrounden lokalt |
 | `bun run build` | Bygg playgrounden för produktion |
-| `bun run build:theme` | Kompilera temalagret till `dist/felix.css` (typsnittsfilerna hamnar bredvid i `dist/files/`) |
+| `bun run build:theme` | Kompilera de förbyggda CSS-posterna till `dist/felix.css` och `dist/felix-auto.css` (committas; paritetstestet fäller föråldrade filer) |
 | `bun run tokens:build` | Generera `tokens/light.json` och `tokens/dark.json` ur temats SCSS-källor |
 | `bun run icons:build` | Generera om `src/icons/phosphor-spritesheet.ts` ur mappningarna i `scripts/icons.ts` |
 | `bun run fkui …` | Visa och uppgradera `@fkui/*`-beroendena (se [Uppgradera FKUI-beroendena](#uppgradera-fkui-beroendena)) |
@@ -217,8 +223,10 @@ felix-ds/
 │   │   ├── _default.scss         # temaingång: sammansätter grundtema + felix
 │   │   ├── shared/_index.scss    # --f-* (typografi, linjer, radier, fokus)
 │   │   └── light/_variables.scss # samtliga --fkds-color-* (ljusläge)
+│   ├── prebuilt/                 # selektorskal för de förbyggda CSS-posterna
 │   ├── fonts/                    # woff2, @font-face och licenstexter
 │   └── index.scss                # entry: @font-face + tema
+├── dist/                         # förbyggd css (committad, paritetstestad)
 ├── playground/                   # Vite-app som demonstrerar temat
 │   └── src/
 │       ├── navigation.ts         # navigationens enda källa: vyer + ankare
@@ -376,15 +384,21 @@ Read [Compatibility](#compatibility) before you write your own Sass that touches
 
 ### 3. Import the theme
 
-You import the theme as SCSS. The package points to `src/index.scss` through its `sass` key.
+The default path is prebuilt CSS – no Sass required. Import one file in your web app's entry point:
 
-Want a global theme? Then `@use` emits `@font-face` and `:root` variables:
+```ts
+import "@pattespatte/felix-ds/dist/felix.css";
+```
+
+The file contains `@font-face`, the light theme on `:root` and the dark theme on `html[data-color-mode="dark"]`. Want to follow the system preference instead of controlling the color mode yourself? Use `dist/felix-auto.css`. The package's `main` key points at `dist/felix.css`, so the short import `import "@pattespatte/felix-ds"` works too.
+
+Need to scope the theme to your own selector, for example to switch themes at runtime? Use the SCSS entries instead. The package points to `src/index.scss` through its `sass` key. A global theme:
 
 ```scss
 @use "@pattespatte/felix-ds/src/index";
 ```
 
-Want to switch themes at runtime? Then scope the theme to a class. The playground does this:
+Runtime switching with a class – the playground does this:
 
 ```scss
 @use "@pattespatte/felix-ds/src/theme/default" as felix with ($global: false);
@@ -423,7 +437,7 @@ FIcon is then used as usual, for example `<f-icon name="house">`. The full set i
 
 ### Dark mode
 
-The theme also ships a dark profile. `src/index.scss` emits only the light theme. You switch on dark mode with mixins:
+The theme also ships a dark profile. The prebuilt `dist/felix.css` has both modes built in – light on `:root`, dark on `html[data-color-mode="dark"]`. On the SCSS side `src/index.scss` emits only the light theme; you switch on dark mode with mixins:
 
 - `base` / `light` – the upstream light theme without and with the felix variables.
 - `base-dark` / `dark` – the same pair for dark mode (`base-dark` is FKUI's own dark theme).
@@ -504,7 +518,7 @@ Open the address printed in the terminal (usually `http://localhost:5173/`). Swi
 | --- | --- |
 | `bun run dev` | Run the playground locally |
 | `bun run build` | Build the playground for production |
-| `bun run build:theme` | Compile the theme layer to `dist/felix.css` (the font files land next to it in `dist/files/`) |
+| `bun run build:theme` | Compile the prebuilt CSS entries to `dist/felix.css` and `dist/felix-auto.css` (committed; the parity test fails stale files) |
 | `bun run tokens:build` | Generate `tokens/light.json` and `tokens/dark.json` from the theme's SCSS sources |
 | `bun run icons:build` | Regenerate `src/icons/phosphor-spritesheet.ts` from the mappings in `scripts/icons.ts` |
 | `bun run fkui …` | Show and upgrade the `@fkui/*` dependencies (see [Upgrading the FKUI dependencies](#upgrading-the-fkui-dependencies)) |
@@ -524,8 +538,10 @@ felix-ds/
 │   │   ├── _default.scss         # theme entry: composes base + felix
 │   │   ├── shared/_index.scss    # --f-* (typography, borders, radii, focus)
 │   │   └── light/_variables.scss # every --fkds-color-* token (light mode)
+│   ├── prebuilt/                 # selector shells for the prebuilt CSS entries
 │   ├── fonts/                    # woff2, @font-face and license texts
 │   └── index.scss                # entry: @font-face + theme
+├── dist/                         # prebuilt css (committed, parity tested)
 ├── playground/                   # Vite app demonstrating the theme
 │   └── src/
 │       ├── navigation.ts         # single source of truth: views + anchors
