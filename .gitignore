@@ -5,8 +5,8 @@ node_modules/
 playground/dist/
 *.tsbuildinfo
 
-# Test artifacts
-e2e/visual.spec.ts-snapshots/
+# Test artifacts (visual baselines in e2e/visual.spec.ts-snapshots/ are
+# committed – they are the release gate's ground truth)
 playwright-report/
 test-results/
 coverage/
