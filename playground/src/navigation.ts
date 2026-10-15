@@ -34,6 +34,23 @@ export const views: NavView[] = [
         ],
     },
     {
+        slug: "valj-komponent",
+        title: "Välj komponent",
+        anchors: [
+            { id: "knappar", title: "Knappar och handlingar" },
+            { id: "formular", title: "Formulär" },
+            { id: "datum", title: "Datum" },
+            { id: "filer", title: "Filer" },
+            { id: "ytor", title: "Ytor och paneler" },
+            { id: "modaler", title: "Modaler och dialoger" },
+            { id: "navigation", title: "Navigation och layout" },
+            { id: "tabeller", title: "Tabeller och data" },
+            { id: "aterkoppling", title: "Återkoppling och status" },
+            { id: "stegvisa", title: "Stegvisa flöden" },
+            { id: "css", title: "Endast CSS" },
+        ],
+    },
+    {
         slug: "knappar",
         title: "Knappar och ikoner",
         anchors: [

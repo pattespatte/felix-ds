@@ -8,6 +8,7 @@ import NavTree from "./components/NavTree.vue";
 import { currentRoute } from "./router";
 import StartView from "./views/StartView.vue";
 import GettingStartedView from "./views/GettingStartedView.vue";
+import ComponentGuideView from "./views/ComponentGuideView.vue";
 import ActionsView from "./views/ActionsView.vue";
 import FormsView from "./views/FormsView.vue";
 import CalendarView from "./views/CalendarView.vue";
@@ -25,6 +26,7 @@ import CssOnlyView from "./views/CssOnlyView.vue";
 const viewComponents: Record<string, Component> = {
     start: StartView,
     "kom-igang": GettingStartedView,
+    "valj-komponent": ComponentGuideView,
     knappar: ActionsView,
     formular: FormsView,
     kalender: CalendarView,
