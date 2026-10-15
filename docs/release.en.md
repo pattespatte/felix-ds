@@ -114,3 +114,25 @@ The package is published to GitHub Packages under the `pattespatte` account with
    ```
 
 Consumers pin their own `@fkui/*` versions; felix-ds declares `@fkui/theme-default` (supported range `>=6.57.0 <7.0.0`) as its only peer dependency and loads that module itself – a consumer's own Sass must never `@use` it with configuration, or the two configured loads collide. See the README's Compatibility section.
+
+## 6. Upgrade-notes template
+
+Every release documents the upgrader's view (the governance commitment in `docs/governance.en.md`). Paste this template into the release notes and fill it in:
+
+```markdown
+## Upgrade notes
+
+**What changed:** <one to three sentences: tokens, fonts, icons, gate, docs>
+
+**Required consumer actions:** <usually none – name any pin, import or
+workflow change explicitly>
+
+**Deprecated:** <token/mixin names shipping their deprecation notice in this
+release, or "none">
+
+**Tested FKUI endpoints:** <lower bound + the versions the playground and
+consumers pin; see README's compatibility section>
+```
+
+Keep the notes in both languages when the release affects consumers visibly: the CHANGELOG is generated in English (git-cliff), the GitHub Release notes should carry the same facts.
+

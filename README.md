@@ -181,6 +181,8 @@ Testade ändpunkter i intervallet:
 > [!WARNING]
 > Låt aldrig din egen Sass ladda eller konfigurera `@fkui/theme-default`. Temats ingång laddar paketet redan konfigurerat. En andra konfigurerad `@use`-laddning krockar och bryter kompileringen.
 
+Versionskontraktet – semantisk versionering av token och mixins, avvecklingsmönstret och stödintervallet – beskrivs i [Styrning och versionskontrakt](https://github.com/pattespatte/felix-ds/blob/main/docs/governance.sv.md).
+
 ### Exempel på implementering
 
 - <https://pattespatte.github.io/felix-ds-demo-site/>
@@ -499,6 +501,8 @@ Tested endpoints within the range:
 
 > [!WARNING]
 > Never let your own Sass load or configure `@fkui/theme-default`. The theme entry already loads the package configured. A second configured `@use` load collides and breaks compilation.
+
+The version contract – semantic versioning of tokens and mixins, the deprecation pattern and the support range – is described in [Governance and version contract](https://github.com/pattespatte/felix-ds/blob/main/docs/governance.en.md).
 
 ### Example implementation
 

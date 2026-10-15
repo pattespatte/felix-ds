@@ -114,3 +114,24 @@ Paketet publiceras på GitHub Packages under kontot `pattespatte` med begränsad
    ```
 
 Konsumenterna låser själva sina `@fkui/*`-versioner; felix-ds deklarerar `@fkui/theme-default` (stött intervall `>=6.57.0 <7.0.0`) som enda peer-beroende och laddar modulen själv – konsumentens egen Sass ska aldrig läsa in paketet via konfigurerad `@use`, eftersom de två konfigurerade laddningarna då krockar. Se avsnittet Kompatibilitet i README.
+
+## 6. Mall för uppgraderingsnoteringar
+
+Varje utgivning dokumenterar uppgraderarens perspektiv (åtagandet står i `docs/governance.sv.md`). Klistra in mallen i versionsfakta och fyll i:
+
+```markdown
+## Uppgraderingsnoteringar
+
+**Vad som ändrats:** <en till tre meningar: token, typsnitt, ikoner, port, dokumentation>
+
+**Konsumentåtgärder:** <oftast inga – namnge varje pin-, import- eller
+arbetsflödesändring uttryckligen>
+
+**Avvecklat:** <token- och mixinnamn som får sitt avvecklingsbesked i den
+här utgivningen, eller ”inget”>
+
+**Testade FKUI-ändpunkter:** <undre gränsen + de versioner playgrounden och
+konsumenterna låser; se avsnittet Kompatibilitet i README>
+```
+
+Håll noteringarna på båda språken när utgivningen märkbart berör konsumenter: CHANGELOG genereras på engelska (git-cliff), versionsfakta på GitHub ska bära samma fakta.

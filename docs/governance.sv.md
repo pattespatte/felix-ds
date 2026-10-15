@@ -1,0 +1,42 @@
+# Styrning och versionskontrakt
+
+Det här dokumentet beskriver kontraktet mellan felix-ds och de som använder temat: vad versionsnumret lovar, vilket stöd FKUI-intervallet ger och hur ändringar kommuniceras. Releaseproceduren i sig står i [utgivningsrunbook:en](./release.sv.md) och installationsreceptet i [guide:en för att bygga en webbapp](./create-a-site.sv.md).
+
+## Semantisk versionering
+
+felix-ds följer semantisk versionering på det som paketet exponerar: de publika token-namnen (CSS-variablerna), SCSS-mixinerna och mixinkonfigurationen, dist-filerna (`dist/felix.css`, `dist/felix-auto.css`), ikonuppsättningens namn och paketets importvägar.
+
+- **Major** bryter kontraktet: en publik token, mixin eller dist-fil tas bort eller byter namn, eller en befintlig importväg slutar fungera.
+- **Minor** utökar kontraktet: nya token läggs till, nya mixinparametrar med standardvärden tillkommer, nya dist-filer eller ikonnammn tillkommer. En förändring av ett token-värde som ändrar det visuella uttrycket (till exempel en ny färgprofil eller en ny typsnittsfil) är en minor, eftersom konsumentens kod fortsätter fungera oförändrad.
+- **Patch** rättar utan att ändra avsett uttryck: en felaktig token är ett avvikelsefel mot profilen och korrigeras som patch. En visuell skillnad efter en patch ska alltid gå att förklara som felkorrigering.
+- Paritetstesterna i repot (DTCG-token, ikoner och förbyggd css) är maskinkontrollen bakom kontraktet: de failar om det committade innehållet inte matchar källorna.
+
+## Stödda FKUI-versioner
+
+Temat har ett enda peer-beroende: `@fkui/theme-default` i intervallet `>=6.57.0 <7.0.0`. Intervallet gäller temalagret, alltså Sass-tokenytan i `@fkui/theme-default` – de variabler som temats ingång laddar konfigurerat (`@use` i `src/theme/_default.scss`). Komponenternas interna delar omfattas inte: felix-ds läser inga FKUI-internals, så en ändring hos FKUI som inte rör tokenytan kan inte bryta temat.
+
+Testade ändpunkter listas i README:s kompatibilitetsavsnitt. Undre gränsen (6.57.0) testas vid varje utgivning, och övre gränsen hålls aktuell genom att playgroundens låsta utvecklingsversioner ligger på intervallets topp. Konsumenten låser sina egna FKUI-versioner exakt och står för val av version inom intervallet.
+
+## Avveckling (deprecation)
+
+När en token, mixin eller fil ska tas bort:
+
+1. Den markeras i koden (SCSS-kommentar) och i CHANGELOG-redogörelsen i den minor där beskedet ges.
+2. Den fungerar kvar minst en minor-version till, så att konsumenter hinner flytta sig.
+3. Borttaget blir i nästa major, enligt versionskontraktet ovan.
+
+Motsvarande gäller ikonnammn: ett namn som lämnar uppsättningen aviseras på samma sätt, eftersom FIcons namnrymd är kontraktet mot FKUI:s ikon-API.
+
+## Utgivningstakt och uppgraderingsnoteringar
+
+Utgivningar sker när det finns något att ge ut: ackumulerade ändringar, en FKUI-uppgradering som verifierats enligt repetitionsmönstret i README, eller en buggfix. Det finns inget fast datumintervall – takten styrs av behovet, inte kalendern.
+
+Varje utgivning dokumenterar uppgraderarens perspektiv i release-anteckningarna (mallen ligger i utgivningsrunbook:en): vad som ändrats, vilka konsumentåtgärder som krävs (oftast inga), avvecklade token om några, och vilka FKUI-ändpunkter som testats. Konsumentens uppdatering ska vara en radversion-bump, och visuella förändringar ska alltid vara förklarade i förväg.
+
+## Stöd
+
+Senaste minor-versionen stöds. Äldre versioner får inte fler patchar – uppgradera enligt release-anteckningarna. Felrapporter förväntas motverkas i senaste versionen; ett fel som bara går att återskapa i en äldre version åtgärdas genom uppgradering.
+
+## Ändringar av det här dokumentet
+
+Det här dokumentet är en del av projektets kontrakt och ändras med samma öppenhet som koden: ändringar nämns i release-anteckningarna för den utgivning där de landar.
