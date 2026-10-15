@@ -71,6 +71,34 @@ function installedVersion(name: string): string {
     return typeof version === "string" ? version : "–";
 }
 
+/** Läser en paketspecifierare ur dependencies eller devDependencies. */
+function specifierOf(pkg: Record<string, unknown>, name: string): string {
+    for (const section of ["dependencies", "devDependencies"]) {
+        const deps = pkg[section] as Record<string, string> | undefined;
+        const value = deps?.[name];
+        if (value !== undefined) {
+            return value;
+        }
+    }
+    fail(`${name} hittades inte i package.json`);
+}
+
+/** Skriver tillbaka specifieraren i samma sektion som paketet redan står i. */
+function setSpecifier(
+    pkg: Record<string, unknown>,
+    name: string,
+    version: string,
+): void {
+    for (const section of ["dependencies", "devDependencies"]) {
+        const deps = pkg[section] as Record<string, string> | undefined;
+        if (deps !== undefined && name in deps) {
+            deps[name] = version;
+            return;
+        }
+    }
+    fail(`${name} hittades inte i package.json`);
+}
+
 async function fetchPackument(name: string): Promise<Packument> {
     const url = `${REGISTRY}/${encodeURIComponent(name)}`;
     const response = await fetch(url);
@@ -149,7 +177,7 @@ async function runVersion(): Promise<void> {
 
     const rows = names.map((name) => ({
         name,
-        specifier: String((pkg.dependencies as Record<string, string>)[name]),
+        specifier: specifierOf(pkg, name),
         installed: installedVersion(name),
         latest: packuments.get(name)?.["dist-tags"]?.latest ?? "–",
     }));
@@ -232,7 +260,7 @@ async function runUpgrade(
 
     const rows = names.map((name) => ({
         name,
-        current: String((pkg.dependencies as Record<string, string>)[name]),
+        current: specifierOf(pkg, name),
     }));
     if (rows.every((row) => row.current === target)) {
         console.log(`Samtliga @fkui-paket står redan på ${target}. Inget att göra.`);
@@ -270,7 +298,7 @@ async function runUpgrade(
     }
 
     for (const row of rows) {
-        (pkg.dependencies as Record<string, string>)[row.name] = target;
+        setSpecifier(pkg, row.name, target);
     }
     writeFileSync(PACKAGE_JSON, `${JSON.stringify(pkg, null, 2)}\n`);
     console.log(`\npackage.json uppdaterad (exakta versioner: ${target}).`);
