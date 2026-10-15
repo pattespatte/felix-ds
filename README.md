@@ -62,7 +62,7 @@ Temat bygger på FKUI. Du väljer själv versionerna av FKUI-paketen och låser 
 - Installera de andra FKUI-paketen du använder, till exempel `@fkui/design` och `@fkui/vue`.
 
 ```bash
-bun add --exact @fkui/theme-default@6.60.0 @fkui/design@6.60.0 @fkui/vue@6.60.0
+bun add --exact @fkui/theme-default@6.62.0 @fkui/design@6.62.0 @fkui/vue@6.62.0
 ```
 
 Läs [Kompatibilitet](#kompatibilitet) innan du skriver egen Sass som rör `@fkui/theme-default`.
@@ -175,7 +175,8 @@ Testade ändpunkter i intervallet:
 
 - 6.57.0 (undre gräns)
 - 6.59.0 (demoplatsen)
-- 6.60.0 (playgroundens låsta utvecklingsversioner, som vid varje uppgradering ligger på intervallets topp)
+- 6.60.0 (utgivning v1.1.0)
+- 6.62.0 (playgroundens låsta utvecklingsversioner, som vid varje uppgradering ligger på intervallets topp)
 
 > [!WARNING]
 > Låt aldrig din egen Sass ladda eller konfigurera `@fkui/theme-default`. Temats ingång laddar paketet redan konfigurerat. En andra konfigurerad `@use`-laddning krockar och bryter kompileringen.
@@ -263,10 +264,13 @@ Repot låser alla `@fkui/*`-paket till exakta versioner och uppgraderar dem i ta
 
 Planen skriver ut en länk till release notes och varnar särskilt för majorskiften. Efter en genomförd uppgradering gör du så här:
 
-1. Kör `bun run build`.
-2. Kör `bunx vue-tsc --noEmit`.
-3. Kör `bun run build:theme`.
-4. Gå en visuell runda i playgrounden.
+1. Kör `bun test` (paritetstesterna för tokens, ikoner och förbyggd css).
+2. Kör `bun run build:theme` och committa de omkompilerade filerna i `dist/` om de ändrats.
+3. Kör `bun run build` och `bunx vue-tsc --noEmit`.
+4. Kör `bun run test:visual` och `bun run test:a11y`.
+5. Gå en visuell runda i playgrounden.
+
+Senaste uppgraderingsrepetitionen: 6.60.0 → 6.62.0 (2026-10-15) blev en visuell nolla. Enda skillnaden i kompilerad css var versionsmarkören `--fkui-theme-default-version`, ingen tokenändring. Hela porten (paritetstester, bygge, typkontroll, 36 skärmdumpsjämförelser i chromium, 24 axe-skanningar) passerade oförändrad.
 
 ### Komponenter i playgrounden
 
@@ -377,7 +381,7 @@ The theme builds on FKUI. You choose the versions of the FKUI packages yourself 
 - Install the other FKUI packages you use, for example `@fkui/design` and `@fkui/vue`.
 
 ```bash
-bun add --exact @fkui/theme-default@6.60.0 @fkui/design@6.60.0 @fkui/vue@6.60.0
+bun add --exact @fkui/theme-default@6.62.0 @fkui/design@6.62.0 @fkui/vue@6.62.0
 ```
 
 Read [Compatibility](#compatibility) before you write your own Sass that touches `@fkui/theme-default`.
@@ -490,7 +494,8 @@ Tested endpoints within the range:
 
 - 6.57.0 (lower bound)
 - 6.59.0 (the demo site)
-- 6.60.0 (the playground's dev pins, which exercise the top of the range as they are upgraded)
+- 6.60.0 (release v1.1.0)
+- 6.62.0 (the playground's dev pins, which exercise the top of the range as they are upgraded)
 
 > [!WARNING]
 > Never let your own Sass load or configure `@fkui/theme-default`. The theme entry already loads the package configured. A second configured `@use` load collides and breaks compilation.
@@ -578,10 +583,13 @@ The repo pins all `@fkui/*` packages to exact versions and upgrades them in lock
 
 The plan prints a link to the release notes and calls out major bumps. After a completed upgrade, do this:
 
-1. Run `bun run build`.
-2. Run `bunx vue-tsc --noEmit`.
-3. Run `bun run build:theme`.
-4. Take a visual pass through the playground.
+1. Run `bun test` (the parity tests for tokens, icons and prebuilt CSS).
+2. Run `bun run build:theme` and commit the recompiled files in `dist/` if they changed.
+3. Run `bun run build` and `bunx vue-tsc --noEmit`.
+4. Run `bun run test:visual` and `bun run test:a11y`.
+5. Take a visual pass through the playground.
+
+Latest upgrade rehearsal: 6.60.0 → 6.62.0 (2026-10-15) was a visual no-op. The only difference in compiled CSS was the `--fkui-theme-default-version` marker, no token change. The whole gate (parity tests, build, type-check, 36 chromium screenshot comparisons, 24 axe scans) passed unchanged.
 
 ### Components in the playground
 
