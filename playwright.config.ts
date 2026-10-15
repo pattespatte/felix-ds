@@ -5,9 +5,14 @@ import { defineConfig } from "@playwright/test";
  * e2e/visual.spec.ts (36 screenshot comparisons against the committed
  * baselines in e2e/visual.spec.ts-snapshots/, one darwin set plus one linux
  * set for the release runner) and e2e/a11y.spec.ts (24 axe scans) – together
- * they are the release gate. Regenerate the darwin baselines with
- * `bun run test:visual:update` after reviewing the change; linux baselines
- * come from the generate-linux-baselines workflow (docs/release.en.md).
+ * they are the release gate. `bun run test:visual:cross` is the cross-browser
+ * half: e2e/visual-cross.spec.ts on firefox and webkit (the curated
+ * layout-sensitive subset, linux-only baselines). The firefox/webkit
+ * projects carry a testMatch so only the cross spec can ever run there,
+ * which keeps the default chromium matrix and the a11y scans untouched.
+ * Regenerate the darwin baselines with `bun run test:visual:update` after
+ * reviewing the change; linux baselines come from the
+ * generate-linux-baselines workflow (docs/release.en.md).
  */
 export default defineConfig({
     testDir: "e2e",
@@ -16,6 +21,16 @@ export default defineConfig({
         {
             name: "chromium",
             use: { browserName: "chromium" },
+        },
+        {
+            name: "firefox",
+            testMatch: "**/visual-cross.spec.ts",
+            use: { browserName: "firefox" },
+        },
+        {
+            name: "webkit",
+            testMatch: "**/visual-cross.spec.ts",
+            use: { browserName: "webkit" },
         },
     ],
     webServer: {

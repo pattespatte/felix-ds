@@ -23,9 +23,10 @@
     "icons:build": "bun scripts/icons.ts",
     "tokens:build": "bun scripts/tokens.ts",
     "changelog": "bunx git-cliff -o CHANGELOG.md",
-    "test:visual": "playwright test",
-    "test:visual:update": "playwright test --update-snapshots",
-    "test:a11y": "playwright test e2e/a11y.spec.ts"
+    "test:visual": "playwright test --project=chromium",
+    "test:visual:update": "playwright test --project=chromium --update-snapshots",
+    "test:visual:cross": "playwright test visual-cross.spec.ts --project=firefox --project=webkit",
+    "test:a11y": "playwright test e2e/a11y.spec.ts --project=chromium"
   },
   "sass": "./src/index.scss",
   "files": [

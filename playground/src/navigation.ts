@@ -164,3 +164,25 @@ export const views: NavView[] = [
 export function findView(slug: string): NavView | undefined {
     return views.find((view) => view.slug === slug);
 }
+
+// Slugs of the layout-sensitive views covered by the firefox/webkit
+// cross-browser visual gate (e2e/visual-cross.spec.ts). The check below
+// keeps the subset honest: if a view slug is renamed or removed, this
+// fails loudly in dev and build instead of silently shrinking the gate.
+export const crossBrowserViewSlugs: readonly string[] = [
+    "tabeller",
+    "navigation",
+    "modaler",
+    "formular",
+    "kalender",
+    "ytor",
+    "knappar",
+    "css",
+];
+
+const viewSlugs = new Set(views.map((view) => view.slug));
+for (const slug of crossBrowserViewSlugs) {
+    if (!viewSlugs.has(slug)) {
+        throw new Error(`Okänd vy-slug i crossBrowserViewSlugs: ${slug}`);
+    }
+}
