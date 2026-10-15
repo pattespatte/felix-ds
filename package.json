@@ -25,7 +25,7 @@
     "changelog": "bunx git-cliff -o CHANGELOG.md",
     "test:visual": "playwright test --project=chromium",
     "test:visual:update": "playwright test --project=chromium --update-snapshots",
-    "test:visual:cross": "playwright test visual-cross.spec.ts --project=firefox --project=webkit",
+    "test:visual:cross": "playwright test visual-cross.spec.ts --project=webkit && playwright test visual-cross.spec.ts --project=firefox",
     "test:a11y": "playwright test e2e/a11y.spec.ts --project=chromium"
   },
   "sass": "./src/index.scss",
