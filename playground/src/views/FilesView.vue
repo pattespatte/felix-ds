@@ -8,7 +8,8 @@ import FileUploaderDemo from "../demos/files/FileUploaderDemo.vue";
     <div class="view">
         <h1>Filer</h1>
         <p class="view__intro">
-            Filval, filvisning och uppladdningsmönstret från designpaketet.
+            Använd filkomponenterna när användaren ska välja, visa eller
+            ladda upp filer. Filval, filvisning och uppladdningsmönstret från designpaketet.
         </p>
 
         <f-file-selector-demo />

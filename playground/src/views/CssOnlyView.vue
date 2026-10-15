@@ -12,7 +12,8 @@ import SelectableItemDemo from "../demos/css/SelectableItemDemo.vue";
     <div class="view">
         <h1>Endast CSS</h1>
         <p class="view__intro">
-            Komponenter utan eget Vue-API – ren markup med FKUI:s klasser.
+            Använd CSS-mönstren när ett uttryck inte behöver komponentlogik –
+            samma utseende, ren markup med FKUI:s klasser.
             Där en komponent kräver formulärsfält (chip, selectable item)
             används FFieldset med de klasser SCSS-komponenten stylar.
         </p>

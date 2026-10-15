@@ -9,7 +9,8 @@ import FLogoDemo from "../demos/actions/FLogoDemo.vue";
     <div class="view">
         <h1>Knappar och ikoner</h1>
         <p class="view__intro">
-            Playground visar ett tunt temalager ovanpå FKUI:s publika npm-paket.
+            Använd knappar när användaren ska starta en handling och ikoner
+            när en bild bär meningen. Playground visar ett tunt temalager ovanpå FKUI:s publika npm-paket.
             Växla mellan FKUI:s grundtema och felix-temat med temaväljaren uppe
             till höger – alla komponenter byter utseende direkt, utan omladdning.
         </p>

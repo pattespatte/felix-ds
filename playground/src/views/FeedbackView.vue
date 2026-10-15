@@ -8,7 +8,9 @@ import FProgressbarDemo from "../demos/feedback/FProgressbarDemo.vue";
     <div class="view">
         <h1>Återkoppling och status</h1>
         <p class="view__intro">
-            Statusbrickor, snurror och förloppsindikatorer.
+            Använd brickor, snurror och förlopp när systemet ska visa status
+            utan att avbryta användaren. Statusbrickor, snurror och
+            förloppsindikatorer.
         </p>
 
         <f-badge-demo />

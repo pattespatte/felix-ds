@@ -14,7 +14,9 @@ import FTableDemo from "../demos/tables/FTableDemo.vue";
     <div class="view">
         <h1>Tabeller och data</h1>
         <p class="view__intro">
-            Tabeller för visning och interaktion, samt komponenter som
+            Använd tabellerna när data ska visas, väljas eller redigeras –
+            med sökning, sortering och sidindelning vid behov. Tabeller för
+            visning och interaktion, samt komponenter som
             sorterar, filtrerar, paginerar och redigerar datamängder.
         </p>
 

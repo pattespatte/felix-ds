@@ -7,7 +7,8 @@ import FDatepickerFieldDemo from "../demos/calendar/FDatepickerFieldDemo.vue";
     <div class="view">
         <h1>Datum och kalender</h1>
         <p class="view__intro">
-            Kalenderkomponenten och datumfältet – med svenska månads- och
+            Använd datumfältet när användaren ska välja datum och kalendern
+            när datum ska visas – med svenska månads- och
             dagbeteckningar och temats färger.
         </p>
 
