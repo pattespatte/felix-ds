@@ -1,11 +1,13 @@
 import { defineConfig } from "@playwright/test";
 
 /**
- * E2E config for the playground matrix. e2e/a11y.spec.ts is the release
- * gate (24 axe scans, no artifacts); e2e/visual.spec.ts is local-only
- * visual regression tooling whose snapshots in
- * e2e/visual.spec.ts-snapshots/ stay untracked (see .gitignore) and are
- * regenerated with `bun run test:visual:update`.
+ * E2E config for the playground matrix. `bun run test:visual` runs both
+ * e2e/visual.spec.ts (36 screenshot comparisons against the committed
+ * baselines in e2e/visual.spec.ts-snapshots/, one darwin set plus one linux
+ * set for the release runner) and e2e/a11y.spec.ts (24 axe scans) – together
+ * they are the release gate. Regenerate the darwin baselines with
+ * `bun run test:visual:update` after reviewing the change; linux baselines
+ * come from the generate-linux-baselines workflow (docs/release.en.md).
  */
 export default defineConfig({
     testDir: "e2e",

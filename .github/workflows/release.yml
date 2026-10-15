@@ -1,8 +1,9 @@
 name: Release to GitHub Packages
 
 # Triggered by the owner pushing a vX.Y.Z tag, as described in
-# docs/release.en.md. Builds, type-checks and runs the axe accessibility
-# gate before publishing the package and creating the GitHub Release.
+# docs/release.en.md. Builds, type-checks and runs the visual gate
+# (36 screenshot comparisons + 24 axe scans) before publishing the package
+# and creating the GitHub Release.
 
 on:
   push:
@@ -26,12 +27,12 @@ jobs:
       - run: bun run build
       - run: bunx vue-tsc --noEmit
       - run: bunx playwright install --with-deps chromium
-      - run: bun run test:a11y
+      - run: bun run test:visual
       - name: Upload gate report on failure
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: a11y-gate-failure
+          name: visual-gate-failure
           path: |
             test-results
             playwright-report
