@@ -27,7 +27,7 @@ Gå igenom listan innan du rör en tagg:
    En baseline-uppdatering är ett granskat beslut, aldrig en knapp för att ”få porten grön”: varje pixeländring ska gå att förklara.
 5. **Linux-baselines för CI.** Utgivningsarbetsflödet kör `bun run test:visual` och `bun run test:visual:cross` på ubuntu-24.04 (låst bild, så omgenererade baselines matchar alltid utgivningsrunnerns miljö), vilket kräver baselines med suffixet `-linux`. Generera om dem när darwin-baselinesna har ändrats, via repots arbetsflöde **Generate linux visual baselines** (ingen docker behövs lokalt):
 
-   1. GitHub → Actions → *Generate linux visual baselines* → **Run workflow** på `main` (cirka 10 minuter; den kör `--update-snapshots` för chromium, webkit och firefox på en ubuntu-runner och laddar upp båda snapshot-mapparna som artefakten `linux-baselines`). Den går också att starta från terminalen:
+   1. GitHub → Actions → *Generate linux visual baselines* → **Run workflow** på `main` (cirka 10 minuter. Den kör `--update-snapshots` för chromium, webkit och firefox på en ubuntu-runner och laddar upp båda snapshot-mapparna som artefakten `linux-baselines`.) Den går också att starta från terminalen:
 
       ```bash
       gh workflow run generate-linux-baselines.yml --repo pattespatte/felix-ds --ref main
