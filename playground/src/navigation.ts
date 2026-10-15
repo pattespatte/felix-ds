@@ -24,6 +24,16 @@ export const views: NavView[] = [
         ],
     },
     {
+        slug: "kom-igang",
+        title: "Kom igång",
+        anchors: [
+            { id: "installera", title: "Installera paketen" },
+            { id: "tema", title: "Ladda temat" },
+            { id: "ikoner", title: "Byt ikonuppsättning" },
+            { id: "anpassa", title: "Anpassa temat" },
+        ],
+    },
+    {
         slug: "knappar",
         title: "Knappar och ikoner",
         anchors: [

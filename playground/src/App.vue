@@ -7,6 +7,7 @@ import PageFooter from "./components/PageFooter.vue";
 import NavTree from "./components/NavTree.vue";
 import { currentRoute } from "./router";
 import StartView from "./views/StartView.vue";
+import GettingStartedView from "./views/GettingStartedView.vue";
 import ActionsView from "./views/ActionsView.vue";
 import FormsView from "./views/FormsView.vue";
 import CalendarView from "./views/CalendarView.vue";
@@ -23,6 +24,7 @@ import CssOnlyView from "./views/CssOnlyView.vue";
 // (router normalises) but falls back to the first view regardless.
 const viewComponents: Record<string, Component> = {
     start: StartView,
+    "kom-igang": GettingStartedView,
     knappar: ActionsView,
     formular: FormsView,
     kalender: CalendarView,
