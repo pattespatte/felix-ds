@@ -35,7 +35,7 @@ for (const config of configs) {
         await applyThemeConfig(page, config);
         await page.goto("/#/start");
         await page.waitForLoadState("networkidle");
-        const input = page.getByPlaceholder("Sök komponent…");
+        const input = page.getByPlaceholder("Sök...");
         await input.click();
         await input.fill("text");
         await page.waitForSelector(".search-results__list .search-results__item");

@@ -76,7 +76,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <div ref="root" class="search-box">
+    <div ref="root" class="search-box" :class="{ 'search-box--focused': isFocused }">
         <div
             class="search-box__field"
             @keydown="handleKeydown"
@@ -85,7 +85,7 @@ onUnmounted(() => {
         >
             <f-search-text-field
                 v-model="searchQuery"
-                placeholder="Sök komponent…"
+                placeholder="Sök..."
                 role="combobox"
                 aria-autocomplete="list"
                 aria-haspopup="listbox"
@@ -97,7 +97,7 @@ onUnmounted(() => {
             >
                 Sök i playgrounden
                 <template #input-left>
-                    <f-icon name="search" aria-hidden="true" />
+                    <f-icon name="search" class="search-box__magnifier" aria-hidden="true" />
                 </template>
             </f-search-text-field>
         </div>
@@ -118,14 +118,28 @@ onUnmounted(() => {
 </template>
 
 <style scoped lang="scss">
-/* Positioning context for the absolutely-positioned dropdown. Flex-basis
-   instead of a fixed width: the header's right slot is narrow (the title
-   side takes the flex space), so the box shrinks between the title and the
-   toggles and only wraps below FKUI medium. */
+/* Positioning context for the absolutely-positioned dropdown. Compact by
+   default and wider while the field has focus (flex-basis transitions
+   smoothly where motion is allowed); the header's right slot is narrow, so
+   the collapsed size keeps search, theme pill and mode button on one row. */
 .search-box {
     position: relative;
-    flex: 0 1 14rem;
-    min-width: 9rem;
+    flex: 0 1 10rem;
+    min-width: 7.5rem;
+}
+
+@media (min-width: 40em) {
+    .search-box--focused {
+        /* 14rem is the widest the right header slot fits next to the theme
+           pill and mode button without wrapping (slot ≈ 560px at 1280). */
+        flex-basis: 14rem;
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .search-box {
+        transition: flex-basis 0.2s ease;
+    }
 }
 
 /* Below FKUI medium the header wraps; the search field takes its own full
@@ -141,6 +155,25 @@ onUnmounted(() => {
 .search-box__field :deep(.text-field) {
     width: 100%;
     margin-bottom: 0;
+}
+
+/* The input-left slot lands beside the input inside the wrapper, i.e.
+   visually OUTSIDE the input's own border – pin the magnifier over the
+   field instead and give the input a matching left padding. */
+.search-box__field :deep(.text-field__input-wrapper) {
+    position: relative;
+}
+
+.search-box__field :deep(.search-box__magnifier) {
+    position: absolute;
+    top: 50%;
+    left: 0.625rem;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.search-box__field :deep(.text-field__input) {
+    padding-left: 2.25rem;
 }
 
 /* Header variant: the visible label is replaced by the placeholder; the
