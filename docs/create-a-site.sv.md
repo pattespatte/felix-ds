@@ -115,7 +115,7 @@ Några mönster som demosajten bevisat:
 - **Flikar.** FKUI 6.57 saknar en flikkomponent. Bygg en tunn app-komponent med WAI-ARIA-tabs-mönstret (tablist/tab/tabpanel, piltangenter) stylad med tokens – ett par hundra rader, och inget wrapperskikt i temarepot behövs.
 - **Brödsmulor.** Finns inte heller dessa i FKUI; en tunn `<nav>` med ordnad lista, router-länkar och `aria-current="page"` räcker och blir rätt.
 - **Kort, listor och meddelanden.** `FCard` (rubrik via `#header`-slotten och dess `headingSlotClass`), `FMessageBox` (info/success/warning/error), `FBadge` och `FDataTable` täcker de flesta ytor. `FSortFilterDataset` runt en tabell ger sortering; `FPaginator` ger sidbrytning.
-- **Expanderbart innehåll och accordion.** `FExpandableParagraph` med `#title`-slotten; en accordion (en öppen åt gången) styrs med `:expanded` + `@toggle` från en ref. Lägg gärna temats FExpand-patch från playgrounden i en `fkui-patches.ts` – den åtgärdar en leave-bugg i 6.57.1.
+- **Expanderbart innehåll och accordion.** `FExpandableParagraph` med `#title`-slotten; en accordion (en öppen åt gången) styrs med `:expanded` + `@toggle` från en ref. Lägg gärna temats FExpand-patch från playgrounden i en `fkui-patches.ts` – den åtgärdar en leave-bugg.
 
 ## Formulär och validering
 

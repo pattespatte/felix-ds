@@ -115,7 +115,7 @@ Some patterns the demo site has proven:
 - **Tabs.** FKUI 6.57 has no tabs component. Build a thin app-level component with the WAI-ARIA tabs pattern (tablist/tab/tabpanel, arrow keys) styled with tokens – a couple of hundred lines, and no wrapper layer is needed in the theme repo.
 - **Breadcrumbs.** Not in FKUI either; a thin `<nav>` with an ordered list, router links and `aria-current="page"` is correct and sufficient.
 - **Cards, lists and messages.** `FCard` (heading through the `#header` slot and its `headingSlotClass`), `FMessageBox` (info/success/warning/error), `FBadge` and `FDataTable` cover most surfaces. `FSortFilterDataset` around a table adds sorting; `FPaginator` adds pagination.
-- **Expandable content and accordions.** `FExpandableParagraph` with the `#title` slot; an accordion (one open at a time) is controlled with `:expanded` + `@toggle` from a ref. Consider carrying the theme repo's FExpand patch in a `fkui-patches.ts` – it fixes a leave bug in 6.57.1.
+- **Expandable content and accordions.** `FExpandableParagraph` with the `#title` slot; an accordion (one open at a time) is controlled with `:expanded` + `@toggle` from a ref. Consider carrying the theme repo's FExpand patch in a `fkui-patches.ts` – it fixes a leave bug.
 
 ## Forms and validation
 

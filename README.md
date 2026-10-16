@@ -285,7 +285,7 @@ Komponentregistret är strukturellt i stället för en handskriven lista. Varje 
 <details>
 <summary>Visa fynden</summary>
 
-En HTML/CSS-validerare (till exempel W3C:s Nu-validerare) rapporterar flera fynd på playgrounden. Alla härstammar från tredjepartskod. Inget kommer från temalagrets egna filer. Vi åtgärdar dem därför inte här: projektet använder FKUI enbart som publika npm-paket (ingen fork, inga patchar), och fynden finns kvar i senaste publicerade versionen (6.57.1). Fynden är harmlösa i webbläsarna.
+En HTML/CSS-validerare (till exempel W3C:s Nu-validerare) rapporterar flera fynd på playgrounden. Alla härstammar från tredjepartskod. Inget kommer från temalagrets egna filer. Vi åtgärdar dem därför inte här: projektet använder FKUI enbart som publika npm-paket (ingen fork, inga patchar), och fynden finns kvar i senaste publicerade versionen. Fynden är harmlösa i webbläsarna.
 
 **Från FKUI:s stilmall `@fkui/design/lib/fkui.css`:**
 
@@ -315,7 +315,7 @@ En HTML/CSS-validerare (till exempel W3C:s Nu-validerare) rapporterar flera fynd
 
 ## Publiceringspolicy
 
-Ägaren publicerar paketet som `@pattespatte/felix-ds` på GitHub Packages med begränsad synlighet. Den som installerar paketet behöver en PAT. Publicering sker bara enligt ägarens [utgivningsdokumentation](https://github.com/pattespatte/felix-ds/blob/main/docs/release.sv.md). Varje utgivning passerar först den visuella porten (skärmdumpsjämförelser och axe-skanningar). Repot ligger på GitHub, och playgrounden byggs och serveras via GitHub Pages med ägarens uttryckliga godkännande.
+Ägaren publicerar paketet som `@pattespatte/felix-ds` på GitHub Packages med begränsad synlighet. Den som installerar paketet behöver en PAT (Personal Access Token). Publicering sker bara enligt ägarens [utgivningsdokumentation](https://github.com/pattespatte/felix-ds/blob/main/docs/release.sv.md). Varje utgivning passerar först den visuella porten (skärmdumpsjämförelser och axe-skanningar). Repot ligger på GitHub, och playgrounden byggs och serveras via GitHub Pages med ägarens uttryckliga godkännande.
 
 ---
 
@@ -606,7 +606,7 @@ The component registry is structural rather than a hand-written list. Every comp
 <details>
 <summary>Show the findings</summary>
 
-An HTML/CSS validator (for example the W3C Nu checker) reports several findings on the playground. All of them originate in third-party code. None come from the theme layer's own files. We therefore do not fix them here: the project uses FKUI strictly as public npm packages (no fork, no patches), and the findings remain in the latest published version (6.57.1). The findings are harmless in browsers.
+An HTML/CSS validator (for example the W3C Nu checker) reports several findings on the playground. All of them originate in third-party code. None come from the theme layer's own files. We therefore do not fix them here: the project uses FKUI strictly as public npm packages (no fork, no patches), and the findings remain in the latest published version. The findings are harmless in browsers.
 
 **From FKUI's stylesheet `@fkui/design/lib/fkui.css`:**
 
