@@ -146,13 +146,13 @@ defineExpose({ handleKeydown });
 </template>
 
 <style scoped lang="scss">
-/* Absolute against the search box (position: relative on its root); the
-   header's own z-index (9995) keeps the dropdown above panel and main. */
+/* Absolute inside the layout header (the Teleport target), positioned and
+   sized inline by SearchBox from the input's rect. The header is a sticky
+   stacking context above panel and main, so the list paints above both and
+   escapes .page-header's overflow: hidden clip. */
 .search-results {
     position: absolute;
     z-index: 60;
-    margin-top: 0.25rem;
-    width: 100%;
     border: 1px solid var(--fkds-color-border-primary, #c4c6cd);
     border-radius: 0.25rem;
     background-color: var(--fkds-color-background-primary, #ffffff);

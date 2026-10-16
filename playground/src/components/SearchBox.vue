@@ -3,7 +3,7 @@
 // label, the native look and the clear button; the live dropdown is mounted
 // below it. ARIA combobox wiring rides on $attrs – FSearchTextField and
 // FTextField both forward attrs onto the native <input>.
-import { computed, onMounted, onUnmounted, ref } from "vue";
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from "vue";
 import { FIcon, FSearchTextField } from "@fkui/vue";
 import { useSearch, type SearchResult } from "../composables/useSearch";
 import SearchResults from "./SearchResults.vue";
@@ -27,9 +27,48 @@ const searchResultsComponent = ref<InstanceType<typeof SearchResults> | null>(nu
 const isFocused = ref(false);
 const selectedIndex = ref(0);
 
+// The dropdown is teleported to the layout header root. FKUI's .page-header
+// has overflow: hidden, which clips the list at the header's bottom edge
+// (it looked like it folded out behind #layout-navigation__primary); the
+// sticky header root neither clips nor stacks below anything relevant
+// (z-index 9995, above panel and main) and scrolls together with the
+// input, so header-relative coordinates are stable without scroll listeners.
+const teleportTarget = ref<string | HTMLElement>("body");
+const dropdownStyle = ref({ left: "0px", top: "0px", width: "0px" });
+
+function positionDropdown(): void {
+    const header = document.querySelector(".layout-application-template__header");
+    const input = root.value?.querySelector("input");
+    if (!header || !input) {
+        return;
+    }
+    const headerRect = header.getBoundingClientRect();
+    const inputRect = input.getBoundingClientRect();
+    dropdownStyle.value = {
+        left: `${Math.round(inputRect.left - headerRect.left)}px`,
+        top: `${Math.round(inputRect.bottom - headerRect.top + 4)}px`,
+        width: `${Math.round(inputRect.width)}px`,
+    };
+}
+
 // Show the live dropdown only while the field has focus and a query – the
 // header must not float a stale list over the page after tabbing away.
 const showDropdown = computed(() => isFocused.value && searchQuery.value.trim().length > 0);
+
+watch(showDropdown, (open) => {
+    if (open) {
+        void nextTick(positionDropdown);
+    }
+});
+
+// The expand transition resizes the field after the dropdown has opened
+// (typing can start before the 0.2s flex-basis transition ends) – re-measure
+// when the box reaches its focused width.
+function onTransitionEnd(event: TransitionEvent): void {
+    if (event.target === root.value && event.propertyName === "flex-basis") {
+        positionDropdown();
+    }
+}
 
 function handleFocus(): void {
     isFocused.value = true;
@@ -60,18 +99,33 @@ function handleKeydown(event: KeyboardEvent): void {
 }
 
 // Close the dropdown on outside clicks (complements the blur delay for
-// clicks that never focus another focusable element).
+// clicks that never focus another focusable element). The teleported
+// dropdown lives outside this component's subtree, so clicks inside it
+// must count as "inside" too.
 function handleClickOutside(event: MouseEvent): void {
-    if (root.value && !root.value.contains(event.target as Node)) {
-        isFocused.value = false;
+    const target = event.target;
+    if (!(target instanceof Element)) {
+        return;
     }
+    if (root.value?.contains(target) || target.closest(".search-results")) {
+        return;
+    }
+    isFocused.value = false;
 }
 
 onMounted(() => {
+    const header = document.querySelector(".layout-application-template__header");
+    if (header) {
+        teleportTarget.value = header;
+    }
+    root.value?.addEventListener("transitionend", onTransitionEnd);
     document.addEventListener("mousedown", handleClickOutside);
+    window.addEventListener("resize", positionDropdown);
 });
 onUnmounted(() => {
+    root.value?.removeEventListener("transitionend", onTransitionEnd);
     document.removeEventListener("mousedown", handleClickOutside);
+    window.removeEventListener("resize", positionDropdown);
 });
 </script>
 
@@ -102,18 +156,21 @@ onUnmounted(() => {
             </f-search-text-field>
         </div>
 
-        <search-results
-            v-if="searchQuery"
-            ref="searchResultsComponent"
-            v-model:selected-index="selectedIndex"
-            :show-results="showDropdown"
-            :search-results="searchResults"
-            :search-query="searchQuery"
-            :is-loading="isLoading"
-            :has-results="hasResults"
-            :listbox-id="LISTBOX_ID"
-            @result-select="handleResultSelect"
-        />
+        <teleport :to="teleportTarget">
+            <search-results
+                v-if="searchQuery"
+                ref="searchResultsComponent"
+                v-model:selected-index="selectedIndex"
+                :show-results="showDropdown"
+                :search-results="searchResults"
+                :search-query="searchQuery"
+                :is-loading="isLoading"
+                :has-results="hasResults"
+                :listbox-id="LISTBOX_ID"
+                :style="dropdownStyle"
+                @result-select="handleResultSelect"
+            />
+        </teleport>
     </div>
 </template>
 
@@ -169,6 +226,13 @@ onUnmounted(() => {
     top: 50%;
     left: 0.625rem;
     transform: translateY(-50%);
+    /* Keep the icon above FKUI's positioned .text-field__icon-wrapper (the
+       input's parent) and its opaque input background. */
+    z-index: 1;
+    /* The icon inherits .page-header's white header text color, which is
+       invisible over the input's white background – use the input's text
+       color instead. */
+    color: var(--fkds-color-text-primary, #1b1e23);
     pointer-events: none;
 }
 
