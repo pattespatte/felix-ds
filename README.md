@@ -272,7 +272,7 @@ Planen skriver ut en länk till release notes och varnar särskilt för majorski
 4. Kör `bun run test:visual` och `bun run test:a11y`.
 5. Gå en visuell runda i playgrounden.
 
-Senaste uppgraderingsrepetitionen: 6.60.0 → 6.62.0 (2026-10-15) blev en visuell nolla. Enda skillnaden i kompilerad css var versionsmarkören `--fkui-theme-default-version`, ingen tokenändring. Hela porten (paritetstester, bygge, typkontroll, 36 skärmdumpsjämförelser i chromium, 24 axe-skanningar) passerade oförändrad.
+Senaste uppgraderingsrepetitionen: 6.60.0 → 6.62.0 (2026-10-15) blev en visuell nolla. Enda skillnaden i kompilerad css var versionsmarkören `--fkui-theme-default-version`, ingen tokenändring. Hela porten (paritetstester, bygge, typkontroll, 42 skärmdumpsjämförelser i chromium, 28 axe-skanningar) passerade oförändrad.
 
 ### Komponenter i playgrounden
 
@@ -593,7 +593,7 @@ The plan prints a link to the release notes and calls out major bumps. After a c
 4. Run `bun run test:visual` and `bun run test:a11y`.
 5. Take a visual pass through the playground.
 
-Latest upgrade rehearsal: 6.60.0 → 6.62.0 (2026-10-15) was a visual no-op. The only difference in compiled CSS was the `--fkui-theme-default-version` marker, no token change. The whole gate (parity tests, build, type-check, 36 chromium screenshot comparisons, 24 axe scans) passed unchanged.
+Latest upgrade rehearsal: 6.60.0 → 6.62.0 (2026-10-15) was a visual no-op. The only difference in compiled CSS was the `--fkui-theme-default-version` marker, no token change. The whole gate (parity tests, build, type-check, 42 chromium screenshot comparisons, 28 axe scans) passed unchanged.
 
 ### Components in the playground
 

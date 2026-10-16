@@ -5,7 +5,7 @@ import { applyThemeConfig, type ThemeConfig } from "./lib/theme";
 // Cross-browser half of the release gate: the curated layout-sensitive
 // subset (crossBrowserViewSlugs in playground/src/navigation.ts) in the
 // felix profile and both color modes, rendered by the firefox and webkit
-// projects (testMatch in playwright.config.ts). The full 12-view × 3-config
+// projects (testMatch in playwright.config.ts). The full 14-view × 3-config
 // matrix stays chromium-only in visual.spec.ts; the fkui/light drift config
 // is browser-independent and stays there too. Baselines are linux-only
 // (release runner); any darwin set generated for local proof is deleted
