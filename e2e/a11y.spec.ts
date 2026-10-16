@@ -24,3 +24,22 @@ for (const view of views) {
         });
     }
 }
+
+// The header search box ships on every page, but its listbox only renders
+// while the field is focused with a query – the scans above never see it.
+// Scan the open dropdown state explicitly so the interactive layer stays
+// axe-clean too (index fetch on focus + 300 ms debounce, hence the selector
+// wait before axe runs).
+for (const config of configs) {
+    test(`search-dropdown [${config.theme}/${config.mode}]`, async ({ page }) => {
+        await applyThemeConfig(page, config);
+        await page.goto("/#/start");
+        await page.waitForLoadState("networkidle");
+        const input = page.getByPlaceholder("Sök komponent…");
+        await input.click();
+        await input.fill("text");
+        await page.waitForSelector(".search-results__list .search-results__item");
+        await injectAxe(page);
+        await checkA11y(page, undefined, undefined, false);
+    });
+}

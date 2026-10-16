@@ -3,6 +3,8 @@ node_modules/
 
 # Build output (root dist/ holds the committed prebuilt css and stays tracked)
 playground/dist/
+# Search index is generated at dev start and build by the Vite plugin
+playground/public/
 *.tsbuildinfo
 
 # Test artifacts (visual baselines in e2e/visual.spec.ts-snapshots/ are

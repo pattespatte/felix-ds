@@ -5,6 +5,7 @@ import ThemeToggle from "./components/ThemeToggle.vue";
 import ColorModeToggle from "./components/ColorModeToggle.vue";
 import PageFooter from "./components/PageFooter.vue";
 import NavTree from "./components/NavTree.vue";
+import SearchBox from "./components/SearchBox.vue";
 import { currentRoute } from "./router";
 import StartView from "./views/StartView.vue";
 import GettingStartedView from "./views/GettingStartedView.vue";
@@ -80,6 +81,7 @@ provide("close-mobile-nav", closeMobileNav);
                 >
                 <template #right>
                     <div class="header-controls">
+                        <search-box />
                         <theme-toggle />
                         <color-mode-toggle />
                     </div>
@@ -110,9 +112,12 @@ provide("close-mobile-nav", closeMobileNav);
 </template>
 
 <style scoped lang="scss">
-// Header controls row: theme profile pill + color mode icon button.
+// Header controls row: search box + theme profile pill + color mode icon
+// button. Wrapping lets the search field take a full row on phones (its own
+// media query flips it to flex-basis 100% below FKUI medium).
 .header-controls {
     display: inline-flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 0.5rem;
 }
