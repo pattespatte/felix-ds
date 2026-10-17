@@ -52,7 +52,7 @@ I `vite.config.ts` behövs två saker utöver vue-pluginen: ett `@`-alias till `
 
 ## Temaintegration
 
-Appens ingångspunkt laddar FKUI:s komponent-CSS först:
+Appens ingångspunkt (i ett Vite- och Vue-projekt oftast `src/main.ts`) laddar FKUI:s komponent-CSS först:
 
 ```ts
 import "@fkui/icon-lib-default/dist/f";

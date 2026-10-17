@@ -52,7 +52,7 @@ In `vite.config.ts` you need two things beyond the vue plugin: an `@` alias to `
 
 ## Theme integration
 
-The app entry point loads FKUI's component CSS first:
+The app entry point (usually `src/main.ts` in a Vite + Vue project) loads FKUI's component CSS first:
 
 ```ts
 import "@fkui/icon-lib-default/dist/f";

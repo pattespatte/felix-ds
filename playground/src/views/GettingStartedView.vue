@@ -42,8 +42,9 @@ bun add @pattespatte/felix-ds</code></pre>
         <section id="tema" aria-labelledby="tema-heading" class="demo">
             <h2 id="tema-heading">2. Ladda temat</h2>
             <p>
-                I appens ingångspunkt: FKUI:s komponentstil och typsnitt först,
-                sedan felix-lagret som vinner i kaskaden utan
+                I appens ingångspunkt (i ett Vite- och Vue-projekt oftast
+                <code>src/main.ts</code>): FKUI:s komponentstil och typsnitt
+                först, sedan felix-lagret som vinner i kaskaden utan
                 <code>!important</code>. Den förbyggda filen innehåller även
                 <code>@font-face</code>-reglerna – allt är självhostat, inga
                 CDN-anrop:
