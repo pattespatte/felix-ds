@@ -35,8 +35,19 @@
         </div>
         <div class="page-footer__bottom">
             <p>
-                felix-ds 1.0.0 – proof of concept.
+                felix-ds {{ appVersion }} – proof of concept.
                 <a href="https://github.com/pattespatte/felix-ds">Öppen källkod på GitHub</a>.
+                <a
+                    class="page-footer__badge"
+                    href="https://github.com/pattespatte/felix-ds/pkgs/npm/felix-ds"
+                >
+                    <img
+                        alt="Paketet felix-ds på GitHub Packages"
+                        height="20"
+                        src="https://img.shields.io/github/v/release/pattespatte/felix-ds?style=flat-square&label=version"
+                        width="96"
+                    />
+                </a>
             </p>
         </div>
     </div>
@@ -44,6 +55,8 @@
 
 <script setup lang="ts">
 import { views } from "../navigation";
+
+const appVersion = __APP_VERSION__;
 
 function scrollToTop(): void {
     window.scrollTo({ top: 0 });
@@ -172,5 +185,14 @@ html:not(.theme-felix) .page-footer {
 
 .page-footer__bottom p {
     margin: 0;
+}
+
+// Release badge (shields.io). The intrinsic size is pinned via width/height
+// so the line does not reflow while the external image loads, and middle
+// alignment seats it on the text baseline.
+.page-footer__badge img {
+    height: 20px;
+    width: 96px;
+    vertical-align: middle;
 }
 </style>

@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { views } from "../playground/src/navigation";
+import { stubVersionBadge } from "./lib/badge";
 import { applyThemeConfig, type ThemeConfig } from "./lib/theme";
 
 // Three configurations per view: the felix profile in both color modes, plus
@@ -15,6 +16,7 @@ for (const view of views) {
     for (const config of configs) {
         test(`${view.slug} [${config.theme}/${config.mode}]`, async ({ page }) => {
             await applyThemeConfig(page, config);
+            await stubVersionBadge(page);
             await page.goto(`/#/${view.slug}`);
             await page.waitForLoadState("networkidle");
             await expect(page).toHaveScreenshot(

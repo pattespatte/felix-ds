@@ -1,6 +1,7 @@
 import { test } from "@playwright/test";
 import { injectAxe, checkA11y } from "axe-playwright";
 import { views } from "../playground/src/navigation";
+import { stubVersionBadge } from "./lib/badge";
 import { applyThemeConfig, type ThemeConfig } from "./lib/theme";
 
 // The playground is axe-clean today; this gate exists so a release cannot
@@ -33,6 +34,7 @@ for (const view of views) {
 for (const config of configs) {
     test(`search-dropdown [${config.theme}/${config.mode}]`, async ({ page }) => {
         await applyThemeConfig(page, config);
+        await stubVersionBadge(page);
         await page.goto("/#/start");
         await page.waitForLoadState("networkidle");
         const input = page.getByPlaceholder("Sök...");
