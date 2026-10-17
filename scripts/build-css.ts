@@ -4,20 +4,22 @@
  *   dist/felix.css       – standardposten: teckensnitt + ljust tema på :root,
  *                          mörkt tema på html[data-color-mode="dark"]
  *   dist/felix-auto.css  – systempreferensen: båda teman bakom
- *                          prefers-color-scheme-mediafrågor
+ *                          `prefers-color-scheme`-mediefrågor
  *
  * Användning:
  *   bun run build:theme      generera dist/felix.css och dist/felix-auto.css
  *
  * Konventioner som skriptet följer:
- * - SCSS-källorna (src/theme, src/fonts) är den enda sanningskällan; posterna
- *   under src/prebuilt/ är tunna selektorskal som bara väljer scope
- * - teckensnittsfilerna ligger kvar i src/fonts/files – dist innehåller bara
- *   css så woff2-binärerna inte dubbleras i git och paketet; sass lämnar
- *   url() orörd (relativ källfilen), så sökvägen skrivs om till ../src
- * - dist återskapas helgt vid varje körning så borttagna poster lämnas kvar
- * - utdata är deterministisk; paritetstestet i scripts/css.test.ts fäller
- *   föråldrade filer
+ * - SCSS-källorna (`src/theme`, `src/fonts`) är den enda sanningskällan;
+ *   posterna under `src/prebuilt/` är tunna selektorskal som bara väljer scope
+ * - teckensnittsfilerna ligger kvar i `src/fonts/files` – `dist` innehåller
+ *   bara css så woff2-binärerna inte dubbleras i git och paketet; sass
+ *   lämnar url() orörd (relativ källfilen), så sökvägen skrivs om till
+ *   `../src`
+ * - mappen `dist` återskapas helt vid varje körning så att borttagna
+ *   poster inte lämnas kvar
+ * - utdata är deterministisk; paritetstestet i `scripts/css.test.ts`
+ *   fäller föråldrade filer
  */
 
 import { compile } from "sass";

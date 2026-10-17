@@ -15,8 +15,8 @@ Gå igenom listan innan du rör en tagg:
    npm view @fkui/theme-default version
    ```
 
-   Är versionen `>= 7.0.0` är utgivningen blockerad tills temat verifierats mot den nya majorversionen (och playgroundens låsta utvecklingsversioner höjts), eller tills peer-intervallet i `package.json` medvetet har snävats av. Läs också snabbt igenom changlogen för varje `@fkui/*`-utgivning inom det stödda intervallet sedan förra felix-ds-utgivningen, och håll utkik efter ändringar i tokensytan.
-3. **Porten grön lokalt.** `bun install`, `bun run build`, `bunx vue-tsc --noEmit` och framför allt `bun run test:visual` (42 visuella baselines + 28 axe-skanningar) passerar på din maskin. `bun run test:visual:cross` kör firefox/webkit-halvan av porten. På macOS kan bara webkit-halvan köras lokalt – firefox Playwright-bygge startar inte på darwin 27 (”Could not find profile folder”), så firefox övas först på linux-runnern (steg 5).
+   Är versionen `>= 7.0.0` är utgivningen blockerad tills temat verifierats mot den nya majorversionen (och playgroundens låsta utvecklingsversioner höjts), eller tills peer-intervallet i `package.json` medvetet har snävats av. Läs också snabbt igenom changeloggen för varje `@fkui/*`-utgivning inom det stödda intervallet sedan förra felix-ds-utgivningen, och håll utkik efter ändringar i tokensytan.
+3. **Porten grön lokalt.** `bun install`, `bun run build`, `bunx vue-tsc --noEmit` och framför allt `bun run test:visual` (42 visuella baselines + 28 axe-skanningar) passerar på din maskin. `bun run test:visual:cross` kör firefox/webkit-halvan av porten. På macOS kan bara webkit-halvan köras lokalt – firefox-Playwright-bygget startar inte på darwin 27 (”Could not find profile folder”), så firefox övas först på linux-runnern (steg 5).
 4. **Aktuella baselines.** Har playgrounden ändrats sedan förra utgivningen: generera om baselinesna och granska dem först:
 
    ```bash

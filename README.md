@@ -161,7 +161,7 @@ Paketet skickar med tematokens som [W3C Design Tokens](https://design-tokens.git
 - `@pattespatte/felix-ds/tokens/light.json` – det sammansatta temat i ljust läge
 - `@pattespatte/felix-ds/tokens/dark.json` – det sammansatta temat i mörkt läge
 
-”Sammansatt tema” är uppströms `@fkui/theme-default` plus felix-profilens överskrivningar, alltså exakt det som temats mixins skriver ut. Filerna genereras ur SCSS-källorna (i repot: `bun run tokens:build`) och paritetstesten (`bun test`) fäller filer som inte längre stämmer med temat. Formatet är verktygsneutralt och passar bland annat Tokens Studio och Style Dictionary.
+”Sammansatt tema” är uppströms `@fkui/theme-default` plus felix-profilens överskrivningar, alltså exakt det som temats mixins skriver ut. Filerna genereras ur SCSS-källorna (i repot: `bun run tokens:build`) och paritetstestet (`bun test`) fäller filer som inte längre stämmer med temat. Formatet är verktygsneutralt och passar bland annat Tokens Studio och Style Dictionary.
 
 Namngivning, aliaser, undantag och konsumtionsvägar finns i guiden [Design tokens](https://github.com/pattespatte/felix-ds/blob/main/docs/tokens.sv.md).
 
@@ -228,7 +228,7 @@ felix-ds/
 │   │   └── light/_variables.scss # samtliga --fkds-color-* (ljusläge)
 │   ├── prebuilt/                 # selektorskal för de förbyggda CSS-posterna
 │   ├── fonts/                    # woff2, @font-face och licenstexter
-│   └── index.scss                # entry: @font-face + tema
+│   └── index.scss                # ingång: @font-face + tema
 ├── dist/                         # förbyggd css (committad, paritetstestad)
 ├── playground/                   # Vite-app som demonstrerar temat
 │   └── src/

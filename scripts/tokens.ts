@@ -396,8 +396,8 @@ function convertAliases(value: unknown, prefixParents: Set<string>): unknown {
 type TokenNode = TokenLeaf | { [key: string]: TokenNode };
 
 const FILE_DESCRIPTIONS: Record<Mode, string> = {
-    light: "Genererad av scripts/tokens.ts – redigera inte för hand. Det sammansatta temats fullständiga tokenmängd i ljust läge (uppströms @fkui/theme-default plus felix-profilens överskrivningar) som W3C Design Tokens (DTCG-utkast). Generera om med `bun run tokens:build`; paritetstesten i scripts/tokens.test.ts fäller föråldrade filer.",
-    dark: "Genererad av scripts/tokens.ts – redigera inte för hand. Det sammansatta temats fullständiga tokenmängd i mörkt läge (uppströms @fkui/theme-default plus felix-profilens överskrivningar) som W3C Design Tokens (DTCG-utkast). Generera om med `bun run tokens:build`; paritetstesten i scripts/tokens.test.ts fäller föråldrade filer.",
+    light: "Genererad av scripts/tokens.ts – redigera inte för hand. Det sammansatta temats fullständiga tokenmängd i ljust läge (uppströms @fkui/theme-default plus felix-profilens överskrivningar) som W3C Design Tokens (DTCG-utkast). Generera om med `bun run tokens:build`; paritetstestet i `scripts/tokens.test.ts` fäller föråldrade filer.",
+    dark: "Genererad av scripts/tokens.ts – redigera inte för hand. Det sammansatta temats fullständiga tokenmängd i mörkt läge (uppströms @fkui/theme-default plus felix-profilens överskrivningar) som W3C Design Tokens (DTCG-utkast). Generera om med `bun run tokens:build`; paritetstestet i `scripts/tokens.test.ts` fäller föråldrade filer.",
 };
 
 /**

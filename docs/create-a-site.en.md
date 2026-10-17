@@ -2,7 +2,7 @@
 
 This guide describes how to build a complete website on felix-ds – FKUI's public npm packages with the felix theme on top. It is written from the pattern proven on a full demo site (Vue 3 + TypeScript + Vite, 26 routes, search, prerendering and both light and dark modes), not speculatively.
 
-A living example of everything below exists as a demo site consuming felix-ds as a git dependency.
+A living example of everything below exists as a demo site consuming felix-ds as an npm dependency from GitHub Packages.
 
 ## Prerequisites
 
@@ -112,7 +112,7 @@ Some patterns the demo site has proven:
 
 - **Navigation menu with SPA routing.** `FNavigationMenu` renders anchors and documents the pattern itself: pass routes without `href`, listen for `@selected-route` and call `router.push(key)`. Otherwise every click reloads the whole page under history routing. The `vertical` variant suits secondary navigation.
 - **Dropdown menus.** `FContextMenu` is FKUI's popup menu: a trigger button with `aria-haspopup="menu"` as the anchor, items with `label`/`key`, controlled through `:is-open` and `@select`/`@close`. Full keyboard support included.
-- **Tabs.** FKUI 6.57 has no tabs component. Build a thin app-level component with the WAI-ARIA tabs pattern (tablist/tab/tabpanel, arrow keys) styled with tokens – a couple of hundred lines, and no wrapper layer is needed in the theme repo.
+- **Tabs.** FKUI has no tabs component (as of 6.62). Build a thin app-level component with the WAI-ARIA tabs pattern (tablist/tab/tabpanel, arrow keys) styled with tokens – a couple of hundred lines, and no wrapper layer is needed in the theme repo.
 - **Breadcrumbs.** Not in FKUI either; a thin `<nav>` with an ordered list, router links and `aria-current="page"` is correct and sufficient.
 - **Cards, lists and messages.** `FCard` (heading through the `#header` slot and its `headingSlotClass`), `FMessageBox` (info/success/warning/error), `FBadge` and `FDataTable` cover most surfaces. `FSortFilterDataset` around a table adds sorting; `FPaginator` adds pagination.
 - **Expandable content and accordions.** `FExpandableParagraph` with the `#title` slot; an accordion (one open at a time) is controlled with `:expanded` + `@toggle` from a ref. Consider carrying the theme repo's FExpand patch in a `fkui-patches.ts` – it fixes a leave bug.
@@ -149,7 +149,7 @@ Because a demo site's content is fictional, indexing protection comes along: `no
 
 ## Checklist
 
-- [ ] FKUI packages pinned exactly, felix-ds as a git dependency at a commit
+- [ ] FKUI packages pinned exactly, felix-ds installed from the registry (or locked to a commit)
 - [ ] FKUI CSS + prebuilt felix CSS (or the scoped SCSS mixin pair); custom CSS with tokens only
 - [ ] Color-mode module + inline script + toggle; `color-scheme` verified in both modes
 - [ ] Fonts self-hosted; no font CDN in the build

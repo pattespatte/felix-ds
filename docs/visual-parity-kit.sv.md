@@ -6,7 +6,7 @@ Tanken: felix-ds:s strukturella löfte är att en tema- eller FKUI-uppgradering 
 
 ## 1. Fånga skärmbilder
 
-Spara som `capture-parity.mjs` i projektroten. Ändra `routes` till appens rutter och `MODE_STORAGE_KEY` till din appas localStorage-nyckel för färgläge (i referensappen är det `felix-consumer-color-mode`):
+Spara som `capture-parity.mjs` i projektroten. Ändra `routes` till appens rutter och `MODE_STORAGE_KEY` till din apps localStorage-nyckel för färgläge (i referensappen är det `felix-consumer-color-mode`):
 
 ```js
 import { chromium } from "@playwright/test";
@@ -54,7 +54,7 @@ try {
 console.log(`captured ${routes.length * 2} pages -> ${outDir}`);
 ```
 
-Appen behöver bara serva sin byggda dist eller dev-servern på `PARITY_BASE_URL` medan skriptet körs.
+Appen behöver bara serva sin byggda dist eller sin dev-server på `PARITY_BASE_URL` medan skriptet körs.
 
 ## 2. Jämför med noll-tolerans
 
@@ -98,11 +98,11 @@ bun run parity:capture after
 bun run parity:compare before after
 ```
 
-Exit-kod 0 betyder pixelidentiskt – bumpen kan ges ut med rent samvete. Exit-kod 1 betyder synliga skillnader: läs versionsfakta förutgående utgivning och förklara varje diff därifrån, eller stoppa bumpen.
+Exit-kod 0 betyder pixelidentiskt – bumpen kan ges ut med rent samvete. Exit-kod 1 betyder synliga skillnader: läs versionsfakta för den föregående utgivningen och förklara varje diff därifrån, eller stoppa bumpen.
 
 ## 4. I CI (GitHub Actions)
 
-Samma cykel som ett eget jobb, som failar på AE > 0:
+Samma cykel som ett eget jobb, som fallerar vid AE > 0:
 
 ```yaml
 jobs:
@@ -124,7 +124,7 @@ jobs:
       - run: ./compare-parity.sh before after
 ```
 
-Ersätt `X.Y.Z` med kandidatversionen. Jobbet förutsätter att appens routes inte ändrats mellan fångsterna – diffen ska visa temats inverkan, inte appens.
+Ersätt `X.Y.Z` med kandidatversionen. Jobbet förutsätter att appens rutter inte ändrats mellan fångsterna – diffen ska visa temats inverkan, inte appens.
 
 ## När kiten ska köras
 
