@@ -7,7 +7,7 @@ import {
     DEMOS_DIR,
     VIEWS_DIR,
     PLAYGROUND_SRC,
-} from "../scripts/search-index";
+} from "../scripts/search-index.ts";
 
 // Genererar playground/public/search-index.json vid serverstart och build,
 // samt live när demos, vyer eller navigationen ändras i dev. Indexet är en

@@ -23,7 +23,7 @@
 import { mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { views } from "../playground/src/navigation";
+import { views } from "../playground/src/navigation.ts";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const PLAYGROUND_SRC = join(ROOT, "playground", "src");
