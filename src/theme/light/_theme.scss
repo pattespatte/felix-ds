@@ -19,24 +19,44 @@
         color: var(--fkds-color-text-inverted, #fff);
     }
 
-    // Secondary button. Upstream binds the secondary variant's border to the
-    // primary action border and its text to the primary action text, but the
-    // profile's secondary action is a filled surface whose border matches the
-    // fill and whose text stays dark in every state.
-    .button--secondary {
-        border-color: var(--fkds-color-action-background-secondary-default);
-        color: var(--fkds-color-action-text-secondary-default);
-    }
-
+    // Secondary button. An outline surface: white fill surrounded by the
+    // dark blue action border with dark text. Upstream binds the variant's
+    // background to the secondary action fill (a tint in this profile), so
+    // the background is pinned to the primary background at rest/focus,
+    // with the profile's soft interactive tint on hover/active to keep a
+    // hover affordance. The border needs no override – upstream already
+    // binds it to the dark blue primary action border.
+    //
+    // Two scoping stories. The text stays dark in every state, disabled
+    // included (upstream mutes it; the profile keeps full-strength ink on
+    // the muted disabled surface, as the previous filled design did). The
+    // surface rules carry upstream's full disabled list – the component
+    // renders aria-disabled buttons without the disabled attribute, and an
+    // aria-disabled button stays keyboard-focusable – so the dedicated
+    // disabled fill keeps owning those elements in both color modes (the
+    // dark theme restates the ghost fills these rules shadow on dark
+    // surfaces, see dark/_theme.scss).
+    .button--secondary,
     .button--secondary:hover,
     .button--secondary:active {
-        border-color: var(--fkds-color-action-background-secondary-hover);
         color: var(--fkds-color-action-text-secondary-default);
     }
 
     .button--secondary:focus-visible {
-        border-color: var(--fkds-color-action-background-secondary-focus);
         color: var(--fkds-color-action-text-secondary-focus);
+    }
+
+    .button--secondary:not(:disabled, [aria-disabled="true"], .disabled, .button--disabled) {
+        background-color: var(--fkds-color-background-primary);
+    }
+
+    .button--secondary:not(:disabled, [aria-disabled="true"], .disabled, .button--disabled):hover,
+    .button--secondary:not(:disabled, [aria-disabled="true"], .disabled, .button--disabled):active {
+        background-color: var(--fkds-color-interactive-surface-background-primary-default);
+    }
+
+    .button--secondary:not(:disabled, [aria-disabled="true"], .disabled, .button--disabled):focus-visible {
+        background-color: var(--fkds-color-background-primary);
     }
 
     // Input fields get a soft tinted hover surface with a slightly deeper

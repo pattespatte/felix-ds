@@ -35,6 +35,28 @@
         border-color: var(--fkds-color-action-text-secondary-focus, #e2eaf7);
     }
 
+    // Ghost fills, restated. The light mixin pins an opaque outline surface
+    // onto the variant, and on dark surfaces those declarations outrank
+    // upstream's own bindings (the light scope resolves first in the
+    // cascade ladder), turning the ghost into an opaque black. Re-binding
+    // the ghost fills here restores the snapshot values in every scope that
+    // combines both themes. The same disabled list as the light mixin keeps
+    // upstream's lifted disabled fill in charge of disabled elements – the
+    // component renders aria-disabled buttons without the disabled
+    // attribute, so `:disabled` alone would not exclude them.
+    .button--secondary:not(:disabled, [aria-disabled="true"], .disabled, .button--disabled) {
+        background-color: var(--fkds-color-action-background-secondary-default);
+    }
+
+    .button--secondary:not(:disabled, [aria-disabled="true"], .disabled, .button--disabled):hover,
+    .button--secondary:not(:disabled, [aria-disabled="true"], .disabled, .button--disabled):active {
+        background-color: var(--fkds-color-action-background-secondary-hover);
+    }
+
+    .button--secondary:not(:disabled, [aria-disabled="true"], .disabled, .button--disabled):focus-visible {
+        background-color: var(--fkds-color-action-background-secondary-focus);
+    }
+
     // Input fields get a lifted hover surface with a brighter blue border,
     // mirroring the light theme's tinted hover from the dark side of the
     // palette: bg from the select secondary hover step (darkmode

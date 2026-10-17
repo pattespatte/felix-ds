@@ -44,9 +44,11 @@
     --fkds-color-action-background-primary-hover: #334075;
     --fkds-color-action-background-primary-active: #334075;
     --fkds-color-action-background-primary-focus: #334075;
-    // Secondary actions are a solid tinted surface whose border matches the
-    // fill (see the button rule in the theme mixin). One tint step at
-    // rest/focus, a lighter step on hover/active.
+    // Upstream binds several non-button surfaces to these steps (the bare
+    // .button base rule, the tertiary variant's hover/active), so they keep
+    // their solid tinted values. The .button--secondary variant does not
+    // read them any more – the theme mixin pins it to a white outline
+    // surface (see the button rule in the theme mixin).
     --fkds-color-action-background-secondary-default: #eef070;
     --fkds-color-action-background-secondary-hover: #eef495;
     --fkds-color-action-background-secondary-active: #eef495;
