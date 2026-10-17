@@ -1,8 +1,6 @@
-import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath, URL } from "node:url";
 import { defineConfig, type Plugin } from "vite";
-import MagicString from "magic-string";
 import vue from "@vitejs/plugin-vue";
 import {
     generateSearchIndex,
@@ -42,32 +40,6 @@ function searchIndexPlugin(): Plugin {
     };
 }
 
-// Paketversionen läses in vid konfiglastning och läggs in som global
-// konstant (__APP_VERSION__, deklarerad i src/env.d.ts) så att t.ex.
-// sidfoten visar den aktuella versionen utan manuell synk. En egen transform
-// behövs eftersom Vite 8 bara applicerar config.define på bundlade
-// miljöer (build) – i dev hoppar vite:define över klientkod.
-const packageJson = JSON.parse(
-    readFileSync(new URL("../package.json", import.meta.url), "utf8"),
-) as { version: string };
-
-function appVersionPlugin(version: string): Plugin {
-    return {
-        name: "felix-app-version",
-        transform(code, id) {
-            if (id.includes("node_modules") || !code.includes("__APP_VERSION__")) {
-                return null;
-            }
-            const source = new MagicString(code);
-            source.replaceAll("__APP_VERSION__", JSON.stringify(version));
-            return {
-                code: source.toString(),
-                map: source.generateMap({ hires: true }),
-            };
-        },
-    };
-}
-
 export default defineConfig({
     root: fileURLToPath(new URL(".", import.meta.url)),
     base: "./",
@@ -83,6 +55,5 @@ export default defineConfig({
             },
         }),
         searchIndexPlugin(),
-        appVersionPlugin(packageJson.version),
     ],
 });

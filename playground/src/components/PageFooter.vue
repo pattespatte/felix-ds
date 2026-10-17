@@ -35,7 +35,7 @@
         </div>
         <div class="page-footer__bottom">
             <p>
-                felix-ds {{ appVersion }} – proof of concept.
+                <b>felix-ds</b> – proof of concept.
                 <a href="https://github.com/pattespatte/felix-ds">Öppen källkod på GitHub</a>.
                 <a
                     class="page-footer__badge"
@@ -55,8 +55,6 @@
 
 <script setup lang="ts">
 import { views } from "../navigation";
-
-const appVersion = __APP_VERSION__;
 
 function scrollToTop(): void {
     window.scrollTo({ top: 0 });
