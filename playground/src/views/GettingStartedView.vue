@@ -12,7 +12,7 @@
             Fyra steg från ett tomt Vite-projekt till en tematisk FKUI-komponent:
             installera FKUI:s paket, koppla felix-temat, ladda ikonerna och välj
             hur mörkt läge styrs. Stegen följer guiden
-            <a href="https://github.com/pattespatte/felix-ds/blob/main/docs/create-a-site.en.md">Building a site with felix-ds</a>
+            <a href="https://github.com/pattespatte/felix-ds/blob/main/docs/create-a-site.sv.md">Skapa en webbplats med felix-ds</a>
             och visar låsta versioner som gällde när sidan skrevs – kontrollera
             alltid aktuell version inom det stödda intervallet.
         </p>
@@ -87,7 +87,7 @@ import "@pattespatte/felix-ds/dist/felix.css";</code></pre>
                 <code>@use "@pattespatte/felix-ds/src/index.scss"</code> med
                 mixinparet <code>felix.light</code>/<code>felix.dark</code>.
                 Hela receptet finns i guiden
-                <a href="https://github.com/pattespatte/felix-ds/blob/main/docs/create-a-site.en.md">Building a site with felix-ds</a>
+                <a href="https://github.com/pattespatte/felix-ds/blob/main/docs/create-a-site.sv.md">Skapa en webbplats med felix-ds</a>
                 och i README:s kompatibilitetsavsnitt.
             </p>
         </section>

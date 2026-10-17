@@ -250,7 +250,7 @@ Filen `playground/src/navigation.ts` definierar alla vyer och ankare. Vänsterme
 ### Grafisk profil
 
 - **Typografi:** Noto Sans för all löptext. Roboto Slab för rubriker och display (h1). Fetstil mappas till vikt 600. Temat bäddar inte in några 700-vikter.
-- **Färger, linjetjocklekar (1/2 px) och radier (4/8 px):** Temat tar råa värden från en profilkälla utanför repot. Det återanvänder inte källans arkitektur.
+- **Färger, linjetjocklekar (1 px) och radier (6/8 px):** temat ritar alla komponentramar som 1 px-hårstreck. Mindre komponenter får radie 6 px, större 8 px.
 - **Fokusmarkering:** en enkel 2 px-ring i profilens fokusfärg.
 
 ### Uppgradera FKUI-beroendena
@@ -571,7 +571,7 @@ The file `playground/src/navigation.ts` defines every view and anchor. The left 
 ### Visual profile
 
 - **Typography:** Noto Sans for all body text. Roboto Slab for headings and display (h1). Bold maps to weight 600. The theme bundles no 700 weights.
-- **Colours, border widths (1/2 px) and radii (4/8 px):** The theme takes raw values from a profile source outside this repo. It does not reuse the source's architecture.
+- **Colours, border widths (1 px) and radii (6/8 px):** The theme draws every component border as a 1 px hairline. Smaller components get a 6 px radius, larger ones 8 px.
 - **Focus indicator:** a single 2 px ring in the profile's focus colour.
 
 ### Upgrading the FKUI dependencies

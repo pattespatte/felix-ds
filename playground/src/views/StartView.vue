@@ -39,8 +39,9 @@ const categories = views.filter((view) => view.slug !== "start");
                     700-vikter bäddas in.
                 </li>
                 <li>
-                    Färger, linjetjocklekar (1/2 px) och radier (4/8 px)
-                    kommer som råa värden från en profilkälla utanför repot.
+                    Färger, linjetjocklekar (1 px) och radier (6/8 px): temat
+                    ritar alla komponentramar som 1 px-hårstreck. Mindre
+                    komponenter får radie 6 px, större 8 px.
                 </li>
                 <li>Fokusmarkering: en enkel 2 px-ring i profilens fokusfärg.</li>
             </ul>
