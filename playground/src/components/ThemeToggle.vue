@@ -73,8 +73,12 @@ import { applyTheme, currentTheme } from "../theme";
 .theme-toggle__label {
     display: inline-flex;
     align-items: center;
-    min-height: 2.5rem;
-    padding: 0.25rem 1rem;
+    // The variables are set on the header root (main.scss) and shrink with
+    // the scrolled header band; the block padding has to shrink with the
+    // height, or the 24px text line keeps the label taller than the height
+    // variable asks for.
+    min-height: var(--header-control-height, 2.5rem);
+    padding: var(--header-control-pad-block, 0.25rem) 1rem;
     border-radius: 999px;
     color: var(--fkds-color-header-text-primary, inherit);
     white-space: nowrap;

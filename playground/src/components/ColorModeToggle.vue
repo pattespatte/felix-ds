@@ -57,8 +57,10 @@ const label = computed(() =>
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 2.5rem;
-    height: 2.5rem;
+    // The variable is set on the header root (main.scss) and shrinks with
+    // the scrolled header band.
+    width: var(--header-control-height, 2.5rem);
+    height: var(--header-control-height, 2.5rem);
     padding: 0;
     border: 1px solid var(--fkds-color-header-text-primary, currentColor);
     border-radius: 999px;

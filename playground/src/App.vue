@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, provide, ref, type Component } from "vue";
+import { computed, onMounted, onUnmounted, provide, ref, type Component } from "vue";
 import { FLayoutApplicationTemplate, FLayoutLeftPanel, FPageHeader } from "@fkui/vue";
 import ThemeToggle from "./components/ThemeToggle.vue";
 import ColorModeToggle from "./components/ColorModeToggle.vue";
@@ -67,6 +67,25 @@ function closeMobileNav(): void {
 
 onMounted(closeMobileNav);
 provide("close-mobile-nav", closeMobileNav);
+
+// Shrinks the header band while the page is scrolled (the CSS lives in
+// main.scss; the class lands on FPageHeader's root element). A small
+// threshold keeps the at-rest state stable against sub-pixel scroll jitter,
+// and the initial run covers reloads that restore a scrolled position.
+const scrolled = ref(false);
+
+function updateScrolled(): void {
+    scrolled.value = window.scrollY > 8;
+}
+
+onMounted(() => {
+    updateScrolled();
+    window.addEventListener("scroll", updateScrolled, { passive: true });
+});
+
+onUnmounted(() => {
+    window.removeEventListener("scroll", updateScrolled);
+});
 </script>
 
 <template>
@@ -75,7 +94,7 @@ provide("close-mobile-nav", closeMobileNav);
          their own. -->
     <f-layout-application-template>
         <template #header>
-            <f-page-header>
+            <f-page-header :class="{ 'page-header__root--scrolled': scrolled }">
                 <a class="app-title-link" href="#/start"
                     >felix-ds<span class="app-name-sub"> – playground</span></a
                 >
@@ -113,10 +132,14 @@ provide("close-mobile-nav", closeMobileNav);
 
 <style scoped lang="scss">
 // Header controls row: search box + theme profile pill + color mode icon
-// button. Wrapping lets the search field take a full row on phones (its own
-// media query flips it to flex-basis 100% below FKUI medium).
+// button. Block-level flex: as an inline-flex the row would sit on a text
+// line inside the shrink-wrapped slot, and the line box's strut adds ~14px
+// of phantom space below the controls that pushes them off the header's
+// shared centre line. Wrapping lets the search field take a full row on
+// phones (its own media query flips it to flex-basis 100% below FKUI
+// medium).
 .header-controls {
-    display: inline-flex;
+    display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: 0.5rem;

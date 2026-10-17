@@ -32,8 +32,11 @@ const selectedIndex = ref(0);
 // (it looked like it folded out behind #layout-navigation__primary); the
 // sticky header root neither clips nor stacks below anything relevant
 // (z-index 9995, above panel and main) and scrolls together with the
-// input, so header-relative coordinates are stable without scroll listeners.
-const teleportTarget = ref<string | HTMLElement>("body");
+// input. Header-relative coordinates only need re-measuring when the
+// header's height itself changes – the shrink-on-scroll animation in
+// main.scss, handled by the scroll/transitionend listeners below.
+// querySelector yields Element, and the Teleport to-prop accepts it.
+const teleportTarget = ref<string | Element>("body");
 const dropdownStyle = ref({ left: "0px", top: "0px", width: "0px" });
 
 function positionDropdown(): void {
@@ -62,10 +65,37 @@ watch(showDropdown, (open) => {
 });
 
 // The expand transition resizes the field after the dropdown has opened
-// (typing can start before the 0.2s flex-basis transition ends) – re-measure
-// when the box reaches its focused width.
+// (typing can start before the 0.2s flex-basis/max-width transition ends) –
+// re-measure when the box reaches its focused width.
 function onTransitionEnd(event: TransitionEvent): void {
-    if (event.target === root.value && event.propertyName === "flex-basis") {
+    if (
+        event.target === root.value &&
+        (event.propertyName === "flex-basis" || event.propertyName === "max-width")
+    ) {
+        positionDropdown();
+    }
+}
+
+// The header band shrinks/grows while the page scrolls (main.scss), which
+// moves the input under an open dropdown. Re-measure on scroll frames while
+// the list is open, and once more when the padding transition lands so the
+// position is exact after the 0.2s animation settles.
+let scrollRafId = 0;
+
+function onScroll(): void {
+    if (!showDropdown.value) {
+        return;
+    }
+    cancelAnimationFrame(scrollRafId);
+    scrollRafId = requestAnimationFrame(positionDropdown);
+}
+
+function onHeaderTransitionEnd(event: TransitionEvent): void {
+    if (
+        event.target instanceof Element &&
+        event.target.classList.contains("page-header") &&
+        event.propertyName.startsWith("padding")
+    ) {
         positionDropdown();
     }
 }
@@ -121,11 +151,16 @@ onMounted(() => {
     root.value?.addEventListener("transitionend", onTransitionEnd);
     document.addEventListener("mousedown", handleClickOutside);
     window.addEventListener("resize", positionDropdown);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    document.addEventListener("transitionend", onHeaderTransitionEnd);
 });
 onUnmounted(() => {
     root.value?.removeEventListener("transitionend", onTransitionEnd);
     document.removeEventListener("mousedown", handleClickOutside);
     window.removeEventListener("resize", positionDropdown);
+    window.removeEventListener("scroll", onScroll);
+    document.removeEventListener("transitionend", onHeaderTransitionEnd);
+    cancelAnimationFrame(scrollRafId);
 });
 </script>
 
@@ -195,17 +230,35 @@ onUnmounted(() => {
 
 @media (prefers-reduced-motion: no-preference) {
     .search-box {
-        transition: flex-basis 0.2s ease;
+        transition:
+            flex-basis 0.2s ease,
+            max-width 0.2s ease;
     }
 }
 
 /* Below FKUI medium the header wraps; the search field takes its own full
    row above the toggles (same breakpoint as the header rules in
-   main.scss). */
+   main.scss). Idle it is capped at the toggle row's width (theme pill + gap
+   + mode button) so the two rows read as one block; the caps are exact
+   because the labels are fixed text in bundled fonts. Focus releases the
+   cap and the field expands to the full row, mirroring the desktop
+   expand-on-focus. */
 @media (max-width: 39.99em) {
     .search-box {
         flex: 1 1 100%;
         min-width: 0;
+        /* Toggle row with the full FKUI grundtema/felix-tema labels. */
+        max-width: 20.21rem;
+
+        @media (max-width: 25.99em) {
+            /* Toggle row with the short FKUI/felix labels. */
+            max-width: 11.91rem;
+        }
+    }
+
+    // Declared after the caps above so the release wins the cascade.
+    .search-box--focused {
+        max-width: none;
     }
 }
 
@@ -238,6 +291,10 @@ onUnmounted(() => {
 
 .search-box__field :deep(.text-field__input) {
     padding-left: 2.25rem;
+    // The variable is set on the header root (main.scss) and shrinks with
+    // the scrolled header band; beats the upstream min-height on
+    // specificity.
+    min-height: var(--header-control-height, 2.5rem);
 }
 
 /* Header variant: the visible label is replaced by the placeholder; the

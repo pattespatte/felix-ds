@@ -200,9 +200,10 @@ const anchorTitles = new Map(
     views.flatMap((view) => view.anchors.map((anchor) => [`${view.slug}/${anchor.id}`, anchor.title])),
 );
 
-function docsHref(name: FkuiComponentName): string | null {
+// Vue's href prop takes undefined (not null) to drop the attribute.
+function docsHref(name: FkuiComponentName): string | undefined {
     const link = fkuiComponentLinks[name];
-    return link === undefined ? null : `${FKUI_DOCS_BASE}${link.docsPath}`;
+    return link === undefined ? undefined : `${FKUI_DOCS_BASE}${link.docsPath}`;
 }
 
 </script>

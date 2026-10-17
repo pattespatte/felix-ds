@@ -49,13 +49,56 @@ body {
     background-color: var(--fkds-color-background-primary, #ffffff);
 }
 
-// Taller header band with a hairline divider, aligned with the reference
-// profile's page shell. Right padding stacks with the right slot's own
-// padding for 32px on both edges. Global rules (not scoped): the FKUI
-// component does not propagate the parent's style scope to its markup.
+// Header band with a hairline divider, aligned with the reference profile's
+// page shell. Right padding stacks with the right slot's own padding for
+// 32px on both edges. Global rules (not scoped): the FKUI component does not
+// propagate the parent's style scope to its markup.
 .page-header {
-    padding: 1.5rem 1rem 1.5rem 2rem;
+    padding: 1rem 1rem 1rem 2rem;
     border-bottom: 1px solid var(--fkds-color-border-weak, #d7d9e0);
+}
+
+// Upstream gives the app name and the right slot small top paddings that
+// optically align them with a logotype; without a logo they just push both
+// off the flex line's shared centre. Zeroing them lets align-items: center
+// line up title, search field and toggles on one row.
+.page-header__app-name,
+.page-header__right {
+    padding-top: 0;
+}
+
+// Shared control height for everything in the header row (search field,
+// theme pill, mode button); the components consume it so the scroll-shrink
+// below can tighten the whole row from one place.
+.page-header__root {
+    --header-control-height: 2.5rem;
+}
+
+// Shrink the header while the page is scrolled (≈49px vs ≈81px at rest).
+// Desktop only: FLayoutLeftPanel measures the header height once at mount
+// for the mobile drawer's top offset, so below FKUI medium – where the
+// drawer lives – the header keeps a constant height. The whole feature rides
+// on prefers-reduced-motion because shrinking is motion: users (and the
+// Playwright visual suite, which runs with reducedMotion: reduce) get the
+// stable at-rest header instead. 0.375rem padding matches the 6px focus-ring
+// spread, so :focus-visible rings on the controls stay unclipped inside the
+// header's overflow: hidden.
+@media (min-width: 40em) and (prefers-reduced-motion: no-preference) {
+    .page-header {
+        transition: padding 0.2s ease;
+    }
+
+    .page-header__root--scrolled {
+        --header-control-height: 1.75rem;
+        // The pill label's own block padding: shrinking it with the height
+        // keeps the 24px text line from flooring the label above the height
+        // variable.
+        --header-control-pad-block: 0.125rem;
+
+        .page-header {
+            padding-block: 0.375rem;
+        }
+    }
 }
 
 // FKUI's page header is a single non-wrapping flex row with overflow hidden:
@@ -74,6 +117,15 @@ body {
     // much width the app name occupies.
     .page-header__right {
         flex-basis: 100%;
+    }
+
+    // The wrapped controls rows must share the title's left edge: the right
+    // slot's own 1rem would otherwise stack on the header's 2rem padding and
+    // indent search and toggles 16px past the app name. The right side keeps
+    // the slot's 1rem, so the mode button's edge stays 2rem from the
+    // viewport like on desktop.
+    .page-header__right-slot {
+        padding-left: 0;
     }
 }
 
