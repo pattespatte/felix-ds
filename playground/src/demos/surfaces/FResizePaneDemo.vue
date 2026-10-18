@@ -27,7 +27,13 @@ import ComponentHeading from "../../components/ComponentHeading.vue";
 
 <style scoped lang="scss">
 .resize-demo {
-    display: flex;
+    // Grid, not flex: the pane sets its own width from --size and upstream's
+    // left-panel layout sizes that column as min-content, so the rendered
+    // width tracks the drag exactly. In a flex row the pane's built-in
+    // flex-grow: 1 competes with the sibling, halving every drag step and
+    // stopping the visual width well above the declared min.
+    display: grid;
+    grid-template-columns: min-content 1fr;
     height: 12rem;
     border: 1px solid var(--fkds-color-border-weak, #d7d9e0);
     border-radius: var(--f-border-radius-medium, 8px);
