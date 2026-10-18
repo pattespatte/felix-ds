@@ -41,7 +41,12 @@ import ComponentHeading from "../../components/ComponentHeading.vue";
 }
 
 .minimizable-demo__main {
-    flex: 1;
+    // FKUI's .panel__wrapper (shadow DOM, unstyleable from here) carries
+    // flex-grow: 1, which keeps the collapsed panel at half the row. Starving
+    // it with a dominant grow lets the panel size to its content instead:
+    // wide when open, a bare button strip when collapsed, as in FKUI's own
+    // examples.
+    flex: 999 1 0%;
     display: grid;
     place-items: center;
     color: var(--fkds-color-text-secondary, #585f71);
