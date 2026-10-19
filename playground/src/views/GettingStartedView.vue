@@ -3,6 +3,22 @@
 // component, mirroring docs/create-a-site.en.md as on-site copy-paste
 // blocks. API details stay upstream – this view covers only the theme
 // consumption contract.
+import pkg from "../../../package.json";
+
+// The FKUI pins shown are the playground's own dev pins, so an upgrade
+// rehearsal updates the copy-paste block without a manual edit here.
+const fkuiVersion = (pkg.devDependencies as Record<string, string>)[
+    "@fkui/vue"
+];
+const fkuiInstall = [
+    "bun add",
+    `@fkui/vue@${fkuiVersion}`,
+    `@fkui/design@${fkuiVersion}`,
+    `@fkui/theme-default@${fkuiVersion}`,
+    `@fkui/date@${fkuiVersion}`,
+    `@fkui/logic@${fkuiVersion}`,
+    `@fkui/icon-lib-default@${fkuiVersion}`,
+].join(" ");
 </script>
 
 <template>
@@ -13,8 +29,8 @@
             installera FKUI:s paket, koppla felix-temat, ladda ikonerna och välj
             hur mörkt läge styrs. Stegen följer guiden
             <a href="https://github.com/pattespatte/felix-ds/blob/main/docs/create-a-site.sv.md">Skapa en webbplats med felix-ds</a>
-            och visar låsta versioner som gällde när sidan skrevs – kontrollera
-            alltid aktuell version inom det stödda intervallet.
+            och visar samma versionslås som playgrounden själv använder –
+            kontrollera alltid aktuell version inom det stödda intervallet.
         </p>
 
         <section id="installera" aria-labelledby="installera-heading" class="demo">
@@ -32,7 +48,7 @@
 //npm.pkg.github.com/:_authToken=${GITHUB_PACKAGES_TOKEN}
 EOF
 bun add @pattespatte/felix-ds</code></pre>
-            <pre class="setup-code" tabindex="0"><code>bun add @fkui/vue@6.62.0 @fkui/design@6.62.0 @fkui/theme-default@6.62.0 @fkui/date@6.62.0 @fkui/logic@6.62.0 @fkui/icon-lib-default@6.62.0</code></pre>
+            <pre class="setup-code" tabindex="0"><code>{{ fkuiInstall }}</code></pre>
             <p>
                 Alternativ utan registret:
                 <code>bun add felix-ds@github:pattespatte/felix-ds#&lt;commit&gt;</code>.
