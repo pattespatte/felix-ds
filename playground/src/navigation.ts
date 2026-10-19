@@ -51,6 +51,16 @@ export const views: NavView[] = [
         ],
     },
     {
+        slug: "tillganglighet",
+        title: "Tillgänglighet",
+        anchors: [
+            { id: "om-tillganglighet", title: "Vad temat bidrar med" },
+            { id: "testning", title: "Testning" },
+            { id: "komponenter", title: "Komponenterna" },
+            { id: "begransningar", title: "Begränsningar" },
+        ],
+    },
+    {
         slug: "knappar",
         title: "Knappar och ikoner",
         anchors: [

@@ -175,7 +175,7 @@ const groups: GuideGroup[] = [
 // of navigation.ts (all views except the three documentation views). A
 // renamed or new demo anchor fails loudly here instead of silently leaving
 // the guide incomplete.
-const DOC_VIEW_SLUGS = ["start", "kom-igang", "valj-komponent"];
+const DOC_VIEW_SLUGS = ["start", "kom-igang", "valj-komponent", "tillganglighet"];
 
 const guideAnchors = new Set(
     groups.flatMap((group) => group.entries.map((entry) => `${entry.slug}/${entry.id}`)),

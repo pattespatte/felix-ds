@@ -10,6 +10,7 @@ import { currentRoute } from "./router";
 import StartView from "./views/StartView.vue";
 import GettingStartedView from "./views/GettingStartedView.vue";
 import ComponentGuideView from "./views/ComponentGuideView.vue";
+import AccessibilityView from "./views/AccessibilityView.vue";
 import ActionsView from "./views/ActionsView.vue";
 import FormsView from "./views/FormsView.vue";
 import CalendarView from "./views/CalendarView.vue";
@@ -28,6 +29,7 @@ const viewComponents: Record<string, Component> = {
     start: StartView,
     "kom-igang": GettingStartedView,
     "valj-komponent": ComponentGuideView,
+    tillganglighet: AccessibilityView,
     knappar: ActionsView,
     formular: FormsView,
     kalender: CalendarView,
