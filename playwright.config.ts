@@ -2,17 +2,18 @@ import { defineConfig } from "@playwright/test";
 
 /**
  * E2E config for the playground matrix. `bun run test:visual` runs both
- * e2e/visual.spec.ts (36 screenshot comparisons against the committed
- * baselines in e2e/visual.spec.ts-snapshots/, one darwin set plus one linux
- * set for the release runner) and e2e/a11y.spec.ts (24 axe scans) – together
- * they are the release gate. `bun run test:visual:cross` is the cross-browser
- * half: e2e/visual-cross.spec.ts on firefox and webkit (the curated
- * layout-sensitive subset, linux-only baselines). The firefox/webkit
- * projects carry a testMatch so only the cross spec can ever run there,
- * which keeps the default chromium matrix and the a11y scans untouched.
- * Regenerate the darwin baselines with `bun run test:visual:update` after
- * reviewing the change; linux baselines come from the
- * generate-linux-baselines workflow (docs/release.en.md).
+ * e2e/visual.spec.ts (screenshot comparisons of every view against the
+ * committed baselines in e2e/visual.spec.ts-snapshots/, one darwin set plus
+ * one linux set for the release runner) and e2e/a11y.spec.ts (axe scans of
+ * every view in both felix color modes, plus the search dropdown's open
+ * state) – together they are the release gate. `bun run test:visual:cross`
+ * is the cross-browser half: e2e/visual-cross.spec.ts on firefox and webkit
+ * (the curated layout-sensitive subset, linux-only baselines). The
+ * firefox/webkit projects carry a testMatch so only the cross spec can ever
+ * run there, which keeps the default chromium matrix and the a11y scans
+ * untouched. Regenerate the darwin baselines with `bun run
+ * test:visual:update` after reviewing the change; linux baselines come from
+ * the generate-linux-baselines workflow (docs/release.en.md).
  */
 export default defineConfig({
     testDir: "e2e",

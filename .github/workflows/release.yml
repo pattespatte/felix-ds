@@ -2,8 +2,9 @@ name: Release to GitHub Packages
 
 # Triggered by the owner pushing a vX.Y.Z tag, as described in
 # docs/release.en.md. Builds, type-checks and runs the visual gate
-# (42 chromium + 32 firefox/webkit screenshot comparisons and 28 axe
-# scans) before publishing the package
+# (chromium screenshot comparisons of every view plus the firefox/webkit
+# cross-browser subset, and axe scans of every view in both felix color
+# modes) before publishing the package
 # and creating the GitHub Release.
 
 on:
