@@ -264,7 +264,7 @@ function validateValueShape(type: string | undefined, resolved: unknown, path: s
             }
             return;
         default:
-            fail(`${path} har stödjande $type "${type}" – tillåtna: ${SUPPORTED_TYPES.join(", ")}`);
+            fail(`${path} har $type "${type}" som inte stöds – tillåtna: ${SUPPORTED_TYPES.join(", ")}`);
     }
 }
 
@@ -303,7 +303,7 @@ export function validateDtcgTree(tree: unknown): void {
             }
             walkStructure(child as JsonNode, path === "" ? key : `${path}.${key}`);
         }
-    })(tree as JsonNode, "$");
+    })(tree as JsonNode, "");
 
     const leaves: LeafPath[] = [];
     collectLeaves(tree, [], leaves);
@@ -360,7 +360,7 @@ export function validateDtcgTree(tree: unknown): void {
         if (collision !== undefined) {
             fail(`sökvägarna "${collision}" och "${path}" ger samma css-namn --${name}`);
         }
-        nameByPath.set(path, name);
+        nameByPath.set(name, path);
     }
 }
 
@@ -368,7 +368,13 @@ export function validateDtcgTree(tree: unknown): void {
 // Utmatning.
 // ---------------------------------------------------------------------------
 
-function quoteFontName(name: string): string {
+/**
+ * Citerar ett typsnittsnamn när det inte är en okvensad css-identifierare.
+ * Exporten strök citattecken ur typsnittsnamn, så originalets citering kan
+ * inte återvinnas ur JSON – rundturstestet jämför därför fontlistor kanoniskt
+ * genom att köra båda sidorna genom den här regeln.
+ */
+export function quoteFontName(name: string): string {
     return UNQUOTED_FONT_NAME_PATTERN.test(name) ? name : `"${name}"`;
 }
 
