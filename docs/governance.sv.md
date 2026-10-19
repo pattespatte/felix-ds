@@ -4,7 +4,7 @@ Det här dokumentet beskriver kontraktet mellan felix-ds och de som använder te
 
 ## Semantisk versionering
 
-felix-ds följer semantisk versionering på det som paketet exponerar: de publika token-namnen (CSS-variablerna), SCSS-mixinerna och mixinkonfigurationen, dist-filerna (`dist/felix.css`, `dist/felix-auto.css`), ikonuppsättningens namn och paketets importvägar.
+felix-ds följer semantisk versionering på det som paketet exponerar: de publika token-namnen (CSS-variablerna), SCSS-mixinerna och mixinkonfigurationen, dist-filerna (`dist/felix.css`, `dist/felix-auto.css`, `dist/felix-complete.css`), ikonuppsättningens namn och paketets importvägar.
 
 - **Major** bryter kontraktet: en publik token, mixin eller dist-fil tas bort eller byter namn, eller en befintlig importväg slutar fungera.
 - **Minor** utökar kontraktet: nya token läggs till, nya mixinparametrar med standardvärden tillkommer, nya dist-filer eller ikonnamn tillkommer. En förändring av ett token-värde som ändrar det visuella uttrycket (till exempel en ny färgprofil eller en ny typsnittsfil) är en minor, eftersom konsumentens kod fortsätter fungera oförändrad.
@@ -32,6 +32,8 @@ Motsvarande gäller ikonnamn: ett namn som lämnar uppsättningen aviseras på s
 Utgivningar sker när det finns något att ge ut: ackumulerade ändringar, en FKUI-uppgradering som verifierats enligt repetitionsmönstret i README, eller en buggfix. Det finns inget fast datumintervall – takten styrs av behovet, inte kalendern.
 
 Varje utgivning dokumenterar uppgraderarens perspektiv i versionsfakta (mallen ligger i utgivningsrunbook:en): vad som ändrats, vilka konsumentåtgärder som krävs (oftast inga), avvecklade token om några, och vilka FKUI-ändpunkter som testats. Konsumentens uppdatering ska vara en versionsbump på en rad, och visuella förändringar ska alltid vara förklarade i förväg.
+
+Varje utgivning passerar också axe-porten: automatiserade tillgänglighetsskanningar av varje playground-vy i båda färglägena, med noll överträdelser som villkor. Täckningen per komponent – vilken vy som demonstrerar komponenten och vad den automatiserade testningen omfattar – dokumenteras i playgroundens vy Tillgänglighet.
 
 ## Stöd
 

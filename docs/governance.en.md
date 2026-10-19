@@ -4,7 +4,7 @@ This document describes the contract between felix-ds and its consumers: what th
 
 ## Semantic versioning
 
-felix-ds applies semantic versioning to everything the package exposes: the public token names (the CSS custom properties), the SCSS mixins and their configuration, the dist files (`dist/felix.css`, `dist/felix-auto.css`), the icon set's names and the package's import paths.
+felix-ds applies semantic versioning to everything the package exposes: the public token names (the CSS custom properties), the SCSS mixins and their configuration, the dist files (`dist/felix.css`, `dist/felix-auto.css`, `dist/felix-complete.css`), the icon set's names and the package's import paths.
 
 - **Major** breaks the contract: a public token, mixin or dist file is removed or renamed, or an existing import path stops working.
 - **Minor** extends the contract: new tokens are added, new mixin parameters with defaults appear, new dist files or icon names appear. A token-value change that alters the visual expression (a new colour profile, a new font file) is a minor, because consumer code keeps working unchanged.
@@ -32,6 +32,8 @@ The same applies to icon names: a name leaving the set is announced the same way
 Releases happen when there is something to release: accumulated changes, an FKUI upgrade verified through the rehearsal pattern in the README, or a bug fix. There is no fixed interval – need drives the cadence, not the calendar.
 
 Every release documents the upgrader's view in its release notes (the template lives in the release runbook): what changed, which consumer actions are required (usually none), any deprecated tokens, and which FKUI endpoints were tested. A consumer update should be a one-line version bump, and visual changes must always be explained in advance.
+
+Every release also passes the axe gate: automated accessibility scans of every playground view in both colour modes, with zero violations as the condition. Per-component coverage – which view demonstrates each component and what the automated testing covers – is documented in the playground's Tillgänglighet view.
 
 ## Support
 
