@@ -22,89 +22,13 @@ import {
     UNTYPED,
     type TokenLeaf,
 } from "./tokens.ts";
+import { flattenTokenTree, parseCssShadowPart, resolveCssVars, resolveJsonAliases } from "./tokens-import.ts";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const MODES = ["light", "dark"] as const;
 
 type Mode = (typeof MODES)[number];
 type JsonNode = Record<string, unknown>;
-
-/** Plockar blad ur token-trädet; `_self`-segment stryks (rundtur till CSS-namnet). */
-function flattenTokenTree(node: unknown, prefix = ""): Map<string, TokenLeaf> {
-    const leaves = new Map<string, TokenLeaf>();
-    if (Array.isArray(node) || typeof node !== "object" || node === null) {
-        return leaves;
-    }
-    if ("$value" in node) {
-        leaves.set(prefix, node as TokenLeaf);
-    }
-    for (const [key, child] of Object.entries(node as JsonNode)) {
-        if (key.startsWith("$")) {
-            continue;
-        }
-        const name = key === "_self" ? prefix : prefix === "" ? key : `${prefix}-${key}`;
-        for (const [nested, leaf] of flattenTokenTree(child, name)) {
-            leaves.set(nested, leaf);
-        }
-    }
-    return leaves;
-}
-
-/** Löser {alias}-referenser i ett JSON-värde mot samma fils token-träd. */
-function resolveJsonAliases(value: unknown, tree: JsonNode): unknown {
-    if (typeof value === "string") {
-        return value.replace(/\{([a-zA-Z0-9._]+)\}/g, (_, path: string) => {
-            let node: unknown = tree;
-            for (const part of path.split(".")) {
-                node = (node as JsonNode)[part];
-            }
-            if (typeof node !== "object" || node === null || !("$value" in node)) {
-                throw new Error(`alias {$${path}} kan inte lösas i token-trädet`);
-            }
-            return String((node as TokenLeaf).$value);
-        });
-    }
-    if (Array.isArray(value)) {
-        return value.map((v) => resolveJsonAliases(v, tree));
-    }
-    if (typeof value === "object" && value !== null) {
-        return Object.fromEntries(
-            Object.entries(value).map(([key, child]) => [key, resolveJsonAliases(child, tree)]),
-        );
-    }
-    return value;
-}
-
-/** Löser var()-referenser i ett CSS-värde mot deklarationsmängden (med loopskydd). */
-function resolveCssVars(value: string, declarations: Map<string, string>, seen = new Set<string>()): string {
-    return value.replace(/var\(--([a-zA-Z0-9-]+)\)/g, (_, name: string) => {
-        if (seen.has(name)) {
-            throw new Error(`alias-loop vid --${name}`);
-        }
-        const target = declarations.get(name);
-        if (target === undefined) {
-            throw new Error(`okänd var()-referens --${name}`);
-        }
-        return resolveCssVars(target, declarations, new Set([...seen, name]));
-    });
-}
-
-/** Tolkar ett CSS-skuggled till DTCG-skuggobjekt (jämförs djupt med JSON-sidan). */
-function parseCssShadowPart(part: string): Record<string, string> {
-    const components = splitTopLevel(part, " ").filter((component) => component.length > 0);
-    const shadow: Record<string, string> = {
-        offsetX: components[0],
-        offsetY: components[1],
-        color: components[components.length - 1],
-    };
-    if (components.length >= 4) {
-        shadow.blur = components[2];
-    }
-    if (components.length >= 5) {
-        shadow.spread = components[3];
-    }
-    return shadow;
-}
 
 /** Kontrollerar att ett tokens JSON-värde motsvarar dess CSS-värde, per typ. */
 function expectTokenParity(name: string, leaf: TokenLeaf, cssValue: string, declarations: Map<string, string>, tree: JsonNode): void {
