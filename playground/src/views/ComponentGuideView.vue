@@ -95,7 +95,7 @@ const groups: GuideGroup[] = [
             { slug: "ytor", id: "fcard", name: "FCard", text: "gruppera innehåll på ett kort" },
             { slug: "ytor", id: "fexpand", name: "FExpand", text: "visa och dölja mer innehåll på plats" },
             { slug: "ytor", id: "fexpandablepanel", name: "FExpandablePanel", text: "en expanderbar yta" },
-            { slug: "ytor", id: "fexpandableparagraph", name: "FExpandableParagraph", text: "lång text med en Visa mer-kontroll" },
+            { slug: "ytor", id: "fexpandableparagraph", name: "FExpandableParagraph", text: "lång text med en visa-mer-kontroll" },
             { slug: "ytor", id: "fmessagebox", name: "FMessageBox", text: "presentera ett meddelande – info, varning eller fel" },
             { slug: "ytor", id: "ftooltip", name: "FTooltip", text: "förklaring vid pekare eller tangentfokus" },
             { slug: "ytor", id: "fdetailspanel", name: "FDetailsPanel", text: "detaljyta vid sidan av innehållet" },
@@ -120,7 +120,7 @@ const groups: GuideGroup[] = [
         id: "navigation",
         title: "Navigation och layout",
         entries: [
-            { slug: "navigation", id: "fnavigationmenu", name: "FNavigationMenu", text: "sektions- eller treemeny" },
+            { slug: "navigation", id: "fnavigationmenu", name: "FNavigationMenu", text: "sektions- eller trädmeny" },
             { slug: "navigation", id: "fpagelayout", name: "FPageLayout", text: "sidadlayout med paneler" },
             { slug: "navigation", id: "flayoutrightpanel", name: "FLayoutRightPanel", text: "högerpanel" },
         ],
@@ -137,7 +137,7 @@ const groups: GuideGroup[] = [
             { slug: "tabeller", id: "fpaginatedataset", name: "FPaginateDataset", text: "sidindelad mängd" },
             { slug: "tabeller", id: "fpaginator", name: "FPaginator", text: "sidindelning" },
             { slug: "tabeller", id: "flist", name: "FList", text: "lista, med eller utan val" },
-            { slug: "tabeller", id: "fdefinitionlist", name: "FDefinitionList", text: "nyckel–värde-lista" },
+            { slug: "tabeller", id: "fdefinitionlist", name: "FDefinitionList", text: "nyckelvärdelista" },
         ],
     },
     {
