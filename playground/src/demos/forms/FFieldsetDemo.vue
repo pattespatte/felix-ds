@@ -10,8 +10,8 @@ const intressen = ref<string[]>([]);
     <section id="ffieldset" aria-labelledby="ffieldset-heading" class="demo">
         <component-heading id="ffieldset-heading" :names="['FFieldset']" />
         <p class="demo__description">
-            Fältset grupperar sammanhörande fält under en gemensam etikett och
-            gör gruppvalidering möjlig.
+            En fältgruppering samlar sammanhörande fält under en gemensam
+            etikett och gör gruppvalidering möjlig.
         </p>
         <f-fieldset name="intressen" v-validation.required>
             <template #label> Intressen </template>

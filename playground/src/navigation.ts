@@ -92,7 +92,7 @@ export const views: NavView[] = [
             { id: "fselectfield", title: "Rulllista" },
             { id: "fcheckboxfield", title: "Kryssruta" },
             { id: "fradiofield", title: "Radioknappar" },
-            { id: "ffieldset", title: "Fältset" },
+            { id: "ffieldset", title: "Fältgruppering" },
             { id: "flabel", title: "Etikett" },
             { id: "fstaticfield", title: "Statiskt fält" },
             { id: "foutputfield", title: "Utdatafält" },

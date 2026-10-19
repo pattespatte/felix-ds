@@ -10,7 +10,7 @@ const kontakt = ref("");
     <section id="fradiofield" aria-labelledby="fradiofield-heading" class="demo">
         <component-heading id="fradiofield-heading" :names="['FRadioField']" />
         <p class="demo__description">
-            Radioknappar – en av flera alternativ – grupperade i ett fältset.
+            Radioknappar – en av flera alternativ – grupperade i en fältgruppering.
         </p>
         <f-fieldset name="kontakt" v-validation.required>
             <template #label> Önskad kontaktväg </template>
