@@ -65,6 +65,15 @@ import "./fkui-patches";
 
 Temat appliceras med den förbyggda posten `dist/felix.css` – ingen Sass behövs. Filen innehåller `@font-face`, det ljusa temat på `:root` och det mörka temat på `html[data-color-mode="dark"]`. Varje scope skriver ut den kompletta tokensytan och specificitetsstegen (`:root` (0,1,0) < `html[data-color-mode="dark"]` (0,1,1)) löser båda lägena utan `!important`. Vill du följa systeminställningen i stället för att styra färgläget själv, använd `dist/felix-auto.css` (båda temana bakom `prefers-color-scheme`).
 
+Föredrar du en enda temainport? `dist/felix-complete.css` sammanfogar `@fkui/design` komponent-css, teckensnittsregeln och felix-lagret i samma kaskadordning som de tre mellersta raderna ovan – en valfri bekvämlighet, inte standarden:
+
+```ts
+import "@fkui/icon-lib-default/dist/f";
+import "felix-ds/dist/felix-complete.css";
+import "./assets/main.css";
+import "./fkui-patches";
+```
+
 Behöver du scopea temat till en egen selektor? Då använder du SCSS-mixinerna i stället, och projektet behöver då `sass` som utvecklingsberoende:
 
 ```scss
