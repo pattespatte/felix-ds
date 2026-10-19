@@ -108,3 +108,23 @@ bun run tokens:build
 ```
 
 Skriptet kompilerar båda färglägena ur SCSS-källorna och typar varje värde. Filerna är committade, och `bun test` (paritetstestet) fäller dem om de inte stämmer med färskt kompilerad CSS: samma namnmängd, samma värden, giltig struktur, lösta aliaser och inte föråldrade. Efter en FKUI-uppgradering: kör `bun run fkui upgrade` och därefter `bun run tokens:build`, och granska diffen – nya token dyker då upp, och ändrade upstream-värden sprider sig till exporten.
+
+## Importera tokens
+
+Riktningen är symmetrisk: `scripts/tokens-import.ts` läser valfri W3C DTCG-fil och skriver ut anpassade CSS-egenskaper. Den typiska källan är en export från ett designverktyg – till exempel Figma-plugin som talar DTCG – så att designerns tokenuppsättning blir en överskrivningsfil utan att något kopieras för hand:
+
+```bash
+bun run tokens:import -- design-tokens.json
+bun run tokens:import -- design-tokens.json --out src/tokens.css
+```
+
+Utdata är deterministiskt: ett `:root`-block, deklarationer sorterade efter namn, 2 mellanslag indrag och avslutande radbrytning. Aliaser skrivs som `var(--mål)`-referenser, så den genererade filen refererar till token i stället för att duplicera dem. Namnmappningen är den mekaniska inversen av exportens (se [Namngivning och gruppering](#namngivning-och-gruppering)).
+
+Valideringen är strikt, och varje fel namnger den felande tokensökvägen:
+
+- de stödda `$type`-värdena är `color`, `dimension`, `number`, `duration`, `fontFamily` och `shadow` – allt annat (t.ex. `gradient` eller `typography`) avvisas, eftersom felix-tokenmodellen inte kan uttrycka det
+- token utan `$type` accepteras (sammansatta kortformer, som exportens otypade token)
+- varje alias `{sökväg}` måste lösa sig till ett token i samma fil, och aliascykler avvisas
+- blandnoder (ett token med underordnade grupper), tomma grupper, okända `$`-nycklar och krockande css-namn avvisas
+
+Importen skriver aldrig till temats egna SCSS-källor – det handskrivna temat förblir den enda sanningskällan, och importen är skrivskyddad mot sin indatafil. Rundturen bevisas av `bun test`: att importera de committade `tokens/light.json` och `tokens/dark.json` kompilerar tillbaka till exakt det sammansatta temats deklarationer. En dokumenterad asymmetri: exporten strök citattecken ur typsnittsnamn, så fontlistor jämförs kanoniskt i stället för byte för byte, och återutgivna filer återger värdesemantiken – inte originalets citeringsval.

@@ -169,7 +169,7 @@ Paketet skickar med tematokens som [W3C Design Tokens](https://design-tokens.git
 - `@pattespatte/felix-ds/tokens/light.json` – det sammansatta temat i ljust läge
 - `@pattespatte/felix-ds/tokens/dark.json` – det sammansatta temat i mörkt läge
 
-”Sammansatt tema” är uppströms `@fkui/theme-default` plus felix-profilens överskrivningar, alltså exakt det som temats mixins skriver ut. Filerna genereras ur SCSS-källorna (i repot: `bun run tokens:build`) och paritetstestet (`bun test`) fäller filer som inte längre stämmer med temat. Formatet är verktygsneutralt och passar bland annat Tokens Studio och Style Dictionary.
+”Sammansatt tema” är uppströms `@fkui/theme-default` plus felix-profilens överskrivningar, alltså exakt det som temats mixins skriver ut. Filerna genereras ur SCSS-källorna (i repot: `bun run tokens:build`) och paritetstestet (`bun test`) fäller filer som inte längre stämmer med temat. Formatet är verktygsneutralt och passar bland annat Tokens Studio och Style Dictionary. Importen är symmetrisk: `bun run tokens:import` läser valfri W3C DTCG-fil (till exempel en Figma-export) och skriver ut anpassade egenskaper, medan det handskrivna temat förblir den enda sanningskällan – se [docs/tokens.sv.md](docs/tokens.sv.md).
 
 Namngivning, aliaser, undantag och konsumtionsvägar finns i guiden [Design tokens](https://github.com/pattespatte/felix-ds/blob/main/docs/tokens.sv.md).
 
@@ -216,6 +216,7 @@ bun run dev        # startar playgrounden (Vite)
 | `bun run build` | Bygg playgrounden för produktion |
 | `bun run build:theme` | Kompilera de förbyggda CSS-posterna till `dist/felix.css`, `dist/felix-auto.css` och `dist/felix-complete.css` (committas; paritetstestet fäller föråldrade filer och bevakar bytebudgetarna) |
 | `bun run tokens:build` | Generera `tokens/light.json` och `tokens/dark.json` ur temats SCSS-källor |
+| `bun run tokens:import` | Läs en W3C DTCG-fil och skriv ut anpassade CSS-egenskaper (valfri fil som argument) |
 | `bun run icons:build` | Generera om `src/icons/phosphor-spritesheet.ts` ur mappningarna i `scripts/icons.ts` |
 | `bun run fkui …` | Visa och uppgradera `@fkui/*`-beroendena (se [Uppgradera FKUI-beroendena](#uppgradera-fkui-beroendena)) |
 
@@ -498,7 +499,7 @@ The package ships the theme tokens as [W3C Design Tokens](https://design-tokens.
 - `@pattespatte/felix-ds/tokens/light.json` – the composed theme in light mode
 - `@pattespatte/felix-ds/tokens/dark.json` – the composed theme in dark mode
 
-”Composed theme” means the upstream `@fkui/theme-default` plus the felix profile's overrides, in other words exactly what the theme mixins emit. The files are generated from the SCSS sources (in the repo: `bun run tokens:build`), and the parity test (`bun test`) fails files that no longer match the theme. The format is tool-agnostic and fits, among others, Tokens Studio and Style Dictionary.
+”Composed theme” means the upstream `@fkui/theme-default` plus the felix profile's overrides, in other words exactly what the theme mixins emit. The files are generated from the SCSS sources (in the repo: `bun run tokens:build`), and the parity test (`bun test`) fails files that no longer match the theme. The format is tool-agnostic and fits, among others, Tokens Studio and Style Dictionary. The import is symmetric: `bun run tokens:import` reads any W3C DTCG file (a Figma export, for example) and emits custom properties, while the hand-written theme remains the single source of truth – see [docs/tokens.en.md](docs/tokens.en.md).
 
 Naming, aliases, exclusions and consumption paths are covered in the [Design tokens](https://github.com/pattespatte/felix-ds/blob/main/docs/tokens.en.md) guide.
 
@@ -545,6 +546,7 @@ Open the address printed in the terminal (usually `http://localhost:5173/`). Swi
 | `bun run build` | Build the playground for production |
 | `bun run build:theme` | Compile the prebuilt CSS entries to `dist/felix.css`, `dist/felix-auto.css` and `dist/felix-complete.css` (committed; the parity test fails stale files and enforces the byte budgets) |
 | `bun run tokens:build` | Generate `tokens/light.json` and `tokens/dark.json` from the theme's SCSS sources |
+| `bun run tokens:import` | Read a W3C DTCG file and emit CSS custom properties (any file as argument) |
 | `bun run icons:build` | Regenerate `src/icons/phosphor-spritesheet.ts` from the mappings in `scripts/icons.ts` |
 | `bun run fkui …` | Show and upgrade the `@fkui/*` dependencies (see [Upgrading the FKUI dependencies](#upgrading-the-fkui-dependencies)) |
 

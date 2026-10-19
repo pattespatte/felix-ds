@@ -108,3 +108,23 @@ bun run tokens:build
 ```
 
 The script compiles both color modes from the SCSS sources and types every value. The files are committed, and `bun test` (the parity suite) fails them if they do not match freshly compiled CSS: the same name set, the same values, valid structure, resolved aliases and not stale. After an FKUI upgrade: run `bun run fkui upgrade` and then `bun run tokens:build`, and review the diff – new tokens will appear and changed upstream values propagate into the export.
+
+## Importing tokens
+
+The direction is symmetric: `scripts/tokens-import.ts` reads any W3C DTCG file and emits CSS custom properties. The typical source is a design tool export – Figma plugins that speak DTCG, for example – so a designer's token set becomes an override file without any hand copying:
+
+```bash
+bun run tokens:import -- design-tokens.json
+bun run tokens:import -- design-tokens.json --out src/tokens.css
+```
+
+The output is deterministic: one `:root` block, declarations sorted by name, 2-space indent and a trailing newline. Aliases are emitted as `var(--target)` references, so the generated file refers to tokens instead of duplicating them. The name mapping is the mechanical inverse of the export's (see [Naming and grouping](#naming-and-grouping)).
+
+Validation is strict, and every failure names the offending token path:
+
+- the supported `$type` values are `color`, `dimension`, `number`, `duration`, `fontFamily` and `shadow` – anything else (e.g. `gradient` or `typography`) is rejected, because the felix token model cannot express it
+- tokens without `$type` are accepted (composite shorthands, like the export's untyped tokens)
+- every alias `{path}` must resolve to a token in the same file, and alias cycles are rejected
+- mixed nodes (a token with child groups), empty groups, unknown `$`-keys and generated CSS-name collisions are rejected
+
+The import never writes to the theme's own SCSS sources – the hand-written theme remains the single source of truth, and the importer is read-only over its input file. The round trip is proven by `bun test`: importing the committed `tokens/light.json` and `tokens/dark.json` compiles back to exactly the composed theme's declarations. One documented asymmetry: the export strips quotes from font names, so font lists are compared canonically rather than byte-for-byte, and re-emitted files reproduce value semantics rather than the original quoting choices.

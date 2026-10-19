@@ -10,6 +10,7 @@ conventional commits.
 
 - All-in-one dist entry `dist/felix-complete.css` (upstream component CSS + fonts rule + felix layer, same cascade order as the three imports it replaces)
 - Gzipped byte budgets for the prebuilt CSS entries in the parity test
+- DTCG token import (`bun run tokens:import`) with strict validation and a round-trip parity proof against the composed theme
 
 ## [1.3.0] – 2026-10-17
 
