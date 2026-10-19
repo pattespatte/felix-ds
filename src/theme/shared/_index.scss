@@ -311,6 +311,16 @@
         }
     }
 
+    // The combobox button's glyph box follows the icon library's small
+    // size; the profile draws both dropdown arrows at the large icon size
+    // so the chevrons render identically in the two field types. (The
+    // arrow artwork and its colours are mode-dependent, see the light and
+    // dark theme mixins.)
+    .combobox__button .f-icon-arrow-down {
+        width: var(--f-icon-size-large);
+        height: var(--f-icon-size-large);
+    }
+
     // Checkbox and radio glyphs draw their resting border with the weak
     // border colour instead of the regular component border.
     .checkbox__label::before,

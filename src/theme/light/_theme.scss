@@ -72,6 +72,38 @@
         border-color: $input-hover-border;
     }
 
+    // Dropdown arrows (select field and combobox). Upstream renders the
+    // arrow as the icon library's arrow-down glyph in the muted action text
+    // colour; the profile draws a wider, rounder chevron in the dark blue
+    // select surface colour. The glyph is hidden and replaced by a masked
+    // chevron, so the artwork no longer depends on which icon library the
+    // consumer loads; upstream's open-state rotation keeps working since
+    // the whole box turns.
+    .select-field__icon.f-icon-arrow-down,
+    .combobox__button .f-icon-arrow-down {
+        color: transparent;
+        background-color: var(--fkds-color-select-background-primary-default);
+        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 9.5l6 6 6-6' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+        mask-position: center;
+        mask-repeat: no-repeat;
+        mask-size: contain;
+    }
+
+    .select-field__select:disabled + .select-field__icon.f-icon-arrow-down {
+        background-color: var(--fkds-color-text-disabled);
+    }
+
+    // High-contrast modes keep upstream's buttonText arrow: the masked
+    // artwork would otherwise be flattened together with the field colours.
+    @media (forced-colors: active) {
+        .select-field__icon.f-icon-arrow-down,
+        .combobox__button .f-icon-arrow-down {
+            color: buttonText;
+            background: none;
+            mask: none;
+        }
+    }
+
     // Expandable paragraph icon. Upstream binds the disc to the select
     // secondary background, a light tint in this profile; the white glyph
     // needs a dark fill, so the primary (dark blue) select surface is used.

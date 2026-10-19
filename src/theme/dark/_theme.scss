@@ -82,6 +82,35 @@
         background-color: var(--fkds-color-select-background-primary-default);
     }
 
+    // Dropdown arrows. The same masked chevron as the light theme (mode-
+    // independent parts live in the shared theme mixin); on the dark canvas
+    // the arrow keeps the resting action link colour, since the select
+    // surface colour would sink into the field.
+    .select-field__icon.f-icon-arrow-down,
+    .combobox__button .f-icon-arrow-down {
+        color: transparent;
+        background-color: var(--fkds-color-action-text-primary-default);
+        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 9.5l6 6 6-6' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+        mask-position: center;
+        mask-repeat: no-repeat;
+        mask-size: contain;
+    }
+
+    .select-field__select:disabled + .select-field__icon.f-icon-arrow-down {
+        background-color: var(--fkds-color-text-disabled);
+    }
+
+    // High-contrast modes keep upstream's buttonText arrow: the masked
+    // artwork would otherwise be flattened together with the field colours.
+    @media (forced-colors: active) {
+        .select-field__icon.f-icon-arrow-down,
+        .combobox__button .f-icon-arrow-down {
+            color: buttonText;
+            background: none;
+            mask-image: none;
+        }
+    }
+
     // Default badge: NOT overridden. Upstream binds the badge text to the
     // primary text colour (white in dark mode), which clears AA on the
     // profile's neutral-strong fill (#6e7689, ~4.6:1) – the light theme's

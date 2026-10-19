@@ -402,6 +402,10 @@
     display: none;
   }
 }
+:root .combobox__button .f-icon-arrow-down {
+  width: var(--f-icon-size-large);
+  height: var(--f-icon-size-large);
+}
 :root .checkbox__label::before,
 :root .radio-button__label::before {
   border-color: var(--fkds-color-border-weak);
@@ -510,6 +514,26 @@
 :root .select-field:not(.select-field--error) .select-field__select:hover:not(:disabled):not(:focus) {
   background-color: #f2f5fc;
   border-color: #a6c0e7;
+}
+:root .select-field__icon.f-icon-arrow-down,
+:root .combobox__button .f-icon-arrow-down {
+  color: transparent;
+  background-color: var(--fkds-color-select-background-primary-default);
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 9.5l6 6 6-6' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-size: contain;
+}
+:root .select-field__select:disabled + .select-field__icon.f-icon-arrow-down {
+  background-color: var(--fkds-color-text-disabled);
+}
+@media (forced-colors: active) {
+  :root .select-field__icon.f-icon-arrow-down,
+  :root .combobox__button .f-icon-arrow-down {
+    color: buttonText;
+    background: none;
+    mask: none;
+  }
 }
 :root .expandable-paragraph__icon {
   background-color: var(--fkds-color-select-background-primary-default);
@@ -888,6 +912,10 @@ html[data-color-mode=dark] .select-field__icon {
     display: none;
   }
 }
+html[data-color-mode=dark] .combobox__button .f-icon-arrow-down {
+  width: var(--f-icon-size-large);
+  height: var(--f-icon-size-large);
+}
 html[data-color-mode=dark] .checkbox__label::before,
 html[data-color-mode=dark] .radio-button__label::before {
   border-color: var(--fkds-color-border-weak);
@@ -998,4 +1026,24 @@ html[data-color-mode=dark] .select-field:not(.select-field--error) .select-field
 }
 html[data-color-mode=dark] .expandable-paragraph__icon {
   background-color: var(--fkds-color-select-background-primary-default);
+}
+html[data-color-mode=dark] .select-field__icon.f-icon-arrow-down,
+html[data-color-mode=dark] .combobox__button .f-icon-arrow-down {
+  color: transparent;
+  background-color: var(--fkds-color-action-text-primary-default);
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 9.5l6 6 6-6' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-size: contain;
+}
+html[data-color-mode=dark] .select-field__select:disabled + .select-field__icon.f-icon-arrow-down {
+  background-color: var(--fkds-color-text-disabled);
+}
+@media (forced-colors: active) {
+  html[data-color-mode=dark] .select-field__icon.f-icon-arrow-down,
+  html[data-color-mode=dark] .combobox__button .f-icon-arrow-down {
+    color: buttonText;
+    background: none;
+    mask-image: none;
+  }
 }
