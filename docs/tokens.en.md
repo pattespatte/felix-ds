@@ -118,6 +118,8 @@ bun run tokens:import -- design-tokens.json
 bun run tokens:import -- design-tokens.json --out src/tokens.css
 ```
 
+The scope is the felix theme's own variables only – the same surface the export describes. The grundtema is excluded by design: its values ship unmodified inside `@fkui/design`'s CSS, so there is no felix-ds source for them that an import could regenerate, and it changes only when the FKUI packages are bumped.
+
 The output is deterministic: one `:root` block, declarations sorted by name, 2-space indent and a trailing newline. Aliases are emitted as `var(--target)` references, so the generated file refers to tokens instead of duplicating them. The name mapping is the mechanical inverse of the export's (see [Naming and grouping](#naming-and-grouping)).
 
 Validation is strict, and every failure names the offending token path:
