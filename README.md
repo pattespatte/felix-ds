@@ -59,11 +59,13 @@ bun add felix-ds@github:pattespatte/felix-ds#<commit>
 Temat bygger på FKUI. Du väljer själv versionerna av FKUI-paketen och låser dem exakt i `package.json`:
 
 - Installera `@fkui/theme-default` med en version inom det stödda intervallet `>=6.57.0 <7.0.0`.
-- Installera de andra FKUI-paketen du använder, till exempel `@fkui/design` och `@fkui/vue`.
+- Installera de andra FKUI-paketen du använder, till exempel `@fkui/design` och `@fkui/vue`, i samma version.
 
 ```bash
-bun add --exact @fkui/theme-default@6.62.0 @fkui/design@6.62.0 @fkui/vue@6.62.0
+bun add --exact @fkui/theme-default@X.Y.Z @fkui/design@X.Y.Z @fkui/vue@X.Y.Z
 ```
+
+Byt ut `X.Y.Z` mot den version du valt. Playgroundens egna lås står i repots `package.json` och visas i vyn Kom igång.
 
 Läs [Kompatibilitet](#kompatibilitet) innan du skriver egen Sass som rör `@fkui/theme-default`.
 
@@ -180,13 +182,6 @@ Namngivning, aliaser, undantag och konsumtionsvägar finns i guiden [Design toke
 Temat har ett enda peer-beroende: `@fkui/theme-default` i intervallet `>=6.57.0 <7.0.0`. Intervallet gäller temalagret. Vi testar och stöder Sass-tokenytan i `@fkui/theme-default`, alltså de variabler som temats ingång laddar konfigurerat (`@use` i `src/theme/_default.scss`). Vi testar och stöder inte FKUI-komponenternas interna delar.
 
 Övriga `@fkui/*`-paket (`@fkui/vue`, `@fkui/design` med flera) ingår inte i kontraktet. Du låser dem själv.
-
-Testade ändpunkter i intervallet:
-
-- 6.57.0 (undre gräns)
-- 6.59.0 (demoplatsen)
-- 6.60.0 (utgivning v1.1.0)
-- 6.62.0 (playgroundens låsta utvecklingsversioner, som vid varje uppgradering ligger på intervallets topp)
 
 > [!WARNING]
 > Låt aldrig din egen Sass ladda eller konfigurera `@fkui/theme-default`. Temats ingång laddar paketet redan konfigurerat. En andra konfigurerad `@use`-laddning krockar och bryter kompileringen.
@@ -391,11 +386,13 @@ bun add felix-ds@github:pattespatte/felix-ds#<commit>
 The theme builds on FKUI. You choose the versions of the FKUI packages yourself and pin them exactly in `package.json`:
 
 - Install `@fkui/theme-default` at a version inside the supported range `>=6.57.0 <7.0.0`.
-- Install the other FKUI packages you use, for example `@fkui/design` and `@fkui/vue`.
+- Install the other FKUI packages you use, for example `@fkui/design` and `@fkui/vue`, at the same version.
 
 ```bash
-bun add --exact @fkui/theme-default@6.62.0 @fkui/design@6.62.0 @fkui/vue@6.62.0
+bun add --exact @fkui/theme-default@X.Y.Z @fkui/design@X.Y.Z @fkui/vue@X.Y.Z
 ```
+
+Replace `X.Y.Z` with the version you chose. The playground's own pins live in the repo's `package.json` and are shown in the Kom igång view.
 
 Read [Compatibility](#compatibility) before you write your own Sass that touches `@fkui/theme-default`.
 
@@ -512,13 +509,6 @@ Naming, aliases, exclusions and consumption paths are covered in the [Design tok
 The theme has one peer dependency: `@fkui/theme-default` in the range `>=6.57.0 <7.0.0`. The range applies to the theme layer. We test and support the Sass token surface of `@fkui/theme-default`, meaning the variables that the theme entry loads configured (`@use` in `src/theme/_default.scss`). We do not test or support the internals of FKUI components.
 
 The other `@fkui/*` packages (`@fkui/vue`, `@fkui/design` and the rest) are not part of the contract. You pin them yourself.
-
-Tested endpoints within the range:
-
-- 6.57.0 (lower bound)
-- 6.59.0 (the demo site)
-- 6.60.0 (release v1.1.0)
-- 6.62.0 (the playground's dev pins, which exercise the top of the range as they are upgraded)
 
 > [!WARNING]
 > Never let your own Sass load or configure `@fkui/theme-default`. The theme entry already loads the package configured. A second configured `@use` load collides and breaks compilation.

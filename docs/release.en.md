@@ -130,8 +130,9 @@ workflow change explicitly>
 **Deprecated:** <token/mixin names shipping their deprecation notice in this
 release, or "none">
 
-**Tested FKUI endpoints:** <lower bound + the versions the playground and
-consumers pin; see README's compatibility section>
+**Tested FKUI endpoints:** <lower bound of the peer range + the version the
+playground pins at release time (`@fkui/*` in package.json) – the endpoints
+belong here, in the dated release, not in the README>
 ```
 
 Keep the notes in both languages when the release affects consumers visibly: the CHANGELOG is generated in English (git-cliff), the GitHub Release notes should carry the same facts.

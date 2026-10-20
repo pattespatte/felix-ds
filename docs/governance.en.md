@@ -15,7 +15,7 @@ felix-ds applies semantic versioning to everything the package exposes: the publ
 
 The theme has a single peer dependency: `@fkui/theme-default` within the range `>=6.57.0 <7.0.0`. The range covers the theme layer, meaning the Sass token surface of `@fkui/theme-default` – the variables its entry loads configured (`@use` in `src/theme/_default.scss`). Component internals are not covered: felix-ds reads no FKUI internals, so an upstream change that does not touch the token surface cannot break the theme.
 
-Tested endpoints are listed in the README's compatibility section. The lower bound (6.57.0) is tested at every release, and the upper bound is kept current by the playground's exact dev pins sitting at the top of the range. Consumers pin their own FKUI versions exactly and own the choice within the range.
+Tested endpoints are listed in each release's notes (the template lives in the release runbook) – they belong in the dated release, not in the README. The lower bound (6.57.0) is tested at every release, and the upper bound is kept current by the playground's exact dev pins sitting at the top of the range. Consumers pin their own FKUI versions exactly and own the choice within the range.
 
 ## Deprecation
 

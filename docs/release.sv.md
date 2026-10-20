@@ -130,8 +130,9 @@ arbetsflödesändring uttryckligen>
 **Avvecklat:** <token- och mixinnamn som får sitt avvecklingsbesked i den
 här utgivningen, eller ”inget”>
 
-**Testade FKUI-ändpunkter:** <undre gränsen + de versioner playgrounden och
-konsumenterna låser; se avsnittet Kompatibilitet i README>
+**Testade FKUI-ändpunkter:** <undre gränsen i peer-intervallet + den version
+playgrounden låser vid utgivningen (`@fkui/*` i package.json) – ändpunkterna
+hör hemma här, i den daterade utgivningen, inte i README>
 ```
 
 Håll noteringarna på båda språken när utgivningen märkbart berör konsumenter: CHANGELOG genereras på engelska (git-cliff), versionsfakta på GitHub ska bära samma fakta.

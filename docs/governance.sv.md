@@ -15,7 +15,7 @@ felix-ds följer semantisk versionering på det som paketet exponerar: de publik
 
 Temat har ett enda peer-beroende: `@fkui/theme-default` i intervallet `>=6.57.0 <7.0.0`. Intervallet gäller temalagret, alltså Sass-tokenytan i `@fkui/theme-default` – de variabler som temats ingång laddar konfigurerat (`@use` i `src/theme/_default.scss`). Komponenternas interna delar omfattas inte: felix-ds läser inga FKUI-internals, så en ändring hos FKUI som inte rör tokenytan kan inte bryta temat.
 
-Testade ändpunkter listas i README:s kompatibilitetsavsnitt. Undre gränsen (6.57.0) testas vid varje utgivning, och övre gränsen hålls aktuell genom att playgroundens låsta utvecklingsversioner ligger på intervallets topp. Konsumenten låser sina egna FKUI-versioner exakt och står för val av version inom intervallet.
+Testade ändpunkter listas i varje utgivnings versionsfakta (mallen ligger i utgivningsrunbook:en) – de hör hemma i den daterade utgivningen, inte i README. Undre gränsen (6.57.0) testas vid varje utgivning, och övre gränsen hålls aktuell genom att playgroundens låsta utvecklingsversioner ligger på intervallets topp. Konsumenten låser sina egna FKUI-versioner exakt och står för val av version inom intervallet.
 
 ## Avveckling (deprecation)
 
