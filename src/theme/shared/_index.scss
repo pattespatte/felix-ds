@@ -12,31 +12,37 @@
     /// src/fonts). Headings get explicit rules in the theme mixin.
     --f-font-family: "Noto Sans", system-ui, sans-serif;
 
-    /// Font weight – the profile has no 700 weight bundled; bold maps to 600.
-    --f-font-weight-normal: 400;
-    --f-font-weight-medium: 600;
+    /// Font weight – normal 400 and medium 600 match upstream and are not
+    /// restated here; the profile has no 700 weight bundled, so bold is the
+    /// only weight remapped (to the bundled semibold).
     --f-font-weight-bold: 600;
 
-    /// Font line height
+    /// Font line height – small and medium are raised to 1.5 (upstream 1.25
+    /// and 1.4); large is already the upstream 1.5 and is not restated.
     --f-line-height-small: 1.5;
     --f-line-height-medium: 1.5;
-    --f-line-height-large: 1.5;
 
     /// Font sizes – profile heading scale: h1 48px, h2 24px, h3 20px,
     /// h4 18px, h5/h6 16px, body 16px. The xxx-large token backs the mobile
     /// h2 step. Body text stays at 16px so form controls (which share the
     /// same token) keep the profile's 16px control text size.
+    /// Font sizes – profile heading scale: h1 48px, h2 24px, h3 20px,
+    /// h4 18px, h5/h6 16px, body 16px. The xxx-large token backs the mobile
+    /// h2 step. Body text stays at 16px so form controls (which share the
+    /// same token) keep the profile's 16px control text size. The standard
+    /// size is the upstream 1rem and is not restated; large is lowered from
+    /// the upstream 1.125rem to match it.
     --f-font-size-h1: 3rem;
     --f-font-size-h2: 1.5rem;
     --f-font-size-xxx-large: 1.25rem;
     --f-font-size-h3: 1.25rem;
     --f-font-size-h4: 1.125rem;
     --f-font-size-large: 1rem;
-    --f-font-size-standard: 1rem;
 
     /// Borders – the profile draws every component border as a 1px hairline
     /// (text fields, selects, buttons, cards, panels, message boxes, modal).
-    --f-border-width-small: 1px;
+    /// Small already is the upstream 1px and is not restated; medium is
+    /// narrowed from the upstream 2px.
     --f-border-width-medium: 1px;
 
     /// Radii – profile scale: small 6px (checkbox/radio glyph, message boxes,
