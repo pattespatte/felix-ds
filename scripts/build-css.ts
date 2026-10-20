@@ -1,18 +1,22 @@
 /**
- * Kompilerar de förbyggda CSS-posterna ur SCSS-källorna. Tre utfiler:
+ * Kompilerar de förbyggda CSS-posterna ur SCSS-källorna. Sex utfiler: tre
+ * läsbara poster och deras minifierade syskon (samma regler, komprimerade –
+ * för förbrukare som laddar posten som ren <link>-css utan byggkedja):
  *
- *   dist/felix.css           – standardposten: teckensnitt + ljust tema på :root,
- *                              mörkt tema på html[data-color-mode="dark"]
- *   dist/felix-auto.css      – systempreferensen: båda temana bakom
- *                              `prefers-color-scheme`-mediefrågor
- *   dist/felix-complete.css  – allt-i-ett: @fkui/design css, teckensnittsregeln
- *                              och felix-lagret i samma kaskadordning som de
- *                              tre importerna den ersätter (valfri bekvämlighet,
- *                              standardposten förblir det tunna lagret)
+ *   dist/felix.css              – standardposten: teckensnitt + ljust tema på
+ *                                 :root, mörkt tema på html[data-color-mode="dark"]
+ *   dist/felix-auto.css         – systempreferensen: båda temana bakom
+ *                                 `prefers-color-scheme`-mediefrågor
+ *   dist/felix-complete.css     – allt-i-ett: @fkui/design css, teckensnittsregeln
+ *                                 och felix-lagret i samma kaskadordning som de
+ *                                 tre importerna den ersätter (valfri bekvämlighet,
+ *                                 standardposten förblir det tunna lagret)
+ *   dist/felix.min.css, dist/felix-auto.min.css, dist/felix-complete.min.css
+ *                               – minifierade syskon till posterna ovan
  *
  * Användning:
  *   bun run build:theme      generera dist/felix.css, dist/felix-auto.css
- *                            och dist/felix-complete.css
+ *                            och dist/felix-complete.css samt .min.css-syskonen
  *
  * Konventioner som skriptet följer:
  * - SCSS-källorna (`src/theme`, `src/fonts`) är den enda sanningskällan;
@@ -29,9 +33,12 @@
  *   inledande @charset plockas från varje del och exakt en @charset
  *   emitteras först om någon del hade en – @charset är bara giltig som
  *   allra första bytes i en css-fil
+ * - minifieringen kör sass i `syntax: "css"`-läge: utöver att komprimera
+ *   parsar den varje färdig post som ren css, så ogiltig css fäller bygget
+ *   i stället för att skeppas
  */
 
-import { compile } from "sass";
+import { compile, compileString } from "sass";
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -52,9 +59,15 @@ export const COMPLETE_SOURCES = {
 } as const;
 
 export const COMPLETE_OUTPUT = "dist/felix-complete.css";
+export const COMPLETE_MIN_OUTPUT = "dist/felix-complete.min.css";
 
 const FONT_URL_FROM = 'url("./files/';
 const FONT_URL_TO = 'url("../src/fonts/files/';
+
+/** Utfil till en läsbar posts minifierade syskon: dist/fel.css → dist/fel.min.css. */
+export function minifiedOutput(output: string): string {
+    return output.replace(/\.css$/, ".min.css");
+}
 
 /** Kompilerar en post och skriver om teckensnitts-url:erna till src/fonts. */
 export function compileEntry(source: string): string {
@@ -62,6 +75,21 @@ export function compileEntry(source: string): string {
         loadPaths: [join(ROOT, "node_modules")],
     }).css;
     return css.split(FONT_URL_FROM).join(FONT_URL_TO);
+}
+
+/**
+ * Minifierar en färdig css-sträng. `syntax: "css"` läser indata som ren css:
+ * utdata påverkas bara av komprimeringen, och en ogiltig post kastar – vilket
+ * gör minifieraren till en permanent syntaxkontroll av varje bygge.
+ * `charset: false` stoppar sass från att skjuta in en egen BOM/@charset mitt
+ * i utdatan; @charset-hanteringen ägs av anroparen (se minifyComplete).
+ */
+export function minify(css: string): string {
+    return compileString(css, {
+        style: "compressed",
+        syntax: "css",
+        charset: false,
+    }).css;
 }
 
 const CHARSET_RULE = '@charset "UTF-8";';
@@ -88,13 +116,28 @@ export function assemble(parts: readonly string[]): string {
     return `${header}${body}\n`;
 }
 
+/**
+ * Minifierar allt-i-ett-posten. @charset plockas bort före minifieringen och
+ * sätts tillbaka först – regeln är bara giltig som allra första bytes, och
+ * filen innehåller icke-ASCII-tecken från upstream-delen.
+ */
+export function minifyComplete(complete: string): string {
+    const header = complete.startsWith(`${CHARSET_RULE}\n`)
+        ? `${CHARSET_RULE}\n`
+        : "";
+    const body = header ? complete.slice(CHARSET_RULE.length + 1) : complete;
+    return `${header}${minify(body)}`;
+}
+
 if (import.meta.main) {
     rmSync(join(ROOT, "dist"), { recursive: true, force: true });
     mkdirSync(join(ROOT, "dist"), { recursive: true });
     for (const entry of ENTRIES) {
-        const target = join(ROOT, entry.output);
-        writeFileSync(target, compileEntry(entry.source));
-        console.log(`skrev ${target}`);
+        const css = compileEntry(entry.source);
+        writeFileSync(join(ROOT, entry.output), css);
+        writeFileSync(join(ROOT, minifiedOutput(entry.output)), minify(css));
+        console.log(`skrev ${join(ROOT, entry.output)}`);
+        console.log(`skrev ${join(ROOT, minifiedOutput(entry.output))}`);
     }
     const complete = assemble([
         readFileSync(join(ROOT, COMPLETE_SOURCES.fkuiCss), "utf8"),
@@ -103,5 +146,7 @@ if (import.meta.main) {
     ]);
     const completeTarget = join(ROOT, COMPLETE_OUTPUT);
     writeFileSync(completeTarget, complete);
+    writeFileSync(join(ROOT, COMPLETE_MIN_OUTPUT), minifyComplete(complete));
     console.log(`skrev ${completeTarget}`);
+    console.log(`skrev ${join(ROOT, COMPLETE_MIN_OUTPUT)}`);
 }

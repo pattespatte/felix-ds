@@ -85,6 +85,8 @@ import "@pattespatte/felix-ds/dist/felix-complete.css";
 
 Posten är bekvämligheten, inte standarden – det tunna lagret förblir standardvägen. Bytebudgetar i paritetstestet håller viktfördelen som en garanti: standardposterna ligger på cirka 5 kb gzippat, och de får bara växa när en ändring motiverar sin vikt.
 
+Varje post har dessutom ett minifierat syskon: `dist/felix.min.css`, `dist/felix-auto.min.css` och `dist/felix-complete.min.css` innehåller samma regler komprimerade, tänkta för förbrukare som laddar posten som ren `<link>`-css utan byggkedja. Minifieringen parsar varje färdig post som ren css, så en syntaktisk ogiltig post fäller bygget i stället för att skeppas.
+
 Behöver du avgränsa temat till en egen selektor, till exempel för att växla tema i körtid? Då använder du SCSS-posterna i stället. Paketet pekar ut `src/index.scss` via nyckeln `sass`. Ett globalt tema:
 
 ```scss
@@ -214,7 +216,7 @@ bun run dev        # startar playgrounden (Vite)
 | --- | --- |
 | `bun run dev` | Starta playgrounden lokalt |
 | `bun run build` | Bygg playgrounden för produktion |
-| `bun run build:theme` | Kompilera de förbyggda CSS-posterna till `dist/felix.css`, `dist/felix-auto.css` och `dist/felix-complete.css` (committas; paritetstestet fäller föråldrade filer och bevakar bytebudgetarna) |
+| `bun run build:theme` | Kompilera de förbyggda CSS-posterna till `dist/felix.css`, `dist/felix-auto.css` och `dist/felix-complete.css` samt minifierade `.min.css`-syskon (committas; paritetstestet fäller föråldrade filer och bevakar bytebudgetarna) |
 | `bun run tokens:build` | Generera `tokens/light.json` och `tokens/dark.json` ur temats SCSS-källor |
 | `bun run tokens:import` | Läs en W3C DTCG-fil och skriv ut anpassade CSS-egenskaper (valfri fil som argument) |
 | `bun run icons:build` | Generera om `src/icons/phosphor-spritesheet.ts` ur mappningarna i `scripts/icons.ts` |
@@ -415,6 +417,8 @@ import "@pattespatte/felix-ds/dist/felix-complete.css";
 
 This entry is a convenience, not the default – the thin layer remains the default path. Byte budgets in the parity test keep the weight advantage a guarantee: the standard entries weigh about 5 KB gzipped, and they only grow when a change justifies its weight.
 
+Each entry also ships a minified sibling: `dist/felix.min.css`, `dist/felix-auto.min.css` and `dist/felix-complete.min.css` contain the same rules, compressed, for consumers that load an entry as plain `<link>` CSS without a build step. The minifier parses every finished entry as plain CSS, so a syntactically invalid entry fails the build instead of shipping.
+
 Need to scope the theme to your own selector, for example to switch themes at runtime? Use the SCSS entries instead. The package points to `src/index.scss` through its `sass` key. A global theme:
 
 ```scss
@@ -544,7 +548,7 @@ Open the address printed in the terminal (usually `http://localhost:5173/`). Swi
 | --- | --- |
 | `bun run dev` | Run the playground locally |
 | `bun run build` | Build the playground for production |
-| `bun run build:theme` | Compile the prebuilt CSS entries to `dist/felix.css`, `dist/felix-auto.css` and `dist/felix-complete.css` (committed; the parity test fails stale files and enforces the byte budgets) |
+| `bun run build:theme` | Compile the prebuilt CSS entries to `dist/felix.css`, `dist/felix-auto.css` and `dist/felix-complete.css` plus minified `.min.css` siblings (committed; the parity test fails stale files and enforces the byte budgets) |
 | `bun run tokens:build` | Generate `tokens/light.json` and `tokens/dark.json` from the theme's SCSS sources |
 | `bun run tokens:import` | Read a W3C DTCG file and emit CSS custom properties (any file as argument) |
 | `bun run icons:build` | Regenerate `src/icons/phosphor-spritesheet.ts` from the mappings in `scripts/icons.ts` |
