@@ -20,12 +20,12 @@ jobs:
     # (24.04); revisit only together with a deliberate image migration.
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
-      - uses: oven-sh/setup-bun@v2
+      - uses: 11d5960a326750d5838078e36cf38b85af677262 # actions/checkout v4
+      - uses: 0c5077e51419868618aeaa5fe8019c62421857d6 # oven-sh/setup-bun v2
       - run: bun install --frozen-lockfile
       - run: bun run build
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+      - uses: 983d7736d9b0ae728b81ab479565c72886d7745b # actions/configure-pages v5
+      - uses: 56afc609e74202658d3ffba0e8f6dda462b719fa # actions/upload-pages-artifact v3
         with:
           path: playground/dist
 
@@ -38,4 +38,4 @@ jobs:
     steps:
       - name: Deploy
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # actions/deploy-pages v4
