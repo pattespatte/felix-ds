@@ -22,14 +22,14 @@ jobs:
     # runs on (24.04). Changing either side requires a full baseline regen.
     runs-on: ubuntu-24.04
     steps:
-      - uses: 11d5960a326750d5838078e36cf38b85af677262 # actions/checkout v4
-      - uses: 0c5077e51419868618aeaa5fe8019c62421857d6 # oven-sh/setup-bun v2
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
       - run: bun install --frozen-lockfile
       - run: bunx playwright install --with-deps chromium firefox webkit
       - run: bunx playwright test visual.spec.ts --project=chromium --update-snapshots
       - run: bunx playwright test visual-cross.spec.ts --project=webkit --update-snapshots
       - run: bunx playwright test visual-cross.spec.ts --project=firefox --update-snapshots
-      - uses: ea165f8d65b6e75b540449e92b4886f43607fa02 # actions/upload-artifact v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: linux-baselines
           path: |

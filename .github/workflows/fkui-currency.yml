@@ -36,8 +36,8 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     steps:
-      - uses: 11d5960a326750d5838078e36cf38b85af677262 # actions/checkout v4
-      - uses: 0c5077e51419868618aeaa5fe8019c62421857d6 # oven-sh/setup-bun v2
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
       - name: Record current FKUI version
         run: |
           OLD=$(bun -e "console.log(JSON.parse(await Bun.file('package.json').text()).devDependencies['@fkui/vue'])")
@@ -87,7 +87,7 @@ jobs:
             --body "Scheduled FKUI-currency run. Dev pins bumped ${FKUI_OLD} → ${FKUI_NEW} via \`bun run fkui upgrade\` and the full release gate passed on ubuntu-24.04: parity tests, build, vue-tsc, 45 chromium comparisons, 60 firefox/webkit cross-browser comparisons, 32 axe scans. Peer range \`>=6.57.0 <7.0.0\` still covers the new version. Review, merge, then cut the next release per docs/release.en.md."
       - name: Upload gate report on failure
         if: failure()
-        uses: ea165f8d65b6e75b540449e92b4886f43607fa02 # actions/upload-artifact v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: currency-gate-failure
           path: |
@@ -109,8 +109,8 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     steps:
-      - uses: 11d5960a326750d5838078e36cf38b85af677262 # actions/checkout v4
-      - uses: 0c5077e51419868618aeaa5fe8019c62421857d6 # oven-sh/setup-bun v2
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
       # The fkui helper writes exact specifiers in lockstep (all six
       # @fkui/* packages) and runs bun install. 6.57.0 is the peer range's
       # lower bound and exists for all six packages upstream.
