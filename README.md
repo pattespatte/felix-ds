@@ -77,13 +77,21 @@ import "@pattespatte/felix-ds/dist/felix.css";
 
 Filen innehåller `@font-face`, det ljusa temat på `:root` och det mörka temat på `html[data-color-mode="dark"]`. Vill du följa systeminställningen i stället för att styra färgläget själv finns `dist/felix-auto.css`. Paketets `main`-nyckel pekar på `dist/felix.css`, så den korta importen `import "@pattespatte/felix-ds"` fungerar också.
 
-Behöver du allt i en import finns `dist/felix-complete.css` – `@fkui/design` komponent-css, teckensnittsregeln och felix-lagret sammanfogade i samma kaskadordning som de tre importerna de ersätter:
+Vill du ha en enda import i stället för tre? Då finns `dist/felix-complete.css`. Den innehåller samma css som de här tre importerna, sammanfogade i samma ordning:
+
+```ts
+import "@fkui/design/lib/fkui.css";
+import "@fkui/design/lib/fonts.css";
+import "@pattespatte/felix-ds/dist/felix.css";
+```
+
+Den här raden ger alltså samma resultat som de tre raderna ovan, och ersätter både steg 3 och steg 4:
 
 ```ts
 import "@pattespatte/felix-ds/dist/felix-complete.css";
 ```
 
-Posten är bekvämligheten, inte standarden – det tunna lagret förblir standardvägen. Bytebudgetar i paritetstestet håller viktfördelen som en garanti: standardposterna ligger på cirka 5 kb gzippat, och de får bara växa när en ändring motiverar sin vikt.
+`felix-complete.css` är ett smidigt alternativ, men standardvägen är de tre importerna ovan. De håller temat litet: standardposterna väger cirka 5 kb gzippat. Paritetstestet har bytebudgetar som ser till att de inte växer i onödan – en ändring som gör en post tyngre måste vara värd sin vikt.
 
 Varje post har dessutom ett minifierat syskon: `dist/felix.min.css`, `dist/felix-auto.min.css` och `dist/felix-complete.min.css` innehåller samma regler i komprimerad form, för användare som laddar posten som ren `<link>`-css utan byggkedja. Minifieringen läser in varje färdig post som ren css, så en syntaktiskt ogiltig post fäller bygget i stället för att hamna i paketet.
 
@@ -128,7 +136,7 @@ Byt ut standardbibliotekets import mot temats spritesheet i webbappens ingångsp
 import "@pattespatte/felix-ds/src/icons/phosphor-spritesheet";
 ```
 
-FIcon används sedan som vanligt, till exempel `<f-icon name="house">`. Hela uppsättningen visas på [playgroundens ikonsida](https://pattespatte.github.io/felix-ds/#/knappar/ficon). Underhållare regenererar sheetet med `bun run icons:build` – mappningarna i `scripts/icons.ts` är källan.
+FIcon används sedan som vanligt, till exempel `<f-icon name="house">`. Hela uppsättningen visas på [playgroundens ikonsida](https://pattespatte.github.io/felix-ds/#/knappar/ficon). Nästa mening vänder sig till dig som utvecklar själva felix-ds-paketet – använder du bara paketet behöver du inte läsa den. Spritesheetet är genererat: när du har ändrat mappningarna i `scripts/icons.ts` skapar du det på nytt med `bun run icons:build`.
 
 ### Mörkt läge
 
@@ -402,13 +410,21 @@ import "@pattespatte/felix-ds/dist/felix.css";
 
 The file contains `@font-face`, the light theme on `:root` and the dark theme on `html[data-color-mode="dark"]`. Want to follow the system preference instead of controlling the color mode yourself? Use `dist/felix-auto.css`. The package's `main` key points at `dist/felix.css`, so the short import `import "@pattespatte/felix-ds"` works too.
 
-Want everything in one import? Use `dist/felix-complete.css` – `@fkui/design` component CSS, the fonts rule and the felix layer concatenated in the same cascade order as the three imports it replaces:
+Want a single import instead of three? Use `dist/felix-complete.css`. It contains the same CSS as these three imports, concatenated in the same order:
+
+```ts
+import "@fkui/design/lib/fkui.css";
+import "@fkui/design/lib/fonts.css";
+import "@pattespatte/felix-ds/dist/felix.css";
+```
+
+So this one line gives the same result as the three lines above, and replaces both step 3 and step 4:
 
 ```ts
 import "@pattespatte/felix-ds/dist/felix-complete.css";
 ```
 
-This entry is a convenience, not the default – the thin layer remains the default path. Byte budgets in the parity test keep the weight advantage a guarantee: the standard entries weigh about 5 KB gzipped, and they only grow when a change justifies its weight.
+`felix-complete.css` is a convenience, but the default path is the three imports above. They keep the theme small: the standard entries weigh about 5 KB gzipped. Byte budgets in the parity test make sure they stay that way – a change that adds weight must be worth its bytes.
 
 Each entry also ships a minified sibling: `dist/felix.min.css`, `dist/felix-auto.min.css` and `dist/felix-complete.min.css` contain the same rules, compressed, for consumers that load an entry as plain `<link>` CSS without a build step. The minifier parses every finished entry as plain CSS, so a syntactically invalid entry fails the build instead of shipping.
 
