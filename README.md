@@ -186,7 +186,7 @@ Temat har ett enda peer-beroende: `@fkui/theme-default` i intervallet `>=6.57.0 
 > [!WARNING]
 > Låt aldrig din egen Sass ladda eller konfigurera `@fkui/theme-default`. Temats ingång laddar paketet redan konfigurerat. En andra konfigurerad `@use`-laddning krockar och bryter kompileringen.
 
-Versionskontraktet – semantisk versionering av token och mixins, avvecklingsmönstret och stödintervallet – beskrivs i [Styrning och versionskontrakt](https://github.com/pattespatte/felix-ds/blob/main/docs/governance.sv.md).
+Versionskontraktet – semantisk versionering av token och mixins, avvecklingsmönstret och stödintervallet – beskrivs i [Styrning och versionskontrakt](https://github.com/pattespatte/felix-ds/blob/main/docs/governance.sv.md). När token inte räcker till är första svaret komposition i stället för wrappers – beprövade recept finns i [Mönsterbiblioteket](https://github.com/pattespatte/felix-ds/blob/main/docs/patterns.sv.md).
 
 ### Exempel på implementering
 
@@ -245,7 +245,7 @@ felix-ds/
 └── package.json
 ```
 
-Temat följer samma modell som FKUI:s egna temapaket: mixins skriver ut CSS-variabler ovanpå `@fkui/design`. Grundtemat (`@fkui/theme-default`) laddas först. felix-variablerna deklareras efter i kaskaden och vinner utan `!important`. Temat har ett ljust och ett mörkt läge (se [Mörkt läge](#mörkt-läge)).
+Temat följer samma modell som FKUI:s egna temapaket: mixins skriver ut CSS-variabler ovanpå `@fkui/design`. Grundtemat (`@fkui/theme-default`) laddas först. felix-variablerna deklareras efter i kaskaden och vinner utan `!important`. Temat har ett ljust och ett mörkt läge (se [Mörkt läge](#mörkt-läge)). Vill en organisation replikera modellen för en annan varumärkesprofil beskriver guiden [Bygg din egen profil](https://github.com/pattespatte/felix-ds/blob/main/docs/build-your-own.sv.md) hela metoden.
 
 ### Navigation i playgrounden
 
@@ -513,7 +513,7 @@ The other `@fkui/*` packages (`@fkui/vue`, `@fkui/design` and the rest) are not 
 > [!WARNING]
 > Never let your own Sass load or configure `@fkui/theme-default`. The theme entry already loads the package configured. A second configured `@use` load collides and breaks compilation.
 
-The version contract – semantic versioning of tokens and mixins, the deprecation pattern and the support range – is described in [Governance and version contract](https://github.com/pattespatte/felix-ds/blob/main/docs/governance.en.md).
+The version contract – semantic versioning of tokens and mixins, the deprecation pattern and the support range – is described in [Governance and version contract](https://github.com/pattespatte/felix-ds/blob/main/docs/governance.en.md). When the tokens are not enough, the first answer is composition instead of wrappers – proven recipes live in the [pattern library](https://github.com/pattespatte/felix-ds/blob/main/docs/patterns.en.md).
 
 ### Example implementation
 
@@ -572,7 +572,7 @@ felix-ds/
 └── package.json
 ```
 
-The theme follows the same model as FKUI's own theme packages: mixins emit CSS custom properties on top of `@fkui/design`. The base theme (`@fkui/theme-default`) loads first. The felix variables come after it in the cascade and win without `!important`. The theme has a light and a dark mode (see [Dark mode](#dark-mode)).
+The theme follows the same model as FKUI's own theme packages: mixins emit CSS custom properties on top of `@fkui/design`. The base theme (`@fkui/theme-default`) loads first. The felix variables come after it in the cascade and win without `!important`. The theme has a light and a dark mode (see [Dark mode](#dark-mode)). An organisation that wants to replicate the model for another brand profile finds the whole method in the [build your own profile](https://github.com/pattespatte/felix-ds/blob/main/docs/build-your-own.en.md) guide.
 
 ### Playground navigation
 
