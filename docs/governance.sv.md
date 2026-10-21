@@ -35,6 +35,14 @@ Varje utgivning dokumenterar uppgraderarens perspektiv i versionsfakta (mallen l
 
 Varje utgivning passerar också axe-porten: automatiserade tillgänglighetsskanningar av varje playground-vy i båda färglägena, med noll överträdelser som villkor. Täckningen per komponent – vilken vy som demonstrerar komponenten och vad den automatiserade testningen omfattar – dokumenteras i playgroundens vy Tillgänglighet.
 
+## Driftmodell
+
+Systemet är dimensionerat för att drivas av ett halvtidspar: en UX-designer på 50 % och en frontendutvecklare på 50 %. Designern äger token-värdena, den typografiska profilen och granskningen av tillgänglighetstäckningen, utvecklaren äger temats källkod, playgroundens dokumentsajt, den visuella och tillgänglighetsbaserade utgivningsporten och det veckovisa arbetsflödet som bevakar FKUI-aktualiteten. Enkelheten är funktionen: ett tunt paket med liten granskyta är det som gör bemanningen ärlig, och i en organisations skala väger det tyngre än pipeline-bredd. Projektet lovar inget stöd utöver vad den här bemanningen kan hålla (se Stöd).
+
+## Koden är sanningskällan
+
+Den handskrivna temakällkoden (`src/theme/`) är den enda sanningen för det visuella uttrycket. Designerna möter koden via DTCG-rundturen: `bun run tokens:build` exporterar det sammansatta temat som W3C DTCG-filer (`tokens/light.json`, `tokens/dark.json`) som designverktyg kan läsa, och `bun run tokens:import` läser valfri W3C DTCG-fil (till exempel en designverktygexport) tillbaka till anpassade egenskaper. Importen är den stödda bryggan mot designsidan. Ingen API-integration mot ett designverktyg byggs: API:et är Enterprise-låst och proprietärt, och de token det genererar täcker inte hela css:en, så en sådan pipeline skulle flytta det handskötta lagret i stället för att ta bort det. Automatiseringen stannar vid token-export i båda fallen. Rendering, interaktionstillstånd och sammansatta beslut granskas av människor.
+
 ## Stöd
 
 Senaste minor-versionen stöds. Äldre versioner får inte fler patchar – uppgradera enligt versionsfakta. Felrapporter förväntas gälla senaste versionen, och ett fel som bara går att återskapa i en äldre version åtgärdas genom uppgradering.

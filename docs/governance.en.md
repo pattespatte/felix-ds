@@ -35,6 +35,14 @@ Every release documents the upgrader's view in its release notes (the template l
 
 Every release also passes the axe gate: automated accessibility scans of every playground view in both colour modes, with zero violations as the condition. Per-component coverage – which view demonstrates each component and what the automated testing covers – is documented in the playground's Tillgänglighet view.
 
+## Operating model
+
+The system is sized to be run by a part-time pair: a UX designer at 50 % and a frontend developer at 50 %. The designer owns the token values, the typographic profile and the review of the accessibility coverage; the developer owns the theme source, the playground documentation site, the visual and accessibility release gates, and the weekly FKUI-currency workflow. Simplicity is the feature: one thin package with a tiny review surface is what makes part-time staffing honest, and at an organisation's scale that weighs heavier than pipeline breadth. The project makes no support promises beyond what this model can honour (see Support).
+
+## Code is the source of truth
+
+The hand-written theme source (`src/theme/`) is the single truth for the visual expression. Designers meet the code through the DTCG round-trip: `bun run tokens:build` exports the composed theme as W3C DTCG files (`tokens/light.json`, `tokens/dark.json`) that design tools can read, and `bun run tokens:import` reads any W3C DTCG file (a design-tool export, for example) back into custom properties. The import is the supported designer bridge. No design-tool API integration will be built: the API is Enterprise-gated and proprietary, and the tokens it generates do not cover the full CSS, so such a pipeline would relocate the hand-maintained layer rather than remove it. Automation stops at token export either way; rendering, interaction states and composite decisions are verified by people.
+
 ## Support
 
 The latest minor is supported. Older minors receive no further patches – upgrade per the release notes. Bug reports are expected against the latest version; a bug reproducible only in an older version is resolved by upgrading.
