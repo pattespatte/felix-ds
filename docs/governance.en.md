@@ -33,7 +33,7 @@ Releases happen when there is something to release: accumulated changes, an FKUI
 
 Every release documents the upgrader's view in its release notes (the template lives in the release runbook): what changed, which consumer actions are required (usually none), any deprecated tokens, and which FKUI endpoints were tested. A consumer update should be a one-line version bump, and visual changes must always be explained in advance.
 
-Every release also passes the axe gate: automated accessibility scans of every playground view in both colour modes, with zero violations as the condition. Per-component coverage – which view demonstrates each component and what the automated testing covers – is documented in the playground's Tillgänglighet view.
+Every release also passes the axe gate: automated accessibility scans of every playground view in both colour modes, with zero violations as the condition. Per-component coverage – which view demonstrates each component and what the automated testing covers – is documented in the playground's Tillgänglighet view, and a lift-ready basis for a consumer's own accessibility statement is generated into [docs/accessibility-basis.en.md](./accessibility-basis.en.md).
 
 ## Operating model
 

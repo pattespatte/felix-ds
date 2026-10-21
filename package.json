@@ -20,6 +20,7 @@
     "build": "vite build --config playground/vite.config.ts",
     "build:theme": "bun scripts/build-css.ts",
     "fkui": "bun scripts/fkui.ts",
+    "accessibility:build": "bun scripts/accessibility-basis.ts",
     "icons:build": "bun scripts/icons.ts",
     "search:build": "bun scripts/search-index.ts",
     "tokens:build": "bun scripts/tokens.ts",

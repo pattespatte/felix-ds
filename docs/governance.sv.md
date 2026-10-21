@@ -33,7 +33,7 @@ Utgivningar sker när det finns något att ge ut: ackumulerade ändringar, en FK
 
 Varje utgivning dokumenterar uppgraderarens perspektiv i versionsfakta (mallen ligger i utgivningsrunbook:en): vad som ändrats, vilka konsumentåtgärder som krävs (oftast inga), avvecklade token om några, och vilka FKUI-ändpunkter som testats. Konsumentens uppdatering ska vara en versionsbump på en rad, och visuella förändringar ska alltid vara förklarade i förväg.
 
-Varje utgivning passerar också axe-porten: automatiserade tillgänglighetsskanningar av varje playground-vy i båda färglägena, med noll överträdelser som villkor. Täckningen per komponent – vilken vy som demonstrerar komponenten och vad den automatiserade testningen omfattar – dokumenteras i playgroundens vy Tillgänglighet.
+Varje utgivning passerar också axe-porten: automatiserade tillgänglighetsskanningar av varje playground-vy i båda färglägena, med noll överträdelser som villkor. Täckningen per komponent – vilken vy som demonstrerar komponenten och vad den automatiserade testningen omfattar – dokumenteras i playgroundens vy Tillgänglighet, och ett lyftbart underlag för konsumentens egen tillgänglighetsredogörelse genereras till [docs/accessibility-basis.sv.md](./accessibility-basis.sv.md).
 
 ## Driftmodell
 
