@@ -202,18 +202,25 @@ export function findView(slug: string): NavView | undefined {
     return views.find((view) => view.slug === slug);
 }
 
-// Slugs of the layout-sensitive views covered by the firefox/webkit
-// cross-browser visual gate (e2e/visual-cross.spec.ts). The check below
-// keeps the subset honest: if a view slug is renamed or removed, this
-// fails loudly in dev and build instead of silently shrinking the gate.
+// Slugs of every view covered by the firefox/webkit cross-browser visual
+// gate (e2e/visual-cross.spec.ts). The check below keeps the list honest:
+// if a view slug is renamed or removed, this fails loudly in dev and build
+// instead of silently shrinking the gate.
 export const crossBrowserViewSlugs: readonly string[] = [
-    "tabeller",
-    "navigation",
-    "modaler",
+    "start",
+    "kom-igang",
+    "valj-komponent",
+    "tillganglighet",
+    "knappar",
     "formular",
     "kalender",
+    "filer",
     "ytor",
-    "knappar",
+    "modaler",
+    "navigation",
+    "tabeller",
+    "aterkoppling",
+    "wizard",
     "css",
 ];
 

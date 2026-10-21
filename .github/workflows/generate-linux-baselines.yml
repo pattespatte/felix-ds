@@ -1,7 +1,8 @@
 name: Generate linux visual baselines
 
 # Manual helper for the release runbook: regenerates the -linux.png visual
-# baselines (chromium full matrix + the firefox/webkit cross-browser subset)
+# baselines (chromium full matrix + the firefox/webkit cross-browser set,
+# i.e. every view)
 # on an ubuntu runner and uploads them as an artifact. The owner downloads
 # the artifact, copies the *-linux.png files into the snapshot directories,
 # losslessly recompresses them (AE=0) and commits them (docs/release.en.md,

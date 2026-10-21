@@ -8,7 +8,7 @@ import { defineConfig } from "@playwright/test";
  * every view in both felix color modes, plus the search dropdown's open
  * state) – together they are the release gate. `bun run test:visual:cross`
  * is the cross-browser half: e2e/visual-cross.spec.ts on firefox and webkit
- * (the curated layout-sensitive subset, linux-only baselines). The
+ * (every playground view, linux-only baselines). The
  * firefox/webkit projects carry a testMatch so only the cross spec can ever
  * run there, which keeps the default chromium matrix and the a11y scans
  * untouched. Regenerate the darwin baselines with `bun run

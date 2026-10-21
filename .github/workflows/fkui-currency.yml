@@ -73,7 +73,7 @@ jobs:
             --base main \
             --head "$BRANCH" \
             --title "chore(deps): bump @fkui/* to ${FKUI_NEW}" \
-            --body "Scheduled FKUI-currency run. Dev pins bumped ${FKUI_OLD} → ${FKUI_NEW} via \`bun run fkui upgrade\` and the full release gate passed on ubuntu-24.04: parity tests, build, vue-tsc, 42 chromium comparisons, 32 firefox/webkit cross-browser comparisons, 28 axe scans. Peer range \`>=6.57.0 <7.0.0\` still covers the new version. Review, merge, then cut the next release per docs/release.en.md."
+            --body "Scheduled FKUI-currency run. Dev pins bumped ${FKUI_OLD} → ${FKUI_NEW} via \`bun run fkui upgrade\` and the full release gate passed on ubuntu-24.04: parity tests, build, vue-tsc, 45 chromium comparisons, 60 firefox/webkit cross-browser comparisons, 32 axe scans. Peer range \`>=6.57.0 <7.0.0\` still covers the new version. Review, merge, then cut the next release per docs/release.en.md."
       - name: Upload gate report on failure
         if: failure()
         uses: actions/upload-artifact@v4

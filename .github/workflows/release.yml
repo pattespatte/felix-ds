@@ -3,8 +3,8 @@ name: Release to GitHub Packages
 # Triggered by the owner pushing a vX.Y.Z tag, as described in
 # docs/release.en.md. Builds, type-checks and runs the visual gate
 # (chromium screenshot comparisons of every view plus the firefox/webkit
-# cross-browser subset, and axe scans of every view in both felix color
-# modes) before publishing the package
+# cross-browser set of every view, and axe scans of every view in both felix
+# color modes) before publishing the package
 # and creating the GitHub Release.
 
 on:
@@ -33,8 +33,8 @@ jobs:
       - run: bunx vue-tsc --noEmit
       - run: bunx playwright install --with-deps chromium
       - run: bun run test:visual
-      # Cross-browser half of the gate: the curated subset against the
-      # committed linux firefox/webkit baselines (serial invocations).
+      # Cross-browser half of the gate: every view against the committed
+      # linux firefox/webkit baselines (serial invocations).
       - run: bunx playwright install --with-deps firefox webkit
       - run: bun run test:visual:cross
       - name: Upload gate report on failure
