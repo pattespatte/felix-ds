@@ -1,6 +1,6 @@
 # Utgivningsdokumentation (endast ägaren)
 
-Det här dokumentet är det enda, uttryckliga undantaget från projektets förbud mot push (se repots AGENTS.md): **varje `git push` och varje publicering i felix-ds-projektet sker via det här dokumentet, utfört av ägaren.** Automatiska agentsessioner kör det aldrig. Inget här triggas av att filer committas – arbetsflödet drar igång först när en `v*`-tagg når GitHub.
+Det här dokumentet är det enda, uttryckliga undantaget från projektets förbud mot push: **varje `git push` och varje publicering i felix-ds-projektet sker via det här dokumentet, utfört av ägaren.** Automatiska agentsessioner kör det aldrig. Inget här triggas av att filer committas – arbetsflödet drar igång först när en `v*`-tagg når GitHub.
 
 Utgivningsflödet är: förbered lokalt → tagga → **pusha (ägarestyrt)** → GitHub Actions bygger, kör portarna och publicerar → granska GitHub-releasen.
 

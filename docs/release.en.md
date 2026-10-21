@@ -1,6 +1,6 @@
 # Release runbook (owner only)
 
-This document is the single, explicit exception to the project's no-push rule (see the repo's AGENTS.md): **every `git push` and publish action in the felix-ds project happens through this runbook, executed by the owner.** Automated agent sessions never execute it. Nothing here is triggered by committing files; the workflow only fires when a `v*` tag reaches GitHub.
+This document is the single, explicit exception to the project's no-push rule: **every `git push` and publish action in the felix-ds project happens through this runbook, executed by the owner.** Automated agent sessions never execute it. Nothing here is triggered by committing files; the workflow only fires when a `v*` tag reaches GitHub.
 
 The release flow is: prepare locally → tag → **push (owner-gated)** → GitHub Actions builds, gates and publishes → review the GitHub Release.
 
