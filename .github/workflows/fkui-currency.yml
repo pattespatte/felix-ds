@@ -4,6 +4,8 @@ name: FKUI currency check
 # six @fkui/* dev pins to the latest published version (scripts/fkui.ts
 # lockstep logic), run the full release gate, and open a pull request with
 # the bump on green. A no-op week (already current) exits green without a PR.
+# The second job (floor) proves the peer range's oldest supported minor in
+# the same run – see its comment below.
 #
 # Preconditions: the committed linux visual baselines (including the
 # firefox/webkit cross-browser set from generate-linux-baselines) must exist,
@@ -83,3 +85,29 @@ jobs:
             test-results
             playwright-report
           retention-days: 14
+
+  floor:
+    # Oldest-supported-minor proof: the peer range's lower bound
+    # (>=6.57.0 <7.0.0) is not just documented, it is exercised weekly.
+    # Non-visual gates only, and the css-freshness parity tests skip
+    # themselves via FKUI_FLOOR=1: the committed dist/ and the pixel
+    # baselines are always built at the latest pin, and a second baseline
+    # set at the floor would be unmaintainable. The visual reality inside
+    # the range is covered by the live consumers between the endpoints
+    # (demo site 6.59.0, consumer app 6.60.0). This leg never opens a PR
+    # and never pushes anything – a red floor is signal for the owner, not
+    # a currency bump.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      # The fkui helper writes exact specifiers in lockstep (all six
+      # @fkui/* packages) and runs bun install. 6.57.0 is the peer range's
+      # lower bound and exists for all six packages upstream.
+      - run: bun run fkui upgrade 6.57.0
+      - run: FKUI_FLOOR=1 bun test
+      - run: bun run build
+      - run: bunx vue-tsc --noEmit
+      - run: bunx playwright install --with-deps chromium
+      - run: bun run test:a11y

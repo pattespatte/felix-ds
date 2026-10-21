@@ -29,6 +29,16 @@ import {
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
 /**
+ * Färskhetskollerna jämför dist mot en färsk kompilation mot det installerade
+ * FKUI:et. I floor-benet i currency-arbetsflödet (.github/workflows/
+ * fkui-currency.yml) är installerat FKUI medvetet intervallets äldsta minor,
+ * medan dist/ alltid är byggt mot senaste pinned – där är jämförelsen
+ * meningslös och just de testerna hoppas över (FKUI_FLOOR=1). Budgetarna,
+ * teckensnitts-url:erna och @charset-kollen gäller oavsett version.
+ */
+const AT_FKUI_FLOOR = process.env.FKUI_FLOOR === "1";
+
+/**
  * Bytebudgetar (gzippat, i byte) för standardposterna. Viktfördelen gentemot
  * ett paket som skickar allt-temat inbakat är en garanti, inte en
  * tillfällighet: på en trafiktung sajt är drygt 370 kb mindre css per
@@ -73,7 +83,7 @@ function freshComplete(): string {
 
 for (const entry of ENTRIES) {
     describe(`förbyggd css-paritet (${entry.output})`, () => {
-        test("filen är identisk med färsk kompilering (inte föråldrad)", () => {
+        test.skipIf(AT_FKUI_FLOOR)("filen är identisk med färsk kompilering (inte föråldrad)", () => {
             const committed = readFileSync(join(ROOT, entry.output), "utf8");
             if (committed !== compileEntry(entry.source)) {
                 throw new Error(`${entry.output} är föråldrad – kör \`bun run build:theme\` och committa`);
@@ -93,7 +103,7 @@ for (const entry of ENTRIES) {
 }
 
 describe(`allt-i-ett-paritet (${COMPLETE_OUTPUT})`, () => {
-    test("filen är identisk med färsk sammanfogning (inte föråldrad)", () => {
+    test.skipIf(AT_FKUI_FLOOR)("filen är identisk med färsk sammanfogning (inte föråldrad)", () => {
         const committed = readFileSync(join(ROOT, COMPLETE_OUTPUT), "utf8");
         if (committed !== freshComplete()) {
             throw new Error(`${COMPLETE_OUTPUT} är föråldrad – kör \`bun run build:theme\` och committa`);
@@ -129,7 +139,7 @@ describe("bytebudgetar (gzippat)", () => {
 
 for (const entry of MIN_ENTRIES) {
     describe(`minifierad paritet (${entry.output})`, () => {
-        test("filen är identisk med färsk minifiering (inte föråldrad)", () => {
+        test.skipIf(AT_FKUI_FLOOR)("filen är identisk med färsk minifiering (inte föråldrad)", () => {
             const committed = readFileSync(join(ROOT, entry.output), "utf8");
             if (committed !== entry.css()) {
                 throw new Error(`${entry.output} är föråldrad – kör \`bun run build:theme\` och committa`);
@@ -149,7 +159,7 @@ for (const entry of MIN_ENTRIES) {
 }
 
 describe(`allt-i-ett-min (${COMPLETE_MIN_OUTPUT})`, () => {
-    test("filen är identisk med färsk minifiering (inte föråldrad)", () => {
+    test.skipIf(AT_FKUI_FLOOR)("filen är identisk med färsk minifiering (inte föråldrad)", () => {
         const committed = readFileSync(join(ROOT, COMPLETE_MIN_OUTPUT), "utf8");
         if (committed !== minifyComplete(freshComplete())) {
             throw new Error(`${COMPLETE_MIN_OUTPUT} är föråldrad – kör \`bun run build:theme\` och committa`);
