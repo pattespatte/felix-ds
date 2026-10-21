@@ -8,8 +8,8 @@ samma täckning live.
 
 ## Vad underlaget bygger på
 
-- Varje vy i playgrounden scannas med axe i båda färglägena, och sökfältets
-  öppna listruta scannas separat – 32 scanningar per körning
+- Varje vy i playgrounden skannas med axe i båda färglägena, och sökfältets
+  öppna listruta skannas separat – 32 skanningar per körning
   (15 vyer × 2 färglägen + 2). Noll överträdelser är ett
   villkor för varje utgivning av paketet, och inga axe-regler är avstängda.
 - Täckningsdata bakom tabellen nedan härleds maskinellt ur demosviten och
@@ -25,8 +25,8 @@ efterlevnadskriterier. Underlaget gör inga efterlevnadsanspråk – mot WCAG
 2.x, EN 301 549 eller något annat ramverk – och påstår ingen manuell
 testning. Tangentbordsordning, skärmläsarbeteende, innehållets språk och
 struktur kräver manuell granskning, liksom konsumentens egen användning.
-Beteende, roller och tangentbordsstöd hör till FKUI:s komponenter; felix-ds
-ändrar bara presentationen. Avbilda beviset på det ramverk din redogörelse
+Beteende, roller och tangentbordsstöd hör till FKUI:s komponenter. felix-ds
+ändrar bara presentationen. Överför beviset till det ramverk din redogörelse
 använder, och testa din egen webbplats.
 
 ## Text att lyfta
@@ -45,7 +45,7 @@ Byt `[Komponent]` mot komponentens namn:
 ## Per komponent
 
 Alla 70 FKUI-komponenter som playgrounden demonstrerar, med
-vyerna som övar var och en:
+vyerna som visar var och en:
 
 | Komponent | Visas i |
 | --- | --- |

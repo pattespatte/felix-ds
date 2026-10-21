@@ -2,7 +2,7 @@
 
 *Det här dokumentet finns också på engelska: [tokens.en.md](tokens.en.md).*
 
-felix-ds skickar med tematokens som JSON i [W3C Design Tokens](https://design-tokens.github.io/community-group/) utkastformat (DTCG). Det gör temats tokens läsbara för verktyg utanför CSS-världen – bland annat Tokens Studio (Figma), Style Dictionary och dokumentationsgeneratorer – utan att något kopieras för hand.
+felix-ds skickar med temats token som JSON i [W3C Design Tokens](https://design-tokens.github.io/community-group/) utkastformat (DTCG). Det gör temats token läsbara för verktyg utanför CSS-världen – bland annat Tokens Studio (Figma), Style Dictionary och dokumentationsgeneratorer – utan att något kopieras för hand.
 
 ## Filerna
 
@@ -15,7 +15,7 @@ Varje fil är självbärande och innehåller det **sammansatta temat** i sitt l�
 
 ## Formatet
 
-Filerna följer DTCG-utkastet: token är objekt med `$value` och valfri `$type` och `$description`, grupper är objekt utan `$value`. Följande typer används:
+Filerna följer DTCG-utkastet: token är objekt med `$value` samt valfria `$type` och `$description`, grupper är objekt utan `$value`. Följande typer används:
 
 | `$type` | Exempel |
 | --- | --- |
@@ -26,17 +26,17 @@ Filerna följer DTCG-utkastet: token är objekt med `$value` och valfri `$type` 
 | `fontFamily` | `["Noto Sans", "system-ui", "sans-serif"]` |
 | `shadow` | skuggobjekt, se [Undantag och avvikelser](#undantag-och-avvikelser) |
 
-DTCG är fortfarande ett utkast; filerna är giltiga enligt utkastet i skrivande stund men formatet kan komma att ändras uppströms.
+DTCG är fortfarande ett utkast. Filerna är giltiga enligt utkastet i skrivande stund, men formatet kan komma att ändras uppströms.
 
 ## Namngivning och gruppering
 
-CSS-variabelnamnet avspeglas mekaniskt: namnet utan inledande `--` delas på bindestreck och blir en nästad sökväg, och tvärtom slås sökvägens delar ihop med bindestreck:
+CSS-variabelnamnet avspeglas mekaniskt: namnet utan inledande `--` delas på bindestreck och blir en nästad sökväg, och omvänt slås sökvägens delar ihop med bindestreck:
 
 - `--fkds-color-action-text-primary-default` → `fkds.color.action.text.primary.default`
 - `--f-font-size-xxx-large` → `f.font.size.xxx.large`
 - `f.font.size.xxx.large` → `--f-font-size-xxx-large`
 
-När ett tokennamn är äkta prefix av ett annat (`--f-font-family` före `--f-font-family-code`) kan namnet inte samtidigt vara blad och grupp – DTCG-konsumenter ser då undergrupperna som osynliga extraegenskaper. Kortnamnet bogseras därför under det reserverade segmentet `_self` (namnförrådet innehåller aldrig understreck, så regeln är entydig i båda riktningarna):
+När ett tokennamn är äkta prefix av ett annat (`--f-font-family` före `--f-font-family-code`) kan namnet inte samtidigt vara blad och grupp – DTCG-konsumenter ser då undergrupperna som osynliga extraegenskaper. Kortnamnet läggs därför under det reserverade segmentet `_self` (namnförrådet innehåller aldrig understreck, så regeln är entydig i båda riktningarna):
 
 ```json
 "warning": {
@@ -70,8 +70,8 @@ Exporten speglar temat 1:1 utom följande, som alla är dokumenterade beslut:
 
 1. **Logoplatshållarna `--f-logo-image-small`/`--f-logo-image-large`** ingår inte. Deras `url()`-data-URI:er har ingen naturlig DTCG-typ. De når konsumenterna som vanligt via CSS-variablerna.
 2. **`--fkui-theme-default-version`** ingår inte. Det är upstream-paketets versionsmetadata, ingen designtoken.
-3. **26 token saknar `$type`.** Deras värden är sammansatta CSS-kortformer eller nyckelord utan DTCG-motsvarighet: rubrikfärgerna (`f.text.color.heading.1`–`6`, värdet `inherit`), knapparnas återställda paddingar (`initial`), animationskurvan `ease-out`, flerdelade marginaler/storlekar (t.ex. `padding.input.fields`, `f.modal.close.button.margin`), transition-kortformerna (`f.animation.expand.open`/`close`) samt `none` på egenskaper som inte är skuggor (`f.button.discrete.radius.hover`, `f.modal.close.button.padding`). `$value` är det exakta CSS-värdet; `$type` är medvetet utelämnat i stället för att lura till en felaktig typ. En strikt DTCG-validerare flaggar dem som varningar (saknad `$type`) – väntat och dokumenterat.
-4. **`"none"`-skuggor behålls.** Profilen är helt platt, så skuggtoken med värdet `none` (`f.button.shadow` med deltoken, `f.box.modal.shadow`, `f.input.shadow.inset`) skrivs som `$type: "shadow"` med `$value: "none"` – att ta bort dem skulle dölja ett designbeslut. En strikt validerare flaggar själva värdet (väntat varningsmeddelande); konsumenter som inte kan tolka `"none"` kan hoppa över just dessa token.
+3. **26 token saknar `$type`.** Deras värden är sammansatta CSS-kortformer eller nyckelord utan DTCG-motsvarighet: rubrikfärgerna (`f.text.color.heading.1`–`6`, värdet `inherit`), knapparnas återställda paddingar (`initial`), animationskurvan `ease-out`, flerdelade marginaler/storlekar (t.ex. `padding.input.fields`, `f.modal.close.button.margin`), transition-kortformerna (`f.animation.expand.open`/`close`) samt `none` på egenskaper som inte är skuggor (`f.button.discrete.radius.hover`, `f.modal.close.button.padding`). `$value` är det exakta CSS-värdet. `$type` är medvetet utelämnat i stället för att lura till en felaktig typ. En strikt DTCG-validerare flaggar dem som varningar (saknad `$type`) – väntat och dokumenterat.
+4. **`"none"`-skuggor behålls.** Profilen är helt platt, så skuggtoken med värdet `none` (`f.button.shadow` med deltoken, `f.box.modal.shadow`, `f.input.shadow.inset`) skrivs som `$type: "shadow"` med `$value: "none"` – att ta bort dem skulle dölja ett designbeslut. En strikt validerare flaggar själva värdet (väntat varningsmeddelande). Konsumenter som inte kan tolka `"none"` kan hoppa över just dessa token.
 
 ## Konsumera tokens
 

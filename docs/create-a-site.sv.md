@@ -6,7 +6,7 @@ Ett levande exempel på allt nedan finns i demosajten som konsumerar felix-ds so
 
 ## Förutsättningar
 
-- Bun (pakethanterare och skriptkörare; npm fungerar som reserv)
+- Bun (pakethanterare och skriptkörare – npm fungerar som reserv)
 - Node.js i aktuell version
 - Grundläggande vana vid Vue 3 med `<script setup lang="ts">`, Vue Router och Vite
 
@@ -65,7 +65,7 @@ import "./fkui-patches";
 
 Temat appliceras med den förbyggda posten `dist/felix.css` – ingen Sass behövs. Filen innehåller `@font-face`, det ljusa temat på `:root` och det mörka temat på `html[data-color-mode="dark"]`. Varje scope skriver ut den kompletta tokensytan och specificitetsstegen (`:root` (0,1,0) < `html[data-color-mode="dark"]` (0,1,1)) löser båda lägena utan `!important`. Vill du följa systeminställningen i stället för att styra färgläget själv, använd `dist/felix-auto.css` (båda temana bakom `prefers-color-scheme`).
 
-Föredrar du en enda temainport? `dist/felix-complete.css` sammanfogar `@fkui/design` komponent-css, teckensnittsregeln och felix-lagret i samma kaskadordning som de tre mellersta raderna ovan – en valfri bekvämlighet, inte standarden:
+Föredrar du en enda temaimport? `dist/felix-complete.css` sammanfogar `@fkui/design` komponent-css, teckensnittsregeln och felix-lagret i samma kaskadordning som de tre mellersta raderna ovan – en valfri bekvämlighet, inte standarden:
 
 ```ts
 import "@fkui/icon-lib-default/dist/f";
@@ -93,11 +93,11 @@ html[data-color-mode="dark"] {
 
 Den globala `@use "felix-ds/src/index"` skriver bara ut det ljusa temat på `:root` – den kan inte uttrycka det attributstyrda mörka scopet och passar bara helt ljusa sajter. Mixinerna `felix.light` och `felix.dark` deklarerar dessutom `color-scheme` per läge, så nativa kontroller och rullistor följer med automatiskt – den förbyggda filen innehåller samma deklarationer. Konfigurera aldrig `@fkui/theme-default` själv i konsumenten – felix-modulen konfigurerar redan sin egen laddning av den, och en dubbel konfiguration kolliderar.
 
-Egen layout-css skrivs med tokens endast – `--fkds-*` och `--f-*` – utan råa hexvärden. Då flippar varje egen yta (kort, paneler, tabellistriper) med färgläget gratis, och kontrasten i mörkt läge blir aldrig halvhandgjord. Dimensioner (marginaler, brytpunkter) är förstås vanliga remvärden.
+Egen layout-css skrivs med tokens endast – `--fkds-*` och `--f-*` – utan råa hexvärden. Då flippar varje egen yta (kort, paneler, tabellränder) med färgläget gratis, och kontrasten i mörkt läge blir aldrig halvhandgjord. Dimensioner (marginaler, brytpunkter) är förstås vanliga remvärden.
 
 ## Typsnitt
 
-Temat self-hostar alla typsnitt: Noto Sans för brödtext (400, 600 + kursiv) och Roboto Slab för rubriker, med fet stil mappad på vikt 600. Den förbyggda `dist/felix.css` innehåller @font-face-reglerna med woff2-referenser som Vite bundle:ar (SCSS-flödet får samma regler via `@use "felix-ds/src/fonts/fonts"`) – inga CDN-anrop, inga Google Fonts, ingen integritetsgranskning. Kontrollera gärna i bygget att `dist/assets/*.woff2` finns och att ingen `fonts.googleapis.com`-referens smugit sig in.
+Temat self-hostar alla typsnitt: Noto Sans för brödtext (400, 600 + kursiv) och Roboto Slab för rubriker, med fet stil mappad på vikt 600. Den förbyggda `dist/felix.css` innehåller @font-face-reglerna med woff2-referenser som Vite bundlar (SCSS-flödet får samma regler via `@use "felix-ds/src/fonts/fonts"`) – inga CDN-anrop, inga Google Fonts, ingen integritetsgranskning. Kontrollera gärna i bygget att `dist/assets/*.woff2` finns och att ingen `fonts.googleapis.com`-referens smugit sig in.
 
 ## Mörkt läge
 
@@ -107,7 +107,7 @@ Mönstret har tre delar som samverkar:
 2. **Ett inline-skript i `<head>`** kör samma logik innan första painten, så sidan aldrig blinkar i fel läge. Skriptet duplicerar modulens läsning av localStorage – håll nyckeln synkroniserad.
 3. **En växlingsknapp** i sidhuvudet anropar modulens toggle. Sol/måne-gliferna får ritas för hand – standardbiblioteket har inga sådana ikoner.
 
-Vänta dig ljusa snapshots vid prerendering: den statiska HTML:en byggs i ljust läge och inline-skriptet applicerar mörkt vid besök. Det är avsiktligt och räcker för en demo; en tjänst med krav på mörka snapshots behöver köra prerender i båda lägena.
+Vänta dig ljusa snapshots vid prerendering: den statiska HTML:en byggs i ljust läge och inline-skriptet applicerar mörkt vid besök. Det är avsiktligt och räcker för en demo. En tjänst med krav på mörka snapshots behöver köra prerender i båda lägena.
 
 ## Ikoner
 
@@ -122,9 +122,9 @@ Några mönster som demosajten bevisat:
 - **Navigeringsmeny med SPA-routing.** `FNavigationMenu` renderar ankare och dokumenterar själv mönstret: skicka rutter utan `href`, lyssna på `@selected-route` och anropa `router.push(key)`. Annars laddar webbläsaren om hela sidan vid history-routing. Den vertikala varianten (`vertical`) passar sekundärnavigering.
 - **Rullgardinsmenyer.** `FContextMenu` är FKUI:s popup-meny: en knapprubrik med `aria-haspopup="menu"` som ankare, menyval med `label`/`key`, styrning via `:is-open` och `@select`/`@close`. Fullt tangentbordsstöd ingår.
 - **Flikar.** FKUI saknar en flikkomponent (per 6.62). Bygg en tunn app-komponent med WAI-ARIA-tabs-mönstret (tablist/tab/tabpanel, piltangenter) stylad med tokens – ett par hundra rader, och inget wrapperskikt i temarepot behövs.
-- **Brödsmulor.** Dessa finns inte heller i FKUI; en tunn `<nav>` med ordnad lista, router-länkar och `aria-current="page"` räcker och blir rätt.
-- **Kort, listor och meddelanden.** `FCard` (rubrik via `#header`-slotten och dess `headingSlotClass`), `FMessageBox` (info/success/warning/error), `FBadge` och `FDataTable` täcker de flesta ytor. `FSortFilterDataset` runt en tabell ger sortering; `FPaginator` ger sidbrytning.
-- **Expanderbart innehåll och accordion.** `FExpandableParagraph` med `#title`-slotten; en accordion (en öppen åt gången) styrs med `:expanded` + `@toggle` från en ref. Lägg gärna temats FExpand-patch från playgrounden i en `fkui-patches.ts` – den åtgärdar en leave-bugg.
+- **Brödsmulor.** De finns inte heller i FKUI. En tunn `<nav>` med ordnad lista, router-länkar och `aria-current="page"` räcker och blir rätt.
+- **Kort, listor och meddelanden.** `FCard` (rubrik via `#header`-slotten och dess `headingSlotClass`), `FMessageBox` (info/success/warning/error), `FBadge` och `FDataTable` täcker de flesta ytor. `FSortFilterDataset` runt en tabell ger sortering. `FPaginator` ger sidbrytning.
+- **Expanderbart innehåll och accordion.** `FExpandableParagraph` med `#title`-slotten. En accordion (en öppen åt gången) styrs med `:expanded` + `@toggle` från en ref. Lägg gärna temats FExpand-patch från playgrounden i en `fkui-patches.ts` – den åtgärdar en leave-bugg.
 
 ## Formulär och validering
 
@@ -152,16 +152,16 @@ Klientsökning utan backend: ett skript läser `src/router/index.ts`, hittar rut
 
 ## Prerendering och GitHub Pages (valfritt)
 
-En Playwright-pass efter `vite build` startar en statisk server över `dist/`, besöker varje rutt, väntar på att `#app` fylls och titeln stämmer, och skriver snapshot-HTML:en till `dist/<rutt>.html`. Basvägen (GitHub Pages-underkatalog) läses ut ur det byggda index.html så servern matchar produktion. Kör hela kedjan som ett build-skript: indexgenerering → vue-tsc → vite build → prerender.
+En Playwright-körning efter `vite build` startar en statisk server över `dist/`, besöker varje rutt, väntar på att `#app` fylls och titeln stämmer, och skriver snapshot-HTML:en till `dist/<rutt>.html`. Basvägen (GitHub Pages-underkatalog) läses ut ur det byggda index.html så servern matchar produktion. Kör hela kedjan som ett build-skript: indexgenerering → vue-tsc → vite build → prerender.
 
 Eftersom innehållet på en demosajt är fiktivt följer indexeringsskydd med: `noindex, nofollow` i meta per rutt (sätt i router-guarden, så plockar snapshotarna upp det), `robots.txt` med disallow-all inklusive vanliga AI-botar, samt `_headers` med `X-Robots-Tag` och en `.nojekyll`-fil.
 
 ## Checklista
 
 - [ ] FKUI-paketen låsta exakt, felix-ds installerat från registret (eller låst mot en commit)
-- [ ] FKUI-css + förbyggd felix-css (eller scoped mixin-par i SCSS); egen css med tokens endast
-- [ ] Color-modul + inline-skript + växlingsknapp; `color-scheme` verifierad i båda lägen
-- [ ] Typsnitt self-hostade; ingen font-CDN i bygget
+- [ ] FKUI-css + förbyggd felix-css (eller scoped mixin-par i SCSS) – egen css med tokens endast
+- [ ] Color-modul + inline-skript + växlingsknapp – `color-scheme` verifierad i båda lägen
+- [ ] Typsnitt self-hostade – ingen font-CDN i bygget
 - [ ] Formulär på FValidationForm med typade fält och kedjade validatorer
-- [ ] Sökindex genererat i bygget; sökrutan med tangentbordsstyrd dropdown
-- [ ] Prerenderingen täcker alla rutter; noindex-paketet på plats
+- [ ] Sökindex genererat i bygget – sökrutan med tangentbordsstyrd dropdown
+- [ ] Prerenderingen täcker alla rutter – noindex-paketet på plats

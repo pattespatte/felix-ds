@@ -58,8 +58,8 @@ med `const topics = ref<string[]>([])` i skriptet. Beprövat i konsumentappens k
 
 ## Låt FKUI styla länkarna
 
-FKUI:s ankarstyrsning är tokenmappad och växlar med färgläget. Länkar med handplockade färger bryter den: en hårdkodd färg från ljust läge fäller kontrasten i mörkt läge, och axe fångar det (konsumentappens första utkast fällde 7 noder på det sättet). Receptet är att lämna ankarna till FKUI och använda existerande token när betoning behövs – `--fkds-color-text-secondary` för dämpad text till exempel. Akta påhittade token-namn: `--fkds-color-text-action` finns inte, kontrollera tokenguiderna innan du skriver en `var()`.
+FKUI:s ankarstyrsning är tokenmappad och växlar med färgläget. Länkar med handplockade färger bryter den: en hårdkodad färg från ljust läge fäller kontrasten i mörkt läge, och axe fångar det (konsumentappens första utkast fällde 7 noder på det sättet). Receptet är att lämna ankarna till FKUI och använda existerande token när betoning behövs – `--fkds-color-text-secondary` för dämpad text till exempel. Akta påhittade token-namn: `--fkds-color-text-action` finns inte. Kontrollera tokenguiderna innan du skriver en `var()`.
 
 ## När ett beteende verkligen inte går att komponera
 
-Dokumentera avvikelsen där nästa utvecklare letar, och verifiera den mot uppströms vid varje FKUI-uppgradering – varje avvikelse från uppströms är flexibilitet köpt på kredit. Vänta hellre på uppströms eller komponera runt beteendet. Det reserverade wrapper-paket på tillval som styrningspolicy:en reserverar för ett genuint oundvikligt fall finns inte i dag. Att skapa ett är ett ägarbeslut, aldrig en bekvämlighet.
+Dokumentera avvikelsen där nästa utvecklare letar, och verifiera den mot uppströms vid varje FKUI-uppgradering – varje avvikelse från uppströms är flexibilitet köpt på kredit. Vänta hellre på uppströms eller komponera runt beteendet. Det wrapper-paket på tillval som styrningspolicyn reserverar för ett genuint oundvikligt fall finns inte i dag. Att skapa ett är ett ägarbeslut, aldrig en bekvämlighet.

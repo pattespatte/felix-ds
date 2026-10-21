@@ -58,7 +58,7 @@ Appen behöver bara serva sin byggda dist eller sin dev-server på `PARITY_BASE_
 
 ## 2. Jämför med noll-tolerans
 
-Spara som `compare-parity.sh` och kör mellan två fångstkataloger. ImageMagicks `compare -metric AE` räknar avvikande pixlar, noll är det enda godkända värdet (utskriften för noll är bokstavligen `0 (0)`):
+Spara som `compare-parity.sh` och kör det mellan två fångstkataloger. ImageMagicks `compare -metric AE` räknar avvikande pixlar, noll är det enda godkända värdet (utskriften för noll är bokstavligen `0 (0)`):
 
 ```bash
 #!/usr/bin/env bash

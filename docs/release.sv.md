@@ -27,7 +27,7 @@ Gå igenom listan innan du rör en tagg:
    En baseline-uppdatering är ett granskat beslut, aldrig en knapp för att ”få porten grön”: varje pixeländring ska gå att förklara.
 5. **Linux-baselines för CI.** Utgivningsarbetsflödet kör `bun run test:visual` och `bun run test:visual:cross` på ubuntu-24.04 (låst bild, så omgenererade baselines matchar alltid utgivningsrunnerns miljö), vilket kräver baselines med suffixet `-linux`. Generera om dem när darwin-baselinesna har ändrats, via repots arbetsflöde **Generate linux visual baselines** (ingen docker behövs lokalt):
 
-   1. GitHub → Actions → *Generate linux visual baselines* → **Run workflow** på `main` (cirka 10 minuter. Den kör `--update-snapshots` för chromium, webkit och firefox på en ubuntu-runner och laddar upp båda snapshot-mapparna som artefakten `linux-baselines`.) Den går också att starta från terminalen:
+   1. GitHub → Actions → *Generate linux visual baselines* → **Run workflow** på `main` (tar cirka 10 minuter och kör `--update-snapshots` för chromium, webkit och firefox på en ubuntu-runner och laddar upp båda snapshot-mapparna som artefakten `linux-baselines`.) Den går också att starta från terminalen:
 
       ```bash
       gh workflow run generate-linux-baselines.yml --repo pattespatte/felix-ds --ref main
@@ -46,7 +46,7 @@ Gå igenom listan innan du rör en tagg:
 
    3. Komprimera om varje ny png förlustfritt och verifiera mot originalet med `compare -metric AE original.png rekomprimerad.png null:` (ska skriva ut `0 (0)`), kör sedan `bun run test:visual` lokalt (bekräftar att darwin-uppsättningen fortfarande godkänns) och committa linux-png:erna tillsammans med darwin-png:erna. Playwright väljer det suffix som matchar runner-plattformen när testerna körs.
 
-   Saknas linux-uppsättningen fallerar utgivningsporten med felet ”snapshot doesn't exist … `-chromium-linux.png`” – det är porten som gör sitt jobb; gå inte förbi den. Om firefox-halvan av cross-porten fallerar på linux-runnern, behandla det som utgivningsstopp: linux är den första miljön där firefox körs alls (se steg 3).
+   Saknas linux-uppsättningen fallerar utgivningsporten med felet ”snapshot doesn't exist … `-chromium-linux.png`” – det är porten som gör sitt jobb. Gå inte förbi den. Om firefox-halvan av cross-porten fallerar på linux-runnern, behandla det som utgivningsstopp: linux är den första miljön där firefox körs alls (se steg 3).
 
 ## 2. Ge ut versionen
 
@@ -75,7 +75,7 @@ git tag -a vX.Y.Z -m "felix-ds vX.Y.Z"
 
 ## 3. Efter utgivningen
 
-- Kontrollera att paketet går att installera, precis som en konsument skulle göra (`.npmrc`-raderna står i avsnitt 5). Paketet har begränsad synlighet, så frågan kräver en token – anonym `npm view` svarar `E401`, och det är avsiktligt. Med konsument-PAT:en från avsnitt 5 i miljön (en `.npmrc` med registry-raderna fungerar lika bra):
+- Kontrollera att paketet går att installera, precis som en konsument skulle göra (`.npmrc`-raderna står i avsnitt 5). Paketet har begränsad synlighet, så anropet kräver en token – anonym `npm view` svarar `E401`, och det är avsiktligt. Med konsument-PAT:en från avsnitt 5 i miljön (en `.npmrc` med registry-raderna fungerar lika bra):
 
   ```bash
   npm view @pattespatte/felix-ds@latest version --registry=https://npm.pkg.github.com --//npm.pkg.github.com/:_authToken=$GITHUB_PACKAGES_TOKEN
@@ -85,7 +85,7 @@ git tag -a vX.Y.Z -m "felix-ds vX.Y.Z"
 
 ## 4. Om något går fel
 
-En publicerad version är oföränderlig. Radera aldrig samma version och publicera aldrig om den; åtgärda felet i nästa version:
+En publicerad version är oföränderlig. Radera aldrig samma version och publicera aldrig om den. Åtgärda felet i nästa version:
 
 ```bash
 npm deprecate @pattespatte/felix-ds@X.Y.Z "Trasig <på sätt>; använd X.Y.Z+1" --registry=https://npm.pkg.github.com
@@ -113,11 +113,11 @@ Paketet publiceras på GitHub Packages under kontot `pattespatte` med begränsad
    bun add @pattespatte/felix-ds
    ```
 
-Konsumenterna låser själva sina `@fkui/*`-versioner; felix-ds deklarerar `@fkui/theme-default` (stött intervall `>=6.57.0 <7.0.0`) som enda peer-beroende och laddar modulen själv – konsumentens egen Sass ska aldrig läsa in paketet via konfigurerad `@use`, eftersom de två konfigurerade laddningarna då krockar. Se avsnittet Kompatibilitet i README.
+Konsumenterna låser själva sina `@fkui/*`-versioner. felix-ds deklarerar `@fkui/theme-default` (stött intervall `>=6.57.0 <7.0.0`) som enda peer-beroende och laddar modulen själv – konsumentens egen Sass ska aldrig läsa in paketet via konfigurerad `@use`, eftersom de två konfigurerade laddningarna då krockar. Se avsnittet Kompatibilitet i README.
 
 ## 6. Mall för uppgraderingsnoteringar
 
-Varje utgivning dokumenterar uppgraderarens perspektiv (åtagandet står i `docs/governance.sv.md`). Klistra in mallen i versionsfakta och fyll i:
+Varje utgivning dokumenterar perspektivet för den som uppgraderar (åtagandet står i `docs/governance.sv.md`). Klistra in mallen i versionsfakta och fyll i:
 
 ```markdown
 ## Uppgraderingsnoteringar
