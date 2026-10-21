@@ -41,7 +41,7 @@ Run through this list before touching a tag:
       cp /tmp/linux-baselines/visual.spec.ts-snapshots/*-linux.png e2e/visual.spec.ts-snapshots/
       cp /tmp/linux-baselines/visual-cross.spec.ts-snapshots/*-linux.png e2e/visual-cross.spec.ts-snapshots/
       ls e2e/visual.spec.ts-snapshots/*-linux.png | wc -l        # expect one per view × 3 configs (see navigation.ts)
-      ls e2e/visual-cross.spec.ts-snapshots/*-linux.png | wc -l  # expect 32 (8 views × 2 modes × 2 browsers)
+      ls e2e/visual-cross.spec.ts-snapshots/*-linux.png | wc -l  # expect 60 (15 views × 2 modes × 2 browsers)
       ```
 
    3. Recompress every new PNG losslessly and verify the result against the original with `compare -metric AE original.png recompressed.png null:` (must print `0 (0)`), then run `bun run test:visual` locally (confirms the darwin set still passes side by side) and commit the linux PNGs together with the darwin ones. Playwright picks the suffix matching the runner platform at test time.
@@ -70,7 +70,7 @@ git tag -a vX.Y.Z -m "felix-ds vX.Y.Z"
    git push origin main --follow-tags
    ```
 
-4. Watch the Actions run for the **Release to GitHub Packages** workflow (`.github/workflows/release.yml`). It checks out, installs with the frozen lockfile, builds, type-checks, runs the visual gate (screenshot comparisons of every view, the firefox/webkit cross-browser subset against the linux baselines, and the axe scans), publishes `@pattespatte/felix-ds` to npm.pkg.github.com and creates the GitHub Release with generated notes.
+4. Watch the Actions run for the **Release to GitHub Packages** workflow (`.github/workflows/release.yml`). It checks out, installs with the frozen lockfile, builds, type-checks, runs the visual gate (screenshot comparisons of every view, the firefox/webkit cross-browser set of every view against the linux baselines, and the axe scans), publishes `@pattespatte/felix-ds` to npm.pkg.github.com and creates the GitHub Release with generated notes.
 5. Review the GitHub Release notes; edit for readability if needed (notes are generated from commits – CHANGELOG.md is the curated source).
 
 ## 3. Post-release

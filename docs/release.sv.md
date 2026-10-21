@@ -16,7 +16,7 @@ Gå igenom listan innan du rör en tagg:
    ```
 
    Är versionen `>= 7.0.0` är utgivningen blockerad tills temat verifierats mot den nya majorversionen (och playgroundens låsta utvecklingsversioner höjts), eller tills peer-intervallet i `package.json` medvetet har snävats av. Läs också snabbt igenom changeloggen för varje `@fkui/*`-utgivning inom det stödda intervallet sedan förra felix-ds-utgivningen, och håll utkik efter ändringar i tokensytan.
-3. **Porten grön lokalt.** `bun install`, `bun run build`, `bunx vue-tsc --noEmit` och framför allt `bun run test:visual` (42 visuella baselines + 28 axe-skanningar) passerar på din maskin. `bun run test:visual:cross` kör firefox/webkit-halvan av porten. På macOS kan bara webkit-halvan köras lokalt – firefox-Playwright-bygget startar inte på darwin 27 (”Could not find profile folder”), så firefox övas först på linux-runnern (steg 5).
+3. **Porten grön lokalt.** `bun install`, `bun run build`, `bunx vue-tsc --noEmit` och framför allt `bun run test:visual` (45 visuella baselines + 32 axe-skanningar) passerar på din maskin. `bun run test:visual:cross` kör firefox/webkit-halvan av porten. På macOS kan bara webkit-halvan köras lokalt – firefox-Playwright-bygget startar inte på darwin 27 (”Could not find profile folder”), så firefox övas först på linux-runnern (steg 5).
 4. **Aktuella baselines.** Har playgrounden ändrats sedan förra utgivningen: generera om baselinesna och granska dem först:
 
    ```bash
@@ -41,7 +41,7 @@ Gå igenom listan innan du rör en tagg:
       cp /tmp/linux-baselines/visual.spec.ts-snapshots/*-linux.png e2e/visual.spec.ts-snapshots/
       cp /tmp/linux-baselines/visual-cross.spec.ts-snapshots/*-linux.png e2e/visual-cross.spec.ts-snapshots/
       ls e2e/visual.spec.ts-snapshots/*-linux.png | wc -l        # väntat tal: 42 (14 vyer × 3 konfigurationer)
-      ls e2e/visual-cross.spec.ts-snapshots/*-linux.png | wc -l  # väntat tal: 32 (8 vyer × 2 lägen × 2 webbläsare)
+      ls e2e/visual-cross.spec.ts-snapshots/*-linux.png | wc -l  # väntat tal: 60 (alla 15 vyer × 2 lägen × 2 webbläsare)
       ```
 
    3. Komprimera om varje ny png förlustfritt och verifiera mot originalet med `compare -metric AE original.png rekomprimerad.png null:` (ska skriva ut `0 (0)`), kör sedan `bun run test:visual` lokalt (bekräftar att darwin-uppsättningen fortfarande godkänns) och committa linux-png:erna tillsammans med darwin-png:erna. Playwright väljer det suffix som matchar runner-plattformen när testerna körs.
@@ -70,7 +70,7 @@ git tag -a vX.Y.Z -m "felix-ds vX.Y.Z"
    git push origin main --follow-tags
    ```
 
-4. Följ Actions-körningen för arbetsflödet **Release to GitHub Packages** (`.github/workflows/release.yml`). Den checkar ut repot, installerar med låst lockfile, bygger, typkontrollerar, kör den visuella porten (42 chromium-sjämförelser + 32 firefox/webkit-cross-jämförelser mot linux-baselinesna + 28 axe-skanningar), publicerar `@pattespatte/felix-ds` på npm.pkg.github.com och skapar GitHub-releasen med genererade versionsfakta.
+4. Följ Actions-körningen för arbetsflödet **Release to GitHub Packages** (`.github/workflows/release.yml`). Den checkar ut repot, installerar med låst lockfile, bygger, typkontrollerar, kör den visuella porten (45 chromium-sjämförelser + 60 firefox/webkit-cross-jämförelser mot linux-baselinesna + 32 axe-skanningar), publicerar `@pattespatte/felix-ds` på npm.pkg.github.com och skapar GitHub-releasen med genererade versionsfakta.
 5. Granska versionsfakta i GitHub-releasen och redigera dem för läsbarhet om det behövs (de genereras från commits – CHANGELOG.md är den källa som underhålls för hand).
 
 ## 3. Efter utgivningen
