@@ -12,8 +12,6 @@ FKUI:s dokumentation med levande komponentdemos finns på [designsystem.forsakri
 
 ## Välj ditt spår
 
-Du kan använda felix-ds på två sätt. Välj det som passar ditt mål:
-
 | Du vill … | Gå till |
 | --- | --- |
 | använda felix-temat i din egen webbapp | [Installation i en webbapp](#installation-i-en-webbapp) |
@@ -87,7 +85,7 @@ import "@pattespatte/felix-ds/dist/felix-complete.css";
 
 Posten är bekvämligheten, inte standarden – det tunna lagret förblir standardvägen. Bytebudgetar i paritetstestet håller viktfördelen som en garanti: standardposterna ligger på cirka 5 kb gzippat, och de får bara växa när en ändring motiverar sin vikt.
 
-Varje post har dessutom ett minifierat syskon: `dist/felix.min.css`, `dist/felix-auto.min.css` och `dist/felix-complete.min.css` innehåller samma regler komprimerade, tänkta för förbrukare som laddar posten som ren `<link>`-css utan byggkedja. Minifieringen parsar varje färdig post som ren css, så en syntaktisk ogiltig post fäller bygget i stället för att skeppas.
+Varje post har dessutom ett minifierat syskon: `dist/felix.min.css`, `dist/felix-auto.min.css` och `dist/felix-complete.min.css` innehåller samma regler i komprimerad form, för användare som laddar posten som ren `<link>`-css utan byggkedja. Minifieringen läser in varje färdig post som ren css, så en syntaktiskt ogiltig post fäller bygget i stället för att hamna i paketet.
 
 Behöver du avgränsa temat till en egen selektor, till exempel för att växla tema i körtid? Då använder du SCSS-posterna i stället. Paketet pekar ut `src/index.scss` via nyckeln `sass`. Ett globalt tema:
 
@@ -338,8 +336,6 @@ A local playground proves the concept. It shows all 89 components in FKUI's publ
 FKUI's documentation with live component demos is available at [designsystem.forsakringskassan.se](https://designsystem.forsakringskassan.se/).
 
 ## Choose your path
-
-You can use felix-ds in two ways. Pick the one that matches your goal:
 
 | You want to … | Go to |
 | --- | --- |

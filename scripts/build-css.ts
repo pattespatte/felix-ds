@@ -1,7 +1,7 @@
 /**
  * Kompilerar de förbyggda CSS-posterna ur SCSS-källorna. Sex utfiler: tre
  * läsbara poster och deras minifierade syskon (samma regler, komprimerade –
- * för förbrukare som laddar posten som ren <link>-css utan byggkedja):
+ * för användare som laddar posten som ren <link>-css utan byggkedja):
  *
  *   dist/felix.css              – standardposten: teckensnitt + ljust tema på
  *                                 :root, mörkt tema på html[data-color-mode="dark"]
