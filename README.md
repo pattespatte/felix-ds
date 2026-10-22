@@ -185,12 +185,12 @@ Namngivning, aliaser, undantag och konsumtionsvägar finns i guiden [Design toke
 
 ### Kompatibilitet
 
-Temat har ett enda peer-beroende: `@fkui/theme-default` i intervallet `>=6.57.0 <7.0.0`. Intervallet gäller temalagret. Vi testar och stöder Sass-tokenytan i `@fkui/theme-default`, alltså de variabler som temats ingång laddar konfigurerat (`@use` i `src/theme/_default.scss`). Vi testar och stöder inte FKUI-komponenternas interna delar.
+Temat har ett enda peer-beroende: `@fkui/theme-default` i intervallet `>=6.57.0 <7.0.0`. Intervallet gäller temalagret. Vi testar och stöder Sass-tokenytan i `@fkui/theme-default`, alltså de variabler som temats startfil laddar konfigurerat (`@use` i `src/theme/_default.scss`). Vi testar och stöder inte FKUI-komponenternas interna delar.
 
 Övriga `@fkui/*`-paket (`@fkui/vue`, `@fkui/design` med flera) ingår inte i kontraktet. Du låser dem själv.
 
 > [!WARNING]
-> Låt aldrig din egen Sass ladda eller konfigurera `@fkui/theme-default`. Temats ingång laddar paketet redan konfigurerat. En andra konfigurerad `@use`-laddning krockar och bryter kompileringen.
+> Låt aldrig din egen Sass ladda eller konfigurera `@fkui/theme-default`. Temats startfil laddar paketet redan konfigurerat. En andra konfigurerad `@use`-laddning krockar och bryter kompileringen.
 
 Versionskontraktet – semantisk versionering av token och mixins, avvecklingsmönstret och stödintervallet – beskrivs i [Styrning och versionskontrakt](https://github.com/pattespatte/felix-ds/blob/main/docs/governance.sv.md). När token inte räcker till är första svaret komposition i stället för wrappers – beprövade recept finns i [Mönsterbiblioteket](https://github.com/pattespatte/felix-ds/blob/main/docs/patterns.sv.md).
 
@@ -235,7 +235,7 @@ felix-ds är ett enda npm-paket. Playgrounden ligger i en mapp i samma repo.
 felix-ds/
 ├── src/
 │   ├── theme/                    # SCSS som omdefinierar FKUI:s variabler
-│   │   ├── _default.scss         # temaingång: sammansätter grundtema + felix
+│   │   ├── _default.scss         # temats startfil: slår ihop grundtema + felix
 │   │   ├── shared/_index.scss    # --f-* (typografi, linjer, radier, fokus)
 │   │   └── light/_variables.scss # samtliga --fkds-color-* (ljusläge)
 │   ├── prebuilt/                 # selektorskal för de förbyggda CSS-posterna
