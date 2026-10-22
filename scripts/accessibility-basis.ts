@@ -156,7 +156,7 @@ samma täckning live.
   (${views.length} vyer × 2 färglägen + 2). Noll överträdelser är ett
   villkor för varje utgivning av paketet, och inga axe-regler är avstängda.
 - Täckningsdata bakom tabellen nedan härleds maskinellt ur demosviten och
-  hålls ärlig av fullständighetstester, så tabellen kan inte glida isär från
+  tester kontrollerar att den är fullständig, så att tabellen inte kan glida isär från
   vad playgrounden faktiskt demonstrerar.
 - Beviset överförs per komponent: vyerna i tabellen är de som demonstrerar
   komponenten, och de omfattas av varje utgivnings skanning.

@@ -2,7 +2,7 @@
 
 felix-ds är ett temalager: det ändrar presentationen hos FKUI:s komponenter, aldrig deras DOM, props eller beteende. Det är den uttalade avvägningen, och det är det som gör full komponenttäckning och billiga FKUI-uppgraderingar möjliga. När token inte räcker till är första svaret ett kompositionsrecept i konsumentens egen kod – inte en wrapper. Den här sidan samlar recepten som är beprövade i projektets konsumentappar. Ett separat wrapper-paket är medvetet utanför omfattningen för det tunna lagret (se [styrningen](./governance.sv.md)).
 
-Inträdesbarriären är ärlig härkomst: ett mönster landar här först efter att en konsumentapp har använt det, inte som en designs skiss.
+Ett mönster kommer med här först när en konsumentapp har använt det – aldrig som en designs skiss.
 
 ## Ett dragspelsobjekt öppet åt gången (FExpandableParagraph)
 
