@@ -192,7 +192,7 @@ Temat har ett enda peer-beroende: `@fkui/theme-default` i intervallet `>=6.57.0 
 > [!WARNING]
 > Låt aldrig din egen Sass ladda eller konfigurera `@fkui/theme-default`. Temats startfil laddar paketet redan konfigurerat. En andra konfigurerad `@use`-laddning krockar och bryter kompileringen.
 
-Versionskontraktet – semantisk versionering av token och mixins, avvecklingsmönstret och stödintervallet – beskrivs i [Styrning och versionskontrakt](https://github.com/pattespatte/felix-ds/blob/main/docs/governance.sv.md). När token inte räcker till är första svaret komposition i stället för wrappers – beprövade recept finns i [Mönsterbiblioteket](https://github.com/pattespatte/felix-ds/blob/main/docs/patterns.sv.md).
+Versionskontraktet – semantisk versionering av token och mixins, hur token och mixins fasas ut och vilka versioner som stöds – beskrivs i [Styrning och versionskontrakt](https://github.com/pattespatte/felix-ds/blob/main/docs/governance.sv.md). När token inte räcker till: kombinera det som redan finns i stället för att bygga wrappers. Beprövade recept finns i [Mönsterbiblioteket](https://github.com/pattespatte/felix-ds/blob/main/docs/patterns.sv.md).
 
 ### Exempel på implementering
 
