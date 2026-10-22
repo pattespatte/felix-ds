@@ -6,23 +6,37 @@ export const COLOR_MODE_STORAGE_KEY = "felix-playground-color-mode";
 export type ThemeName = "fkui" | "felix";
 export type ColorMode = "light" | "dark";
 
+function storedTheme(): ThemeName {
+    return localStorage.getItem(THEME_STORAGE_KEY) === "felix" ? "felix" : "fkui";
+}
+
 // Initialized from storage, not the DOM class: this module evaluates before
 // restoreTheme() runs, so the html element does not carry the class yet.
-export const currentTheme = ref<ThemeName>(
-    localStorage.getItem(THEME_STORAGE_KEY) === "felix" ? "felix" : "fkui",
-);
+export const currentTheme = ref<ThemeName>(storedTheme());
 
-export function applyTheme(theme: ThemeName): void {
+function setTheme(theme: ThemeName): void {
     currentTheme.value = theme;
     document.documentElement.classList.toggle("theme-felix", theme === "felix");
+}
+
+export function applyTheme(theme: ThemeName): void {
+    setTheme(theme);
     localStorage.setItem(THEME_STORAGE_KEY, theme);
 }
 
-/** Restores the persisted choice before the app mounts to avoid a flash. */
+/** Reads ?profile=felix|fkui – null when missing or invalid. */
+function urlTheme(): ThemeName | null {
+    const value = new URLSearchParams(window.location.search).get("profile");
+    return value === "felix" || value === "fkui" ? value : null;
+}
+
+/**
+ * Restores the persisted choice before the app mounts to avoid a flash. A
+ * ?profile= parameter wins over the stored choice while it is present in the
+ * address, but is not persisted – removing it returns to the stored choice.
+ */
 export function restoreTheme(): void {
-    if (localStorage.getItem(THEME_STORAGE_KEY) === "felix") {
-        document.documentElement.classList.add("theme-felix");
-    }
+    setTheme(urlTheme() ?? storedTheme());
 }
 
 // Color mode follows the system preference until the user makes an explicit
@@ -34,6 +48,12 @@ const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
 function storedMode(): ColorMode | null {
     const stored = localStorage.getItem(COLOR_MODE_STORAGE_KEY);
     return stored === "dark" || stored === "light" ? stored : null;
+}
+
+/** Reads ?mode=light|dark – null when missing or invalid. */
+function urlColorMode(): ColorMode | null {
+    const value = new URLSearchParams(window.location.search).get("mode");
+    return value === "dark" || value === "light" ? value : null;
 }
 
 function systemMode(): ColorMode {
@@ -60,14 +80,19 @@ export function toggleColorMode(): void {
     applyColorMode(currentColorMode.value === "dark" ? "light" : "dark");
 }
 
-/** Restores the stored choice (or the system preference) before mount. */
+/**
+ * Restores the stored choice (or the system preference) before mount. A
+ * ?mode= parameter wins while it is present in the address, but is not
+ * persisted – the same precedence as ?profile=.
+ */
 export function restoreColorMode(): void {
-    setColorMode(storedMode() ?? systemMode());
+    setColorMode(urlColorMode() ?? storedMode() ?? systemMode());
 }
 
 prefersDark.addEventListener("change", (event) => {
-    // Only follow the system while the user has not made an explicit choice.
-    if (storedMode() === null) {
+    // Only follow the system while the user has not made an explicit choice,
+    // stored or carried by the ?mode= parameter.
+    if (storedMode() === null && urlColorMode() === null) {
         setColorMode(event.matches ? "dark" : "light");
     }
 });

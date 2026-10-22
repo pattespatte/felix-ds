@@ -30,7 +30,13 @@ const categories = views.filter((view) => view.slug !== "start");
                 uppe till höger och mellan ljust och mörkt läge med
                 sol/måne-knappen bredvid – sidan byter utseende direkt, utan
                 omladdning. Färgläget följer systeminställningen tills du
-                väljer själv.
+                väljer själv. Det går också att styra från adressen:
+                <code>?profile=felix</code> eller <code>?profile=fkui</code>
+                väljer temaprofil och <code>?mode=light</code> eller
+                <code>?mode=dark</code> väljer färgläge, till exempel
+                <code>/?profile=felix&amp;mode=dark#/formular</code>.
+                Parametrarna gäller bara medan de finns i adressen och skriver
+                inte över ditt sparade val.
             </p>
             <ul>
                 <li>
