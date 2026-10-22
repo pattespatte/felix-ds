@@ -2,8 +2,11 @@ name: FKUI currency check
 
 # Weekly proof that felix-ds stays current with the mother library: bump the
 # six @fkui/* dev pins to the latest published version (scripts/fkui.ts
-# lockstep logic), run the full release gate, and open a pull request with
-# the bump on green. A no-op week (already current) exits green without a PR.
+# lockstep logic), run the full release gate, and open a pull request with the
+# bump on green. A no-op week (already current) exits green without a PR.
+# The PR body and the run summary also list any @fkui/vue components the bump
+# adds or removes (diff of `bun run fkui components` before/after the upgrade),
+# so new upstream components announce themselves instead of passing silently.
 # The second job (floor) proves the peer range's oldest supported minor in
 # the same run – see its comment below.
 #
@@ -43,11 +46,34 @@ jobs:
           OLD=$(bun -e "console.log(JSON.parse(await Bun.file('package.json').text()).devDependencies['@fkui/vue'])")
           echo "FKUI_OLD=$OLD" >> "$GITHUB_ENV"
       - run: bun install --frozen-lockfile
+      - name: Record FKUI components before upgrade
+        run: bun run fkui components > /tmp/fkui-components-before.txt
       - run: bun run fkui upgrade
       - name: Record new FKUI version
         run: |
           NEW=$(bun -e "console.log(JSON.parse(await Bun.file('package.json').text()).devDependencies['@fkui/vue'])")
           echo "FKUI_NEW=$NEW" >> "$GITHUB_ENV"
+      # Component-level notification: `fkui components` prints the @fkui/vue
+      # component exports (sorted, one per line), so a plain `comm` diff of
+      # before/after catches new and removed components regardless of what
+      # the changelog says. Report-only – a new component never fails gates.
+      - name: Diff FKUI component exports
+        run: |
+          bun run fkui components > /tmp/fkui-components-after.txt
+          ADDED=$(comm -13 /tmp/fkui-components-before.txt /tmp/fkui-components-after.txt | paste -sd, - | sed 's/,/, /g')
+          REMOVED=$(comm -23 /tmp/fkui-components-before.txt /tmp/fkui-components-after.txt | paste -sd, - | sed 's/,/, /g')
+          {
+            echo "FKUI_COMPONENTS_ADDED=$ADDED"
+            echo "FKUI_COMPONENTS_REMOVED=$REMOVED"
+          } >> "$GITHUB_ENV"
+          {
+            echo "### FKUI component exports"
+            if [ -n "$ADDED" ]; then echo "- Added in ${FKUI_NEW}: $ADDED"; fi
+            if [ -n "$REMOVED" ]; then echo "- Removed in ${FKUI_NEW}: $REMOVED"; fi
+            if [ -z "$ADDED" ] && [ -z "$REMOVED" ]; then
+              echo "- Unchanged: $(wc -l < /tmp/fkui-components-after.txt) components"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
       # Parity gate: DTCG tokens, icons, prebuilt CSS must match the sources.
       - run: bun test
       - run: bun run build
@@ -80,11 +106,18 @@ jobs:
           git add package.json bun.lockb
           git commit -m "chore(deps): bump @fkui/* ${FKUI_OLD} -> ${FKUI_NEW} (currency run)"
           git push origin "$BRANCH"
+          BODY="Scheduled FKUI-currency run. Dev pins bumped ${FKUI_OLD} → ${FKUI_NEW} via \`bun run fkui upgrade\` and the full release gate passed on ubuntu-24.04: parity tests, build, vue-tsc, 45 chromium comparisons, 60 firefox/webkit cross-browser comparisons, 32 axe scans. Peer range \`>=6.57.0 <7.0.0\` still covers the new version. Review, merge, then cut the next release per docs/release.en.md."
+          if [ -n "$FKUI_COMPONENTS_ADDED" ]; then
+            BODY="$BODY"$'\n\n'"New @fkui/vue components in ${FKUI_NEW}: ${FKUI_COMPONENTS_ADDED}. The playground does not demo them yet – fkuiComponentLinks.ts, the demos and navigation need entries."
+          fi
+          if [ -n "$FKUI_COMPONENTS_REMOVED" ]; then
+            BODY="$BODY"$'\n\n'"Removed @fkui/vue components in ${FKUI_NEW}: ${FKUI_COMPONENTS_REMOVED}. Playground demos referencing them need updating."
+          fi
           gh pr create \
             --base main \
             --head "$BRANCH" \
             --title "chore(deps): bump @fkui/* to ${FKUI_NEW}" \
-            --body "Scheduled FKUI-currency run. Dev pins bumped ${FKUI_OLD} → ${FKUI_NEW} via \`bun run fkui upgrade\` and the full release gate passed on ubuntu-24.04: parity tests, build, vue-tsc, 45 chromium comparisons, 60 firefox/webkit cross-browser comparisons, 32 axe scans. Peer range \`>=6.57.0 <7.0.0\` still covers the new version. Review, merge, then cut the next release per docs/release.en.md."
+            --body "$BODY"
       - name: Upload gate report on failure
         if: failure()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4

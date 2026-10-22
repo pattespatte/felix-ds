@@ -6,6 +6,7 @@
  *   bun run fkui upgrade -n            torrkörning: visa uppgraderingsplanen, ändra inget
  *   bun run fkui upgrade               uppgradera till senaste version och kör bun install
  *   bun run fkui upgrade 6.58.0        som ovan, men till en vald version
+ *   bun run fkui components            lista installerade @fkui/vue-komponenter, en per rad
  *
  * Konventioner som skriptet följer:
  * - samtliga @fkui-paket låses till exakta versioner (inga ^ eller ~)
@@ -81,6 +82,39 @@ function specifierOf(pkg: Record<string, unknown>, name: string): string {
         }
     }
     fail(`${name} hittades inte i package.json`);
+}
+
+/**
+ * Komponentnamnen ur @fkui/vue:s utrullade typedefinitioner. Mönstret träffar
+ * exakt komponenterna (`export declare const FButton: typeof …`); enum:er och
+ * alias i samma fil fångas inte. Sorterad utdata är ett kontrakt –
+ * valutaarbetsflödet diffar listan med `comm`.
+ */
+export function extractComponentNames(source: string): string[] {
+    const names = new Set<string>();
+    for (const match of source.matchAll(/^export declare const (F[A-Z]\w*)/gm)) {
+        names.add(match[1]);
+    }
+    return [...names].sort();
+}
+
+/** Skriver @fkui/vue:s exporterade komponenter, en per rad, sorterat. */
+function runComponents(): void {
+    const types = resolve(
+        ROOT,
+        "node_modules",
+        "@fkui",
+        "vue",
+        "dist",
+        "types",
+        "index.d.ts",
+    );
+    if (!existsSync(types)) {
+        fail(`${types.replace(ROOT + "/", "")} hittades inte – kör \`bun install\` först`);
+    }
+    for (const name of extractComponentNames(readFileSync(types, "utf8"))) {
+        console.log(name);
+    }
 }
 
 /** Skriver tillbaka specifieraren i samma sektion som paketet redan står i. */
@@ -160,7 +194,9 @@ const usage = `Användning:
   bun run fkui version             visa specifierad, installerad och senaste version
   bun run fkui upgrade [-n] [version]
       -n, --dry-run                visa planen utan att ändra något
-      version                      vald målversion i stället för senaste`;
+      version                      vald målversion i stället för senaste
+  bun run fkui components          lista installerade @fkui/vue-komponenter
+                                    (en per rad, sorterat – diffbar med comm)`;
 
 async function runVersion(): Promise<void> {
     const pkg = readJson(PACKAGE_JSON);
@@ -334,6 +370,9 @@ async function main(): Promise<void> {
         case "upgrade":
             await runUpgrade(requested, dryRun);
             break;
+        case "components":
+            runComponents();
+            break;
         case "help":
         case "--help":
         case "-h":
@@ -346,4 +385,6 @@ async function main(): Promise<void> {
     }
 }
 
-await main();
+if (import.meta.main) {
+    await main();
+}
