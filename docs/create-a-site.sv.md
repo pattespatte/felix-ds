@@ -52,7 +52,7 @@ I `vite.config.ts` behövs två saker utöver vue-pluginen: ett `@`-alias till `
 
 ## Temaintegration
 
-Appens ingångspunkt (i ett Vite- och Vue-projekt oftast `src/main.ts`) laddar FKUI:s komponent-CSS först:
+I den fil där appen startar (i ett Vite- och Vue-projekt oftast `src/main.ts`) laddar du FKUI:s komponent-CSS först:
 
 ```ts
 import "@fkui/icon-lib-default/dist/f";
@@ -111,7 +111,7 @@ Vänta dig ljusa snapshots vid prerendering: den statiska HTML:en byggs i ljust 
 
 ## Ikoner
 
-`@fkui/icon-lib-default` innehåller 31 ikoner (alert, arrow-down, arrow-in-circle, arrow-right, bars, bell, calendar, caret-down, caret-up, chevrons-left, circle, circle-notch-solid, close, cross, dash, doc, ellipsis, error, file, i, new-window, paper-clip, pdf, pen, pic, plus, search, sort, success, trashcan, triangle). Importera biblioteket en gång i ingångspunkten och rendera med `<f-icon name="...">`.
+`@fkui/icon-lib-default` innehåller 31 ikoner (alert, arrow-down, arrow-in-circle, arrow-right, bars, bell, calendar, caret-down, caret-up, chevrons-left, circle, circle-notch-solid, close, cross, dash, doc, ellipsis, error, file, i, new-window, paper-clip, pdf, pen, pic, plus, search, sort, success, trashcan, triangle). Importera biblioteket en gång i appens startfil och rendera med `<f-icon name="...">`.
 
 Ett rikt ikonbibliotek (Phosphor med flera) har ingen motsvarighet här – mappa semantiskt per användningsfall (kalender → calendar, sök → search, läkare/vård → cross) och låt dekorativa ikoner utan motsvarighet bli text i stället för att ge fel betydelse. Ikon-namnet är strängt: ett ogiltigt namn renderar tomt.
 

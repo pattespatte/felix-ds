@@ -69,7 +69,7 @@ Läs [Kompatibilitet](#kompatibilitet) innan du skriver egen Sass som rör `@fku
 
 ### 3. Importera temat
 
-Standardvägen är förbyggd CSS – den kräver ingen Sass. Importera en fil i webbappens ingångspunkt:
+Standardvägen är förbyggd CSS – den kräver ingen Sass. Importera en fil i appens startfil:
 
 ```ts
 import "@pattespatte/felix-ds/dist/felix.css";
@@ -117,7 +117,7 @@ html.theme-felix {
 
 ### 4. Ladda FKUI:s komponent-CSS
 
-Importera FKUI:s CSS i webbappens ingångspunkt:
+Importera FKUI:s CSS i appens startfil:
 
 ```ts
 import "@fkui/design/lib/fkui.css";
@@ -130,7 +130,7 @@ Du har nu temat på plats. En komplett genomgång finns i guiden [Skapa en webbp
 
 Paketet skickar med en kurerad ikonuppsättning från [Phosphor Icons](https://phosphoricons.com) (MIT-licens) i vikten bold. Uppsättningen ersätter standardikonbibliotekets teckningar bakom FIcons oförändrade namn – varje namn ur `@fkui/icon-lib-default` täcks (även de sammansatta `info`, `warning` och `tooltip`), maskinkontrollerat av paritetstestet i `scripts/icons.test.ts`, plus en kurerad utökning. Ikonerna är SVG-sprites som följer textfärgen i det aktiva temat.
 
-Byt ut standardbibliotekets import mot temats spritesheet i webbappens ingångspunkt – importera aldrig båda, eftersom dubbla `f-icon-*`-symbol-id:n löser sig till det blad som först hamnar i DOM:en:
+Byt ut standardbibliotekets import mot temats spritesheet i appens startfil – importera aldrig båda, eftersom dubbla `f-icon-*`-symbol-id:n löser sig till det blad som först hamnar i DOM:en:
 
 ```ts
 import "@pattespatte/felix-ds/src/icons/phosphor-spritesheet";
