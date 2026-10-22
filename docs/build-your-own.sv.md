@@ -1,6 +1,6 @@
 # Bygg din egen profil – metoden
 
-felix-ds är en varumärkesprofil byggd med en liten, upprepningsbar metod. En organisation med flera varumärken kan replikera lagret per varumärke till en tunn lagerkostnad: ett paket med CSS-variabler och typsnitt per varumärke, noll komponenter, all FKUI täckt den dag den ges ut. Den här guiden beskriver metoden från ände till ände och pekar på de dokument som bevisar varje steg. Den är medvetet inte en kopiera-filerna-genomgång – token-värdena skriver du själv, formen är det som beskrivs här.
+felix-ds är en varumärkesprofil byggd med en liten, upprepningsbar metod. En organisation med flera varumärken kan upprepa lagret för varje varumärke till låg kostnad: ett paket med CSS-variabler och typsnitt per varumärke, noll komponenter, all FKUI täckt den dag den ges ut. Den här guiden beskriver metoden från början till slut och pekar på de dokument som visar hur varje steg genomförs. Den är medvetet inte en kopiera-filerna-genomgång – token-värdena skriver du själv, formen är det som beskrivs här.
 
 ## 1. Konfigurera uppströmstemat en gång, tala sedan i token
 
@@ -8,15 +8,15 @@ Lagret är SCSS-mixins ovanpå `@fkui/theme-default`: uppströmstemat läses in 
 
 ## 2. Skriv varumärkets token i samma form
 
-Token-källan delas i ett gemensamt index (typografi, linjebredder, radier, fokus) plus en variabelfil per färgläge (`light/_variables.scss`, `dark/_variables.scss`), exponerade som mixins som kan skrivas ut globalt, klass-scopade för byte i runtime eller sammansatta bakom `prefers-color-scheme`. Hela uttrycket bor i de här filerna – det är den enda sanningskällan, medvetet handskriven (se steg 6).
+Token-källan delas i ett gemensamt index (typografi, linjebredder, radier, fokus) plus en variabelfil per färgläge (`light/_variables.scss`, `dark/_variables.scss`), exponerade som mixins som kan skrivas ut globalt, klass-scopade för byte i runtime eller sammansatta bakom `prefers-color-scheme`. Hela uttrycket ligger i de här filerna – det är den enda sanningskällan, medvetet handskriven (se steg 6).
 
 ## 3. Ladda typsnitten från den egna domänen
 
 `@font-face`-deklarationer med `font-display: swap` och woff2-filer i paketet, licenstexter inkluderade. Ingen extern typsnittstjänst.
 
-## 4. Byt ikonkonsten (valfritt)
+## 4. Byt ikonerna (valfritt)
 
-FKUI:s `FIcon` renderar ur en spritesheet. Ett varumärke kan byta konsten bakom oförändrade komponentnamn mot egna SVG-sprites, namn-paritetstestade mot `@fkui/icon-lib-default`. Ikoner är ett importsteg för konsumenten.
+FKUI:s `FIcon` renderar ur en spritesheet. Ett varumärke kan byta bilderna bakom oförändrade komponentnamn mot egna SVG-sprites, namn-paritetstestade mot `@fkui/icon-lib-default`. Ikoner är ett importsteg för konsumenten.
 
 ## 5. Skicka förbyggd css, bevakad av paritetstest
 
