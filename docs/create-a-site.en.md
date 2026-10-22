@@ -12,7 +12,7 @@ A living example of everything below exists as a demo site consuming felix-ds as
 
 ## Project setup
 
-Create a Vite project from the vue-ts template and add the dependencies:
+Create a Vue 3 project – the examples in this guide use Vite with the vue-ts template, but felix-ds and FKUI work with any build toolchain – and add the dependencies:
 
 ```bash
 bun add vue vue-router@^4

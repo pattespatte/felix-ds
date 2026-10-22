@@ -12,7 +12,7 @@ Ett levande exempel på allt nedan finns i demosajten som konsumerar felix-ds so
 
 ## Projektsetup
 
-Skapa ett Vite-projekt med vue-ts-mallen och lägg till beroendena:
+Skapa ett Vue 3-projekt – exemplen i guiden använder Vite med vue-ts-mallen, men felix-ds och FKUI fungerar med vilken byggverktygskedja som helst – och lägg till beroendena:
 
 ```bash
 bun add vue vue-router@^4

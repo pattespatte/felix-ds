@@ -25,7 +25,7 @@ const fkuiInstall = [
     <div class="view">
         <h1>Kom igång</h1>
         <p class="view__intro">
-            Fyra steg från ett tomt Vite-projekt till en tematisk FKUI-komponent:
+            Fyra steg från ett tomt Vue 3-projekt till en tematisk FKUI-komponent:
             installera FKUI:s paket, koppla felix-temat, ladda ikonerna och välj
             hur mörkt läge styrs. Stegen följer guiden
             <a href="https://github.com/pattespatte/felix-ds/blob/main/docs/create-a-site.sv.md">Skapa en webbplats med felix-ds</a>
@@ -36,7 +36,9 @@ const fkuiInstall = [
         <section id="installera" aria-labelledby="installera-heading" class="demo">
             <h2 id="installera-heading">1. Installera paketen</h2>
             <p>
-                Skapa ett Vue 3- och Vite-projekt om du inte redan har ett, och
+                Skapa ett Vue 3-projekt om du inte redan har ett – exemplen
+                här använder Vite, men felix-ds och FKUI fungerar med vilken
+                byggverktygskedja som helst – och
                 lägg till FKUI:s publika paket med låsta versioner. Därefter
                 felix-temat – antingen från GitHub Packages (kräver en PAT med
                 <code>read:packages</code> i miljövariabeln
