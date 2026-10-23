@@ -20,7 +20,7 @@ const categories = views.filter((view) => view.slug !== "start");
             använder FKUI-komponenterna direkt och lägger bara på temat.
         </p>
 
-        <section id="om" aria-labelledby="om-heading" class="demo view__intro">
+        <section id="om" aria-labelledby="om-heading" class="demo">
             <h2 id="om-heading">Om playgrounden</h2>
             <p>
                 Temat är en samling CSS-variabler och typsnitt, byggt enligt
@@ -57,7 +57,7 @@ const categories = views.filter((view) => view.slug !== "start");
             </ul>
         </section>
 
-        <section id="komponenter" aria-labelledby="komponenter-heading" class="demo view__intro">
+        <section id="komponenter" aria-labelledby="komponenter-heading" class="demo">
             <h2 id="komponenter-heading">Komponenter i playgrounden</h2>
             <p>
                 Samtliga 89 komponenter i komponentrapporten (79 Vue + 10
