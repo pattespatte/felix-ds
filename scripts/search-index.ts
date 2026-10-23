@@ -12,7 +12,7 @@
  * Konventioner som skriptet följer:
  * - navigation.ts är den enda sanningskällan för vyer och ankare; indexet
  *   genereras och checkas aldrig in (katalogen är gitignorerad)
- * - prosa kommer från demoernas `demo__description` och vyernas
+ * - textinnehållet kommer från demoernas `demo__description` och vyernas
  *   `view__intro`/första stycke per sektion – inga radredigeringar behövs
  * - Täckningsgrind: varje demo rot-sektions-id måste vara ett navigerings-
  *   ankare, och varje ankare måste ha en källa (demo eller vysektion) –
@@ -55,11 +55,11 @@ interface DemoSource {
 
 interface ViewSource {
     intro: string;
-    /** Första styckets prosa per sektions-id i vyfilen. */
+    /** Första styckets text per sektions-id i vyfilen. */
     sections: Map<string, string>;
 }
 
-/** Rensar mallmarkupp (taggar, mustacher, kommentarer) till ren prosa. */
+/** Rensar bort HTML-taggar, HTML-kommentarer och {{...}}-uttryck ur mallen så att bara texten återstår. */
 function stripProse(raw: string): string {
     return raw
         .replace(/<!--[\s\S]*?-->/g, " ")
@@ -241,11 +241,11 @@ export function generateSearchIndex(): SearchIndexEntry[] {
             const sectionParagraph = viewSectionById.get(anchor.id);
             // Dynamiskt renderade sektioner (t.ex. ComponentGuideView:s
             // grupploop) syns inte för en statisk skanning – posten får
-            // titel och nyckelord men ingen prosa. Varningen håller hålet
+            // titel och nyckelord men inget textinnehåll. Varningen håller hålet
             // synligt i byggutdata utan att felblockera legitima fall.
             if (!demo && sectionParagraph === undefined) {
                 console.warn(
-                    `search-index: ankaret "${anchor.id}" (${view.slug}) har ingen statisk källa – indexeras utan prosa`,
+                    `search-index: ankaret "${anchor.id}" (${view.slug}) har ingen statisk källa – indexeras utan textinnehåll`,
                 );
             }
             const names = demo?.names ?? [];
