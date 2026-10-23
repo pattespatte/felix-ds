@@ -24,19 +24,23 @@ const categories = views.filter((view) => view.slug !== "start");
             <h2 id="om-heading">Om playgrounden</h2>
             <p>
                 Temat är en samling CSS-variabler och typsnitt, byggt enligt
-                samma modell som FKUI:s egna temapaket: grundtemat laddas först
-                och felix-variablerna deklareras efter i kaskaden och vinner
-                utan <code>!important</code>. Växla mellan temana med väljaren
-                uppe till höger och mellan ljust och mörkt läge med
-                sol/måne-knappen bredvid – sidan byter utseende direkt, utan
-                omladdning. Färgläget följer systeminställningen tills du
-                väljer själv. Det går också att styra från adressen:
+                samma modell som FKUI:s egna temapaket. Grundtemat laddas
+                först och felix-variablerna efter. Det som laddas sist
+                gäller – därför behövs inget <code>!important</code>.
+            </p>
+            <p>
+                Växla tema med väljaren uppe till höger.
+                Sol/måne-knappen bredvid växlar mellan ljust och mörkt
+                läge. Sidan byter utseende direkt, utan omladdning.
+                Färgläget följer systeminställningen tills du väljer
+                själv.
+            </p>
+            <p>
+                Du kan också styra båda valen från adressen:
                 <code>?profile=felix</code> eller <code>?profile=fkui</code>
                 väljer temaprofil och <code>?mode=light</code> eller
-                <code>?mode=dark</code> väljer färgläge, till exempel
+                <code>?mode=dark</code> väljer färgläge – till exempel
                 <code>/?profile=felix&amp;mode=dark#/formular</code>.
-                Parametrarna gäller bara medan de finns i adressen och skriver
-                inte över ditt sparade val.
             </p>
             <ul>
                 <li>
