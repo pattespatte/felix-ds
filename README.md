@@ -93,7 +93,7 @@ import "@pattespatte/felix-ds/dist/felix-complete.css";
 
 `felix-complete.css` är ett smidigt alternativ, men standardvägen är de tre importerna ovan. De håller temat litet: standardposterna väger cirka 5 kb gzippat. Paritetstestet har bytebudgetar som ser till att de inte växer i onödan – en ändring som gör en post tyngre måste vara värd sin vikt.
 
-Varje post har dessutom ett minifierat syskon: `dist/felix.min.css`, `dist/felix-auto.min.css` och `dist/felix-complete.min.css` innehåller samma regler i komprimerad form, för användare som laddar posten som ren `<link>`-css utan byggkedja. Minifieringen läser in varje färdig post som ren css, så en syntaktiskt ogiltig post fäller bygget i stället för att hamna i paketet.
+Varje post har dessutom ett minifierat syskon: `dist/felix.min.css`, `dist/felix-auto.min.css` och `dist/felix-complete.min.css` innehåller samma regler i komprimerad form, för användare som laddar posten som ren `<link>`-css utan byggkedja. Minifieringen läser in varje färdig post som ren css, så en syntaktiskt ogiltig post stoppar bygget i stället för att hamna i paketet.
 
 Behöver du avgränsa temat till en egen selektor, till exempel för att växla tema i körtid? Då använder du SCSS-posterna i stället. Paketet pekar ut `src/index.scss` via nyckeln `sass`. Ett globalt tema:
 
@@ -179,7 +179,7 @@ Paketet skickar med tematokens som [W3C Design Tokens](https://design-tokens.git
 - `@pattespatte/felix-ds/tokens/light.json` – det sammansatta temat i ljust läge
 - `@pattespatte/felix-ds/tokens/dark.json` – det sammansatta temat i mörkt läge
 
-”Sammansatt tema” är uppströms `@fkui/theme-default` plus felix-profilens överskrivningar, alltså exakt det som temats mixins skriver ut. Filerna genereras ur SCSS-källorna (i repot: `bun run tokens:build`) och paritetstestet (`bun test`) fäller filer som inte längre stämmer med temat. Formatet är verktygsneutralt och passar bland annat Tokens Studio och Style Dictionary. Importen är symmetrisk: `bun run tokens:import` läser valfri W3C DTCG-fil (till exempel en Figma-export) och skriver ut anpassade egenskaper, medan det handskrivna temat förblir den enda sanningskällan – se [docs/tokens.sv.md](docs/tokens.sv.md).
+”Sammansatt tema” är uppströms `@fkui/theme-default` plus felix-profilens överskrivningar, alltså exakt det som temats mixins skriver ut. Filerna genereras ur SCSS-källorna (i repot: `bun run tokens:build`) och paritetstestet (`bun test`) upptäcker filer som inte längre stämmer med temat. Formatet är verktygsneutralt och passar bland annat Tokens Studio och Style Dictionary. Importen är symmetrisk: `bun run tokens:import` läser valfri W3C DTCG-fil (till exempel en Figma-export) och skriver ut anpassade egenskaper, medan det handskrivna temat förblir den enda sanningskällan – se [docs/tokens.sv.md](docs/tokens.sv.md).
 
 Namngivning, aliaser, undantag och konsumtionsvägar finns i guiden [Design tokens](https://github.com/pattespatte/felix-ds/blob/main/docs/tokens.sv.md).
 
@@ -217,7 +217,7 @@ bun run dev        # startar playgrounden (Vite)
 | --- | --- |
 | `bun run dev` | Starta playgrounden lokalt |
 | `bun run build` | Bygg playgrounden för produktion |
-| `bun run build:theme` | Kompilera de förbyggda CSS-posterna till `dist/felix.css`, `dist/felix-auto.css` och `dist/felix-complete.css` samt minifierade `.min.css`-syskon (committas; paritetstestet fäller föråldrade filer och bevakar bytebudgetarna) |
+| `bun run build:theme` | Kompilera de förbyggda CSS-posterna till `dist/felix.css`, `dist/felix-auto.css` och `dist/felix-complete.css` samt minifierade `.min.css`-syskon (filerna committas – paritetstestet upptäcker föråldrade filer och kontrollerar bytebudgetarna) |
 | `bun run tokens:build` | Generera `tokens/light.json` och `tokens/dark.json` ur temats SCSS-källor |
 | `bun run tokens:import` | Läs en W3C DTCG-fil och skriv ut anpassade CSS-egenskaper (valfri fil som argument) |
 | `bun run icons:build` | Generera om `src/icons/phosphor-spritesheet.ts` ur mappningarna i `scripts/icons.ts` |
@@ -297,7 +297,7 @@ Senaste uppgraderingsrepetitionen: 6.60.0 → 6.62.0 (2026-10-15) blev en visuel
 
 Playgrounden täcker alla 89 komponenter i FKUI:s publika paket (79 Vue-komponenter och 10 SCSS-komponenter), enligt komponentrapporten för den installerade versionen.
 
-Komponentregistret är strukturellt i stället för en handskriven lista. Varje komponent har en demofil, `playground/src/demos/<kategori>/<Komponent>Demo.vue`, och en länk som ankare i `playground/src/navigation.ts`. Subkomponenter och enums visas i sin förälders demo. Startvyns avsnitt "Komponenter i playgrounden" hämtar kategorierna direkt från `navigation.ts`, så listan på sidan skiljer sig aldrig från menyn.
+Komponentregistret är strukturellt i stället för en handskriven lista. Varje komponent har en demofil, `playground/src/demos/<kategori>/<Komponent>Demo.vue`, och en länk som ankare i `playground/src/navigation.ts`. Subkomponenter och enums visas i sin förälders demo. Startvyns avsnitt ”Komponenter i playgrounden” hämtar kategorierna direkt från `navigation.ts`, så listan på sidan skiljer sig aldrig från menyn.
 
 ## Kända valideringsfynd (tredjepartskod)
 
