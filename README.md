@@ -221,6 +221,13 @@ bun run dev        # startar playgrounden (Vite)
 | `bun run tokens:build` | Generera `tokens/light.json` och `tokens/dark.json` ur temats SCSS-källor |
 | `bun run tokens:import` | Läs en W3C DTCG-fil och skriv ut anpassade CSS-egenskaper (valfri fil som argument) |
 | `bun run icons:build` | Generera om `src/icons/phosphor-spritesheet.ts` ur mappningarna i `scripts/icons.ts` |
+| `bun run search:build` | Generera playgroundens sökindex `playground/public/search-index.json` ur navigationen och demoerna (körs även automatiskt av Vite i dev och bygge) |
+| `bun run accessibility:build` | Generera `docs/accessibility-basis.en.md` och `docs/accessibility-basis.sv.md` – underlaget till en egen tillgänglighetsredogörelse – ur playgroundens tillgänglighetsdata |
+| `bun run changelog` | Generera `CHANGELOG.md` ur repots commits med git-cliff |
+| `bun run test:visual` | Kör skärmdumpsjämförelserna i chromium mot committade referensbilder |
+| `bun run test:visual:update` | Som `test:visual`, men skriv om referensbilderna i stället för att jämföra |
+| `bun run test:visual:cross` | Kör skärmdumpsjämförelser i webkit och firefox som komplement till chromium-porten |
+| `bun run test:a11y` | Kör tillgänglighetstesterna (axe-skanningar) i chromium |
 | `bun run fkui …` | Visa och uppgradera `@fkui/*`-beroendena (se [Uppgradera FKUI-beroendena](#uppgradera-fkui-beroendena)) |
 
 ## Utveckla felix-ds
@@ -554,6 +561,13 @@ Open the address printed in the terminal (usually `http://localhost:5173/`). Swi
 | `bun run tokens:build` | Generate `tokens/light.json` and `tokens/dark.json` from the theme's SCSS sources |
 | `bun run tokens:import` | Read a W3C DTCG file and emit CSS custom properties (any file as argument) |
 | `bun run icons:build` | Regenerate `src/icons/phosphor-spritesheet.ts` from the mappings in `scripts/icons.ts` |
+| `bun run search:build` | Generate the playground search index `playground/public/search-index.json` from the navigation and demos (also run automatically by Vite in dev and build) |
+| `bun run accessibility:build` | Generate `docs/accessibility-basis.en.md` and `docs/accessibility-basis.sv.md` – the lift-ready basis for your own accessibility statement – from the playground's accessibility data |
+| `bun run changelog` | Generate `CHANGELOG.md` from the repo's commits with git-cliff |
+| `bun run test:visual` | Run the chromium screenshot comparisons against committed baselines |
+| `bun run test:visual:update` | Same as `test:visual`, but rewrite the baselines instead of comparing |
+| `bun run test:visual:cross` | Run screenshot comparisons in webkit and firefox as a complement to the chromium gate |
+| `bun run test:a11y` | Run the accessibility tests (axe scans) in chromium |
 | `bun run fkui …` | Show and upgrade the `@fkui/*` dependencies (see [Upgrading the FKUI dependencies](#upgrading-the-fkui-dependencies)) |
 
 ## Developing felix-ds
