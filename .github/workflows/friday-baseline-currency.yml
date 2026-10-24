@@ -93,8 +93,16 @@ jobs:
       # Fresh Playwright PNGs differ in bytes from the committed set even
       # when pixels match (the committed files are oxipng-recompressed), so
       # the no-op test is pixel-based: every changed file is compared with
-      # magick AE against its HEAD version. Only real pixel diffs proceed;
-      # new and deleted snapshots count as real by definition.
+      # ImageMagick AE against its HEAD version. Only real pixel diffs
+      # proceed; new and deleted snapshots count as real by definition.
+      # ImageMagick is not on the ubuntu-24.04 image, and IM7's `magick`
+      # wrapper is not in noble's apt at all (run 40122687818 failed on it) –
+      # apt's IM6 provides `compare`, same AE metric.
+      - name: Install ImageMagick
+        if: steps.precheck.outputs.current != 'true'
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq imagemagick
+          command -v compare > /dev/null || { echo "::error::ImageMagick compare not available"; exit 1; }
       - name: Detect real pixel changes
         id: pixels
         if: steps.precheck.outputs.current != 'true'
@@ -117,7 +125,7 @@ jobs:
             case "$STATUS" in
               " M" | "M ")
                 git show "HEAD:$FILE" > /tmp/head-version.png
-                AE=$(magick compare -metric AE /tmp/head-version.png "$FILE" null: 2>&1 || true)
+                AE=$(compare -metric AE /tmp/head-version.png "$FILE" null: 2>&1 || true)
                 AE_NUM=${AE%% *}
                 if [ "$AE_NUM" = "0" ]; then
                   COMP=$((COMP + 1))
@@ -164,7 +172,7 @@ jobs:
           xargs -a /tmp/changed-files.txt oxipng -o max
           FAIL=0
           while read -r f; do
-            AE=$(magick compare -metric AE "/tmp/oxipng-verify/$f" "$f" null: 2>&1 || true)
+            AE=$(compare -metric AE "/tmp/oxipng-verify/$f" "$f" null: 2>&1 || true)
             AE_NUM=${AE%% *}
             if [ "$AE_NUM" != "0" ]; then
               echo "::error::oxipng recompression not lossless for $f (AE=$AE)"
