@@ -16,7 +16,7 @@ Gå igenom listan innan du rör en tagg:
    ```
 
    Är versionen `>= 7.0.0` är utgivningen blockerad tills temat verifierats mot den nya majorversionen (och playgroundens låsta utvecklingsversioner höjts), eller tills peer-intervallet i `package.json` medvetet har snävats av. Läs också snabbt igenom changeloggen för varje `@fkui/*`-utgivning inom det stödda intervallet sedan förra felix-ds-utgivningen, och håll utkik efter ändringar i tokensytan.
-3. **Porten grön lokalt.** `bun install`, `bun run build`, `bunx vue-tsc --noEmit` och framför allt `bun run test:visual` (45 visuella baselines + 32 axe-skanningar) passerar på din maskin. `bun run test:visual:cross` kör firefox/webkit-halvan av porten. På macOS kan bara webkit-halvan köras lokalt – firefox-Playwright-bygget startar inte på darwin 27 (”Could not find profile folder”), så firefox övas först på linux-runnern (steg 5).
+3. **Porten grön lokalt.** `bun install`, `bun run build`, `bunx vue-tsc --noEmit` och framför allt `bun run test:visual` (45 visuella baselines + 32 axe-skanningar) passerar på din maskin. `bun run test:visual:cross` kör firefox/webkit-halvan av porten. På macOS kan bara webkit-halvan köras lokalt – firefox-Playwright-bygget startar inte på darwin 27 (”Could not find profile folder”), så firefox körs först på linux-runnern (steg 5).
 4. **Aktuella baselines.** Har playgrounden ändrats sedan förra utgivningen: generera om baselinesna och granska dem först:
 
    ```bash
@@ -46,7 +46,7 @@ Gå igenom listan innan du rör en tagg:
 
    3. Komprimera om varje ny png förlustfritt och verifiera mot originalet med `compare -metric AE original.png rekomprimerad.png null:` (ska skriva ut `0 (0)`), kör sedan `bun run test:visual` lokalt (bekräftar att darwin-uppsättningen fortfarande godkänns) och committa linux-png:erna tillsammans med darwin-png:erna. Playwright väljer det suffix som matchar runner-plattformen när testerna körs.
 
-   Saknas linux-uppsättningen fallerar utgivningsporten med felet ”snapshot doesn't exist … `-chromium-linux.png`” – det är porten som gör sitt jobb. Gå inte förbi den. Om firefox-halvan av cross-porten fallerar på linux-runnern, behandla det som utgivningsstopp: linux är den första miljön där firefox körs alls (se steg 3).
+   Saknas linux-uppsättningen misslyckas utgivningsporten med felet ”snapshot doesn't exist … `-chromium-linux.png`” – det är porten som gör sitt jobb. Gå inte förbi den. Om firefox-halvan av cross-porten misslyckas på linux-runnern, behandla det som utgivningsstopp: linux är den första miljön där firefox körs alls (se steg 3).
 
 ## 2. Ge ut versionen
 
@@ -70,7 +70,7 @@ git tag -a vX.Y.Z -m "felix-ds vX.Y.Z"
    git push origin main --follow-tags
    ```
 
-4. Följ Actions-körningen för arbetsflödet **Release to GitHub Packages** (`.github/workflows/release.yml`). Den checkar ut repot, installerar med låst lockfile, bygger, typkontrollerar, kör den visuella porten (45 chromium-sjämförelser + 60 firefox/webkit-cross-jämförelser mot linux-baselinesna + 32 axe-skanningar), publicerar `@pattespatte/felix-ds` på npm.pkg.github.com och skapar GitHub-releasen med genererade versionsfakta.
+4. Följ Actions-körningen för arbetsflödet **Release to GitHub Packages** (`.github/workflows/release.yml`). Den checkar ut repot, installerar med låst lockfile, bygger, typkontrollerar, kör den visuella porten (45 skärmdumpsjämförelser i chromium + 60 cross-jämförelser i firefox/webkit mot linux-baselinesna + 32 axe-skanningar), publicerar `@pattespatte/felix-ds` på npm.pkg.github.com och skapar GitHub-releasen med genererade versionsfakta.
 5. Granska versionsfakta i GitHub-releasen och redigera dem för läsbarhet om det behövs (de genereras från commits – CHANGELOG.md är den källa som underhålls för hand).
 
 ## 3. Efter utgivningen

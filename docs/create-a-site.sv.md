@@ -24,7 +24,7 @@ Sass behövs inte för temat – det konsumeras som förbyggd CSS. Lägg till `s
 
 felix-ds installeras på två sätt – registerversionen är huvudspåret:
 
-**Väg A – register (huvudspår).** Paketet publiceras som `@pattespatte/felix-ds` på GitHub Packages med begränsad synlighet. Det kräver en PAT med `read:packages`, exporterad som miljövariabeln `GITHUB_PACKAGES_TOKEN` (tokenhanteringen beskrivs i utgivningsdokumentationen `docs/release.sv.md`). Kör blocket nedan i projektroten – det skriver `.npmrc` och installerar paketet. Har du redan en `.npmrc`, lägg de två raderna i den i stället:
+**Väg A – register (huvudspår).** Paketet publiceras som `@pattespatte/felix-ds` på GitHub Packages med begränsad synlighet. Det kräver en PAT med `read:packages`, exporterad som miljövariabeln `GITHUB_PACKAGES_TOKEN` (tokenhanteringen beskrivs i [utgivningsdokumentationen](./release.sv.md)). Kör blocket nedan i projektroten – det skriver `.npmrc` och installerar paketet. Har du redan en `.npmrc`, lägg de två raderna i den i stället:
 
 ```bash
 # förutsätter att GITHUB_PACKAGES_TOKEN är exporterad (PAT med read:packages)
@@ -46,7 +46,7 @@ Fyra saker är värda att känna till:
 - **FKUI-paketen låses exakt.** Alla sex `@fkui/*`-paket låses till samma exakta version, i takt med hur uppströms publicerar dem. felix-ds stödjer `@fkui/theme-default` inom intervallet `>=6.57.0 <7.0.0` (se kompatibilitetsavsnittet i temarepots README) – lås senaste versionen inom intervallet.
 - **Modulspecificeraren följer paketnamnet.** Väg A ger `@pattespatte/felix-ds/src/...` i `@use` och importvägar, väg B ger `felix-ds/src/...`. I övrigt är guiden identisk mellan vägarna.
 - **Peka på en specifik commit, inte en gren** (väg B), så att bygget blir identiskt lokalt och i CI.
-- **Både förbyggd CSS och SCSS följer med.** `dist/felix.css` och `dist/felix-auto.css` är färdigkompilerade och kräver ingen Sass. SCSS-källorna under `src/` behövs bara för att scopea temat till en egen selektor (se nästa avsnitt).
+- **Både förbyggd CSS och SCSS följer med.** `dist/felix.css` och `dist/felix-auto.css` är färdigkompilerade och kräver ingen Sass. SCSS-källorna under `src/` behövs bara för att avgränsa temat till en egen selektor (se nästa avsnitt).
 
 I `vite.config.ts` behövs två saker utöver vue-pluginen: ett `@`-alias till `./src` och `isCustomElement: (tag) => tag.startsWith("ce-")`, eftersom FKUI registrerar sina egna custom elements (ce-page-layout med flera) i runtime.
 
@@ -74,7 +74,7 @@ import "./assets/main.css";
 import "./fkui-patches";
 ```
 
-Behöver du scopea temat till en egen selektor? Då använder du SCSS-mixinerna i stället, och projektet behöver då `sass` som utvecklingsberoende:
+Behöver du avgränsa temat till en egen selektor? Då använder du SCSS-mixinerna i stället, och projektet behöver då `sass` som utvecklingsberoende:
 
 ```scss
 @use "felix-ds/src/fonts/fonts";
@@ -93,7 +93,7 @@ html[data-color-mode="dark"] {
 
 Den globala `@use "felix-ds/src/index"` skriver bara ut det ljusa temat på `:root` – den kan inte uttrycka det attributstyrda mörka scopet och passar bara helt ljusa sajter. Mixinerna `felix.light` och `felix.dark` deklarerar dessutom `color-scheme` per läge, så nativa kontroller och rullistor följer med automatiskt – den förbyggda filen innehåller samma deklarationer. Konfigurera aldrig `@fkui/theme-default` själv i konsumenten – felix-modulen konfigurerar redan sin egen laddning av den, och en dubbel konfiguration kolliderar.
 
-Egen layout-css skrivs med tokens endast – `--fkds-*` och `--f-*` – utan råa hexvärden. Då flippar varje egen yta (kort, paneler, tabellränder) med färgläget gratis, och kontrasten i mörkt läge blir aldrig halvhandgjord. Dimensioner (marginaler, brytpunkter) är förstås vanliga remvärden.
+Egen layout-css skrivs med tokens endast – `--fkds-*` och `--f-*` – utan råa hexvärden. Då växlar varje egen yta (kort, paneler, tabellränder) med färgläget gratis, och kontrasten i mörkt läge blir aldrig halvhandgjord. Dimensioner (marginaler, brytpunkter) är förstås vanliga remvärden.
 
 ## Typsnitt
 
@@ -113,7 +113,7 @@ Vänta dig ljusa snapshots vid prerendering: den statiska HTML:en byggs i ljust 
 
 `@fkui/icon-lib-default` innehåller 31 ikoner (alert, arrow-down, arrow-in-circle, arrow-right, bars, bell, calendar, caret-down, caret-up, chevrons-left, circle, circle-notch-solid, close, cross, dash, doc, ellipsis, error, file, i, new-window, paper-clip, pdf, pen, pic, plus, search, sort, success, trashcan, triangle). Importera biblioteket en gång i appens startfil och rendera med `<f-icon name="...">`.
 
-Ett rikt ikonbibliotek (Phosphor med flera) har ingen motsvarighet här – mappa semantiskt per användningsfall (kalender → calendar, sök → search, läkare/vård → cross) och låt dekorativa ikoner utan motsvarighet bli text i stället för att ge fel betydelse. Ikon-namnet är strängt: ett ogiltigt namn renderar tomt.
+Ett rikt ikonbibliotek (Phosphor med flera) har ingen motsvarighet här – mappa semantiskt per användningsfall (kalender → calendar, sök → search, läkare/vård → cross) och låt dekorativa ikoner utan motsvarighet bli text i stället för att ge fel betydelse. Ikonnamnet måste vara exakt: ett ogiltigt namn renderar tomt.
 
 ## Komponenter och layout
 
@@ -152,7 +152,7 @@ Klientsökning utan backend: ett skript läser `src/router/index.ts`, hittar rut
 
 ## Prerendering och GitHub Pages (valfritt)
 
-En Playwright-körning efter `vite build` startar en statisk server över `dist/`, besöker varje rutt, väntar på att `#app` fylls och titeln stämmer, och skriver snapshot-HTML:en till `dist/<rutt>.html`. Basvägen (GitHub Pages-underkatalog) läses ut ur det byggda index.html så servern matchar produktion. Kör hela kedjan som ett build-skript: indexgenerering → vue-tsc → vite build → prerender.
+En Playwright-körning efter `vite build` startar en statisk server över `dist/`, besöker varje rutt, väntar på att `#app` fylls och titeln stämmer, och skriver snapshot-HTML:en till `dist/<rutt>.html`. Bas-sökvägen (GitHub Pages-underkatalog) läses ut ur det byggda index.html, så servern matchar produktion. Kör hela kedjan som ett build-skript: indexgenerering → vue-tsc → vite build → prerender.
 
 Eftersom innehållet på en demosajt är fiktivt följer indexeringsskydd med: `noindex, nofollow` i meta per rutt (sätt i router-guarden, så plockar snapshotarna upp det), `robots.txt` med disallow-all inklusive vanliga AI-botar, samt `_headers` med `X-Robots-Tag` och en `.nojekyll`-fil.
 

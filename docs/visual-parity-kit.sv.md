@@ -102,7 +102,7 @@ Exit-kod 0 betyder pixelidentiskt – bumpen kan ges ut med rent samvete. Exit-k
 
 ## 4. I CI (GitHub Actions)
 
-Samma cykel som ett eget jobb, som fallerar vid AE > 0:
+Samma cykel som ett eget jobb, som misslyckas vid AE > 0:
 
 ```yaml
 jobs:

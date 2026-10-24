@@ -1,6 +1,6 @@
 # Mönsterbibliotek – kompositionsrecept
 
-felix-ds är ett temalager: det ändrar presentationen hos FKUI:s komponenter, aldrig deras DOM, props eller beteende. Det är den uttalade avvägningen, och det är det som gör full komponenttäckning och billiga FKUI-uppgraderingar möjliga. När token inte räcker till är första svaret ett kompositionsrecept i konsumentens egen kod – inte en wrapper. Den här sidan samlar recepten som är beprövade i projektets konsumentappar. Ett separat wrapper-paket är medvetet utanför omfattningen för det tunna lagret (se [styrningen](./governance.sv.md)).
+felix-ds är ett temalager: det ändrar presentationen hos FKUI:s komponenter, aldrig deras DOM, props eller beteende. Det är den uttalade avvägningen, och det är det som gör full komponenttäckning och billiga FKUI-uppgraderingar möjliga. När token inte räcker till: skriv ett kompositionsrecept i konsumentens egen kod, inte en wrapper. Den här sidan samlar recepten som är beprövade i projektets konsumentappar. Ett separat wrapper-paket ingår inte i det tunna lagret – det är ett medvetet val (se [styrningen](./governance.sv.md)).
 
 Ett mönster kommer med här först när en konsumentapp har använt det – aldrig som en designs skiss.
 
@@ -58,7 +58,7 @@ med `const topics = ref<string[]>([])` i skriptet. Beprövat i konsumentappens k
 
 ## Låt FKUI styla länkarna
 
-FKUI:s ankarstyrsning är tokenmappad och växlar med färgläget. Länkar med handplockade färger bryter den: en hårdkodad färg från ljust läge fäller kontrasten i mörkt läge, och axe fångar det (konsumentappens första utkast fällde 7 noder på det sättet). Receptet är att lämna ankarna till FKUI och använda existerande token när betoning behövs – `--fkds-color-text-secondary` för dämpad text till exempel. Akta påhittade token-namn: `--fkds-color-text-action` finns inte. Kontrollera tokenguiderna innan du skriver en `var()`.
+FKUI:s ankarstyrsning är tokenmappad och växlar med färgläget. Länkar med handplockade färger bryter den: en hårdkodad färg från ljust läge ger för låg kontrast i mörkt läge, och axe fångar det (konsumentappens första utkast flaggade 7 noder på det sättet). Receptet är att lämna ankarna till FKUI och använda existerande token när betoning behövs – `--fkds-color-text-secondary` för dämpad text till exempel. Hitta inte på egna token-namn: `--fkds-color-text-action` finns inte. Kontrollera tokenguiderna innan du skriver en `var()`.
 
 ## När ett beteende verkligen inte går att komponera
 

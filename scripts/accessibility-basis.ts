@@ -197,7 +197,7 @@ ${renderTable("sv")}
 Genereras av \`scripts/accessibility-basis.ts\` (\`bun run
 accessibility:build\`) ur \`playground/src/accessibilityData.ts\` och
 kontrolleras av \`scripts/accessibility-basis.test.ts\`: en committad fil
-som inte längre matchar datan fäller paritetstestet, på samma sätt som den
+som inte längre matchar datan misslyckas i paritetstestet, på samma sätt som den
 förbyggda css:en.
 `;
 }

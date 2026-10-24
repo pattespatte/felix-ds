@@ -20,7 +20,7 @@ FKUI:s `FIcon` renderar ur en spritesheet. Ett varumärke kan byta bilderna bako
 
 ## 5. Skicka förbyggd css, bevakad av paritetstest
 
-Kompilera profilerna till committade dist-poster (med en allt-i-ett-post om så önskas) och håll ett test som kompilerar om ur källorna och fäller varje avvikelse – plus gzippade bytebudgetar så att viktfördelen förblir en garanti. Formen finns i `scripts/build-css.ts` och `scripts/css.test.ts` i det här repot.
+Kompilera profilerna till committade dist-poster (med en allt-i-ett-post om så önskas) och håll ett test som kompilerar om ur källorna och upptäcker varje avvikelse – plus gzippade bytebudgetar så att viktfördelen förblir en garanti. Formen finns i `scripts/build-css.ts` och `scripts/css.test.ts` i det här repot.
 
 ## 6. Håll DTCG-rundturen som designerkontrakt
 

@@ -19,7 +19,7 @@ FKUI:s dokumentation med levande komponentdemos finns på [designsystem.forsakri
 | köra playgrounden på din dator, utforska komponenterna eller utveckla temat | [Kom igång med playgrounden](#kom-igång-med-playgrounden) |
 | se ett färdigt exempel på en webbapp med felix-temat | [Exempelsidan](https://pattespatte.github.io/felix-ds-demo-site/) |
 
-Skillnaden i korthet:
+Skillnaden mellan att installera temat i din egen webbapp och att köra playgrounden på din dator:
 
 - **Installation i en webbapp** lägger temat som ett npm-beroende i *ditt eget projekt*. Du klonar inte något repo och du kör inte playgrounden.
 - **Kom igång med playgrounden** klonar *felix-ds-repot* och startar demoappen lokalt. Du gör det för att utforska eller utveckla temat, inte för att bygga en egen webbapp.
@@ -63,7 +63,7 @@ Temat bygger på FKUI. Du väljer själv versionerna av FKUI-paketen och låser 
 bun add --exact @fkui/theme-default@X.Y.Z @fkui/design@X.Y.Z @fkui/vue@X.Y.Z
 ```
 
-Byt ut `X.Y.Z` mot den version du valt. Playgroundens egna lås står i repots `package.json` och visas i vyn Kom igång.
+Byt ut `X.Y.Z` mot den version du valt. Playgroundens egna lås står i repots `package.json` och visas i [vyn Kom igång](https://pattespatte.github.io/felix-ds/#/kom-igang).
 
 Läs [Kompatibilitet](#kompatibilitet) innan du skriver egen Sass som rör `@fkui/theme-default`.
 
@@ -334,7 +334,7 @@ En HTML/CSS-validerare (till exempel W3C:s Nu-validerare) rapporterar flera fynd
 
 ## Publiceringspolicy
 
-Ägaren publicerar paketet som `@pattespatte/felix-ds` på GitHub Packages med begränsad synlighet. Den som installerar paketet behöver en PAT (Personal Access Token). Publicering sker bara enligt ägarens [utgivningsdokumentation](https://github.com/pattespatte/felix-ds/blob/main/docs/release.sv.md). Varje utgivning passerar först den visuella porten (skärmdumpsjämförelser och axe-skanningar). Tillgänglighetstäckningen dokumenteras i playgroundens vy Tillgänglighet: vilken vy som demonstrerar varje komponent, vad axe-testningen omfattar och vad som kräver manuell granskning. Underlaget att lyfta in i en egen tillgänglighetsredogörelse finns i [docs/accessibility-basis.sv.md](docs/accessibility-basis.sv.md). Repot ligger på GitHub, och playgrounden byggs och serveras via GitHub Pages med ägarens uttryckliga godkännande.
+Ägaren publicerar paketet som `@pattespatte/felix-ds` på GitHub Packages med begränsad synlighet. Den som installerar paketet behöver en PAT (Personal Access Token). Publicering sker bara enligt ägarens [utgivningsdokumentation](https://github.com/pattespatte/felix-ds/blob/main/docs/release.sv.md). Varje utgivning passerar först den visuella porten (skärmdumpsjämförelser och axe-skanningar). Tillgänglighetstäckningen dokumenteras i [playgroundens vy Tillgänglighet](https://pattespatte.github.io/felix-ds/#/tillganglighet): vilken vy som demonstrerar varje komponent, vad axe-testningen omfattar och vad som kräver manuell granskning. Underlaget att lyfta in i en egen tillgänglighetsredogörelse finns i [docs/accessibility-basis.sv.md](docs/accessibility-basis.sv.md). Repot ligger på GitHub, och playgrounden byggs och serveras via GitHub Pages med ägarens uttryckliga godkännande.
 
 ---
 
@@ -359,7 +359,7 @@ FKUI's documentation with live component demos is available at [designsystem.for
 | run the playground on your machine, explore the components or develop the theme | [Getting started with the playground](#getting-started-with-the-playground) |
 | see a finished example of a web app with the felix theme | [Example site](https://pattespatte.github.io/felix-ds-demo-site/) |
 
-The difference in short:
+The difference between installing the theme in your own web app and running the playground on your machine:
 
 - **Installation in a web app** adds the theme as an npm dependency in *your own project*. You do not clone a repo and you do not run the playground.
 - **Getting started with the playground** clones the *felix-ds repo* and starts the demo app locally. You do this to explore or develop the theme, not to build your own web app.
@@ -532,7 +532,7 @@ The other `@fkui/*` packages (`@fkui/vue`, `@fkui/design` and the rest) are not 
 > [!WARNING]
 > Never let your own Sass load or configure `@fkui/theme-default`. The theme entry already loads the package configured. A second configured `@use` load collides and breaks compilation.
 
-The version contract – semantic versioning of tokens and mixins, the deprecation pattern and the support range – is described in [Governance and version contract](https://github.com/pattespatte/felix-ds/blob/main/docs/governance.en.md). When the tokens are not enough, the first answer is composition instead of wrappers – proven recipes live in the [pattern library](https://github.com/pattespatte/felix-ds/blob/main/docs/patterns.en.md).
+The version contract – semantic versioning of tokens and mixins, how tokens and mixins are phased out and which versions are supported – is described in [Governance and version contract](https://github.com/pattespatte/felix-ds/blob/main/docs/governance.en.md). When the tokens are not enough, combine what is already there instead of building wrappers. Proven recipes are in the [pattern library](https://github.com/pattespatte/felix-ds/blob/main/docs/patterns.en.md).
 
 ### Example implementation
 
@@ -674,4 +674,4 @@ An HTML/CSS validator (for example the W3C Nu checker) reports several findings 
 
 ## Publishing policy
 
-The owner publishes the package as `@pattespatte/felix-ds` on GitHub Packages with restricted visibility. Anyone who installs the package needs a PAT. Publishing follows only the owner's [release runbook](https://github.com/pattespatte/felix-ds/blob/main/docs/release.en.md). Every release first passes the visual gate (screenshot comparisons and axe scans). Accessibility coverage is documented in the playground's Tillgänglighet view: which view demonstrates each component, what the axe testing covers and what requires manual review. A lift-ready basis for your own accessibility statement is in [docs/accessibility-basis.en.md](docs/accessibility-basis.en.md). The repo is on GitHub, and the playground is built and served via GitHub Pages with the owner's explicit approval.
+The owner publishes the package as `@pattespatte/felix-ds` on GitHub Packages with restricted visibility. Anyone who installs the package needs a PAT (personal access token). Publishing follows only the owner's [release runbook](https://github.com/pattespatte/felix-ds/blob/main/docs/release.en.md). Every release first passes the visual gate (screenshot comparisons and axe scans). Accessibility coverage is documented in the playground's Tillgänglighet view: which view demonstrates each component, what the axe testing covers and what requires manual review. A lift-ready basis for your own accessibility statement is in [docs/accessibility-basis.en.md](docs/accessibility-basis.en.md). The repo is on GitHub, and the playground is built and served via GitHub Pages with the owner's explicit approval.

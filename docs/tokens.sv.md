@@ -107,7 +107,7 @@ Filerna genereras av `scripts/tokens.ts`:
 bun run tokens:build
 ```
 
-Skriptet kompilerar båda färglägena ur SCSS-källorna och typar varje värde. Filerna är committade, och `bun test` (paritetstestet) fäller dem om de inte stämmer med färskt kompilerad CSS: samma namnmängd, samma värden, giltig struktur, lösta aliaser och inte föråldrade. Efter en FKUI-uppgradering: kör `bun run fkui upgrade` och därefter `bun run tokens:build`, och granska diffen – nya token dyker då upp, och ändrade upstream-värden sprider sig till exporten.
+Skriptet kompilerar båda färglägena ur SCSS-källorna och typar varje värde. Filerna är committade, och `bun test` (paritetstestet) misslyckas om de inte stämmer med färskt kompilerad CSS: samma namnmängd, samma värden, giltig struktur, lösta aliaser och inte föråldrade. Efter en FKUI-uppgradering: kör `bun run fkui upgrade` och därefter `bun run tokens:build`, och granska diffen – nya token dyker då upp, och ändrade upstream-värden sprider sig till exporten.
 
 ## Importera tokens
 
