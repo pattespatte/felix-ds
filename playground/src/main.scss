@@ -262,6 +262,13 @@ html[data-color-mode="dark"]:not(.theme-felix) .badge--default {
     box-sizing: border-box;
 }
 
+// Wide variant for pages that benefit from more room – the component guide,
+// where each row pairs a use-when text with a demo link, an API link and a
+// badge. 125 % of the base container; padding and behaviour are inherited.
+.view--wide {
+    max-width: 57.5rem;
+}
+
 .view__intro {
     font-size: var(--f-font-size-h4, 1.25rem);
 }
