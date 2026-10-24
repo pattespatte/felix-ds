@@ -7,6 +7,7 @@
  *   bun run fkui upgrade               uppgradera till senaste version och kör bun install
  *   bun run fkui upgrade 6.58.0        som ovan, men till en vald version
  *   bun run fkui components            lista installerade @fkui/vue-komponenter, en per rad
+ *   bun run fkui components:status     som ovan, men med status per rad (Produktionsklar eller Deprekerad)
  *
  * Konventioner som skriptet följer:
  * - samtliga @fkui-paket låses till exakta versioner (inga ^ eller ~)
@@ -98,8 +99,51 @@ export function extractComponentNames(source: string): string[] {
     return [...names].sort();
 }
 
-/** Skriver @fkui/vue:s exporterade komponenter, en per rad, sorterat. */
-function runComponents(): void {
+/**
+ * Namnen på de komponenter som är markerade `@deprecated` i det JSDoc-block
+ * som ligger omedelbart ovanför exporten i @fkui/vue:s typedefinitioner.
+ * Föråldrade egenskaper inne i interface läcker inte ut till nästa export –
+ * varje kodrad mellan blocket och exporten nollställer kopplingen.
+ */
+export function extractDeprecatedNames(source: string): Set<string> {
+    const deprecated = new Set<string>();
+    let capturing: string[] | null = null;
+    let pending: string[] | null = null;
+    for (const line of source.split("\n")) {
+        const text = line.trim();
+        if (capturing !== null) {
+            capturing.push(text);
+            if (text.endsWith("*/")) {
+                pending = capturing;
+                capturing = null;
+            }
+            continue;
+        }
+        if (text.startsWith("/**")) {
+            capturing = [text];
+            if (text.endsWith("*/")) {
+                pending = capturing;
+                capturing = null;
+            }
+            continue;
+        }
+        if (text === "") {
+            continue;
+        }
+        const match = /^export declare const (F[A-Z]\w*):/.exec(text);
+        if (
+            match !== null &&
+            pending?.some((line) => line.includes("@deprecated")) === true
+        ) {
+            deprecated.add(match[1]);
+        }
+        pending = null;
+    }
+    return deprecated;
+}
+
+/** Läser @fkui/vue:s utrullade typedefinitioner, med tydligt fel om de saknas. */
+function readInstalledComponentTypes(): string {
     const types = resolve(
         ROOT,
         "node_modules",
@@ -112,8 +156,37 @@ function runComponents(): void {
     if (!existsSync(types)) {
         fail(`${types.replace(ROOT + "/", "")} hittades inte – kör \`bun install\` först`);
     }
-    for (const name of extractComponentNames(readFileSync(types, "utf8"))) {
+    return readFileSync(types, "utf8");
+}
+
+/** Skriver @fkui/vue:s exporterade komponenter, en per rad, sorterat. */
+function runComponents(): void {
+    const source = readInstalledComponentTypes();
+    for (const name of extractComponentNames(source)) {
         console.log(name);
+    }
+}
+
+/**
+ * Skriver komponenterna med status per rad – Produktionsklar (grönt) eller
+ * Deprekerad (rött) – ur paketets egna `@deprecated`-markeringar. Färgerna
+ * skrivs bara när utdatan är en terminal; omdirigerad utdata hålls ren.
+ */
+function runComponentsStatus(): void {
+    const source = readInstalledComponentTypes();
+    const deprecated = extractDeprecatedNames(source);
+    const colorize = process.stdout.isTTY === true && process.env.NO_COLOR === undefined;
+    for (const name of extractComponentNames(source)) {
+        const isDeprecated = deprecated.has(name);
+        const status = isDeprecated ? "Deprekerad" : "Produktionsklar";
+        const line = `${name} [${status}]`;
+        console.log(
+            colorize
+                ? isDeprecated
+                    ? `\u001b[31m${line}\u001b[0m`
+                    : `\u001b[32m${line}\u001b[0m`
+                : line,
+        );
     }
 }
 
@@ -196,7 +269,9 @@ const usage = `Användning:
       -n, --dry-run                visa planen utan att ändra något
       version                      vald målversion i stället för senaste
   bun run fkui components          lista installerade @fkui/vue-komponenter
-                                    (en per rad, sorterat – diffbar med comm)`;
+                                    (en per rad, sorterat – diffbar med comm)
+  bun run fkui components:status   som ovan, men med status per rad
+                                    (Produktionsklar i grönt, Deprekerad i rött)`;
 
 async function runVersion(): Promise<void> {
     const pkg = readJson(PACKAGE_JSON);
@@ -372,6 +447,9 @@ async function main(): Promise<void> {
             break;
         case "components":
             runComponents();
+            break;
+        case "components:status":
+            runComponentsStatus();
             break;
         case "help":
         case "--help":

@@ -282,6 +282,8 @@ Repot låser alla `@fkui/*`-paket till exakta versioner och uppgraderar dem i ta
 | `bun fkui upgrade -n` | Torrkörning: visa planen (nuvarande → mål, steg, utgivningsdatum) utan att ändra något |
 | `bun fkui upgrade` | Skriv nya exakta versioner i `package.json` och kör `bun install` |
 | `bun fkui upgrade 6.58.0` | Som ovan, men till en vald version i stället för den senaste |
+| `bun fkui components` | Lista de komponenter som `@fkui/vue` exporterar, en per rad |
+| `bun fkui components:status` | Som ovan, men med status per rad: Produktionsklar (grönt) eller Deprekerad (rött) |
 
 Planen skriver ut en länk till release notes och varnar särskilt för majorskiften. Efter en genomförd uppgradering gör du så här:
 
@@ -622,6 +624,8 @@ The repo pins all `@fkui/*` packages to exact versions and upgrades them in lock
 | `bun fkui upgrade -n` | Dry run: show the plan (current → target, step, release date) without changing anything |
 | `bun fkui upgrade` | Write the new exact versions to `package.json` and run `bun install` |
 | `bun fkui upgrade 6.58.0` | Same, but to a chosen version instead of the latest |
+| `bun fkui components` | List the components exported by `@fkui/vue`, one per line |
+| `bun fkui components:status` | Same, but with a status per line: Produktionsklar (green) or Deprekerad (red) |
 
 The plan prints a link to the release notes and calls out major bumps. After a completed upgrade, do this:
 
