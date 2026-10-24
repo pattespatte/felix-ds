@@ -40,7 +40,7 @@ Gå igenom listan innan du rör en tagg:
       gh run download --repo pattespatte/felix-ds -n linux-baselines -D /tmp/linux-baselines
       cp /tmp/linux-baselines/visual.spec.ts-snapshots/*-linux.png e2e/visual.spec.ts-snapshots/
       cp /tmp/linux-baselines/visual-cross.spec.ts-snapshots/*-linux.png e2e/visual-cross.spec.ts-snapshots/
-      ls e2e/visual.spec.ts-snapshots/*-linux.png | wc -l        # väntat tal: 42 (14 vyer × 3 konfigurationer)
+      ls e2e/visual.spec.ts-snapshots/*-linux.png | wc -l        # väntat tal: 45 (15 vyer × 3 konfigurationer)
       ls e2e/visual-cross.spec.ts-snapshots/*-linux.png | wc -l  # väntat tal: 60 (alla 15 vyer × 2 lägen × 2 webbläsare)
       ```
 

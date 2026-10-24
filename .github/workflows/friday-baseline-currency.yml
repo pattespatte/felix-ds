@@ -1,0 +1,215 @@
+name: Friday baseline currency
+
+# Weekly safety net for the Monday FKUI currency run: whenever visual sources
+# changed since the last linux baseline regen (the usual case – a reviewed
+# darwin regen whose linux mirror was forgotten), regenerate the linux set on
+# the pinned runner image, losslessly recompress it (AE=0), run the full
+# Monday gate against the new baselines and push to main on green. This
+# automates the manual rescue flow from 2026-10-24 (docs/release.sv.md,
+# section 1 step 5) so a stale linux set cannot turn the Monday run red.
+#
+# No-op weeks exit green without running any tests: a git-only pre-check
+# compares the last linux regen commit against the last commit touching
+# anything that drives the visuals, and a pixel comparison after the regen
+# catches the rare false negative (regen output pixel-identical to the
+# committed set – only compression bytes differed).
+#
+# Push policy: the only push this workflow ever makes is the mechanical linux
+# mirror of changes that just passed the full gate on the same pinned image
+# the release gate uses. A new FKUI release is out of scope – the Monday
+# currency flow handles that with its bump PR. The push uses GITHUB_TOKEN,
+# which never re-triggers push-based workflows: deploy-playground stays
+# silent (and has nothing to deploy – only e2e snapshots change).
+#
+# Schedule note: scheduled workflows only arm once this file exists on the
+# default branch after a push, and GitHub disables them after 60 days of
+# repo inactivity. The fixed UTC cron drifts one hour against Stockholm half
+# the year (12:00 UTC = 13:00 Stockholm in winter, 14:00 in summer) – that
+# is documented here, not compensated with a second cron line.
+
+on:
+  schedule:
+    - cron: "0 12 * * 5" # Fridays 12:00 UTC = 13:00 Stockholm (winter)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: friday-baseline-currency
+  cancel-in-progress: false
+
+jobs:
+  friday:
+    # Same pinned image as the release/currency/generate workflows: baselines
+    # may only be rendered on the image that later compares them. Changing
+    # the runner requires a full baseline regen.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
+      # Cheap git-only recency check: if the newest commit touching a linux
+      # baseline is at least as new as the newest commit touching any visual
+      # source (playground views, theme sources, tokens, specs, config,
+      # lockfile), the set is current and the whole regen is skipped.
+      - name: Check whether linux baselines are current
+        id: precheck
+        run: |
+          BASELINE_TS=$(git log -1 --format=%ct -- 'e2e/visual.spec.ts-snapshots/*-linux.png' 'e2e/visual-cross.spec.ts-snapshots/*-linux.png')
+          SOURCE_TS=$(git log -1 --format=%ct -- playground src tokens e2e/lib e2e/visual.spec.ts e2e/visual-cross.spec.ts playwright.config.ts package.json bun.lockb)
+          BASELINE_TS=${BASELINE_TS:-0}
+          SOURCE_TS=${SOURCE_TS:-0}
+          echo "Last linux baseline commit (unix ts): $BASELINE_TS"
+          echo "Last visual source commit (unix ts): $SOURCE_TS"
+          if [ "$BASELINE_TS" -ge "$SOURCE_TS" ]; then
+            echo "current=true" >> "$GITHUB_OUTPUT"
+            {
+              echo "### Friday baseline currency – no-op"
+              echo "- Linux baselines current: the last regen commit is newer than every visual source change."
+              echo "- Nothing regenerated, nothing pushed."
+            } >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "current=false" >> "$GITHUB_OUTPUT"
+          fi
+      - run: bun install --frozen-lockfile
+        if: steps.precheck.outputs.current != 'true'
+      - run: bunx playwright install --with-deps chromium firefox webkit
+        if: steps.precheck.outputs.current != 'true'
+      # Regen steps mirror generate-linux-baselines.yml exactly (three legs
+      # so one failing browser cannot hide the other browsers' snapshots).
+      - run: bunx playwright test visual.spec.ts --project=chromium --update-snapshots
+        if: steps.precheck.outputs.current != 'true'
+      - run: bunx playwright test visual-cross.spec.ts --project=webkit --update-snapshots
+        if: steps.precheck.outputs.current != 'true'
+      - run: bunx playwright test visual-cross.spec.ts --project=firefox --update-snapshots
+        if: steps.precheck.outputs.current != 'true'
+      # Fresh Playwright PNGs differ in bytes from the committed set even
+      # when pixels match (the committed files are oxipng-recompressed), so
+      # the no-op test is pixel-based: every changed file is compared with
+      # magick AE against its HEAD version. Only real pixel diffs proceed;
+      # new and deleted snapshots count as real by definition.
+      - name: Detect real pixel changes
+        id: pixels
+        if: steps.precheck.outputs.current != 'true'
+        run: |
+          git status --porcelain -- e2e/visual.spec.ts-snapshots e2e/visual-cross.spec.ts-snapshots | grep -- '-linux\.png' > /tmp/linux-status.txt || true
+          if [ ! -s /tmp/linux-status.txt ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            {
+              echo "### Friday baseline currency – no-op"
+              echo "- Regeneration produced no linux snapshot changes – baselines were current."
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          REAL=0
+          COMP=0
+          : > /tmp/changed-files.txt
+          while IFS= read -r line; do
+            STATUS=${line:0:2}
+            FILE=${line:3}
+            case "$STATUS" in
+              " M" | "M ")
+                git show "HEAD:$FILE" > /tmp/head-version.png
+                AE=$(magick compare -metric AE /tmp/head-version.png "$FILE" null: 2>&1 || true)
+                AE_NUM=${AE%% *}
+                if [ "$AE_NUM" = "0" ]; then
+                  COMP=$((COMP + 1))
+                else
+                  REAL=$((REAL + 1))
+                  echo "$FILE" >> /tmp/changed-files.txt
+                fi
+                ;;
+              *)
+                # Untracked (new snapshot) or deleted – a real change.
+                REAL=$((REAL + 1))
+                echo "$FILE" >> /tmp/changed-files.txt
+                ;;
+            esac
+          done < /tmp/linux-status.txt
+          echo "Regen diff: $REAL file(s) with real pixel changes, $COMP compression-only."
+          if [ "$REAL" -eq 0 ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            {
+              echo "### Friday baseline currency – no-op"
+              echo "- Regeneration was pixel-identical to the committed linux baselines ($COMP file(s) differed only in compression bytes)."
+            } >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+      # oxipng is not in ubuntu 24.04's apt repositories (verified), so the
+      # pinned static musl binary comes from the upstream release. Same
+      # version as the local homebrew install the manual flow uses.
+      - name: Install oxipng
+        if: steps.precheck.outputs.current != 'true' && steps.pixels.outputs.changed == 'true'
+        run: |
+          curl -fsSL -o /tmp/oxipng.tar.gz \
+            https://github.com/oxipng/oxipng/releases/download/v10.2.1/oxipng-10.2.1-x86_64-unknown-linux-musl.tar.gz
+          tar -xzf /tmp/oxipng.tar.gz -C /tmp
+          sudo install -m755 /tmp/oxipng-10.2.1-x86_64-unknown-linux-musl/oxipng /usr/local/bin/oxipng
+          oxipng --version
+      - name: Recompress changed baselines losslessly
+        if: steps.precheck.outputs.current != 'true' && steps.pixels.outputs.changed == 'true'
+        run: |
+          mkdir -p /tmp/oxipng-verify
+          while read -r f; do
+            cp --parents "$f" /tmp/oxipng-verify/
+          done < /tmp/changed-files.txt
+          xargs -a /tmp/changed-files.txt oxipng -o max
+          FAIL=0
+          while read -r f; do
+            AE=$(magick compare -metric AE "/tmp/oxipng-verify/$f" "$f" null: 2>&1 || true)
+            AE_NUM=${AE%% *}
+            if [ "$AE_NUM" != "0" ]; then
+              echo "::error::oxipng recompression not lossless for $f (AE=$AE)"
+              FAIL=1
+            fi
+          done < /tmp/changed-files.txt
+          echo "Losslessly recompressed $(wc -l < /tmp/changed-files.txt) linux baseline file(s), AE=0 each."
+          exit "$FAIL"
+      # The whole Monday port against the new baselines – identical to the
+      # currency gate. Nothing is pushed unless every step below is green.
+      - run: bun test
+        if: steps.precheck.outputs.current != 'true' && steps.pixels.outputs.changed == 'true'
+      - run: bun run build
+        if: steps.precheck.outputs.current != 'true' && steps.pixels.outputs.changed == 'true'
+      - run: bunx vue-tsc --noEmit
+        if: steps.precheck.outputs.current != 'true' && steps.pixels.outputs.changed == 'true'
+      - run: bun run test:visual
+        if: steps.precheck.outputs.current != 'true' && steps.pixels.outputs.changed == 'true'
+      - run: bun run test:visual:cross
+        if: steps.precheck.outputs.current != 'true' && steps.pixels.outputs.changed == 'true'
+      - run: bun run test:a11y
+        if: steps.precheck.outputs.current != 'true' && steps.pixels.outputs.changed == 'true'
+      - name: Commit and push regenerated baselines
+        if: steps.precheck.outputs.current != 'true' && steps.pixels.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          xargs -a /tmp/changed-files.txt git add --
+          git commit -m "test(visual): regenerate linux baselines (friday currency)"
+          git push origin HEAD:main
+          SHA=$(git rev-parse --short HEAD)
+          COUNT=$(wc -l < /tmp/changed-files.txt)
+          {
+            echo "### Friday baseline currency – linux baselines regenerated"
+            echo "- $COUNT linux baseline file(s) with real pixel changes."
+            echo "- Full Monday gate green: parity tests, build, vue-tsc, chromium + cross-browser visual comparisons, axe scans."
+            echo "- Pushed to main as $SHA (GITHUB_TOKEN push – deploy workflows are not re-triggered)."
+            echo ""
+            echo "<details><summary>Changed files</summary>"
+            echo ""
+            echo '```'
+            cat /tmp/changed-files.txt
+            echo '```'
+            echo "</details>"
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload gate report on failure
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: friday-baseline-failure
+          path: |
+            test-results
+            playwright-report
+          retention-days: 14
