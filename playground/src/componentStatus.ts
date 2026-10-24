@@ -1,13 +1,15 @@
-// Per-component status badges for the demo headings, mirroring the reference
-// profile's component pages (the "Status" entry on each documentation page).
+// Per-component status badges for the demo headings and the component
+// guide, mirroring the reference profile's component pages (the "Status"
+// entry on each documentation page).
 //
 // Source of truth: the status frontmatter of the upstream component
 // documentation (docs/components/**/*.md in the read-only reference
-// checkout). Only two statuses exist there – "Produktionsklar" and
-// "Experimentell" – and "Experimentell" applies only to the labs
-// X-components, none of which this playground documents. Every entry below
-// is therefore Produktionsklar; when a component's status changes, edit its
-// entry here.
+// checkout). The statuses used there are "Produktionsklar",
+// "Experimentell" (labs X-components only, none documented here) and
+// "Deprekerad". The deprecated entries below match the @deprecated
+// markers in the installed @fkui/vue package (list them with
+// `bun run fkui components:status`); when a component's status changes,
+// edit its entry here.
 //
 // cssPatternStatuses covers the hand-written CSS/SCSS demo sections whose
 // names are not Vue components in fkuiComponentLinks. Chip, anchor,
@@ -30,6 +32,11 @@ const PRODUCTION_READY: ComponentStatus = {
     variant: "success",
 };
 
+const DEPRECATED: ComponentStatus = {
+    label: "Deprekerad",
+    variant: "error",
+};
+
 export const componentStatuses: Record<FkuiComponentName, ComponentStatus> = {
     FBankAccountNumberTextField: PRODUCTION_READY,
     FBadge: PRODUCTION_READY,
@@ -42,10 +49,10 @@ export const componentStatuses: Record<FkuiComponentName, ComponentStatus> = {
     FClearingnumberTextField: PRODUCTION_READY,
     FConfirmModal: PRODUCTION_READY,
     FContextMenu: PRODUCTION_READY,
-    FCrudButton: PRODUCTION_READY,
+    FCrudButton: DEPRECATED,
     FCrudDataset: PRODUCTION_READY,
     FCurrencyTextField: PRODUCTION_READY,
-    FDataTable: PRODUCTION_READY,
+    FDataTable: DEPRECATED,
     FDatepickerField: PRODUCTION_READY,
     FDefinitionList: PRODUCTION_READY,
     FDetailsPanel: PRODUCTION_READY,
@@ -62,7 +69,7 @@ export const componentStatuses: Record<FkuiComponentName, ComponentStatus> = {
     FFormModal: PRODUCTION_READY,
     FFormModalAction: PRODUCTION_READY,
     FIcon: PRODUCTION_READY,
-    FInteractiveTable: PRODUCTION_READY,
+    FInteractiveTable: DEPRECATED,
     FLabel: PRODUCTION_READY,
     FLayoutRightPanel: PRODUCTION_READY,
     FList: PRODUCTION_READY,
