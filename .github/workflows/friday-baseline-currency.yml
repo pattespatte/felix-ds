@@ -47,7 +47,13 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 75
     steps:
+      # Full history: the precheck walks git log with pathspecs, and on the
+      # default shallow checkout the grafted tip matches every pathspec –
+      # both timestamps collapse to HEAD and a stale baseline set looks
+      # current (wrong no-op, run 40118286784).
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
       - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
       # Cheap git-only recency check: if the newest commit touching a linux
       # baseline is at least as new as the newest commit touching any visual
