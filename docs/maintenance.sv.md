@@ -18,6 +18,35 @@ Cron-tiderna står i UTC, så de svenska klockslagen flyttas en timme vid sommar
 
 Inget behöver förberedas. Båda schemalagda körningarna startar av sig själva.
 
+```mermaid
+flowchart TD
+    subgraph FRI ["Fredag 13.00 – rondningen"]
+        F1["Den schemalagda körningen startar"] --> F2{"Något visuellt ändrat<br>sedan de senast<br>genererades om?"}
+        F2 -- Nej --> F3["Avslutar grönt,<br>inga tester körs"]
+        F2 -- Ja --> F4["Genererar om linux-baselines,<br>komprimerar om, kör hela porten"]
+        F4 --> F5["Pushar baselines<br>till main själv"]
+    end
+    subgraph MON ["Måndag 08.00 – FKUI-kontrollen"]
+        M1["Den schemalagda körningen startar"] --> M2{"Ny FKUI-version?"}
+        M2 -- Nej --> M3["Avslutar grönt,<br>inget öppnas"]
+        M2 -- Ja --> M4["Höjer de sex @fkui/*-versionerna,<br>kör porten, öppnar en pull request"]
+    end
+    F5 -.->|"nästa måndag jämför mot<br>den aktuella uppsättningen"| M1
+    F5 --> O1["Du: git pull"]
+    M4 --> O2["Du: granska och merga pull requesten,<br>ge sedan ut nästa version"]
+    O2 -.-> U["Utgivning före fredagen med nya pixlar?<br>Kör generate-linux-baselines för hand<br>(cirka 10 minuter, publicerar ingenting)"]
+
+    classDef step fill:#f6f3ee,stroke:#232948,stroke-width:1px,color:#081130,rx:10,ry:10
+    classDef decision fill:#e7f2ff,stroke:#0053a7,stroke-width:1px,color:#081130,rx:10,ry:10
+    classDef owner fill:#232948,stroke:#232948,stroke-width:1px,color:#ffffff,font-weight:600,rx:10,ry:10
+    classDef note fill:#f7f8f8,stroke:#8c93a4,stroke-width:1px,color:#585f71,rx:10,ry:10
+
+    class F1,F4,F5,M1,M4 step
+    class F2,M2 decision
+    class F3,M3,U note
+    class O1,O2 owner
+```
+
 ### Fredagen: `linux-baselines` hålls aktuella
 
 Körningen börjar med en ren git-kontroll: har inget som styr det visuella (playgroundens vyer, temakällor, tokens, testkonfiguration, låsfil) ändrats sedan `linux-baselines` senast genererades om, avslutar den grönt utan att köra ett enda test. I annat fall genererar den om `linux-baselines`, komprimerar om png-filerna förlustfritt, kör hela porten (paritetstester, bygge, typkontroll, visuella jämförelser i tre webbläsare, axe-skanningar) och pushar resultatet till `main` som committen ”test(visual): regenerate linux baselines (friday currency)”. Efteråt gör du en enda sak: `git pull`.
@@ -28,7 +57,7 @@ Har FKUI inte gett ut någon ny version avslutar körningen grönt utan att öpp
 
 ## När du behöver göra något själv
 
-Baselines finns i uppsättningar, en per plattform: filnamnen slutar på plattformens suffix (`-darwin`, `-linux`), och Playwright väljer själv rätt uppsättning när testerna körs. Repot committar `linux-baselines`, som CI-porten jämför mot på den låsta runner-bilden, och `darwin-baselines`, för att ägarens maskin är en mac – i en ren linux-miljö (till exempel en Ubuntu-VM) är de två samma filer. Oavsett plattform renderas `linux-baselines` alltid av arbetsflödena.
+Baselines finns i uppsättningar, en per plattform: filnamnen slutar på plattformens suffix (`-darwin`, `-linux`), och Playwright väljer själv rätt uppsättning när testerna körs. Repot committar `linux-baselines`, som CI-porten jämför mot på den låsta runner-bilden, och `darwin-baselines`, eftersom ägarens maskin är en mac – i en ren linux-miljö (till exempel en Ubuntu-VM) är de två samma filer. Oavsett plattform renderas `linux-baselines` alltid av arbetsflödena.
 
 ### Du har ändrat pixlar i en vy
 
@@ -76,4 +105,4 @@ Vanligaste orsaken är en gammal linux-uppsättning, och felet ”snapshot doesn
 - **Bot-commits landar på `main`.** Fredagskörningen committar sina baselines direkt. Kör `git pull` innan du fortsätter arbeta lokalt.
 - **Scheman kräver filen på standardgrenen**, och GitHub stänger av dem efter 60 dagar utan repoaktivitet. Efter ett längre uppehåll: kontrollera att båda veckokörningarna verkligen kördes.
 - **Tiderna i cron-raderna är UTC.** Klockslagen i den här guiden är vintertid och flyttas en timme på sommaren.
-- **Artefakter gallras.** `linux-baselines` sparas i 7 dagar, felparaten i 14 dagar.
+- **Artefakter gallras.** `linux-baselines` sparas i 7 dagar, felrapporterna i 14 dagar.

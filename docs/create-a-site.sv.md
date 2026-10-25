@@ -52,6 +52,27 @@ I `vite.config.ts` behövs två saker utöver vue-pluginen: ett `@`-alias till `
 
 ## Temaintegration
 
+```mermaid
+flowchart TD
+    A["Ladda felix-temat"] --> Q1{"En enda import för allt?"}
+    Q1 -- Ja --> C["dist/felix-complete.css<br>FKUI-CSS + typsnitt + felix-lagret<br>i rätt kaskadordning"]
+    Q1 -- Nej --> Q2{"Vem äger färgläget?"}
+    Q2 -- "Din app, via en växlingsknapp" --> P1["dist/felix.css<br>ljust på :root, mörkt på<br>data-color-mode-attributet"]
+    Q2 -- "Systemet" --> P2["dist/felix-auto.css<br>båda lägena bakom<br>prefers-color-scheme"]
+    A --> Q3{"Avgränsa temat till<br>en egen selektor?"}
+    Q3 -- Ja --> S["SCSS-mixins: @use temamodulen<br>med $global: false, sedan<br>@include felix.light och felix.dark<br>(kräver sass som utvecklingsberoende)"]
+    Q3 -- Nej --> Q1
+    S -.-> X["Konfigurera aldrig @fkui/theme-default själv<br>felix laddar det redan konfigurerat –<br>de två konfigurerade laddningarna krockar"]
+
+    classDef step fill:#f6f3ee,stroke:#232948,stroke-width:1px,color:#081130,rx:10,ry:10
+    classDef decision fill:#e7f2ff,stroke:#0053a7,stroke-width:1px,color:#081130,rx:10,ry:10
+    classDef danger fill:#ffe5e1,stroke:#c7311a,stroke-width:1px,color:#081130,rx:10,ry:10
+
+    class A,C,P1,P2,S step
+    class Q1,Q2,Q3 decision
+    class X danger
+```
+
 I den fil där appen startar (i ett Vite- och Vue-projekt oftast `src/main.ts`) laddar du FKUI:s komponent-CSS först:
 
 ```ts

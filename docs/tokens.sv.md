@@ -4,6 +4,32 @@
 
 felix-ds skickar med temats token som JSON i [W3C Design Tokens](https://design-tokens.github.io/community-group/) utkastformat (DTCG). Det gör temats token läsbara för verktyg utanför CSS-världen – bland annat Tokens Studio (Figma), Style Dictionary och dokumentationsgeneratorer – utan att något kopieras för hand.
 
+```mermaid
+flowchart TB
+    subgraph ROW1 [" "]
+        direction LR
+        S["Handskriven temakälla<br>src/theme (ljust + mörkt)<br>den enda sanningskällan"] -->|"tokens:build"| E["tokens/light.json<br>tokens/dark.json<br>committade i repot,<br>skickas med paketet"]
+        E --> T["Designverktyg<br>Tokens Studio (Figma),<br>Style Dictionary m.fl."]
+    end
+    subgraph ROW2 [" "]
+        direction RL
+        I["tokens:import<br>strikt validering"] --> O["CSS-variabler<br>en deterministisk<br>överskrivningsfil,<br>skrivs aldrig<br>tillbaka till src/theme"]
+    end
+    ROW1 -->|"valfri W3C DTCG-fil"| ROW2
+    ROW1 -.-|"bun test bevisar rundturen:<br>import av de committade filerna<br>kompilerar tillbaka till exakt samma tema"| ROW2
+    ROW2 -.->|"ingår i det sammansatta temat,<br>men har ingen felix-källa att importera"| G["Grundtemat undantas med avsikt:<br>dess värden lever i @fkui/design<br>och ändras bara när FKUI-paketen<br>bumpas"]
+
+    classDef step fill:#f6f3ee,stroke:#232948,stroke-width:1px,color:#081130,rx:10,ry:10
+    classDef owner fill:#232948,stroke:#232948,stroke-width:1px,color:#ffffff,font-weight:600,rx:10,ry:10
+    classDef note fill:#f7f8f8,stroke:#8c93a4,stroke-width:1px,color:#585f71,rx:10,ry:10
+
+    class E,T,I,O step
+    class S owner
+    class G note
+    style ROW1 fill:none,stroke:#d7d9e0,stroke-width:1px,rx:10
+    style ROW2 fill:none,stroke:#d7d9e0,stroke-width:1px,rx:10
+```
+
 ## Filerna
 
 Paketet innehåller två kompletta filer, en per färgläge:

@@ -4,6 +4,32 @@
 
 felix-ds ships the theme tokens as JSON in the [W3C Design Tokens](https://design-tokens.github.io/community-group/) draft format (DTCG). This makes the theme tokens readable to tooling outside the CSS world – among others Tokens Studio (Figma), Style Dictionary and documentation generators – without any hand copying.
 
+```mermaid
+flowchart TB
+    subgraph ROW1 [" "]
+        direction LR
+        S["Hand-written theme source<br>src/theme (light + dark)<br>the single source of truth"] -->|"tokens:build"| E["tokens/light.json<br>tokens/dark.json<br>committed and shipped"]
+        E --> T["Design tools<br>Tokens Studio (Figma),<br>Style Dictionary"]
+    end
+    subgraph ROW2 [" "]
+        direction RL
+        I["tokens:import<br>strict validation"] --> O["CSS custom properties<br>one deterministic<br>override file, never<br>written to src/theme"]
+    end
+    ROW1 -->|"any W3C DTCG file"| ROW2
+    ROW1 -.-|"bun test proves the round trip:<br>importing the committed files compiles<br>back to exactly the theme"| ROW2
+    ROW2 -.->|"part of the composed theme,<br>but no felix source to import"| G["The grundtema sits outside by design:<br>its values ship inside @fkui/design<br>and change only on an FKUI bump"]
+
+    classDef step fill:#f6f3ee,stroke:#232948,stroke-width:1px,color:#081130,rx:10,ry:10
+    classDef owner fill:#232948,stroke:#232948,stroke-width:1px,color:#ffffff,font-weight:600,rx:10,ry:10
+    classDef note fill:#f7f8f8,stroke:#8c93a4,stroke-width:1px,color:#585f71,rx:10,ry:10
+
+    class E,T,I,O step
+    class S owner
+    class G note
+    style ROW1 fill:none,stroke:#d7d9e0,stroke-width:1px,rx:10
+    style ROW2 fill:none,stroke:#d7d9e0,stroke-width:1px,rx:10
+```
+
 ## The files
 
 The package contains two complete files, one per color mode:

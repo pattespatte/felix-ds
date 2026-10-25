@@ -18,6 +18,35 @@ The cron schedules are written in UTC, so the Swedish clock times shift one hour
 
 Nothing needs preparing. Both scheduled runs start by themselves.
 
+```mermaid
+flowchart TD
+    subgraph FRI ["Friday 13:00 – baseline currency"]
+        F1["Scheduled run starts"] --> F2{"Anything visual changed<br>since the last regen?"}
+        F2 -- No --> F3["Exits green,<br>no tests run"]
+        F2 -- Yes --> F4["Regenerate linux-baselines, recompress,<br>run the whole gate"]
+        F4 --> F5["Pushes the baselines<br>to main itself"]
+    end
+    subgraph MON ["Monday 08:00 – FKUI check"]
+        M1["Scheduled run starts"] --> M2{"New FKUI version?"}
+        M2 -- No --> M3["Exits green,<br>nothing opened"]
+        M2 -- Yes --> M4["Bump the six @fkui/* pins,<br>run the gate, open a pull request"]
+    end
+    F5 -.->|"next Monday compares against<br>the fresh set"| M1
+    F5 --> O1["You: git pull"]
+    M4 --> O2["You: review and merge the PR,<br>then cut the next release"]
+    O2 -.-> U["Release before Friday with new pixels?<br>Run generate-linux-baselines by hand<br>(about 10 min, publishes nothing)"]
+
+    classDef step fill:#f6f3ee,stroke:#232948,stroke-width:1px,color:#081130,rx:10,ry:10
+    classDef decision fill:#e7f2ff,stroke:#0053a7,stroke-width:1px,color:#081130,rx:10,ry:10
+    classDef owner fill:#232948,stroke:#232948,stroke-width:1px,color:#ffffff,font-weight:600,rx:10,ry:10
+    classDef note fill:#f7f8f8,stroke:#8c93a4,stroke-width:1px,color:#585f71,rx:10,ry:10
+
+    class F1,F4,F5,M1,M4 step
+    class F2,M2 decision
+    class F3,M3,U note
+    class O1,O2 owner
+```
+
 ### Friday: the linux baselines stay current
 
 The run starts with a git-only check: if nothing that drives the visuals (playground views, theme sources, tokens, test configuration, lockfile) has changed since the last linux baseline regen, it exits green without running a single test. Otherwise it regenerates the linux set, losslessly recompresses the png files, runs the whole gate (parity tests, build, typecheck, visual comparisons in three browsers, axe scans) and pushes the result to `main` itself as `test(visual): regenerate linux baselines (friday currency)`. Afterwards you do one thing: `git pull`.

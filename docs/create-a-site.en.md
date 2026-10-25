@@ -52,6 +52,27 @@ In `vite.config.ts` you need two things beyond the vue plugin: an `@` alias to `
 
 ## Theme integration
 
+```mermaid
+flowchart TD
+    A["Load the felix theme"] --> Q1{"One import for everything?"}
+    Q1 -- Yes --> C["dist/felix-complete.css<br>FKUI CSS + fonts + the felix layer<br>in the right cascade order"]
+    Q1 -- No --> Q2{"Who owns the color mode?"}
+    Q2 -- "Your app, via a toggle" --> P1["dist/felix.css<br>light on :root, dark on<br>the data-color-mode attribute"]
+    Q2 -- "The system" --> P2["dist/felix-auto.css<br>both modes behind<br>prefers-color-scheme"]
+    A --> Q3{"Scope the theme to<br>your own selector?"}
+    Q3 -- Yes --> S["SCSS mixins: @use the theme module<br>with $global: false, then<br>@include felix.light and felix.dark<br>(needs the sass dev dependency)"]
+    Q3 -- No --> Q1
+    S -.-> X["Never configure @fkui/theme-default yourself<br>felix already loads it configured –<br>the two configured loads collide"]
+
+    classDef step fill:#f6f3ee,stroke:#232948,stroke-width:1px,color:#081130,rx:10,ry:10
+    classDef decision fill:#e7f2ff,stroke:#0053a7,stroke-width:1px,color:#081130,rx:10,ry:10
+    classDef danger fill:#ffe5e1,stroke:#c7311a,stroke-width:1px,color:#081130,rx:10,ry:10
+
+    class A,C,P1,P2,S step
+    class Q1,Q2,Q3 decision
+    class X danger
+```
+
 The app entry point (usually `src/main.ts` in a Vite + Vue project) loads FKUI's component CSS first:
 
 ```ts
