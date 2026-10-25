@@ -10,9 +10,9 @@ Ett levande exempel på allt nedan finns i demosajten som konsumerar felix-ds so
 - Node.js i aktuell version
 - Grundläggande vana vid Vue 3 med `<script setup lang="ts">`, Vue Router och Vite
 
-## Projektsetup
+## Sätt upp projektet
 
-Skapa ett Vue 3-projekt – exemplen i guiden använder Vite med vue-ts-mallen, men felix-ds och FKUI fungerar med vilken byggverktygskedja som helst – och lägg till beroendena:
+Skapa ett Vue 3-projekt och lägg till beroendena nedan. Exemplen i guiden använder Vite med vue-ts-mallen, men felix-ds och FKUI fungerar med vilken byggverktygskedja som helst.
 
 ```bash
 bun add vue vue-router@^4
@@ -20,11 +20,11 @@ bun add @fkui/vue@6.60.0 @fkui/design@6.60.0 @fkui/theme-default@6.60.0 @fkui/da
 bun add -d vite @vitejs/plugin-vue typescript vue-tsc @types/node
 ```
 
-Sass behövs inte för temat – det konsumeras som förbyggd CSS. Lägg till `sass` bland utvecklingsberoendena först om du skriver egen SCSS (se Temaintegration).
+Sass behövs inte för temat – det konsumeras som förbyggd CSS. Lägg till `sass` bland utvecklingsberoendena först om du skriver egen SCSS. Se [Temaintegration](#temaintegration).
 
 felix-ds installeras på två sätt – registerversionen är huvudspåret:
 
-**Väg A – register (huvudspår).** Paketet publiceras som `@pattespatte/felix-ds` på GitHub Packages med begränsad synlighet. Det kräver en PAT med `read:packages`, exporterad som miljövariabeln `GITHUB_PACKAGES_TOKEN` (tokenhanteringen beskrivs i [utgivningsdokumentationen](./release.sv.md)). Kör blocket nedan i projektroten – det skriver `.npmrc` och installerar paketet. Har du redan en `.npmrc`, lägg de två raderna i den i stället:
+**Väg A – register (huvudspår).** Paketet publiceras som `@pattespatte/felix-ds` på GitHub Packages med begränsad synlighet. Det kräver en personlig åtkomsttoken (PAT) med `read:packages`, exporterad som miljövariabeln `GITHUB_PACKAGES_TOKEN` (tokenhanteringen beskrivs i [utgivningsdokumentationen](./release.sv.md)). Kör blocket nedan i projektroten – det skriver `.npmrc` och installerar paketet. Har du redan en `.npmrc`, lägg de två raderna i den i stället:
 
 ```bash
 # förutsätter att GITHUB_PACKAGES_TOKEN är exporterad (PAT med read:packages)
@@ -112,29 +112,29 @@ html[data-color-mode="dark"] {
 }
 ```
 
-Den globala `@use "felix-ds/src/index"` skriver bara ut det ljusa temat på `:root` – den kan inte uttrycka det attributstyrda mörka scopet och passar bara helt ljusa sajter. Mixinerna `felix.light` och `felix.dark` deklarerar dessutom `color-scheme` per läge, så nativa kontroller och rullistor följer med automatiskt – den förbyggda filen innehåller samma deklarationer. Konfigurera aldrig `@fkui/theme-default` själv i konsumenten – felix-modulen konfigurerar redan sin egen laddning av den, och en dubbel konfiguration kolliderar.
+Den globala `@use "felix-ds/src/index"` skriver bara ut det ljusa temat på `:root` – den kan inte uttrycka det attributstyrda mörka scopet och passar bara helt ljusa sajter. Mixinerna `felix.light` och `felix.dark` deklarerar dessutom `color-scheme` per läge, så nativa kontroller och rullistor följer med automatiskt – den förbyggda filen innehåller samma deklarationer. Konfigurera aldrig `@fkui/theme-default` själv i din app – felix-modulen konfigurerar redan sin egen laddning av den, och en dubbel konfiguration kolliderar.
 
-Egen layout-css skrivs med tokens endast – `--fkds-*` och `--f-*` – utan råa hexvärden. Då växlar varje egen yta (kort, paneler, tabellränder) med färgläget gratis, och kontrasten i mörkt läge blir aldrig halvhandgjord. Dimensioner (marginaler, brytpunkter) är förstås vanliga remvärden.
+Egen layout-css skrivs med tokens endast – `--fkds-*` och `--f-*` – utan råa hexvärden. Då växlar varje egen yta (kort, paneler, tabellränder) med färgläget gratis, och kontrasten i mörkt läge behöver aldrig lagas för hand. Dimensioner (marginaler, brytpunkter) är förstås vanliga remvärden.
 
 ## Typsnitt
 
-Temat self-hostar alla typsnitt: Noto Sans för brödtext (400, 600 + kursiv) och Roboto Slab för rubriker, med fet stil mappad på vikt 600. Den förbyggda `dist/felix.css` innehåller @font-face-reglerna med woff2-referenser som Vite bundlar (SCSS-flödet får samma regler via `@use "felix-ds/src/fonts/fonts"`) – inga CDN-anrop, inga Google Fonts, ingen integritetsgranskning. Kontrollera gärna i bygget att `dist/assets/*.woff2` finns och att ingen `fonts.googleapis.com`-referens smugit sig in.
+Alla typsnitt följer med temat: Noto Sans för brödtext (400, 600 + kursiv) och Roboto Slab för rubriker, med fet stil mappad på vikt 600. Den förbyggda `dist/felix.css` innehåller @font-face-reglerna med woff2-referenser som Vite bundlar (SCSS-flödet får samma regler via `@use "felix-ds/src/fonts/fonts"`) – inga CDN-anrop, inga Google Fonts, ingen integritetsgranskning. Kontrollera gärna i bygget att `dist/assets/*.woff2` finns och att ingen `fonts.googleapis.com`-referens smugit sig in.
 
 ## Mörkt läge
 
 Mönstret har tre delar som samverkar:
 
-1. **En color-modul** (`color-mode.ts`) äger läget: den följer `prefers-color-scheme` tills användaren väljer explicit, sparar valet i localStorage under en egen nyckel, sätter eller tar bort `data-color-mode="dark"` på `<html>` och lyssnar på systembyten så länge inget explicit val finns.
-2. **Ett inline-skript i `<head>`** kör samma logik innan första painten, så sidan aldrig blinkar i fel läge. Skriptet duplicerar modulens läsning av localStorage – håll nyckeln synkroniserad.
-3. **En växlingsknapp** i sidhuvudet anropar modulens toggle. Sol/måne-gliferna får ritas för hand – standardbiblioteket har inga sådana ikoner.
+1. **En färgmodul** (`color-mode.ts`) äger läget: den följer `prefers-color-scheme` tills användaren väljer explicit, sparar valet i localStorage under en egen nyckel, sätter eller tar bort `data-color-mode="dark"` på `<html>` och lyssnar på systembyten så länge inget explicit val finns.
+2. **Ett inline-skript i `<head>`** kör samma logik innan sidan ritas första gången, så den aldrig blinkar i fel läge. Skriptet upprepar modulens läsning av localStorage – håll nyckeln synkroniserad.
+3. **En växlingsknapp** i sidhuvudet anropar modulens toggle. Sol- och månsymbolerna får du rita själv – standardbiblioteket har inga sådana ikoner.
 
-Vänta dig ljusa snapshots vid prerendering: den statiska HTML:en byggs i ljust läge och inline-skriptet applicerar mörkt vid besök. Det är avsiktligt och räcker för en demo. En tjänst med krav på mörka snapshots behöver köra prerender i båda lägena.
+Vänta dig att de förrenderade sidorna är ljusa: den statiska HTML:en byggs i ljust läge och inline-skriptet applicerar mörkt vid besök. Det är avsiktligt och räcker för en demo. En tjänst med krav på förrenderade sidor i mörkt läge behöver köra prerender i båda lägena.
 
 ## Ikoner
 
 `@fkui/icon-lib-default` innehåller 31 ikoner (alert, arrow-down, arrow-in-circle, arrow-right, bars, bell, calendar, caret-down, caret-up, chevrons-left, circle, circle-notch-solid, close, cross, dash, doc, ellipsis, error, file, i, new-window, paper-clip, pdf, pen, pic, plus, search, sort, success, trashcan, triangle). Importera biblioteket en gång i appens startfil och rendera med `<f-icon name="...">`.
 
-Ett rikt ikonbibliotek (Phosphor med flera) har ingen motsvarighet här – mappa semantiskt per användningsfall (kalender → calendar, sök → search, läkare/vård → cross) och låt dekorativa ikoner utan motsvarighet bli text i stället för att ge fel betydelse. Ikonnamnet måste vara exakt: ett ogiltigt namn renderar tomt.
+Ett rikt ikonbibliotek (Phosphor med flera) har ingen motsvarighet här – välj ikon efter betydelse i varje användningsfall (kalender → calendar, sök → search, läkare/vård → cross) och låt dekorativa ikoner utan motsvarighet bli text i stället för att ge fel betydelse. Ikonnamnet måste vara exakt: ett ogiltigt namn renderar tomt.
 
 ## Komponenter och layout
 
@@ -142,7 +142,7 @@ Några mönster som demosajten bevisat:
 
 - **Navigeringsmeny med SPA-routing.** `FNavigationMenu` renderar ankare och dokumenterar själv mönstret: skicka rutter utan `href`, lyssna på `@selected-route` och anropa `router.push(key)`. Annars laddar webbläsaren om hela sidan vid history-routing. Den vertikala varianten (`vertical`) passar sekundärnavigering.
 - **Rullgardinsmenyer.** `FContextMenu` är FKUI:s popup-meny: en knapprubrik med `aria-haspopup="menu"` som ankare, menyval med `label`/`key`, styrning via `:is-open` och `@select`/`@close`. Fullt tangentbordsstöd ingår.
-- **Flikar.** FKUI saknar en flikkomponent (per 6.62). Bygg en tunn app-komponent med WAI-ARIA-tabs-mönstret (tablist/tab/tabpanel, piltangenter) stylad med tokens – ett par hundra rader, och inget wrapperskikt i temarepot behövs.
+- **Flikar.** FKUI saknar en flikkomponent (per 6.62). Bygg en tunn app-komponent med WAI-ARIA-tabs-mönstret (tablist/tab/tabpanel, piltangenter) formgiven med tokens – ett par hundra rader, och inget wrapperskikt i temarepot behövs.
 - **Brödsmulor.** De finns inte heller i FKUI. En tunn `<nav>` med ordnad lista, router-länkar och `aria-current="page"` räcker och blir rätt.
 - **Kort, listor och meddelanden.** `FCard` (rubrik via `#header`-slotten och dess `headingSlotClass`), `FMessageBox` (info/success/warning/error), `FBadge` och `FDataTable` täcker de flesta ytor. `FSortFilterDataset` runt en tabell ger sortering. `FPaginator` ger sidbrytning.
 - **Expanderbart innehåll och accordion.** `FExpandableParagraph` med `#title`-slotten. En accordion (en öppen åt gången) styrs med `:expanded` + `@toggle` från en ref. Lägg gärna temats FExpand-patch från playgrounden i en `fkui-patches.ts` – den åtgärdar en leave-bugg.
@@ -169,20 +169,20 @@ Registrera `ValidationPlugin` på appen och bygg formulären med `FValidationFor
 
 ## Sök (valfritt)
 
-Klientsökning utan backend: ett skript läser `src/router/index.ts`, hittar rutter med titel och beskrivning, strippar mallmarkupen i varje vy (direktiv, bindningar, mustascher och taggar) och skriver ett `public/search-index.json` med titel, url, utdrag och nyckelord per sida. En `useSearch`-composable hämtar indexet med `fetch(BASE_URL + "search-index.json")`, poängsätter träffar (rubrik > beskrivning > innehåll > nyckelord) och genererar utdrag. Sökrutan byggs på `FSearchTextField` med en live-dropdown som styrs av fokus, piltangenter och Esc – FSearchTextField saknar egen dropdown.
+Klientsökning utan backend: ett skript läser `src/router/index.ts` och hittar rutter med titel och beskrivning. I varje vy rensar skriptet bort mallkoden (direktiv, bindningar, mustascher och taggar) och skriver ett `public/search-index.json` med titel, url, utdrag och nyckelord per sida. En `useSearch`-composable hämtar indexet med `fetch(BASE_URL + "search-index.json")`, poängsätter träffar (rubrik > beskrivning > innehåll > nyckelord) och genererar utdrag. Sökrutan byggs på `FSearchTextField` med en rullista som öppnas medan du skriver och styrs av fokus, piltangenter och Esc – FSearchTextField saknar egen rullista.
 
 ## Prerendering och GitHub Pages (valfritt)
 
-En Playwright-körning efter `vite build` startar en statisk server över `dist/`, besöker varje rutt, väntar på att `#app` fylls och titeln stämmer, och skriver snapshot-HTML:en till `dist/<rutt>.html`. Bas-sökvägen (GitHub Pages-underkatalog) läses ut ur det byggda index.html, så servern matchar produktion. Kör hela kedjan som ett build-skript: indexgenerering → vue-tsc → vite build → prerender.
+En Playwright-körning efter `vite build` startar en statisk server över `dist/`, besöker varje rutt, väntar på att `#app` fylls och titeln stämmer, och skriver den förrenderade HTML:en till `dist/<rutt>.html`. Bas-sökvägen (GitHub Pages-underkatalog) läses ut ur det byggda index.html, så servern matchar produktion. Kör hela kedjan som ett build-skript: indexgenerering → vue-tsc → vite build → prerender.
 
-Eftersom innehållet på en demosajt är fiktivt följer indexeringsskydd med: `noindex, nofollow` i meta per rutt (sätt i router-guarden, så plockar snapshotarna upp det), `robots.txt` med disallow-all inklusive vanliga AI-botar, samt `_headers` med `X-Robots-Tag` och en `.nojekyll`-fil.
+Eftersom innehållet på en demosajt är fiktivt följer indexeringsskydd med: `noindex, nofollow` i meta per rutt (sätt i router-guarden, så följer det med i de förrenderade sidorna), `robots.txt` med disallow-all inklusive vanliga AI-botar, samt `_headers` med `X-Robots-Tag` och en `.nojekyll`-fil.
 
 ## Checklista
 
 - [ ] FKUI-paketen låsta exakt, felix-ds installerat från registret (eller låst mot en commit)
 - [ ] FKUI-css + förbyggd felix-css (eller scoped mixin-par i SCSS) – egen css med tokens endast
-- [ ] Color-modul + inline-skript + växlingsknapp – `color-scheme` verifierad i båda lägen
-- [ ] Typsnitt self-hostade – ingen font-CDN i bygget
+- [ ] Färgmodul + inline-skript + växlingsknapp – `color-scheme` verifierad i båda lägen
+- [ ] Typsnitten levereras från det egna bygget – ingen CDN
 - [ ] Formulär på FValidationForm med typade fält och kedjade validatorer
-- [ ] Sökindex genererat i bygget – sökrutan med tangentbordsstyrd dropdown
+- [ ] Sökindex genererat i bygget – sökrutan med tangentbordsstyrd rullista
 - [ ] Prerenderingen täcker alla rutter – noindex-paketet på plats
