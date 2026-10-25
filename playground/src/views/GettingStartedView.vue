@@ -25,9 +25,9 @@ const fkuiInstall = [
     <div class="view">
         <h1>Kom igång</h1>
         <p class="view__intro">
-            Fyra steg från ett tomt Vue 3-projekt till en tematisk FKUI-komponent:
-            installera FKUI:s paket, koppla felix-temat, ladda ikonerna och välj
-            hur mörkt läge styrs. Stegen följer guiden
+            Fyra steg från ett tomt Vue 3-projekt till en FKUI-komponent med
+            felix-temat på: installera FKUI:s paket, koppla temat, ladda
+            ikonerna och välja hur mörkt läge styrs. Stegen följer guiden
             <a href="https://github.com/pattespatte/felix-ds/blob/main/docs/create-a-site.sv.md">Skapa en webbplats med felix-ds</a>
             och visar samma versionslås som playgrounden själv använder –
             kontrollera alltid aktuell version inom det stödda intervallet.
@@ -37,13 +37,13 @@ const fkuiInstall = [
             <h2 id="installera-heading">1. Installera paketen</h2>
             <p>
                 Skapa ett Vue 3-projekt om du inte redan har ett – exemplen
-                här använder Vite, men felix-ds och FKUI fungerar med vilken
-                byggverktygskedja som helst – och
+                här använder Vite, men felix-ds och FKUI fungerar med vilka
+                byggverktyg som helst – och
                 lägg till FKUI:s publika paket med låsta versioner. Därefter
-                felix-temat – antingen från GitHub Packages (kräver en PAT med
-                <code>read:packages</code> i miljövariabeln
-                <code>GITHUB_PACKAGES_TOKEN</code>) eller som git-lås utan
-                registret:
+                lägger du till felix-temat – antingen från GitHub Packages
+                eller som git-lås utan registret. Registret kräver en personlig
+                åtkomsttoken (PAT) med <code>read:packages</code> i
+                miljövariabeln <code>GITHUB_PACKAGES_TOKEN</code>:
             </p>
             <pre class="setup-code" tabindex="0"><code>cat &gt; .npmrc &lt;&lt;'EOF'
 @pattespatte:registry=https://npm.pkg.github.com
@@ -61,9 +61,10 @@ bun add @pattespatte/felix-ds</code></pre>
             <h2 id="tema-heading">2. Ladda temat</h2>
             <p>
                 I appens startfil (i ett Vite- och Vue-projekt oftast
-                <code>src/main.ts</code>): FKUI:s komponentstil och typsnitt
-                först, sedan felix-lagret som vinner i kaskaden utan
-                <code>!important</code>. Den förbyggda filen innehåller även
+                <code>src/main.ts</code>) laddar du FKUI:s komponentstil och
+                typsnitt först och felix-lagret sist. Det som laddas sist
+                gäller – därför behövs inget <code>!important</code>. Den
+                förbyggda filen innehåller även
                 <code>@font-face</code>-reglerna – allt är självhostat, inga
                 CDN-anrop:
             </p>
@@ -75,7 +76,7 @@ import "@pattespatte/felix-ds/dist/felix.css";</code></pre>
                 Vill du följa systeminställningen i stället för att styra
                 färgläget själv byter du sista raden mot
                 <code>@pattespatte/felix-ds/dist/felix-auto.css</code> (båda
-                temana bakom <code>prefers-color-scheme</code>). Med
+                färglägena bakom <code>prefers-color-scheme</code>). Med
                 standardfilen styrs mörkt läge av attributet
                 <code>html[data-color-mode="dark"]</code>.
             </p>
@@ -87,8 +88,8 @@ import "@pattespatte/felix-ds/dist/felix.css";</code></pre>
                 Paketet skickar med en kurerad ikonuppsättning från
                 <a href="https://phosphoricons.com">Phosphor Icons</a>
                 (MIT-licens) i vikten bold. En importrad ersätter
-                standardikonbibliotekets teckningar bakom FIcons oförändrade
-                namn:
+                standardikonbibliotekets teckningar – ikonnamnen i FIcon är
+                oförändrade:
             </p>
             <pre class="setup-code" tabindex="0"><code>import "@pattespatte/felix-ds/src/icons/phosphor-spritesheet";</code></pre>
             <p>
@@ -100,11 +101,11 @@ import "@pattespatte/felix-ds/dist/felix.css";</code></pre>
         <section id="anpassa" aria-labelledby="anpassa-heading" class="demo">
             <h2 id="anpassa-heading">4. Anpassa temat (valfritt)</h2>
             <p>
-                Standardvägen kräver ingen Sass. Behöver du klass-scopa temat
-                (till exempel för att växla tema i körning) läser paketets
-                Sass-ingång
-                <code>@use "@pattespatte/felix-ds/src/index.scss"</code> med
-                mixinparet <code>felix.light</code>/<code>felix.dark</code>.
+                Standardvägen kräver ingen Sass. Behöver du avgränsa temat till en klass
+                (till exempel för att växla tema i körning) använder du
+                paketets Sass-ingång
+                <code>@use "@pattespatte/felix-ds/src/index.scss"</code>
+                tillsammans med mixinparet <code>felix.light</code>/<code>felix.dark</code>.
                 Hela receptet finns i guiden
                 <a href="https://github.com/pattespatte/felix-ds/blob/main/docs/create-a-site.sv.md">Skapa en webbplats med felix-ds</a>
                 och i README:s kompatibilitetsavsnitt.

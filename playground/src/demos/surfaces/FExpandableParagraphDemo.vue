@@ -10,7 +10,7 @@ const expanderad = ref(false);
     <section id="fexpandableparagraph" aria-labelledby="fexpandableparagraph-heading" class="demo">
         <component-heading id="fexpandableparagraph-heading" :names="['FExpandableParagraph']" />
         <p class="demo__description">
-            Expanderbar paragraf med egen knapp i rubriken.
+            Expanderbart stycke med egen knapp i rubriken.
         </p>
         <f-expandable-paragraph
             header-tag="h3"

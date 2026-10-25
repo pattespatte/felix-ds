@@ -11,8 +11,8 @@ import FDialogueTreeDemo from "../demos/modals/FDialogueTreeDemo.vue";
         <h1>Modaler och dialoger</h1>
         <p class="view__intro">
             Använd modalerna när en uppgift kräver fokus eller bekräftelse,
-            till exempel innan en destruktiv handling. Dialoger: modal,
-            bekräftelse, formulärmodal, snabbmeny och frågeträd.
+            till exempel innan en destruktiv handling. Här finns modal,
+            bekräftelsedialog, formulärmodal, snabbmeny och frågeträd.
         </p>
 
         <f-modal-demo />

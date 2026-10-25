@@ -12,10 +12,10 @@ import SelectableItemDemo from "../demos/css/SelectableItemDemo.vue";
     <div class="view">
         <h1>Endast CSS</h1>
         <p class="view__intro">
-            Använd CSS-mönstren när ett uttryck inte behöver komponentlogik –
+            Använd CSS-mönstren när ett element inte behöver komponentlogik –
             samma utseende, ren markup med FKUI:s klasser.
-            Där en komponent kräver formulärsfält (chip, selectable item)
-            används FFieldset med de klasser SCSS-komponenten stylar.
+            Där en komponent kräver formulärfält (chip, selectable item)
+            används FFieldset med de klasser som SCSS-komponenten stylar.
         </p>
 
         <anchor-demo />

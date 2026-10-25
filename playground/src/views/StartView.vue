@@ -45,7 +45,7 @@ const categories = views.filter((view) => view.slug !== "start");
             <ul>
                 <li>
                     Typografi: Noto Sans för all löptext, Roboto Slab för
-                    rubriker och display. Fetstil mappas till vikt 600 – inga
+                    rubriker och display. Fetstil återges med vikt 600 – inga
                     700-vikter bäddas in.
                 </li>
                 <li>

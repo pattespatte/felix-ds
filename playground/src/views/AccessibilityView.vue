@@ -75,8 +75,8 @@ const rows: ComponentRow[] = (Object.keys(fkuiComponentLinks) as FkuiComponentNa
         <section id="testning" aria-labelledby="testning-heading" class="demo">
             <h2 :id="`testning-heading`">Testning</h2>
             <p>
-                Varje vy i playgrounden scannas med axe i både ljust och mörkt läge, och sökfältets
-                öppna listruta scannas separat – sammanlagt {{ scanCount }} scanningar per körning
+                Varje vy i playgrounden skannas med axe i både ljust och mörkt läge, och sökfältets
+                öppna listruta skannas separat – sammanlagt {{ scanCount }} skanningar per körning
                 ({{ views.length }} vyer × 2 färglägen + 2). Noll överträdelser är ett villkor för
                 varje utgivning av paketet. Inga axe-regler är avstängda: ett fel som dyker upp
                 ska åtgärdas eller spåras till komponenterna uppströms – aldrig döljas.
@@ -119,8 +119,9 @@ const rows: ComponentRow[] = (Object.keys(fkuiComponentLinks) as FkuiComponentNa
             <h2 :id="`begransningar-heading`">Begränsningar</h2>
             <p>
                 axe hittar de fel som går att upptäcka automatiskt – kontraster, namn och roller bland
-                annat. Full afterlevnad av WCAG kräver också manuell granskning: verklig
-                tangentbordsordning, skärmläsartest och innehållets språk och struktur. Automatiserade
+                annat. Full efterlevnad av WCAG kräver också manuell granskning:
+                tangentbordsordningen i praktiken, test med skärmläsare samt innehållets språk och
+                struktur. Automatiserade
                 verktyg fångar vanligen omkring en tredjedel av WCAG:s efterlevnadskriterier.
             </p>
             <p>

@@ -9,7 +9,7 @@ const ort = ref("");
 <template>
     <section id="fselectfield" aria-labelledby="fselectfield-heading" class="demo">
         <component-heading id="fselectfield-heading" :names="['FSelectField']" />
-        <p class="demo__description">Rulllista med etikett.</p>
+        <p class="demo__description">Rullista med etikett.</p>
         <f-select-field v-model="ort">
             <template #label> Ort </template>
             <option value="goteborg">Göteborg</option>

@@ -65,7 +65,7 @@ const groups: GuideGroup[] = [
             { slug: "formular", id: "fradiofield", name: "FRadioField", text: "välja ett av flera kända alternativ" },
             { slug: "formular", id: "ffieldset", name: "FFieldset", text: "gruppera relaterade fält" },
             { slug: "formular", id: "flabel", name: "FLabel", text: "etikett kopplad till ett fält" },
-            { slug: "formular", id: "fstaticfield", name: "FStaticField", text: "visa statisk text i formulärsform" },
+            { slug: "formular", id: "fstaticfield", name: "FStaticField", text: "visa statisk text som ett formulärfält" },
             { slug: "formular", id: "foutputfield", name: "FOutputField", text: "visa utdata eller beräknat värde" },
             { slug: "formular", id: "fvalidationform", name: "FValidationForm", text: "formulär med samlad validering" },
             { slug: "formular", id: "ferrorlist", name: "FErrorList", text: "sammanfatta felen för användaren" },
@@ -121,7 +121,7 @@ const groups: GuideGroup[] = [
         title: "Navigation och layout",
         entries: [
             { slug: "navigation", id: "fnavigationmenu", name: "FNavigationMenu", text: "sektions- eller trädmeny" },
-            { slug: "navigation", id: "fpagelayout", name: "FPageLayout", text: "sidadlayout med paneler" },
+            { slug: "navigation", id: "fpagelayout", name: "FPageLayout", text: "sidlayout med paneler" },
             { slug: "navigation", id: "flayoutrightpanel", name: "FLayoutRightPanel", text: "högerpanel" },
         ],
     },
@@ -137,7 +137,7 @@ const groups: GuideGroup[] = [
             { slug: "tabeller", id: "fpaginatedataset", name: "FPaginateDataset", text: "sidindelad mängd" },
             { slug: "tabeller", id: "fpaginator", name: "FPaginator", text: "sidindelning" },
             { slug: "tabeller", id: "flist", name: "FList", text: "lista, med eller utan val" },
-            { slug: "tabeller", id: "fdefinitionlist", name: "FDefinitionList", text: "nyckelvärdelista" },
+            { slug: "tabeller", id: "fdefinitionlist", name: "FDefinitionList", text: "lista med nyckel och värde" },
         ],
     },
     {
@@ -153,7 +153,7 @@ const groups: GuideGroup[] = [
         id: "stegvisa",
         title: "Stegvisa flöden",
         entries: [
-            { slug: "wizard", id: "fwizard", name: "FWizard", text: "stegvis flöde i flera steg" },
+            { slug: "wizard", id: "fwizard", name: "FWizard", text: "flöde uppdelat i steg" },
         ],
     },
     {

@@ -31,8 +31,8 @@ import FErrorListDemo from "../demos/forms/FErrorListDemo.vue";
         <p class="view__intro">
             Använd formulärfälten när användaren ska mata in eller välja data –
             fälttyperna validerar inmatningen och ger återkoppling själva.
-            Grundläggande formulärfält: inmatning, val, gruppering, validering
-            och återkoppling. Prova båda temana med väljaren uppe till höger.
+            Här finns grundläggande fält för inmatning, val, gruppering,
+            validering och återkoppling. Prova båda temana med väljaren uppe till höger.
         </p>
 
         <f-text-field-demo />

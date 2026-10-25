@@ -17,9 +17,9 @@ import FOfflineDemo from "../demos/surfaces/FOfflineDemo.vue";
         <h1>Ytor och paneler</h1>
         <p class="view__intro">
             Använd ytorna när innehåll ska grupperas, expanderas eller
-            förklaras – kort, paneler, meddelanderutor och tooltips. Ytor som
-            samlar innehåll: kort, expanderbara ytor, meddelanden,
-            paneler och lägesbandoller.
+            förklaras. Här finns kort, expanderbara ytor, meddelanderutor,
+            tooltips, paneler och meddelandet som visas när användaren är
+            nedkopplad.
         </p>
 
         <f-card-demo />

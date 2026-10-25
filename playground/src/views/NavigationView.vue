@@ -9,7 +9,7 @@ import FLayoutRightPanelDemo from "../demos/navigation/FLayoutRightPanelDemo.vue
         <h1>Navigation och layout</h1>
         <p class="view__intro">
             Använd navigations- och layoutkomponenterna när sidans struktur ska
-            rymma menyer och paneler. Själva app skalet demonstrerar
+            rymma menyer och paneler. Själva appskalet demonstrerar
             redan FPageHeader, FLayoutApplicationTemplate, FLayoutLeftPanel och
             det SCSS-baserade layout-navigation-mönstret – det visas löpande i
             vänsterkolumnen.
