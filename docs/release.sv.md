@@ -48,6 +48,8 @@ Gå igenom listan innan du rör en tagg:
 
    Saknas linux-uppsättningen misslyckas utgivningsporten med felet ”snapshot doesn't exist … `-chromium-linux.png`” – det är porten som gör sitt jobb. Gå inte förbi den. Om firefox-halvan av cross-porten misslyckas på linux-runnern, behandla det som utgivningsstopp: linux är den första miljön där firefox körs alls (se steg 3).
 
+   Den veckovisa fredagsrondningen håller linux-uppsättningen aktuell utan det här momentet. När arbetsflödena körs och när den manuella vägen behövs står i [docs/maintenance.sv.md](maintenance.sv.md).
+
 ## 2. Ge ut versionen
 
 ```bash

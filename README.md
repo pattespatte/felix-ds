@@ -301,6 +301,10 @@ Playgrounden täcker alla 89 komponenter i FKUI:s publika paket (79 Vue-komponen
 
 Komponentregistret är strukturellt i stället för en handskriven lista. Varje komponent har en demofil, `playground/src/demos/<kategori>/<Komponent>Demo.vue`, och en länk som ankare i `playground/src/navigation.ts`. Subkomponenter och enums visas i sin förälders demo. Startvyns avsnitt ”Komponenter i playgrounden” hämtar kategorierna direkt från `navigation.ts`, så listan på sidan skiljer sig aldrig från menyn.
 
+### Underhåll och arbetsflöden
+
+Repots fem GitHub Actions-arbetsflöden – veckoronder, baseline-generering, utgivning – beskrivs i [docs/maintenance.sv.md](docs/maintenance.sv.md): vad som körs av sig självt, när du själv behöver göra något och hur arbetsflödena triggas.
+
 ## Kända valideringsfynd (tredjepartskod)
 
 <details>
@@ -642,6 +646,10 @@ Latest upgrade rehearsal: 6.60.0 → 6.62.0 (2026-10-15) was a visual no-op. The
 The playground covers all 89 components in FKUI's public packages (79 Vue components and 10 SCSS-only components), according to the component report for the installed version.
 
 The component registry is structural rather than a hand-written list. Every component has a demo file, `playground/src/demos/<category>/<Component>Demo.vue`, and a link as an anchor in `playground/src/navigation.ts`. Sub-components and enums appear in their parent's demo. The start view's "Components in the playground" section reads the categories straight from `navigation.ts`, so the list on the page never drifts from the menu.
+
+### Maintenance and workflows
+
+The repo's five GitHub Actions workflows – weekly rounds, baseline generation, releases – are covered in [docs/maintenance.en.md](docs/maintenance.en.md): what runs by itself, when you act, and how the workflows are triggered.
 
 ## Known validation findings (third-party code)
 

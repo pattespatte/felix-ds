@@ -48,6 +48,8 @@ Run through this list before touching a tag:
 
    A missing linux set fails the release gate with "snapshot doesn't exist … `-chromium-linux.png`" – that is the gate doing its job; don't bypass it. If the firefox half of the cross gate fails on the linux runner, treat it as a release blocker: linux is the first environment where firefox runs at all (see step 3).
 
+   The weekly Friday round keeps the linux set current without this step. When the workflows run and when the manual route is needed is covered in [docs/maintenance.en.md](maintenance.en.md).
+
 ## 2. Release steps
 
 ```bash
