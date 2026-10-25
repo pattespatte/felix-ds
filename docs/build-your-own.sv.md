@@ -29,7 +29,7 @@ Exportera det sammansatta temat som W3C DTCG-filer till designverktygen, och ta 
 ## 7. Bevisa det, lova det inte
 
 - **Demoplayground** – varje komponent demonstrerad i båda färglägena, med navigation, djuplänkar och sök drivna ur en källfil.
-- **Visuell port** – committade baselines för chromium (darwin lokalt, linux i utgivningen) plus en firefox/webkit-cross-uppsättning, omgenererade via ett dokumenterat arbetsflöde.
+- **Visuell port** – committade baselines för chromium, en uppsättning per plattform (darwin och linux), plus en firefox/webkit-cross-uppsättning, omgenererade via ett dokumenterat arbetsflöde.
 - **Tillgänglighetsport** – axe-skanningar av varje vy i båda färglägena med noll överträdelser som utgivningsvillkor, och en täckningstabell per komponent (mönstret i vyn Tillgänglighet).
 - **Paritetskit för konsumenter** – receptet som en konsuments CI kan köra för att bevisa att en versionsbump är pixelidentisk ([visual parity kit](./visual-parity-kit.en.md)).
 

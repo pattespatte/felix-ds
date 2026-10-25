@@ -7,9 +7,9 @@ Den här guiden är för den som underhåller repot (ägaren). Den besvarar tre 
 | Arbetsflöde | Startar | Vad det gör | Du agerar |
 | --- | --- | --- | --- |
 | `Deploy playground to GitHub Pages` (`deploy-playground.yml`) | varje push till `main` | bygger och publicerar playgrounden på GitHub Pages | aldrig |
-| `FKUI currency check` (`fkui-currency.yml`) | måndagar 08.00 svensk tid (vintertid), eller för hand | höjer de sex `@fkui/*`-versionerna till den senaste utgivna, kör hela porten och öppnar en pull request vid höjning | när en pull request eller en röd körning dyker upp |
-| `Friday baseline currency` (`friday-baseline-currency.yml`) | fredagar 13.00 svensk tid (vintertid), eller för hand | genererar om linux-baselinesna när det visuella ändrats, kör hela porten och pushar till `main` själv | `git pull` när den har pushat |
-| `Generate linux visual baselines` (`generate-linux-baselines.yml`) | bara för hand | renderar nya linux-baselines och laddar upp dem som en artefakt | inför en utgivning, när pixeländringar väntar på fredagen |
+| `FKUI currency check` (`fkui-currency.yml`) | måndagar 08.00 svensk tid (vintertid), eller för hand | höjer de sex `@fkui/*`-versionerna till den senaste versionen, kör hela porten och öppnar en pull request vid höjning | när en pull request eller en röd körning dyker upp |
+| `Friday baseline currency` (`friday-baseline-currency.yml`) | fredagar 13.00 svensk tid (vintertid), eller för hand | genererar om `linux-baselines` när det visuella ändrats, kör hela porten och pushar till `main` själv | `git pull` när den har pushat |
+| `Generate linux visual baselines` (`generate-linux-baselines.yml`) | bara för hand | renderar nya `linux-baselines` och laddar upp dem som en artefakt | inför en utgivning, när pixeländringar väntar på fredagen |
 | `Release to GitHub Packages` (`release.yml`) | push av en `v*`-tagg | bygger, kör portarna, publicerar paketet och skapar GitHub-releasen | enligt [utgivningsdokumentationen](release.sv.md) |
 
 Cron-tiderna står i UTC, så de svenska klockslagen flyttas en timme vid sommar- och vintertidsomläggningen.
@@ -18,9 +18,9 @@ Cron-tiderna står i UTC, så de svenska klockslagen flyttas en timme vid sommar
 
 Inget behöver förberedas. Båda schemalagda körningarna startar av sig själva.
 
-### Fredagen: linux-baselinesna hålls aktuella
+### Fredagen: `linux-baselines` hålls aktuella
 
-Körningen börjar med en ren git-kontroll: har inget som styr det visuella (playgroundens vyer, temakällor, tokens, testkonfiguration, låsfil) ändrats sedan senaste linux-regenereringen, avslutar den grönt utan att köra ett enda test. I annat fall genererar den om linux-uppsättningen, komprimerar om png-filerna förlustfritt, kör hela porten (paritetstester, bygge, typkontroll, visuella jämförelser i tre webbläsare, axe-skanningar) och pushar resultatet till `main` som committen ”test(visual): regenerate linux baselines (friday currency)”. Efteråt gör du en enda sak: `git pull`.
+Körningen börjar med en ren git-kontroll: har inget som styr det visuella (playgroundens vyer, temakällor, tokens, testkonfiguration, låsfil) ändrats sedan `linux-baselines` senast genererades om, avslutar den grönt utan att köra ett enda test. I annat fall genererar den om `linux-baselines`, komprimerar om png-filerna förlustfritt, kör hela porten (paritetstester, bygge, typkontroll, visuella jämförelser i tre webbläsare, axe-skanningar) och pushar resultatet till `main` som committen ”test(visual): regenerate linux baselines (friday currency)”. Efteråt gör du en enda sak: `git pull`.
 
 ### Måndagen: FKUI-kontrollen
 
@@ -28,11 +28,13 @@ Har FKUI inte gett ut någon ny version avslutar körningen grönt utan att öpp
 
 ## När du behöver göra något själv
 
+Baselines finns i två uppsättningar, en per plattform: filnamnen slutar på `-darwin` eller `-linux`, och Playwright väljer själv rätt uppsättning när testerna körs. På mac jämförs `darwin-baselines` och på Ubuntu `linux-baselines`. Oavsett plattform renderas `linux-baselines` alltid av arbetsflödena, på den låsta runner-bilden som porten jämför mot.
+
 ### Du har ändrat pixlar i en vy
 
-Har du genererat om darwin-baselinesna och pushat är linux-speglingen det enda som saknas. Fredagens körning plockar upp den automatiskt. Ska du ge ut en version innan fredagen, generera linux-uppsättningen för hand (nästa avsnitt). Utgivningsporten och måndagskörningen jämför mot linux-baselinesna och blir röda när de är gamla eller saknas.
+Har du ändrat en vy och pushat är det `linux-baselines` som saknas. (På mac genererar du först om `darwin-baselines` lokalt.) Fredagens körning plockar upp linux-uppsättningen automatiskt. Ska du ge ut en version innan fredagen, generera `linux-baselines` för hand (nästa avsnitt). Utgivningsporten och måndagskörningen jämför mot `linux-baselines` och blir röda när de är gamla eller saknas.
 
-### Du behöver linux-baselinesna nu
+### Du behöver `linux-baselines` nu
 
 Typiskt fall: en utgivning står för dörren och pixeländringar pushades efter senaste fredagen. Starta arbetsflödet och följ det. Körningen tar cirka 10 minuter och publicerar ingenting:
 
@@ -62,7 +64,7 @@ gh workflow run friday-baseline-currency.yml --repo pattespatte/felix-ds --ref m
 gh workflow run fkui-currency.yml --repo pattespatte/felix-ds --ref main
 ```
 
-Fredagskörningen är ofarlig att trigga när som helst: är baselinesna redan aktuella avslutar den grönt utan att göra något.
+Fredagskörningen är ofarlig att trigga när som helst: är `linux-baselines` redan aktuella avslutar den grönt utan att göra något.
 
 ### Måndagskörningen är röd
 
@@ -70,7 +72,7 @@ Vanligaste orsaken är en gammal linux-uppsättning, och felet ”snapshot doesn
 
 ## Fallgropar
 
-- **”Re-run failed jobs” återanvänder den gamla committen.** En schemalagd körning som tävlat med en baseline-regenerering måste köras mot nya `main`. Starta en ny körning (Run workflow eller `gh workflow run`) i stället för att köra om den gamla.
+- **”Re-run failed jobs” återanvänder den gamla committen.** En schemalagd körning som hunnit starta innan nya baselines pushats måste köras om mot nya `main`. Starta en ny körning (Run workflow eller `gh workflow run`) i stället för att köra om den gamla.
 - **Bot-commits landar på `main`.** Fredagskörningen committar sina baselines direkt. Kör `git pull` innan du fortsätter arbeta lokalt.
 - **Scheman kräver filen på standardgrenen**, och GitHub stänger av dem efter 60 dagar utan repoaktivitet. Efter ett längre uppehåll: kontrollera att båda veckokörningarna verkligen kördes.
 - **Tiderna i cron-raderna är UTC.** Klockslagen i den här guiden är vintertid och flyttas en timme på sommaren.

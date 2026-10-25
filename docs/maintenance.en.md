@@ -28,9 +28,11 @@ If FKUI has not published a new version, the run exits green without opening any
 
 ## When you act yourself
 
+The baselines come in two sets, one per platform: the file names end in `-darwin` or `-linux`, and Playwright picks the matching set when the tests run. On a mac the comparisons therefore use `darwin-baselines`, on Ubuntu `linux-baselines`. Whatever machine you sit at, `linux-baselines` are always rendered by the workflows, on the pinned runner image the gate compares against.
+
 ### You changed pixels in a view
 
-If you regenerated the darwin baselines and pushed, the linux mirror is the only thing missing. Friday's run picks it up automatically. If you are releasing before Friday, generate the linux set by hand (next section): the release gate and the Monday run compare against the linux baselines and go red when they are stale or missing.
+If you changed a view and pushed, `linux-baselines` are the only thing missing. (On a mac, regenerate `darwin-baselines` locally first.) Friday's run picks up the linux set automatically. If you are releasing before Friday, generate `linux-baselines` by hand (next section): the release gate and the Monday run compare against `linux-baselines` and go red when they are stale or missing.
 
 ### You need the linux baselines now
 

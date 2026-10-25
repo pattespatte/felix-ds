@@ -17,7 +17,7 @@ Gå igenom listan innan du rör en tagg:
 
    Är versionen `>= 7.0.0` är utgivningen blockerad tills temat verifierats mot den nya majorversionen (och playgroundens låsta utvecklingsversioner höjts), eller tills peer-intervallet i `package.json` medvetet har snävats av. Läs också snabbt igenom changeloggen för varje `@fkui/*`-utgivning inom det stödda intervallet sedan förra felix-ds-utgivningen, och håll utkik efter ändringar i tokensytan.
 3. **Porten grön lokalt.** `bun install`, `bun run build`, `bunx vue-tsc --noEmit` och framför allt `bun run test:visual` (45 visuella baselines + 32 axe-skanningar) passerar på din maskin. `bun run test:visual:cross` kör firefox/webkit-halvan av porten. På macOS kan bara webkit-halvan köras lokalt – firefox-Playwright-bygget startar inte på darwin 27 (”Could not find profile folder”), så firefox körs först på linux-runnern (steg 5).
-4. **Aktuella baselines.** Har playgrounden ändrats sedan förra utgivningen: generera om baselinesna och granska dem först:
+4. **Aktuella baselines.** Har playgrounden ändrats sedan förra utgivningen: generera om `baselines` och granska dem först:
 
    ```bash
    bun run test:visual:update
@@ -25,7 +25,7 @@ Gå igenom listan innan du rör en tagg:
    ```
 
    En baseline-uppdatering är ett granskat beslut, aldrig en knapp för att ”få porten grön”: varje pixeländring ska gå att förklara.
-5. **Linux-baselines för CI.** Utgivningsarbetsflödet kör `bun run test:visual` och `bun run test:visual:cross` på ubuntu-24.04 (låst bild, så omgenererade baselines matchar alltid utgivningsrunnerns miljö), vilket kräver baselines med suffixet `-linux`. Generera om dem när darwin-baselinesna har ändrats, via repots arbetsflöde **Generate linux visual baselines** (ingen docker behövs lokalt):
+5. **Linux-baselines för CI.** Utgivningsarbetsflödet kör `bun run test:visual` och `bun run test:visual:cross` på ubuntu-24.04 (låst bild, så omgenererade baselines matchar alltid utgivningsrunnerns miljö), vilket kräver baselines med suffixet `-linux`. Generera om dem när `darwin-baselines` har ändrats, via repots arbetsflöde **Generate linux visual baselines** (ingen docker behövs lokalt):
 
    1. GitHub → Actions → *Generate linux visual baselines* → **Run workflow** på `main` (tar cirka 10 minuter och kör `--update-snapshots` för chromium, webkit och firefox på en ubuntu-runner och laddar upp båda snapshot-mapparna som artefakten `linux-baselines`.) Den går också att starta från terminalen:
 
@@ -72,7 +72,7 @@ git tag -a vX.Y.Z -m "felix-ds vX.Y.Z"
    git push origin main --follow-tags
    ```
 
-4. Följ Actions-körningen för arbetsflödet **Release to GitHub Packages** (`.github/workflows/release.yml`). Den checkar ut repot, installerar med låst lockfile, bygger, typkontrollerar, kör den visuella porten (45 skärmdumpsjämförelser i chromium + 60 cross-jämförelser i firefox/webkit mot linux-baselinesna + 32 axe-skanningar), publicerar `@pattespatte/felix-ds` på npm.pkg.github.com och skapar GitHub-releasen med genererade versionsfakta.
+4. Följ Actions-körningen för arbetsflödet **Release to GitHub Packages** (`.github/workflows/release.yml`). Den checkar ut repot, installerar med låst lockfile, bygger, typkontrollerar, kör den visuella porten (45 skärmdumpsjämförelser i chromium + 60 cross-jämförelser i firefox/webkit mot `linux-baselines` + 32 axe-skanningar), publicerar `@pattespatte/felix-ds` på npm.pkg.github.com och skapar GitHub-releasen med genererade versionsfakta.
 5. Granska versionsfakta i GitHub-releasen och redigera dem för läsbarhet om det behövs (de genereras från commits – CHANGELOG.md är den källa som underhålls för hand).
 
 ## 3. Efter utgivningen

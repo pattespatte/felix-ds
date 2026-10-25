@@ -29,7 +29,7 @@ Export the composed theme as W3C DTCG files for design tools, and accept any W3C
 ## 7. Prove it, don't promise it
 
 - **Demo playground** – every component demonstrated in both colour modes, with navigation, deep links and search driven from one source file.
-- **Visual gate** – committed baselines for chromium (darwin locally, linux in the release) plus a firefox/webkit cross-browser set, regenerated through a documented workflow.
+- **Visual gate** – committed baselines for chromium, one set per platform (darwin and linux), plus a firefox/webkit cross-browser set, regenerated through a documented workflow.
 - **Accessibility gate** – axe scans of every view in both colour modes with zero violations as the release condition, and a per-component coverage table (the Tillgänglighet view pattern).
 - **Consumer parity kit** – the recipe a consumer's CI can run to prove a version bump is pixel-identical ([visual parity kit](./visual-parity-kit.en.md)).
 
