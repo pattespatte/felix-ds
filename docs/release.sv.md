@@ -109,7 +109,7 @@ git tag -a vX.Y.Z -m "felix-ds vX.Y.Z"
   npm view @pattespatte/felix-ds@latest version --registry=https://npm.pkg.github.com --//npm.pkg.github.com/:_authToken=$GITHUB_PACKAGES_TOKEN
   ```
 
-- `deploy-playground.yml` triggas också av pushen (den körs vid varje push till `main`). Det är väntat och harmlöst – playgrounden deployas bara.
+- `deploy-playground.yml` triggas också av pushen: versionshöjningen rör `package.json`, en av sökvägarna den lyssnar på. Det är väntat och harmlöst – playgrounden deployas bara.
 
 ## 4. Om något går fel
 

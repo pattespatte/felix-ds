@@ -3,6 +3,16 @@ name: Deploy playground to GitHub Pages
 on:
   push:
     branches: [main]
+    # Only the paths the playground build consumes: its own sources, the
+    # theme itself (src/), the search-index generator the vite config
+    # imports, and the locked dependencies. Changes to docs/, e2e/,
+    # tokens/ and friends skip the deploy.
+    paths:
+      - "playground/**"
+      - "src/**"
+      - "scripts/search-index.ts"
+      - "package.json"
+      - "bun.lockb"
   workflow_dispatch:
 
 permissions:

@@ -6,7 +6,7 @@ This guide is for whoever maintains the repo (the owner). It answers three quest
 
 | Workflow | Starts | What it does | You act |
 | --- | --- | --- | --- |
-| Deploy playground to GitHub Pages (`deploy-playground.yml`) | every push to `main` | builds and publishes the playground to GitHub Pages | never |
+| Deploy playground to GitHub Pages (`deploy-playground.yml`) | push to `main` touching the playground build (its sources, `src/`, the search-index generator, the lockfile) | builds and publishes the playground to GitHub Pages | never |
 | FKUI currency check (`fkui-currency.yml`) | Mondays 08:00 Swedish time (winter), or manually | bumps the six `@fkui/*` pins to the latest version, runs the full gate, opens a pull request when there is a bump | when a pull request or a red run appears |
 | Friday baseline currency (`friday-baseline-currency.yml`) | Fridays 13:00 Swedish time (winter), or manually | regenerates the linux visual baselines when visuals have changed, runs the full gate, pushes to `main` itself | `git pull` after it has pushed |
 | Generate linux visual baselines (`generate-linux-baselines.yml`) | only manually | renders fresh linux baselines and uploads them as an artifact | before a release, when pixel changes are still waiting for Friday |

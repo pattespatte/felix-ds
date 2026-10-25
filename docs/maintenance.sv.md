@@ -6,7 +6,7 @@ Den här guiden är för den som underhåller repot (ägaren). Den besvarar tre 
 
 | Arbetsflöde | Startar | Vad det gör | Du agerar |
 | --- | --- | --- | --- |
-| `Deploy playground to GitHub Pages` (`deploy-playground.yml`) | varje push till `main` | bygger och publicerar playgrounden på GitHub Pages | aldrig |
+| `Deploy playground to GitHub Pages` (`deploy-playground.yml`) | push till `main` som rör playgroundens bygge (egna källor, `src/`, sökindexgeneratorn, låsfilen) | bygger och publicerar playgrounden på GitHub Pages | aldrig |
 | `FKUI currency check` (`fkui-currency.yml`) | måndagar 08.00 svensk tid (vintertid), eller för hand | höjer de sex `@fkui/*`-versionerna till den senaste versionen, kör hela porten och öppnar en pull request vid höjning | när en pull request eller en röd körning dyker upp |
 | `Friday baseline currency` (`friday-baseline-currency.yml`) | fredagar 13.00 svensk tid (vintertid), eller för hand | genererar om `linux-baselines` när det visuella ändrats, kör hela porten och pushar till `main` själv | `git pull` när den har pushat |
 | `Generate linux visual baselines` (`generate-linux-baselines.yml`) | bara för hand | renderar nya `linux-baselines` och laddar upp dem som en artefakt | inför en utgivning, när pixeländringar väntar på fredagen |

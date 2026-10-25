@@ -109,7 +109,7 @@ git tag -a vX.Y.Z -m "felix-ds vX.Y.Z"
   npm view @pattespatte/felix-ds@latest version --registry=https://npm.pkg.github.com --//npm.pkg.github.com/:_authToken=$GITHUB_PACKAGES_TOKEN
   ```
 
-- `deploy-playground.yml` also fires on this push (it triggers on every push to `main`). That is expected and harmless – the playground just deploys.
+- `deploy-playground.yml` also fires on this push: the version bump touches `package.json`, one of the paths it listens for. That is expected and harmless – the playground just deploys.
 
 ## 4. Rollback
 
