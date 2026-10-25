@@ -4,6 +4,32 @@ Det här dokumentet är det enda, uttryckliga undantaget från projektets förbu
 
 Utgivningsflödet är: förbered lokalt → tagga → **pusha (ägarestyrt)** → GitHub Actions bygger, kör portarna och publicerar → granska GitHub-releasen.
 
+```mermaid
+flowchart TD
+    A["Förbered lokalt<br>rent träd, ärligt FKUI-intervall,<br>portarna gröna lokalt"] --> B{"Aktuella baselines?<br>egen plattform + linux för CI"}
+    B -- Nej --> C["Generera om den egna uppsättningen<br>och granska varje pixeländring"]
+    C --> E["Kör generate-linux-baselines<br>kopiera *-linux.png, komprimera om,<br>verifiera AE = 0, committa båda"]
+    B -- Ja --> F["Committa versionshöjning + changelog<br>chore(release): prepare vX.Y.Z"]
+    E --> F
+    F --> G["Annoterad tagg vX.Y.Z"]
+    G --> H["ÄGARSTYRT<br>git push origin main --follow-tags<br>projektets enda push"]
+    H --> I["Release to GitHub Packages<br>bygger, typkontrollerar, kör portarna,<br>publicerar och skapar releasen"]
+    I -- Röd --> A
+    I -- Grön --> J["Granska versionsfakta,<br>fyll i uppgraderingsnoteringarna"]
+    J --> K["Kontrollera installationen<br>npm view med konsument-PAT"]
+    I -.-> N["deploy-playground.yml triggas också<br>väntat och harmlöst"]
+
+    classDef step fill:#f6f3ee,stroke:#232948,stroke-width:1px,color:#081130,rx:10,ry:10
+    classDef decision fill:#e7f2ff,stroke:#0053a7,stroke-width:1px,color:#081130,rx:10,ry:10
+    classDef owner fill:#232948,stroke:#232948,stroke-width:1px,color:#ffffff,font-weight:600,rx:10,ry:10
+    classDef note fill:#f7f8f8,stroke:#8c93a4,stroke-width:1px,color:#585f71,rx:10,ry:10
+
+    class A,C,E,F,G,I,J,K step
+    class B decision
+    class H owner
+    class N note
+```
+
 ## 1. Förutsättningar
 
 Gå igenom listan innan du rör en tagg:
@@ -16,7 +42,7 @@ Gå igenom listan innan du rör en tagg:
    ```
 
    Är versionen `>= 7.0.0` är utgivningen blockerad tills temat verifierats mot den nya majorversionen (och playgroundens låsta utvecklingsversioner höjts), eller tills peer-intervallet i `package.json` medvetet har snävats av. Läs också snabbt igenom changeloggen för varje `@fkui/*`-utgivning inom det stödda intervallet sedan förra felix-ds-utgivningen, och håll utkik efter ändringar i tokensytan.
-3. **Porten grön lokalt.** `bun install`, `bun run build`, `bunx vue-tsc --noEmit` och framför allt `bun run test:visual` (45 visuella baselines + 32 axe-skanningar) passerar på din maskin. `bun run test:visual:cross` kör firefox/webkit-halvan av porten. På macOS kan bara webkit-halvan köras lokalt – firefox-Playwright-bygget startar inte på darwin 27 (”Could not find profile folder”), så firefox körs först på linux-runnern (steg 5).
+3. **Porten grön lokalt.** `bun install`, `bun run build`, `bunx vue-tsc --noEmit` och framför allt `bun run test:visual` (45 visuella baselines + 32 axe-skanningar) passerar på din maskin. `bun run test:visual:cross` kör firefox/webkit-halvan av porten, så långt de lokala Playwright-byggena tillåter – det som inte kan starta lokalt körs först på linux-runnern (steg 5). Känt exempel: på macOS startar inte firefox-Playwright-bygget på darwin 27 (”Could not find profile folder”).
 4. **Aktuella baselines.** Har playgrounden ändrats sedan förra utgivningen: generera om `baselines` och granska dem först:
 
    ```bash
@@ -25,7 +51,7 @@ Gå igenom listan innan du rör en tagg:
    ```
 
    En baseline-uppdatering är ett granskat beslut, aldrig en knapp för att ”få porten grön”: varje pixeländring ska gå att förklara.
-5. **Linux-baselines för CI.** Utgivningsarbetsflödet kör `bun run test:visual` och `bun run test:visual:cross` på ubuntu-24.04 (låst bild, så omgenererade baselines matchar alltid utgivningsrunnerns miljö), vilket kräver baselines med suffixet `-linux`. Generera om dem när `darwin-baselines` har ändrats, via repots arbetsflöde **Generate linux visual baselines** (ingen docker behövs lokalt):
+5. **Linux-baselines för CI.** Utgivningsarbetsflödet kör `bun run test:visual` och `bun run test:visual:cross` på ubuntu-24.04 (låst bild, så omgenererade baselines matchar alltid utgivningsrunnerns miljö), vilket kräver baselines med suffixet `-linux`. Baselines är per plattform: Playwright väljer suffixet som matchar maskinen testerna körs på, och repot har linux-uppsättningen plus en för den egna maskinen (darwin i det här repot; i en ren linux-miljö, till exempel en Ubuntu-VM, är de två samma filer). Generera om linux-uppsättningen när den egna uppsättningen har ändrats, via repots arbetsflöde **Generate linux visual baselines** (ingen docker behövs lokalt):
 
    1. GitHub → Actions → *Generate linux visual baselines* → **Run workflow** på `main` (tar cirka 10 minuter och kör `--update-snapshots` för chromium, webkit och firefox på en ubuntu-runner och laddar upp båda snapshot-mapparna som artefakten `linux-baselines`.) Den går också att starta från terminalen:
 
@@ -34,7 +60,7 @@ Gå igenom listan innan du rör en tagg:
       gh run watch --repo pattespatte/felix-ds   # valfritt, live-vy
       ```
 
-   2. Ladda ner artefakten och kopiera **endast** filerna `*-linux.png` till de två snapshot-mapparna (den innehåller även darwin-uppsättningen – strunta i den):
+   2. Ladda ner artefakten och kopiera **endast** filerna `*-linux.png` till de två snapshot-mapparna (den innehåller även filer som committats för andra plattformar – strunta i dem):
 
       ```bash
       gh run download --repo pattespatte/felix-ds -n linux-baselines -D /tmp/linux-baselines
@@ -44,9 +70,9 @@ Gå igenom listan innan du rör en tagg:
       ls e2e/visual-cross.spec.ts-snapshots/*-linux.png | wc -l  # väntat tal: 60 (alla 15 vyer × 2 lägen × 2 webbläsare)
       ```
 
-   3. Komprimera om varje ny png förlustfritt och verifiera mot originalet med `compare -metric AE original.png rekomprimerad.png null:` (ska skriva ut `0 (0)`), kör sedan `bun run test:visual` lokalt (bekräftar att darwin-uppsättningen fortfarande godkänns) och committa linux-png:erna tillsammans med darwin-png:erna. Playwright väljer det suffix som matchar runner-plattformen när testerna körs.
+   3. Komprimera om varje ny png förlustfritt och verifiera mot originalet med `compare -metric AE original.png rekomprimerad.png null:` (ska skriva ut `0 (0)`), kör sedan `bun run test:visual` lokalt (bekräfter att den egna uppsättningen fortfarande godkänns) och committa linux-png:erna tillsammans med den egna uppsättningen. Playwright väljer det suffix som matchar runner-plattformen när testerna körs.
 
-   Saknas linux-uppsättningen misslyckas utgivningsporten med felet ”snapshot doesn't exist … `-chromium-linux.png`” – det är porten som gör sitt jobb. Gå inte förbi den. Om firefox-halvan av cross-porten misslyckas på linux-runnern, behandla det som utgivningsstopp: linux är den första miljön där firefox körs alls (se steg 3).
+   Saknas linux-uppsättningen misslyckas utgivningsporten med felet ”snapshot doesn't exist … `-chromium-linux.png`” – det är porten som gör sitt jobb. Gå inte förbi den. Om firefox-halvan av cross-porten misslyckas på linux-runnern, behandla det som utgivningsstopp: linux-runnern kan vara den första miljön där firefox körs (se steg 3).
 
    Den veckovisa fredagsrondningen håller linux-uppsättningen aktuell utan det här momentet. När arbetsflödena körs och när den manuella vägen behövs står i [docs/maintenance.sv.md](maintenance.sv.md).
 

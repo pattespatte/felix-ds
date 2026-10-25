@@ -4,6 +4,32 @@ This document is the single, explicit exception to the project's no-push rule: *
 
 The release flow is: prepare locally → tag → **push (owner-gated)** → GitHub Actions builds, gates and publishes → review the GitHub Release.
 
+```mermaid
+flowchart TD
+    A["Prepare locally<br>clean tree, FKUI range honest,<br>gates green locally"] --> B{"Baselines current?<br>your platform + linux for CI"}
+    B -- No --> C["Regenerate your local set<br>and review every pixel change"]
+    C --> E["Run generate-linux-baselines<br>copy *-linux.png, recompress,<br>verify AE = 0, commit both sets"]
+    B -- Yes --> F["Commit version bump + changelog<br>chore(release): prepare vX.Y.Z"]
+    E --> F
+    F --> G["Annotated tag vX.Y.Z"]
+    G --> H["OWNER-GATED<br>git push origin main --follow-tags<br>the project's only push"]
+    H --> I["Release to GitHub Packages<br>builds, type-checks, runs the gates,<br>publishes and creates the release"]
+    I -- Red --> A
+    I -- Green --> J["Review the release notes,<br>fill in the upgrade-notes template"]
+    J --> K["Verify installability<br>npm view with a consumer PAT"]
+    I -.-> N["deploy-playground.yml also fires<br>expected, harmless"]
+
+    classDef step fill:#f6f3ee,stroke:#232948,stroke-width:1px,color:#081130,rx:10,ry:10
+    classDef decision fill:#e7f2ff,stroke:#0053a7,stroke-width:1px,color:#081130,rx:10,ry:10
+    classDef owner fill:#232948,stroke:#232948,stroke-width:1px,color:#ffffff,font-weight:600,rx:10,ry:10
+    classDef note fill:#f7f8f8,stroke:#8c93a4,stroke-width:1px,color:#585f71,rx:10,ry:10
+
+    class A,C,E,F,G,I,J,K step
+    class B decision
+    class H owner
+    class N note
+```
+
 ## 1. Preconditions
 
 Run through this list before touching a tag:
@@ -16,7 +42,7 @@ Run through this list before touching a tag:
    ```
 
    If this is `>= 7.0.0`, the release is blocked until the theme is verified against the new major (and the playground's dev pins bumped), or the peer range in `package.json` is deliberately narrowed. Also skim the changelog of every `@fkui/*` release inside the supported range since the last felix-ds release for token-surface changes.
-3. **Gate green locally.** `bun install`, `bun run build`, `bunx vue-tsc --noEmit` and especially `bun run test:visual` (screenshot comparisons of every view plus the axe scans) all pass on your machine. `bun run test:visual:cross` runs the firefox/webkit half of the gate; on macOS only the webkit half can run locally – firefox's Playwright build does not launch on darwin 27 ("Could not find profile folder"), so firefox is first exercised on the linux runner (step 5).
+3. **Gate green locally.** `bun install`, `bun run build`, `bunx vue-tsc --noEmit` and especially `bun run test:visual` (screenshot comparisons of every view plus the axe scans) all pass on your machine. `bun run test:visual:cross` runs the firefox/webkit half of the gate, as far as your local Playwright builds allow; whatever cannot launch locally is first exercised on the linux runner (step 5). Known example: on macOS, firefox's Playwright build does not launch on darwin 27 ("Could not find profile folder").
 4. **Baselines current.** If the playground changed since the last release, regenerate and review baselines first:
 
    ```bash
@@ -25,7 +51,7 @@ Run through this list before touching a tag:
    ```
 
    A baseline update is a reviewed decision, never a "make the gate pass" button: every pixel change must be explainable.
-5. **Linux baselines for CI.** The release workflow runs `bun run test:visual` and `bun run test:visual:cross` on ubuntu-24.04 (pinned, so regenerated baselines always match the release runner's image), which needs `-linux` suffixed baselines. Regenerate them whenever the darwin baselines changed, via the repo's **Generate linux visual baselines** workflow (no docker needed locally):
+5. **Linux baselines for CI.** The release workflow runs `bun run test:visual` and `bun run test:visual:cross` on ubuntu-24.04 (pinned, so regenerated baselines always match the release runner's image), which needs `-linux` suffixed baselines. Baselines are per platform: Playwright picks the suffix matching the machine it runs on, and the repo carries the linux set plus one for the maintainer's own machine (darwin in this repo; in an all-linux shop, an Ubuntu VM for example, the two are the same files). Regenerate the linux set whenever your local set changed, via the repo's **Generate linux visual baselines** workflow (no docker needed locally):
 
    1. GitHub → Actions → *Generate linux visual baselines* → **Run workflow** on `main` (about 10 minutes; it runs `--update-snapshots` for chromium, webkit and firefox on an ubuntu runner and uploads both snapshot folders as the `linux-baselines` artifact). Triggering it is also possible from a terminal:
 
@@ -34,7 +60,7 @@ Run through this list before touching a tag:
       gh run watch --repo pattespatte/felix-ds   # optional, live view
       ```
 
-   2. Download the artifact and copy **only** the `*-linux.png` files into the two snapshot directories (it also contains the darwin set – ignore those):
+   2. Download the artifact and copy **only** the `*-linux.png` files into the two snapshot directories (it also contains the snapshot files committed for other platforms – ignore those):
 
       ```bash
       gh run download --repo pattespatte/felix-ds -n linux-baselines -D /tmp/linux-baselines
@@ -44,9 +70,9 @@ Run through this list before touching a tag:
       ls e2e/visual-cross.spec.ts-snapshots/*-linux.png | wc -l  # expect 60 (15 views × 2 modes × 2 browsers)
       ```
 
-   3. Recompress every new PNG losslessly and verify the result against the original with `compare -metric AE original.png recompressed.png null:` (must print `0 (0)`), then run `bun run test:visual` locally (confirms the darwin set still passes side by side) and commit the linux PNGs together with the darwin ones. Playwright picks the suffix matching the runner platform at test time.
+   3. Recompress every new PNG losslessly and verify the result against the original with `compare -metric AE original.png recompressed.png null:` (must print `0 (0)`), then run `bun run test:visual` locally (confirms your local set still passes side by side) and commit the linux PNGs together with your local set. Playwright picks the suffix matching the runner platform at test time.
 
-   A missing linux set fails the release gate with "snapshot doesn't exist … `-chromium-linux.png`" – that is the gate doing its job; don't bypass it. If the firefox half of the cross gate fails on the linux runner, treat it as a release blocker: linux is the first environment where firefox runs at all (see step 3).
+   A missing linux set fails the release gate with "snapshot doesn't exist … `-chromium-linux.png`" – that is the gate doing its job; don't bypass it. If the firefox half of the cross gate fails on the linux runner, treat it as a release blocker: the linux runner may be the first environment where firefox runs (see step 3).
 
    The weekly Friday round keeps the linux set current without this step. When the workflows run and when the manual route is needed is covered in [docs/maintenance.en.md](maintenance.en.md).
 

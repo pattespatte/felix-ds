@@ -28,7 +28,7 @@ Har FKUI inte gett ut någon ny version avslutar körningen grönt utan att öpp
 
 ## När du behöver göra något själv
 
-Baselines finns i två uppsättningar, en per plattform: filnamnen slutar på `-darwin` eller `-linux`, och Playwright väljer själv rätt uppsättning när testerna körs. På mac jämförs `darwin-baselines` och på Ubuntu `linux-baselines`. Oavsett plattform renderas `linux-baselines` alltid av arbetsflödena, på den låsta runner-bilden som porten jämför mot.
+Baselines finns i uppsättningar, en per plattform: filnamnen slutar på plattformens suffix (`-darwin`, `-linux`), och Playwright väljer själv rätt uppsättning när testerna körs. Repot committar `linux-baselines`, som CI-porten jämför mot på den låsta runner-bilden, och `darwin-baselines`, för att ägarens maskin är en mac – i en ren linux-miljö (till exempel en Ubuntu-VM) är de två samma filer. Oavsett plattform renderas `linux-baselines` alltid av arbetsflödena.
 
 ### Du har ändrat pixlar i en vy
 
@@ -43,7 +43,7 @@ gh workflow run generate-linux-baselines.yml --repo pattespatte/felix-ds --ref m
 gh run watch --repo pattespatte/felix-ds   # valfritt, live-vy
 ```
 
-Körningen laddar upp artefakten `linux-baselines` (sparas i 7 dagar). Artefakten innehåller även darwin-uppsättningen – strunta i den. Hämta den och kopiera endast filerna `*-linux.png`:
+Körningen laddar upp artefakten `linux-baselines` (sparas i 7 dagar). Artefakten innehåller även filer som committats för andra plattformar – strunta i dem. Hämta den och kopiera endast filerna `*-linux.png`:
 
 ```bash
 gh run download --repo pattespatte/felix-ds -n linux-baselines -D /tmp/linux-baselines
@@ -53,7 +53,7 @@ ls e2e/visual.spec.ts-snapshots/*-linux.png | wc -l        # väntat tal: 45 (15
 ls e2e/visual-cross.spec.ts-snapshots/*-linux.png | wc -l  # väntat tal: 60 (alla 15 vyer × 2 lägen × 2 webbläsare)
 ```
 
-Komprimera sedan om varje ny png förlustfritt (`oxipng -o max`), kontrollera varje fil med `compare -metric AE original.png rekomprimerad.png null:` (ska skriva ut `0 (0)`), kör `bun run test:visual` lokalt och committa linux-png:erna tillsammans med darwin-uppsättningen. Samma procedur står steg för steg i [utgivningsdokumentationen](release.sv.md), avsnitt 1 steg 5.
+Komprimera sedan om varje ny png förlustfritt (`oxipng -o max`), kontrollera varje fil med `compare -metric AE original.png rekomprimerad.png null:` (ska skriva ut `0 (0)`), kör `bun run test:visual` lokalt och committa linux-png:erna tillsammans med den egna uppsättningen. Samma procedur står steg för steg i [utgivningsdokumentationen](release.sv.md), avsnitt 1 steg 5.
 
 ### Köra ett schemalagt arbetsflöde vid annan tidpunkt
 

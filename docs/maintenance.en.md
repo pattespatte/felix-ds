@@ -28,7 +28,7 @@ If FKUI has not published a new version, the run exits green without opening any
 
 ## When you act yourself
 
-The baselines come in two sets, one per platform: the file names end in `-darwin` or `-linux`, and Playwright picks the matching set when the tests run. On a mac the comparisons therefore use `darwin-baselines`, on Ubuntu `linux-baselines`. Whatever machine you sit at, `linux-baselines` are always rendered by the workflows, on the pinned runner image the gate compares against.
+The baselines come in sets, one per platform: the file names end in the platform suffix (`-darwin`, `-linux`), and Playwright picks the matching set when the tests run. The repo commits `linux-baselines`, which the CI gate compares against on the pinned runner image, and `darwin-baselines`, because the maintainer's machine is a mac – in an all-linux shop (an Ubuntu VM, for example) the two are the same files. Whatever machine you sit at, `linux-baselines` are always rendered by the workflows.
 
 ### You changed pixels in a view
 
@@ -43,7 +43,7 @@ gh workflow run generate-linux-baselines.yml --repo pattespatte/felix-ds --ref m
 gh run watch --repo pattespatte/felix-ds   # optional, live view
 ```
 
-It uploads the artifact `linux-baselines` (kept for 7 days). The artifact also contains the darwin set – ignore it. Download it and copy only the `*-linux.png` files:
+It uploads the artifact `linux-baselines` (kept for 7 days). The artifact also contains the snapshot files committed for other platforms – ignore them. Download it and copy only the `*-linux.png` files:
 
 ```bash
 gh run download --repo pattespatte/felix-ds -n linux-baselines -D /tmp/linux-baselines
@@ -53,7 +53,7 @@ ls e2e/visual.spec.ts-snapshots/*-linux.png | wc -l        # expected: 45 (15 vi
 ls e2e/visual-cross.spec.ts-snapshots/*-linux.png | wc -l  # expected: 60 (all 15 views × 2 modes × 2 browsers)
 ```
 
-Then recompress every new png losslessly (`oxipng -o max`), confirm each one with `compare -metric AE original.png recompressed.png null:` (it must print `0 (0)`), run `bun run test:visual` locally and commit the linux png files together with the darwin set. The same procedure, step by step, is in the [release runbook](release.en.md), section 1 step 5.
+Then recompress every new png losslessly (`oxipng -o max`), confirm each one with `compare -metric AE original.png recompressed.png null:` (it must print `0 (0)`), run `bun run test:visual` locally and commit the linux png files together with your local set. The same procedure, step by step, is in the [release runbook](release.en.md), section 1 step 5.
 
 ### Running a scheduled workflow at another time
 
