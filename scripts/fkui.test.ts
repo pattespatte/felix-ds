@@ -16,6 +16,16 @@ import { extractComponentNames, extractDeprecatedNames } from "./fkui.ts";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
+/**
+ * FDataTable-förväntningen nedan är versionsberoende: `@deprecated`-markeringen
+ * tillkom uppströms först i en minor efter golvet 6.57.0, där exporten finns
+ * men är omarkerad. I floor-benet i currency-arbetsflödet
+ * (.github/workflows/fkui-currency.yml) installeras just golvet, så där hoppas
+ * förväntningen över (FKUI_FLOOR=1) – övriga påståenden i testet gäller oavsett
+ * version.
+ */
+const AT_FKUI_FLOOR = process.env.FKUI_FLOOR === "1";
+
 const DECLARATION_SNIPPET = `import type { FC } from "vue";
 export declare const FLabel: typeof __VLS_export_2;
 declare const _default: typeof __VLS_export_2;
@@ -136,7 +146,7 @@ describe("extractDeprecatedNames", () => {
         for (const name of deprecated) {
             expect(names).toContain(name);
         }
-        if (names.includes("FDataTable")) {
+        if (!AT_FKUI_FLOOR && names.includes("FDataTable")) {
             expect(deprecated.has("FDataTable")).toBe(true);
         }
         expect(deprecated.has("FButton")).toBe(false);
