@@ -209,7 +209,7 @@ function docsHref(name: FkuiComponentName): string | undefined {
 </script>
 
 <template>
-    <div class="view view--wide">
+    <div class="view">
         <h1>Välj komponent</h1>
         <p class="view__intro">
             Komponentguide grupperad efter uppgift: hitta det användaren ska

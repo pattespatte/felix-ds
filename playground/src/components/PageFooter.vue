@@ -80,8 +80,10 @@ html:not(.theme-felix) .page-footer {
     border-top: 0.5rem solid #0c4329;
 }
 
+// Content column shared with the header and the nav + view row (main.scss);
+// the band above it stays full-bleed.
 .page-footer__inner {
-    max-width: 72rem;
+    max-width: var(--page-max-width);
     margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
@@ -172,7 +174,7 @@ html:not(.theme-felix) .page-footer {
 }
 
 .page-footer__bottom {
-    max-width: 72rem;
+    max-width: var(--page-max-width);
     margin: 2rem auto 0;
     padding-top: 2rem;
     border-top: 1px solid rgba(255, 255, 255, 0.5);

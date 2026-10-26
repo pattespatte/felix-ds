@@ -13,7 +13,7 @@ import FOfflineDemo from "../demos/surfaces/FOfflineDemo.vue";
 </script>
 
 <template>
-    <div class="view view--wide">
+    <div class="view">
         <h1>Ytor och paneler</h1>
         <p class="view__intro">
             Använd ytorna när innehåll ska grupperas, expanderas eller
