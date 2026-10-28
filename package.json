@@ -1,6 +1,6 @@
 {
   "name": "@pattespatte/felix-ds",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "type": "module",
   "description": "A thin, organisation-neutral theme layer (CSS custom properties + self-hosted fonts) on top of FKUI's public npm packages.",
   "main": "./dist/felix.css",
