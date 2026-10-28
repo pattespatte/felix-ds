@@ -327,6 +327,48 @@
         height: var(--f-icon-size-large);
     }
 
+    // Directional arrows everywhere else. The expandable panel, the
+    // expandable table rows, the paginator's next button, the navigation
+    // menu's submenu marker, the datepicker's month and year navigation,
+    // the dialogue tree and the entrypoint pattern all render the icon
+    // library's arrow-down/arrow-right glyphs, and the profile redraws
+    // them with the same masked chevron as the dropdown fields. The
+    // chevron takes each context's own icon colour through currentColor,
+    // so hover, disabled and open-state colouring keeps working; the
+    // sprite is therefore switched off with visibility instead of
+    // colouring the glyph away (the colour drives the chevron itself).
+    // Upstream's rotations and mirrors – the expanded panel, the sortable
+    // table rows, the flipped month arrows – transform the whole box and
+    // carry the chevron along. The select field and combobox keep their
+    // dedicated dropdown colours from the light and dark theme mixins,
+    // which outrank the currentColor here on the same artwork.
+    .f-icon-arrow-down,
+    .f-icon-arrow-right {
+        background-color: currentColor;
+        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 9.5l6 6 6-6' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+        mask-position: center;
+        mask-repeat: no-repeat;
+        mask-size: contain;
+
+        > use {
+            visibility: hidden;
+        }
+    }
+
+    // High-contrast modes keep upstream's glyphs in the forced palette,
+    // like the dropdown fields do.
+    @media (forced-colors: active) {
+        .f-icon-arrow-down,
+        .f-icon-arrow-right {
+            background: none;
+            mask: none;
+
+            > use {
+                visibility: visible;
+            }
+        }
+    }
+
     // Checkbox and radio glyphs draw their resting border with the weak
     // border colour instead of the regular component border.
     .checkbox__label::before,

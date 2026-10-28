@@ -401,6 +401,29 @@
   width: var(--f-icon-size-large);
   height: var(--f-icon-size-large);
 }
+:root .f-icon-arrow-down,
+:root .f-icon-arrow-right {
+  background-color: currentColor;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 9.5l6 6 6-6' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-size: contain;
+}
+:root .f-icon-arrow-down > use,
+:root .f-icon-arrow-right > use {
+  visibility: hidden;
+}
+@media (forced-colors: active) {
+  :root .f-icon-arrow-down,
+  :root .f-icon-arrow-right {
+    background: none;
+    mask: none;
+  }
+  :root .f-icon-arrow-down > use,
+  :root .f-icon-arrow-right > use {
+    visibility: visible;
+  }
+}
 :root .checkbox__label::before,
 :root .radio-button__label::before {
   border-color: var(--fkds-color-border-weak);
@@ -905,6 +928,29 @@ html[data-color-mode=dark] .select-field__icon {
 html[data-color-mode=dark] .combobox__button .f-icon-arrow-down {
   width: var(--f-icon-size-large);
   height: var(--f-icon-size-large);
+}
+html[data-color-mode=dark] .f-icon-arrow-down,
+html[data-color-mode=dark] .f-icon-arrow-right {
+  background-color: currentColor;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 9.5l6 6 6-6' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-size: contain;
+}
+html[data-color-mode=dark] .f-icon-arrow-down > use,
+html[data-color-mode=dark] .f-icon-arrow-right > use {
+  visibility: hidden;
+}
+@media (forced-colors: active) {
+  html[data-color-mode=dark] .f-icon-arrow-down,
+  html[data-color-mode=dark] .f-icon-arrow-right {
+    background: none;
+    mask: none;
+  }
+  html[data-color-mode=dark] .f-icon-arrow-down > use,
+  html[data-color-mode=dark] .f-icon-arrow-right > use {
+    visibility: visible;
+  }
 }
 html[data-color-mode=dark] .checkbox__label::before,
 html[data-color-mode=dark] .radio-button__label::before {
