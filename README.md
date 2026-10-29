@@ -28,55 +28,51 @@ Skillnaden mellan att installera temat i din egen webbapp och att köra playgrou
 
 Följ det här avsnittet när du vill använda felix-temat i din egen webbapp. Du installerar temat som ett npm-beroende. Playgrounden behöver du inte för det.
 
-Börja med snabbinstallationen nedan – den tar dig hela vägen till ett fungerande exempel. Vill du bara ha CSS-filerna utan Vue och FKUI-paketen? Hoppa till [Bara CSS](#bara-css). Detaljerna bakom varje val står i [Steg för steg](#steg-för-steg).
+Installationen går på en av tre vägar – välj en och hoppa över de andra:
 
-### Snabbinstallation
+| Alternativ | Passar när |
+| --- | --- |
+| [1: Hela paketet](#alternativ-1-hela-paketet) | din webbapp använder FKUI:s Vue-komponenter (rekommenderas) |
+| [2: Bara CSS](#alternativ-2-bara-css) | du använder inte Vue-komponenterna alls |
+| [3: Git-pin](#alternativ-3-git-pin) | du vill låsa mot en exakt commit, utan token |
 
-Du behöver en personlig åtkomsttoken (PAT) med behörigheten `read:packages`, exporterad som miljövariabeln `GITHUB_PACKAGES_TOKEN` – hur du hanterar token beskrivs i [utgivningsdokumentationen](https://github.com/pattespatte/felix-ds/blob/main/docs/release.sv.md).
+Varje alternativ avslutas med en Klart-rad när installationen är klar. Detaljerna bakom valen står i [Steg för steg](#steg-för-steg).
 
-Kör blocket i projektroten. Det skriver `.npmrc` och installerar temat med FKUI-paketen:
+### Alternativ 1: Hela paketet
 
-```bash
-# förutsätter att GITHUB_PACKAGES_TOKEN är exporterad (PAT med read:packages)
-cat > .npmrc <<'EOF'
-@pattespatte:registry=https://npm.pkg.github.com
-//npm.pkg.github.com/:_authToken=${GITHUB_PACKAGES_TOKEN}
-EOF
-bun add @pattespatte/felix-ds
-# samma version X.Y.Z i alla @fkui/*-paket
-bun add --exact @fkui/theme-default@X.Y.Z @fkui/design@X.Y.Z @fkui/vue@X.Y.Z
-```
+> [!TIP]
+> Rekommenderas – den här vägen passar de flesta webbappar.
+>
+> Paketet heter `@pattespatte/felix-ds` och publiceras på GitHub Packages med begränsad synlighet. Du behöver en personlig åtkomsttoken (PAT) med behörigheten `read:packages`, exporterad som miljövariabeln `GITHUB_PACKAGES_TOKEN` – hur du hanterar token beskrivs i [utgivningsdokumentationen](https://github.com/pattespatte/felix-ds/blob/main/docs/release.sv.md).
+>
+> Kör blocket i projektroten. Det skriver `.npmrc` och installerar temat med FKUI-paketen:
+>
+> ```bash
+> # förutsätter att GITHUB_PACKAGES_TOKEN är exporterad (PAT med read:packages)
+> cat > .npmrc <<'EOF'
+> @pattespatte:registry=https://npm.pkg.github.com
+> //npm.pkg.github.com/:_authToken=${GITHUB_PACKAGES_TOKEN}
+> EOF
+> bun add @pattespatte/felix-ds
+> # samma version X.Y.Z i alla @fkui/*-paket
+> bun add --exact @fkui/theme-default@X.Y.Z @fkui/design@X.Y.Z @fkui/vue@X.Y.Z
+> ```
+>
+> Har du redan en `.npmrc`? Lägg då till de två raderna i den filen i stället. Byt ut `X.Y.Z` mot den FKUI-version du väljer – playgroundens egna lås visas i [vyn Kom igång](https://pattespatte.github.io/felix-ds/#/kom-igang).
+>
+> Lägg till de tre raderna i appens startfil (oftast `src/main.ts`):
+>
+> ```ts
+> import "@fkui/design/lib/fkui.css";
+> import "@fkui/design/lib/fonts.css";
+> import "@pattespatte/felix-ds/dist/felix.css";
+> ```
+>
+> **Klart.** Temat och FKUI-paketen är installerade och importerna ligger i startfilen – fortsätt med [Ett första exempel](#ett-första-exempel) och se temat på plats.
 
-Har du redan en `.npmrc`? Lägg då till de två raderna i den filen i stället. Byt ut `X.Y.Z` mot den FKUI-version du väljer – playgroundens egna lås visas i [vyn Kom igång](https://pattespatte.github.io/felix-ds/#/kom-igang). Utan token? Använd alternativ B (git-pin) i [steg 1](#1-välj-hur-du-installerar-temat).
+### Alternativ 2: Bara CSS
 
-Lägg till de tre raderna i appens startfil (oftast `src/main.ts`):
-
-```ts
-import "@fkui/design/lib/fkui.css";
-import "@fkui/design/lib/fonts.css";
-import "@pattespatte/felix-ds/dist/felix.css";
-```
-
-### Ett första exempel
-
-Temat syns direkt i en Vue-komponent. Rubriken får typsnittet Roboto Slab, knappen får temats färger och fokusmarkering:
-
-```vue
-<script setup lang="ts">
-import { FButton } from "@fkui/vue";
-</script>
-
-<template>
-    <h1>Min sida</h1>
-    <f-button>Skicka in</f-button>
-</template>
-```
-
-Knappen finns levande i [playgroundens knappvy](https://pattespatte.github.io/felix-ds/#/knappar/fbutton). En hel sajt med temat finns på [exempelsidan](https://pattespatte.github.io/felix-ds-demo-site/).
-
-### Bara CSS
-
-Temapaketet räcker – du behöver inga `@fkui/*`-paket när du inte använder FKUI:s Vue-komponenter. Installera paketet (med samma `.npmrc`-konfiguration som i snabbinstallationen) och importera en förbyggd fil:
+Temapaketet räcker – du behöver inga `@fkui/*`-paket när du inte använder FKUI:s Vue-komponenter. Installera paketet (med samma `.npmrc`-konfiguration som i alternativ 1) och importera en förbyggd fil:
 
 ```bash
 bun add @pattespatte/felix-ds
@@ -98,37 +94,54 @@ Bra att veta:
 - Vue-komponenterna (79 av FKUI:s 89) kräver `@fkui/vue` och Vue. CSS-filerna ger designvariabler, typsnitt och FKUI:s CSS-klasser – inte de interaktiva komponenterna.
 - Bun och npm löser in peer-beroendet `@fkui/theme-default` automatiskt. De förbyggda filerna läser det aldrig – det behövs bara när du kompilerar egen Sass.
 - Utan byggkedja laddar du `dist/felix-complete.min.css` med ett vanligt `<link>`-element. Typsnitten ligger i `src/fonts/files/` och nås med sökvägar som är relativa till CSS-filen – kopiera med den mappen, eller skriv om `@font-face`-reglerna till egna url:er.
-- Alternativ B (git-pin) i [steg 1](#1-välj-hur-du-installerar-temat) fungerar också här, utan token. Importen blir då `felix-ds/dist/felix.css`.
+- Alternativ 3 fungerar också här, utan token. Importen blir då `felix-ds/dist/felix.css`.
 
-### Steg för steg
+**Klart.** Temapaketet är installerat och importen ligger i startfilen. Designvariabler, typsnitt och båda färglägena är aktiva.
 
-Varje val i snabbinstallationen förklaras här: installationsalternativen, versionsvalet av FKUI-paketen, importposterna och SCSS-posterna när du vill kompilera själv.
+### Alternativ 3: Git-pin
 
-#### 1. Välj hur du installerar temat
-
-**Alternativ A – GitHub Packages (rekommenderas).** Paketet heter `@pattespatte/felix-ds` och publiceras på GitHub Packages med begränsad synlighet. Du behöver en personlig åtkomsttoken (PAT) med behörigheten `read:packages`. Exportera den som miljövariabeln `GITHUB_PACKAGES_TOKEN`. Hur du hanterar token beskrivs i [utgivningsdokumentationen](https://github.com/pattespatte/felix-ds/blob/main/docs/release.sv.md).
-
-Kör blocket nedan i projektroten. Det skriver `.npmrc` och installerar paketet. Har du redan en `.npmrc`? Lägg då till de två raderna i den filen i stället.
-
-```bash
-# förutsätter att GITHUB_PACKAGES_TOKEN är exporterad (PAT med read:packages)
-cat > .npmrc <<'EOF'
-@pattespatte:registry=https://npm.pkg.github.com
-//npm.pkg.github.com/:_authToken=${GITHUB_PACKAGES_TOKEN}
-EOF
-bun add @pattespatte/felix-ds
-```
-
-**Alternativ B – git-pin.** Du installerar direkt från det publika repot och låser mot en exakt commit:
+Du installerar direkt från det publika repot och låser mot en exakt commit – ingen token behövs. Kör i projektroten:
 
 ```bash
 bun add felix-ds@github:pattespatte/felix-ds#<commit>
+# samma version X.Y.Z i alla @fkui/*-paket
+bun add --exact @fkui/theme-default@X.Y.Z @fkui/design@X.Y.Z @fkui/vue@X.Y.Z
 ```
 
-> [!NOTE]
-> Sökvägen i dina importer följer paketnamnet. Med alternativ A skriver du `@pattespatte/felix-ds/src/...`. Med alternativ B skriver du `felix-ds/src/...`. Exemplen nedan använder alternativ A.
+Importerna följer paketnamnet utan scope. Lägg till raderna i appens startfil:
 
-#### 2. Installera FKUI-paketen
+```ts
+import "@fkui/design/lib/fkui.css";
+import "@fkui/design/lib/fonts.css";
+import "felix-ds/dist/felix.css";
+```
+
+FKUI-paketen behövs bara när du använder Vue-komponenterna – annars räcker första kommandot och importen `felix-ds/dist/felix.css`.
+
+**Klart.** Temat är installerat från repot och låst mot en exakt commit, och importerna ligger i startfilen – fortsätt med [Ett första exempel](#ett-första-exempel).
+
+### Ett första exempel
+
+Temat syns direkt i en Vue-komponent. Rubriken får typsnittet Roboto Slab, knappen får temats färger och fokusmarkering:
+
+```vue
+<script setup lang="ts">
+import { FButton } from "@fkui/vue";
+</script>
+
+<template>
+    <h1>Min sida</h1>
+    <f-button>Skicka in</f-button>
+</template>
+```
+
+Knappen finns levande i [playgroundens knappvy](https://pattespatte.github.io/felix-ds/#/knappar/fbutton). En hel sajt med temat finns på [exempelsidan](https://pattespatte.github.io/felix-ds-demo-site/).
+
+### Steg för steg
+
+Alternativens steg i detalj: versionsvalet av FKUI-paketen, importposterna och SCSS-posterna när du vill kompilera själv.
+
+#### 1. Installera FKUI-paketen
 
 Temat bygger på FKUI. Du väljer själv versionerna av FKUI-paketen och låser dem exakt i `package.json`. Bun och npm löser annars in peer-beroendet `@fkui/theme-default` automatiskt, mot senaste versionen i intervallet:
 
@@ -143,7 +156,7 @@ Byt ut `X.Y.Z` mot den version du valt. Playgroundens egna lås står i repots `
 
 Läs [Kompatibilitet](#kompatibilitet) innan du skriver egen Sass som rör `@fkui/theme-default`.
 
-#### 3. Importera temat
+#### 2. Importera temat
 
 Standardvägen är förbyggd CSS – den kräver ingen Sass. Importera en fil i appens startfil:
 
@@ -161,7 +174,7 @@ import "@fkui/design/lib/fonts.css";
 import "@pattespatte/felix-ds/dist/felix.css";
 ```
 
-Den här raden ger alltså samma resultat som de tre raderna ovan, och ersätter både steg 3 och steg 4:
+Den här raden ger alltså samma resultat som de tre raderna ovan, och ersätter både steg 2 och steg 3:
 
 ```ts
 import "@pattespatte/felix-ds/dist/felix-complete.css";
@@ -191,7 +204,7 @@ html.theme-felix {
 }
 ```
 
-#### 4. Ladda FKUI:s komponent-CSS
+#### 3. Ladda FKUI:s komponent-CSS
 
 Importera FKUI:s CSS i appens startfil:
 
@@ -450,55 +463,51 @@ The difference between installing the theme in your own web app and running the 
 
 Follow this section when you want to use the felix theme in your own web app. You install the theme as an npm dependency. You do not need the playground for that.
 
-Start with the quick install below – it takes you all the way to a working example. Only want the CSS files, without Vue and the FKUI packages? Jump to [CSS only](#css-only). The details behind every choice are in [Step by step](#step-by-step).
+Installation takes one of three routes – pick one and skip the others:
 
-### Quick install
+| Option | Right when |
+| --- | --- |
+| [1: The full package](#option-1-the-full-package) | your web app uses FKUI's Vue components (recommended) |
+| [2: CSS only](#option-2-css-only) | you do not use the Vue components at all |
+| [3: Git pin](#option-3-git-pin) | you want to lock to an exact commit, without a token |
 
-You need a personal access token (PAT) with the `read:packages` scope, exported as the environment variable `GITHUB_PACKAGES_TOKEN` – how to handle the token is described in the [release runbook](https://github.com/pattespatte/felix-ds/blob/main/docs/release.en.md).
+Every option ends with a line telling you the installation is complete. The details behind the choices are in [Step by step](#step-by-step).
 
-Run the block in your project root. It writes `.npmrc` and installs the theme with the FKUI packages:
+### Option 1: The full package
 
-```bash
-# requires GITHUB_PACKAGES_TOKEN to be exported (PAT with read:packages)
-cat > .npmrc <<'EOF'
-@pattespatte:registry=https://npm.pkg.github.com
-//npm.pkg.github.com/:_authToken=${GITHUB_PACKAGES_TOKEN}
-EOF
-bun add @pattespatte/felix-ds
-# the same version X.Y.Z across every @fkui/* package
-bun add --exact @fkui/theme-default@X.Y.Z @fkui/design@X.Y.Z @fkui/vue@X.Y.Z
-```
+> [!TIP]
+> Recommended – this route fits most web apps.
+>
+> The package is called `@pattespatte/felix-ds` and is published on GitHub Packages with restricted visibility. You need a personal access token (PAT) with the `read:packages` scope, exported as the environment variable `GITHUB_PACKAGES_TOKEN` – how to handle the token is described in the [release runbook](https://github.com/pattespatte/felix-ds/blob/main/docs/release.en.md).
+>
+> Run the block in your project root. It writes `.npmrc` and installs the theme with the FKUI packages:
+>
+> ```bash
+> # requires GITHUB_PACKAGES_TOKEN to be exported (PAT with read:packages)
+> cat > .npmrc <<'EOF'
+> @pattespatte:registry=https://npm.pkg.github.com
+> //npm.pkg.github.com/:_authToken=${GITHUB_PACKAGES_TOKEN}
+> EOF
+> bun add @pattespatte/felix-ds
+> # the same version X.Y.Z across every @fkui/* package
+> bun add --exact @fkui/theme-default@X.Y.Z @fkui/design@X.Y.Z @fkui/vue@X.Y.Z
+> ```
+>
+> Already have an `.npmrc`? Add the two lines to that file instead. Replace `X.Y.Z` with the FKUI version you choose – the playground's own pins are shown in the Kom igång view.
+>
+> Add the three lines to your web app's entry point (usually `src/main.ts`):
+>
+> ```ts
+> import "@fkui/design/lib/fkui.css";
+> import "@fkui/design/lib/fonts.css";
+> import "@pattespatte/felix-ds/dist/felix.css";
+> ```
+>
+> **Done.** The theme and the FKUI packages are installed and the imports sit in your entry point – continue with [A first example](#a-first-example) and see the theme at work.
 
-Already have an `.npmrc`? Add the two lines to that file instead. Replace `X.Y.Z` with the FKUI version you choose – the playground's own pins are shown in the Kom igång view. No token? Use option B (git pin) in [step 1](#1-choose-how-to-install-the-theme).
+### Option 2: CSS only
 
-Add the three lines to your web app's entry point (usually `src/main.ts`):
-
-```ts
-import "@fkui/design/lib/fkui.css";
-import "@fkui/design/lib/fonts.css";
-import "@pattespatte/felix-ds/dist/felix.css";
-```
-
-### A first example
-
-The theme shows up straight away in a Vue component. The heading gets the Roboto Slab typeface, the button gets the theme's colours and focus ring:
-
-```vue
-<script setup lang="ts">
-import { FButton } from "@fkui/vue";
-</script>
-
-<template>
-    <h1>My page</h1>
-    <f-button>Submit</f-button>
-</template>
-```
-
-The button is live in the [playground's button view](https://pattespatte.github.io/felix-ds/#/knappar/fbutton). A whole site with the theme is on the [example site](https://pattespatte.github.io/felix-ds-demo-site/).
-
-### CSS only
-
-The theme package is enough – you need no `@fkui/*` packages when you do not use FKUI's Vue components. Install the package (with the same `.npmrc` configuration as in the quick install) and import one prebuilt file:
+The theme package is enough – you need no `@fkui/*` packages when you do not use FKUI's Vue components. Install the package (with the same `.npmrc` configuration as in option 1) and import one prebuilt file:
 
 ```bash
 bun add @pattespatte/felix-ds
@@ -520,37 +529,54 @@ Good to know:
 - The Vue components (79 of FKUI's 89) still require `@fkui/vue` and Vue. The CSS files give you the design tokens, the fonts and FKUI's CSS classes – not the interactive components.
 - Bun and npm resolve the `@fkui/theme-default` peer dependency automatically. The prebuilt files never read it – it matters only when you compile your own Sass.
 - Without a build chain, load `dist/felix-complete.min.css` with a plain `<link>` element. The fonts live in `src/fonts/files/` at paths relative to the CSS file – copy that folder along, or rewrite the `@font-face` rules to your own URLs.
-- Option B (git pin) in [step 1](#1-choose-how-to-install-the-theme) works here too, without a token. The import then becomes `felix-ds/dist/felix.css`.
+- Option 3 works here too, without a token. The import then becomes `felix-ds/dist/felix.css`.
 
-### Step by step
+**Done.** The theme package is installed and the import sits in your entry point. The design tokens, the fonts and both color modes are active.
 
-Every choice from the quick install is explained here: the install options, the FKUI version choice, the import entries and the SCSS entries for compiling your own CSS.
+### Option 3: Git pin
 
-#### 1. Choose how to install the theme
-
-**Option A – GitHub Packages (recommended).** The package is called `@pattespatte/felix-ds` and is published on GitHub Packages with restricted visibility. You need a personal access token (PAT) with the `read:packages` scope. Export it as the environment variable `GITHUB_PACKAGES_TOKEN`. The [release runbook](https://github.com/pattespatte/felix-ds/blob/main/docs/release.en.md) describes how to handle the token.
-
-Run the block below in your project root. It writes `.npmrc` and installs the package. Already have an `.npmrc`? Add the two lines to that file instead.
-
-```bash
-# requires GITHUB_PACKAGES_TOKEN to be exported (PAT with read:packages)
-cat > .npmrc <<'EOF'
-@pattespatte:registry=https://npm.pkg.github.com
-//npm.pkg.github.com/:_authToken=${GITHUB_PACKAGES_TOKEN}
-EOF
-bun add @pattespatte/felix-ds
-```
-
-**Option B – git pin.** You install straight from the public repo and lock to an exact commit:
+You install straight from the public repo and lock to an exact commit – no token needed. Run in your project root:
 
 ```bash
 bun add felix-ds@github:pattespatte/felix-ds#<commit>
+# the same version X.Y.Z across every @fkui/* package
+bun add --exact @fkui/theme-default@X.Y.Z @fkui/design@X.Y.Z @fkui/vue@X.Y.Z
 ```
 
-> [!NOTE]
-> The path in your imports follows the package name. With option A you write `@pattespatte/felix-ds/src/...`. With option B you write `felix-ds/src/...`. The examples below use option A.
+The imports follow the package name without the scope. Add the lines to your web app's entry point:
 
-#### 2. Install the FKUI packages
+```ts
+import "@fkui/design/lib/fkui.css";
+import "@fkui/design/lib/fonts.css";
+import "felix-ds/dist/felix.css";
+```
+
+The FKUI packages matter only when you use the Vue components – otherwise the first command and the import `felix-ds/dist/felix.css` are enough.
+
+**Done.** The theme is installed from the repo and locked to an exact commit, and the imports sit in your entry point – continue with [A first example](#a-first-example).
+
+### A first example
+
+The theme shows up straight away in a Vue component. The heading gets the Roboto Slab typeface, the button gets the theme's colours and focus ring:
+
+```vue
+<script setup lang="ts">
+import { FButton } from "@fkui/vue";
+</script>
+
+<template>
+    <h1>My page</h1>
+    <f-button>Submit</f-button>
+</template>
+```
+
+The button is live in the [playground's button view](https://pattespatte.github.io/felix-ds/#/knappar/fbutton). A whole site with the theme is on the [example site](https://pattespatte.github.io/felix-ds-demo-site/).
+
+### Step by step
+
+The steps of the options in detail: the FKUI version choice, the import entries and the SCSS entries for compiling your own CSS.
+
+#### 1. Install the FKUI packages
 
 The theme builds on FKUI. You choose the versions of the FKUI packages yourself and pin them exactly in `package.json`. Otherwise Bun and npm resolve the `@fkui/theme-default` peer dependency automatically, at the latest version inside the range:
 
@@ -565,7 +591,7 @@ Replace `X.Y.Z` with the version you chose. The playground's own pins live in th
 
 Read [Compatibility](#compatibility) before you write your own Sass that touches `@fkui/theme-default`.
 
-#### 3. Import the theme
+#### 2. Import the theme
 
 The default path is prebuilt CSS – no Sass required. Import one file in your web app's entry point:
 
@@ -583,7 +609,7 @@ import "@fkui/design/lib/fonts.css";
 import "@pattespatte/felix-ds/dist/felix.css";
 ```
 
-So this one line gives the same result as the three lines above, and replaces both step 3 and step 4:
+So this one line gives the same result as the three lines above, and replaces both step 2 and step 3:
 
 ```ts
 import "@pattespatte/felix-ds/dist/felix-complete.css";
@@ -613,7 +639,7 @@ html.theme-felix {
 }
 ```
 
-#### 4. Load FKUI's component CSS
+#### 3. Load FKUI's component CSS
 
 Import FKUI's CSS in your web app's entry point:
 
