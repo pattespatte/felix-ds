@@ -17,11 +17,17 @@ name: FKUI currency check
 #
 # Schedule note: scheduled workflows only arm once this file exists on the
 # default branch after a push, so the first run happens after the owner's
-# next push. Never runs as part of a release.
+# next push. Never runs as part of a release. The minute is deliberately off
+# the top of the hour: GitHub's scheduler drops and delays cron events most
+# around :00 (of the two expected Monday slots, 2026-10-19 never fired and
+# 2026-10-26 was dispatched ~6 h late), and a late dispatch is worse than a
+# late run here – the checkout SHA is fixed at dispatch time, so hours of
+# delay can pin the run to a stale main (that is what failed the 2026-10-19
+# run when it finally executed).
 
 on:
   schedule:
-    - cron: "0 6 * * 1" # Mondays 06:00 UTC = 08:00 Stockholm
+    - cron: "15 6 * * 1" # Mondays 06:15 UTC = 08:15 Stockholm (winter)
   workflow_dispatch:
 
 permissions:

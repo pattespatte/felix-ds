@@ -7,8 +7,8 @@ This guide is for whoever maintains the repo (the owner). It answers three quest
 | Workflow | Starts | What it does | You act |
 | --- | --- | --- | --- |
 | Deploy playground to GitHub Pages (`deploy-playground.yml`) | push to `main` touching the playground build (its sources, `src/`, the search-index generator, the lockfile) | builds and publishes the playground to GitHub Pages | never |
-| FKUI currency check (`fkui-currency.yml`) | Mondays 08:00 Swedish time (winter), or manually | bumps the six `@fkui/*` pins to the latest version, runs the full gate, opens a pull request when there is a bump | when a pull request or a red run appears |
-| Friday baseline currency (`friday-baseline-currency.yml`) | Fridays 13:00 Swedish time (winter), or manually | regenerates the linux visual baselines when visuals have changed, runs the full gate, pushes to `main` itself | `git pull` after it has pushed |
+| FKUI currency check (`fkui-currency.yml`) | Mondays 08:15 Swedish time (winter), or manually | bumps the six `@fkui/*` pins to the latest version, runs the full gate, opens a pull request when there is a bump | when a pull request or a red run appears |
+| Friday baseline currency (`friday-baseline-currency.yml`) | Fridays 13:15 Swedish time (winter), or manually | regenerates the linux visual baselines when visuals have changed, runs the full gate, pushes to `main` itself | `git pull` after it has pushed |
 | Generate linux visual baselines (`generate-linux-baselines.yml`) | only manually | renders fresh linux baselines and uploads them as an artifact | before a release, when pixel changes are still waiting for Friday |
 | Release to GitHub Packages (`release.yml`) | push of a `v*` tag | builds, runs the gates, publishes the package, creates the GitHub release | according to the [release runbook](release.en.md) |
 
@@ -20,13 +20,13 @@ Nothing needs preparing. Both scheduled runs start by themselves.
 
 ```mermaid
 flowchart TD
-    subgraph FRI ["Friday 13:00 – baseline currency"]
+    subgraph FRI ["Friday 13:15 – baseline currency"]
         F1["Scheduled run starts"] --> F2{"Anything visual changed<br>since the last regen?"}
         F2 -- No --> F3["Exits green,<br>no tests run"]
         F2 -- Yes --> F4["Regenerate linux-baselines, recompress,<br>run the whole gate"]
         F4 --> F5["Pushes the baselines<br>to main itself"]
     end
-    subgraph MON ["Monday 08:00 – FKUI check"]
+    subgraph MON ["Monday 08:15 – FKUI check"]
         M1["Scheduled run starts"] --> M2{"New FKUI version?"}
         M2 -- No --> M3["Exits green,<br>nothing opened"]
         M2 -- Yes --> M4["Bump the six @fkui/* pins,<br>run the gate, open a pull request"]

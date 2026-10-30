@@ -7,8 +7,8 @@ Den här guiden är för den som underhåller repot (ägaren). Den besvarar tre 
 | Arbetsflöde | Startar | Vad det gör | Du agerar |
 | --- | --- | --- | --- |
 | `Deploy playground to GitHub Pages` (`deploy-playground.yml`) | push till `main` som rör playgroundens bygge (egna källor, `src/`, sökindexgeneratorn, låsfilen) | bygger och publicerar playgrounden på GitHub Pages | aldrig |
-| `FKUI currency check` (`fkui-currency.yml`) | måndagar 08.00 svensk tid (vintertid), eller för hand | höjer de sex `@fkui/*`-versionerna till den senaste versionen, kör hela porten och öppnar en pull request vid höjning | när en pull request eller en röd körning dyker upp |
-| `Friday baseline currency` (`friday-baseline-currency.yml`) | fredagar 13.00 svensk tid (vintertid), eller för hand | genererar om `linux-baselines` när det visuella ändrats, kör hela porten och pushar till `main` själv | `git pull` när den har pushat |
+| `FKUI currency check` (`fkui-currency.yml`) | måndagar 08.15 svensk tid (vintertid), eller för hand | höjer de sex `@fkui/*`-versionerna till den senaste versionen, kör hela porten och öppnar en pull request vid höjning | när en pull request eller en röd körning dyker upp |
+| `Friday baseline currency` (`friday-baseline-currency.yml`) | fredagar 13.15 svensk tid (vintertid), eller för hand | genererar om `linux-baselines` när det visuella ändrats, kör hela porten och pushar till `main` själv | `git pull` när den har pushat |
 | `Generate linux visual baselines` (`generate-linux-baselines.yml`) | bara för hand | renderar nya `linux-baselines` och laddar upp dem som en artefakt | inför en utgivning, när pixeländringar väntar på fredagen |
 | `Release to GitHub Packages` (`release.yml`) | push av en `v*`-tagg | bygger, kör portarna, publicerar paketet och skapar GitHub-releasen | enligt [utgivningsdokumentationen](release.sv.md) |
 
@@ -20,13 +20,13 @@ Inget behöver förberedas. Båda schemalagda körningarna startar av sig själv
 
 ```mermaid
 flowchart TD
-    subgraph FRI ["Fredag 13.00 – rondningen"]
+    subgraph FRI ["Fredag 13.15 – rondningen"]
         F1["Den schemalagda körningen startar"] --> F2{"Något visuellt ändrat<br>sedan de senast<br>genererades om?"}
         F2 -- Nej --> F3["Avslutar grönt,<br>inga tester körs"]
         F2 -- Ja --> F4["Genererar om linux-baselines,<br>komprimerar om, kör hela porten"]
         F4 --> F5["Pushar baselines<br>till main själv"]
     end
-    subgraph MON ["Måndag 08.00 – FKUI-kontrollen"]
+    subgraph MON ["Måndag 08.15 – FKUI-kontrollen"]
         M1["Den schemalagda körningen startar"] --> M2{"Ny FKUI-version?"}
         M2 -- Nej --> M3["Avslutar grönt,<br>inget öppnas"]
         M2 -- Ja --> M4["Höjer de sex @fkui/*-versionerna,<br>kör porten, öppnar en pull request"]
