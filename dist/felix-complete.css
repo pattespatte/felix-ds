@@ -7507,6 +7507,12 @@ body {
 :root .radio-button__label::before {
   border-color: var(--fkds-color-border-weak);
 }
+:root .icon-stack--tooltip .f-icon-circle {
+  fill: transparent;
+}
+:root .icon-stack--tooltip .f-icon-i {
+  color: var(--fkds-color-action-border-primary-default);
+}
 :root {
   --fkds-color-text-primary: #081130;
   --fkds-color-text-secondary: #585f71;
@@ -7555,7 +7561,7 @@ body {
   --fkds-color-feedback-background-warning-strong: #ffc108;
   --fkds-color-feedback-background-negative: #ffe5e1;
   --fkds-color-feedback-background-negative-strong: #c7311a;
-  --fkds-color-feedback-border-neutral: #484d5c;
+  --fkds-color-feedback-border-neutral: #6e7689;
   --fkds-color-feedback-border-info: #0053a7;
   --fkds-color-feedback-border-positive: #217424;
   --fkds-color-feedback-border-warning: #ffc108;
@@ -8034,6 +8040,12 @@ html[data-color-mode=dark] .f-icon-arrow-right > use {
 html[data-color-mode=dark] .checkbox__label::before,
 html[data-color-mode=dark] .radio-button__label::before {
   border-color: var(--fkds-color-border-weak);
+}
+html[data-color-mode=dark] .icon-stack--tooltip .f-icon-circle {
+  fill: transparent;
+}
+html[data-color-mode=dark] .icon-stack--tooltip .f-icon-i {
+  color: var(--fkds-color-action-border-primary-default);
 }
 html[data-color-mode=dark] {
   --fkds-color-text-primary: #ffffff;

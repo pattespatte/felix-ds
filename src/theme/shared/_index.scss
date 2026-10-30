@@ -375,4 +375,20 @@
     .radio-button__label::before {
         border-color: var(--fkds-color-border-weak);
     }
+
+    // Tooltip trigger. Upstream builds the button from an icon stack: a
+    // circle glyph under a dot-and-stem "i", where the circle artwork
+    // carries a colour-bound disc plus a fill-bound rim and the "i" paints
+    // white on top. The sprite's circle is a ring-only glyph and its "i" is
+    // a complete info-circle whose ring has the same radius, so the white
+    // "i" paints straight over the disc's artwork and the button disappears
+    // on light surfaces. Show the info-circle alone, in the primary action
+    // border colour, and mute the redundant ring underneath.
+    .icon-stack--tooltip .f-icon-circle {
+        fill: transparent;
+    }
+
+    .icon-stack--tooltip .f-icon-i {
+        color: var(--fkds-color-action-border-primary-default);
+    }
 }
