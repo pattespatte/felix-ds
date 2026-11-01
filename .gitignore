@@ -1,18 +1,6 @@
 # Dependencies
 node_modules/
 
-# Build output (root dist/ holds the committed prebuilt css and stays tracked)
-playground/dist/
-# Search index is generated at dev start and build by the Vite plugin
-playground/public/
-*.tsbuildinfo
-
-# Test artifacts (visual baselines in e2e/visual.spec.ts-snapshots/ are
-# committed – they are the release gate's ground truth)
-playwright-report/
-test-results/
-coverage/
-
 # Environment & secrets
 *.local
 .env
@@ -27,10 +15,24 @@ coverage/
 Thumbs.db
 
 # Editor & AI tooling
+AGENTS.md
+CLAUDE.md
+.agents/
 .claude/
 .clavix/
-.idea/
 graphify-out/
+.idea/
+
+# Build output (root dist/ holds the committed prebuilt css and stays tracked)
+playground/dist/
+# Search index is generated at dev start and build by the Vite plugin
+playground/public/
+*.tsbuildinfo
+
+# Test artifacts (visual baselines in e2e/visual.spec.ts-snapshots/ are
+# committed – they are the release gate's ground truth)
+playwright-report/
+test-results/
+coverage/
 
 # Local-only files
-AGENTS.md
