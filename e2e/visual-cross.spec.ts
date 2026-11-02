@@ -2,6 +2,7 @@ import { test, expect } from "@playwright/test";
 import { crossBrowserViewSlugs, views } from "../playground/src/navigation";
 import { stubVersionBadge } from "./lib/badge";
 import { applyThemeConfig, type ThemeConfig } from "./lib/theme";
+import { stubFkuiVersionLock } from "./lib/version-lock";
 
 // Cross-browser half of the release gate: every playground view
 // (crossBrowserViewSlugs in playground/src/navigation.ts) in the felix
@@ -33,6 +34,7 @@ for (const view of views.filter((candidate) =>
             await stubVersionBadge(page);
             await page.goto(`/#/${view.slug}`);
             await page.waitForLoadState("networkidle");
+            await stubFkuiVersionLock(page);
             await expect(page).toHaveScreenshot(
                 `${view.slug}-${config.theme}-${config.mode}.png`,
                 { fullPage: true, maxDiffPixelRatio: 0 },

@@ -2,6 +2,7 @@ import { test, expect } from "@playwright/test";
 import { views } from "../playground/src/navigation";
 import { stubVersionBadge } from "./lib/badge";
 import { applyThemeConfig, type ThemeConfig } from "./lib/theme";
+import { stubFkuiVersionLock } from "./lib/version-lock";
 
 // Three configurations per view: the felix profile in both color modes, plus
 // the fkui base profile in light mode for upstream-drift detection (a change
@@ -19,6 +20,7 @@ for (const view of views) {
             await stubVersionBadge(page);
             await page.goto(`/#/${view.slug}`);
             await page.waitForLoadState("networkidle");
+            await stubFkuiVersionLock(page);
             await expect(page).toHaveScreenshot(
                 `${view.slug}-${config.theme}-${config.mode}.png`,
                 { fullPage: true, maxDiffPixelRatio: 0 },
