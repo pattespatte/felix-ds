@@ -2,8 +2,9 @@ name: FKUI currency check
 
 # Weekly proof that felix-ds stays current with the mother library: bump the
 # six @fkui/* dev pins to the latest published version (scripts/fkui.ts
-# lockstep logic), run the full release gate, and open a pull request with the
-# bump on green. A no-op week (already current) exits green without a PR.
+# lockstep logic), rebuild the prebuilt css on the new pins, run the full
+# release gate, and open a pull request with the bump and the rebuilt dist
+# on green. A no-op week (already current) exits green without a PR.
 # The PR body and the run summary also list any @fkui/vue components the bump
 # adds or removes (diff of `bun run fkui components` before/after the upgrade),
 # so new upstream components announce themselves instead of passing silently.
@@ -80,6 +81,12 @@ jobs:
               echo "- Unchanged: $(wc -l < /tmp/fkui-components-after.txt) components"
             fi
           } >> "$GITHUB_STEP_SUMMARY"
+      # Rebuild the prebuilt css on the bumped pins before the parity gate:
+      # without this, a bump that changes upstream css can never go green –
+      # the committed dist is stale the moment the pins move (the 6.63.0 run
+      # on 2026-11-02 failed exactly here before this step existed). The
+      # regenerated files travel with the pull request further down.
+      - run: bun run build:theme
       # Parity gate: DTCG tokens, icons, prebuilt CSS must match the sources.
       - run: bun test
       - run: bun run build
@@ -109,10 +116,10 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git checkout -b "$BRANCH"
-          git add package.json bun.lockb
-          git commit -m "chore(deps): bump @fkui/* ${FKUI_OLD} -> ${FKUI_NEW} (currency run)"
+          git add package.json bun.lockb dist/
+          git commit -m "chore(deps): bump @fkui/* ${FKUI_OLD} -> ${FKUI_NEW}, rebuild dist (currency run)"
           git push origin "$BRANCH"
-          BODY="Scheduled FKUI-currency run. Dev pins bumped ${FKUI_OLD} → ${FKUI_NEW} via \`bun run fkui upgrade\` and the full release gate passed on ubuntu-24.04: parity tests, build, vue-tsc, 45 chromium comparisons, 60 firefox/webkit cross-browser comparisons, 32 axe scans. Peer range \`>=6.57.0 <7.0.0\` still covers the new version. Review, merge, then cut the next release per docs/release.en.md."
+          BODY="Scheduled FKUI-currency run. Dev pins bumped ${FKUI_OLD} → ${FKUI_NEW} via \`bun run fkui upgrade\`, the prebuilt dist rebuilt on the new pins (\`bun run build:theme\`) so main never gets pins without matching dist, and the full release gate passed on ubuntu-24.04: parity tests, build, vue-tsc, 45 chromium comparisons, 60 firefox/webkit cross-browser comparisons, 32 axe scans. Peer range \`>=6.57.0 <7.0.0\` still covers the new version. Review, merge, then cut the next release per docs/release.en.md."
           if [ -n "$FKUI_COMPONENTS_ADDED" ]; then
             BODY="$BODY"$'\n\n'"New @fkui/vue components in ${FKUI_NEW}: ${FKUI_COMPONENTS_ADDED}. The playground does not demo them yet – fkuiComponentLinks.ts, the demos and navigation need entries."
           fi
