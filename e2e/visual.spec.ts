@@ -1,6 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { views } from "../playground/src/navigation";
 import { stubVersionBadge } from "./lib/badge";
+import { stubFkuiRegistry } from "./lib/fkui-registry";
 import { applyThemeConfig, type ThemeConfig } from "./lib/theme";
 import { stubFkuiVersionLock } from "./lib/version-lock";
 
@@ -18,6 +19,7 @@ for (const view of views) {
         test(`${view.slug} [${config.theme}/${config.mode}]`, async ({ page }) => {
             await applyThemeConfig(page, config);
             await stubVersionBadge(page);
+            await stubFkuiRegistry(page);
             await page.goto(`/#/${view.slug}`);
             await page.waitForLoadState("networkidle");
             await stubFkuiVersionLock(page);

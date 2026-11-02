@@ -36,6 +36,7 @@
         <div class="page-footer__bottom">
             <p>
                 <b>felix-ds</b> – proof of concept.
+                Bygger på <a href="https://designsystem.forsakringskassan.se/latest/">FKUI</a> <span class="page-footer__fkui-version">{{ fkuiVersion }}</span>{{ fkuiVersionSuffix }}.
                 <a href="https://github.com/pattespatte/felix-ds">Öppen källkod på GitHub</a>.
                 <a
                     class="page-footer__badge"
@@ -54,7 +55,53 @@
 </template>
 
 <script setup lang="ts">
+import { computed, onMounted, ref } from "vue";
+import pkg from "../../../package.json";
 import { views } from "../navigation";
+
+// Same build-time source as the Kom igång view: the playground's own exact
+// FKUI dev pin (all six @fkui packages upgrade in lockstep). The span's
+// page-footer__fkui-version class is a stable hook for e2e/lib/version-lock.ts,
+// which rewrites the digits to X.Y.Z so baselines survive version bumps.
+const fkuiVersion = (pkg.devDependencies as Record<string, string>)[
+    "@fkui/vue"
+];
+
+// Sync probe against the npm registry: the docs at
+// designsystem.forsakringskassan.se/latest document the latest release, so
+// the footer can state whether the pin tracks it. Null while loading or
+// when the fetch fails (offline, blocked) – the suffix then stays empty and
+// the sentence reads exactly as before the probe. Visual tests stub this
+// request to the pin itself (e2e/lib/fkui-registry.ts) so the rendered
+// state is deterministic.
+const latestFkuiVersion = ref<string | null>(null);
+
+onMounted(async () => {
+    try {
+        const response = await fetch(
+            "https://registry.npmjs.org/@fkui/vue/latest",
+        );
+        if (!response.ok) {
+            return;
+        }
+        const manifest: unknown = await response.json();
+        const version = (manifest as { version?: unknown }).version;
+        if (typeof version === "string") {
+            latestFkuiVersion.value = version;
+        }
+    } catch {
+        // Registry unreachable: leave the suffix empty.
+    }
+});
+
+const fkuiVersionSuffix = computed(() => {
+    if (latestFkuiVersion.value === null) {
+        return "";
+    }
+    return latestFkuiVersion.value === fkuiVersion
+        ? ", som är den senaste utgåvan"
+        : `. Senaste utgåvan är ${latestFkuiVersion.value}`;
+});
 
 function scrollToTop(): void {
     window.scrollTo({ top: 0 });

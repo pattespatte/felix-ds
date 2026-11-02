@@ -1,6 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { crossBrowserViewSlugs, views } from "../playground/src/navigation";
 import { stubVersionBadge } from "./lib/badge";
+import { stubFkuiRegistry } from "./lib/fkui-registry";
 import { applyThemeConfig, type ThemeConfig } from "./lib/theme";
 import { stubFkuiVersionLock } from "./lib/version-lock";
 
@@ -32,6 +33,7 @@ for (const view of views.filter((candidate) =>
         }) => {
             await applyThemeConfig(page, config);
             await stubVersionBadge(page);
+            await stubFkuiRegistry(page);
             await page.goto(`/#/${view.slug}`);
             await page.waitForLoadState("networkidle");
             await stubFkuiVersionLock(page);
