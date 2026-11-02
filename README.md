@@ -382,7 +382,7 @@ Planen skriver ut en länk till release notes och varnar särskilt för majorski
 4. Kör `bun run test:visual` och `bun run test:a11y`.
 5. Gå en visuell runda i playgrounden.
 
-Senaste uppgraderingsrepetitionen: 6.60.0 → 6.62.0 (2026-10-15) blev en visuell nolla. Enda skillnaden i kompilerad css var versionsmarkören `--fkui-theme-default-version`, ingen tokenändring. Hela porten (paritetstester, bygge, typkontroll, 45 skärmdumpsjämförelser i chromium, 32 axe-skanningar) passerade oförändrad.
+Senaste uppgraderingsrepetitionen: 6.62.0 → 6.63.0 (2026-11-02) blev återigen en visuell nolla. Enda skillnaden i kompilerad css var versionsmarkören `--fkui-theme-default-version`, ingen tokenändring och inga nya eller borttagna komponenter. Hela porten (paritetstester, bygge, typkontroll, 45 skärmdumpsjämförelser i chromium, 32 axe-skanningar) passerade. Rundan upptäckte också att kalenderdemon följde med aktuell månad, vilket skulle ha gjort baslinjerna ogiltiga vid varje månadsskifte – demon visar nu ett fast datum och baslinjerna kunde behållas oförändrade.
 
 ### Komponenter i playgrounden
 
@@ -817,7 +817,7 @@ The plan prints a link to the release notes and calls out major bumps. After a c
 4. Run `bun run test:visual` and `bun run test:a11y`.
 5. Take a visual pass through the playground.
 
-Latest upgrade rehearsal: 6.60.0 → 6.62.0 (2026-10-15) was a visual no-op. The only difference in compiled CSS was the `--fkui-theme-default-version` marker, no token change. The whole gate (parity tests, build, type-check, 45 chromium screenshot comparisons, 32 axe scans) passed unchanged.
+Latest upgrade rehearsal: 6.62.0 → 6.63.0 (2026-11-02) was again a visual no-op. The only difference in compiled CSS was the `--fkui-theme-default-version` marker – no token change, and no components added or removed. The whole gate (parity tests, build, type-check, 45 chromium screenshot comparisons, 32 axe scans) passed. The same round also caught the calendar demo following the current month, which would have invalidated the baselines at every month boundary – the demo now shows a fixed date and the baselines stayed unchanged.
 
 ### Components in the playground
 
