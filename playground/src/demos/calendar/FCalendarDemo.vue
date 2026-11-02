@@ -4,9 +4,12 @@ import { FDate } from "@fkui/date";
 import { FCalendar } from "@fkui/vue";
 import ComponentHeading from "../../components/ComponentHeading.vue";
 
-const today = FDate.fromIso(new Date().toISOString().slice(0, 10));
+// Fast referensdatum: kalendern måste vara deterministisk – den får inte
+// följa med när månaden växlar, för skärmdumpsjämförelserna (visual.spec.ts)
+// och deras baslinjer är tagna på just denna månad.
+const today = FDate.fromIso("2026-10-15");
 
-// Två neutrala exempelhändelser i aktuell månad, dag 3 och dag 17.
+// Två neutrala exempelhändelser i månaden, dag 3 och dag 17.
 const events = new Map<number, string>([
     [3, "Planering"],
     [17, "Avlämning"],
