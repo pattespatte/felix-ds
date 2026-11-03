@@ -826,6 +826,20 @@
           }
         }
       },
+      "footer": {
+        "background": {
+          "primary": {
+            "$type": "color",
+            "$value": "#116a3e"
+          }
+        },
+        "text": {
+          "primary": {
+            "$type": "color",
+            "$value": "#ffffff"
+          }
+        }
+      },
       "header": {
         "background": {
           "primary": {
