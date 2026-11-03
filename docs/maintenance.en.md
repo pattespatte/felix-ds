@@ -53,7 +53,7 @@ The run starts with a git-only check: if nothing that drives the visuals (playgr
 
 ### Monday: the FKUI check
 
-If FKUI has not published a new version, the run exits green without opening anything. When there is a new version, it bumps the six `@fkui/*` pins, runs the full gate on the bump and opens a pull request (`chore(deps): bump @fkui/* …`). Review and merge it, then cut the next release per the [release runbook](release.en.md). The pull request text also lists any `@fkui/vue` components the bump adds or removes, so new components announce themselves. A second leg of the run pins the peer range's lower bound (6.57.0) and runs the non-visual gates; a red floor leg is a signal to look at and never opens a pull request. The run also performs a dependency audit that only reports.
+If FKUI has not published a new version, the run exits green without opening anything. When there is a new version, it bumps the six `@fkui/*` pins, runs the full gate on the bump and opens a pull request (`chore(deps): bump @fkui/* …`). Review and merge it, then cut the next release per the [release runbook](release.en.md). The pull request text also lists any `@fkui/vue` components the bump adds or removes, so new components announce themselves. A second leg of the run pins the peer range's lower bound (6.57.0) and runs the non-visual gates; a red floor leg is a signal to look at and never opens a pull request. The run also performs a dependency audit that only reports. Step by step – merging the weekly round's pull request or doing the rehearsal locally – is covered in the [upgrade guide](upgrade-fkui.en.md).
 
 ## When you act yourself
 

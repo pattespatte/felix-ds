@@ -53,7 +53,7 @@ Körningen börjar med en ren git-kontroll: har inget som styr det visuella (pla
 
 ### Måndagen: FKUI-kontrollen
 
-Har FKUI inte gett ut någon ny version avslutar körningen grönt utan att öppna något. Finns en ny version höjer den de sex `@fkui/*`-versionerna, kör hela porten på höjningen och öppnar en pull request (”chore(deps): bump @fkui/* …”). Granska och merga den, och ge ut nästa version enligt [utgivningsdokumentationen](release.sv.md). Texten i pull requesten listar också de `@fkui/vue`-komponenter som höjningen lägger till eller tar bort. En andra del av körningen låser peer-intervallets undre gräns (6.57.0) och kör portarna som inte är visuella. Ett rött resultat där är en signal att titta närmare på, och den delen öppnar aldrig någon pull request. Körningen gör också en beroendeaudit som bara rapporterar.
+Har FKUI inte gett ut någon ny version avslutar körningen grönt utan att öppna något. Finns en ny version höjer den de sex `@fkui/*`-versionerna, kör hela porten på höjningen och öppnar en pull request (”chore(deps): bump @fkui/* …”). Granska och merga den, och ge ut nästa version enligt [utgivningsdokumentationen](release.sv.md). Texten i pull requesten listar också de `@fkui/vue`-komponenter som höjningen lägger till eller tar bort. En andra del av körningen låser peer-intervallets undre gräns (6.57.0) och kör portarna som inte är visuella. Ett rött resultat där är en signal att titta närmare på, och den delen öppnar aldrig någon pull request. Körningen gör också en beroendeaudit som bara rapporterar. Steg för steg – att merga veckorondens pull request eller att göra repetitionen lokalt – står i [uppgraderingsguiden](upgrade-fkui.sv.md).
 
 ## När du behöver göra något själv
 

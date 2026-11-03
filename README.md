@@ -363,7 +363,7 @@ Filen `playground/src/navigation.ts` definierar alla vyer och ankare. Vänsterme
 
 ### Uppgradera FKUI-beroendena
 
-Repot låser alla `@fkui/*`-paket till exakta versioner och uppgraderar dem i takt: samma version på samtliga paket, som uppströms publicerar dem. Hjälpskriptet `fkui` håller koll på läget och genomför uppgraderingen. (`bun fkui …` är en genväg som Bun tolkar som `bun run fkui …`.)
+Repot låser alla `@fkui/*`-paket till exakta versioner och uppgraderar dem i takt: samma version på samtliga paket, som uppströms publicerar dem. Hjälpskriptet `fkui` håller koll på läget och genomför uppgraderingen. (`bun fkui …` är en genväg som Bun tolkar som `bun run fkui …`.) Båda vägarna – veckorondens pull request och den lokala repetitionen – går steg för steg i [uppgraderingsguiden](docs/upgrade-fkui.sv.md).
 
 | Kommando | Beskrivning |
 | --- | --- |
@@ -798,7 +798,7 @@ The file `playground/src/navigation.ts` defines every view and anchor. The left 
 
 ### Upgrading the FKUI dependencies
 
-The repo pins all `@fkui/*` packages to exact versions and upgrades them in lockstep: the same version on every package, matching how upstream publishes them. The `fkui` helper script tracks the state and performs the upgrade. (`bun fkui …` is a shortcut that Bun resolves to `bun run fkui …`.)
+The repo pins all `@fkui/*` packages to exact versions and upgrades them in lockstep: the same version on every package, matching how upstream publishes them. The `fkui` helper script tracks the state and performs the upgrade. (`bun fkui …` is a shortcut that Bun resolves to `bun run fkui …`.) Both paths – the weekly round's pull request and the local rehearsal – are walked through step by step in the [upgrade guide](docs/upgrade-fkui.en.md).
 
 | Command | Description |
 | --- | --- |
