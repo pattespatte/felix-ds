@@ -27,6 +27,9 @@ import {
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const MODES = ["light", "dark"] as const;
 
+/** Se tokens.test.ts: temejämförelsen hoppas över vid FKUI_FLOOR=1. */
+const AT_FKUI_FLOOR = process.env.FKUI_FLOOR === "1";
+
 type Mode = (typeof MODES)[number];
 type JsonNode = Record<string, unknown>;
 
@@ -99,7 +102,7 @@ describe.each(MODES)("dtcg-import-rundtur (%s)", (mode) => {
     const theme = parseRootDeclarations(compileMode(mode));
     const themeFiltered = new Map([...theme].filter(([name]) => !EXCLUDED.includes(name)));
 
-    test("den genererade filen kompilerar till temats deklarationer", () => {
+    test.skipIf(AT_FKUI_FLOOR)("den genererade filen kompilerar till temats deklarationer", () => {
         expect(sortedEntries(canonicalizeDeclarations(generated, leaves))).toEqual(
             sortedEntries(canonicalizeDeclarations(themeFiltered, leaves)),
         );

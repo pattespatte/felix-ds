@@ -27,6 +27,15 @@ import { flattenTokenTree, parseCssShadowPart, resolveCssVars, resolveJsonAliase
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const MODES = ["light", "dark"] as const;
 
+/**
+ * Jämförelserna mot färskt kompilerad CSS gäller mot senaste pinned FKUI: när
+ * uppströms ändrar token-uppsättningen (6.64.0 lade till footer-tokens)
+ * skiljer sig kompilationen vid intervallets äldsta minor från de committade
+ * filerna, som alltid är genererade mot senaste. I floor-benet i
+ * currency-arbetsflödet hoppas just de testerna över (FKUI_FLOOR=1).
+ */
+const AT_FKUI_FLOOR = process.env.FKUI_FLOOR === "1";
+
 type Mode = (typeof MODES)[number];
 type JsonNode = Record<string, unknown>;
 
@@ -65,7 +74,7 @@ describe.each(MODES)("design-token-paritet (%s)", (mode) => {
     const tree = JSON.parse(readFileSync(join(ROOT, "tokens", `${mode}.json`), "utf8")) as JsonNode;
     const leaves = flattenTokenTree(tree);
 
-    test("namnmängden i JSON motsvarar det kompilerade temat", () => {
+    test.skipIf(AT_FKUI_FLOOR)("namnmängden i JSON motsvarar det kompilerade temat", () => {
         const cssNames = new Set([...declarations.keys()].filter((name) => !EXCLUDED.includes(name)));
         const jsonNames = new Set(leaves.keys());
         const missing = [...cssNames].filter((name) => !jsonNames.has(name));
@@ -73,7 +82,7 @@ describe.each(MODES)("design-token-paritet (%s)", (mode) => {
         expect({ missing, extra }).toEqual({ missing: [], extra: [] });
     });
 
-    test("varje tokenvärde motsvarar det kompilerade temat", () => {
+    test.skipIf(AT_FKUI_FLOOR)("varje tokenvärde motsvarar det kompilerade temat", () => {
         for (const [name, leaf] of leaves) {
             const cssValue = declarations.get(name);
             if (cssValue === undefined) {
@@ -143,7 +152,7 @@ describe.each(MODES)("tokenfilens struktur (%s)", (mode) => {
         }
     });
 
-    test("filen är identisk med vad skriptet genererar (inte föråldrad)", () => {
+    test.skipIf(AT_FKUI_FLOOR)("filen är identisk med vad skriptet genererar (inte föråldrad)", () => {
         const regenerated = JSON.stringify(buildTokenTree(mode as Mode), null, 2) + "\n";
         const committed = readFileSync(join(ROOT, "tokens", `${mode}.json`), "utf8");
         if (committed !== regenerated) {
