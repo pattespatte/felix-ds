@@ -21,7 +21,7 @@ gh run watch --repo pattespatte/felix-ds
 
 Körningen höjer de sex `@fkui/*`-versionerna, bygger om de förbyggda css-filerna, kör hela porten på ubuntu och öppnar en grön pull request med `package.json`, `bun.lockb` och `dist/`. Pull request-texten listar `@fkui/vue`-komponenter som tillkommit eller tagits bort. Granska och merga den – sedan återstår punkterna under ”Efteråt”.
 
-Blir körningen röd på de visuella stegen har FKUI ändrat pixlar, och baslinjerna måste genereras om – något arbetsflödet inte gör. Gör i stället uppgraderingen lokalt enligt väg B och följ avsnittet ”När pixlar ändras”. Blir den röd på token-paritetstesterna gäller detsamma: arbetsflödet bygger inte om tokenfilerna ännu. Vid andra fel finns testrapporten som artefakt (`currency-gate-failure`, 14 dagar).
+Blir körningen röd på de visuella stegen har FKUI ändrat pixlar, och baslinjerna måste genereras om – något arbetsflödet inte gör. Gör i stället uppgraderingen lokalt enligt väg B och följ avsnittet ”När pixlar ändras”. Vid andra fel finns testrapporten som artefakt (`currency-gate-failure`, 14 dagar).
 
 ## Väg B: gör uppgraderingen lokalt
 

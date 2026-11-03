@@ -21,7 +21,7 @@ gh run watch --repo pattespatte/felix-ds
 
 The run bumps the six pins, rebuilds the prebuilt dist, runs the full gate on ubuntu and opens a green pull request with `package.json`, `bun.lockb` and `dist/`. The pull request text lists any `@fkui/vue` components added or removed. Review and merge it – what remains is the items under "Afterwards".
 
-If the run goes red on the visual steps, FKUI has changed pixels and the baselines need regenerating – something the workflow does not do. Do the bump locally per path B instead and follow the "When pixels change" section. If it goes red on the token parity tests the same applies: the workflow does not rebuild the token files yet. On other failures the test report is uploaded as an artifact (`currency-gate-failure`, 14 days).
+If the run goes red on the visual steps, FKUI has changed pixels and the baselines need regenerating – something the workflow does not do. Do the bump locally per path B instead and follow the "When pixels change" section. On other failures the test report is uploaded as an artifact (`currency-gate-failure`, 14 days).
 
 ## Path B: do the bump locally
 
