@@ -417,14 +417,33 @@
 }
 @media (forced-colors: active) {
   :root .f-icon-arrow-down,
-  :root .f-icon-arrow-right {
+  :root .f-icon-arrow-right,
+  :root .paginator__previous .f-icon-chevrons-left {
     background: none;
     mask: none;
   }
   :root .f-icon-arrow-down > use,
-  :root .f-icon-arrow-right > use {
+  :root .f-icon-arrow-right > use,
+  :root .paginator__previous .f-icon-chevrons-left > use {
     visibility: visible;
   }
+}
+:root .paginator__previous .f-icon-chevrons-left,
+:root .paginator__next .f-icon-arrow-right {
+  background-color: currentColor;
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-size: contain;
+}
+:root .paginator__previous .f-icon-chevrons-left > use,
+:root .paginator__next .f-icon-arrow-right > use {
+  visibility: hidden;
+}
+:root .paginator__previous .f-icon-chevrons-left {
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 6l-6 6 6 6M18 6l-6 6 6 6' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+:root .paginator__next .f-icon-arrow-right {
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 6l6 6-6 6M12 6l6 6-6 6' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
 :root .checkbox__label::before,
 :root .radio-button__label::before {
@@ -953,14 +972,33 @@ html[data-color-mode=dark] .f-icon-arrow-right > use {
 }
 @media (forced-colors: active) {
   html[data-color-mode=dark] .f-icon-arrow-down,
-  html[data-color-mode=dark] .f-icon-arrow-right {
+  html[data-color-mode=dark] .f-icon-arrow-right,
+  html[data-color-mode=dark] .paginator__previous .f-icon-chevrons-left {
     background: none;
     mask: none;
   }
   html[data-color-mode=dark] .f-icon-arrow-down > use,
-  html[data-color-mode=dark] .f-icon-arrow-right > use {
+  html[data-color-mode=dark] .f-icon-arrow-right > use,
+  html[data-color-mode=dark] .paginator__previous .f-icon-chevrons-left > use {
     visibility: visible;
   }
+}
+html[data-color-mode=dark] .paginator__previous .f-icon-chevrons-left,
+html[data-color-mode=dark] .paginator__next .f-icon-arrow-right {
+  background-color: currentColor;
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-size: contain;
+}
+html[data-color-mode=dark] .paginator__previous .f-icon-chevrons-left > use,
+html[data-color-mode=dark] .paginator__next .f-icon-arrow-right > use {
+  visibility: hidden;
+}
+html[data-color-mode=dark] .paginator__previous .f-icon-chevrons-left {
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 6l-6 6 6 6M18 6l-6 6 6 6' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+html[data-color-mode=dark] .paginator__next .f-icon-arrow-right {
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 6l6 6-6 6M12 6l6 6-6 6' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
 html[data-color-mode=dark] .checkbox__label::before,
 html[data-color-mode=dark] .radio-button__label::before {

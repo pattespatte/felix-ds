@@ -359,7 +359,8 @@
     // like the dropdown fields do.
     @media (forced-colors: active) {
         .f-icon-arrow-down,
-        .f-icon-arrow-right {
+        .f-icon-arrow-right,
+        .paginator__previous .f-icon-chevrons-left {
             background: none;
             mask: none;
 
@@ -367,6 +368,36 @@
                 visibility: visible;
             }
         }
+    }
+
+    // The paginator's directional buttons pick two different upstream
+    // glyphs: chevrons-left on the previous button and arrow-right on the
+    // next, and the latter is painted with the single downward chevron
+    // above, so the pair would face mismatched directions. Neither icon
+    // sheet (the default library's or this profile's) carries a
+    // chevrons-right counterpart, and the theme cannot swap component
+    // markup, so both buttons draw a masked double chevron in the
+    // profile's artwork, mirrored per side through the mask itself;
+    // currentColor keeps the buttons' hover and disabled colouring
+    // intact.
+    .paginator__previous .f-icon-chevrons-left,
+    .paginator__next .f-icon-arrow-right {
+        background-color: currentColor;
+        mask-position: center;
+        mask-repeat: no-repeat;
+        mask-size: contain;
+
+        > use {
+            visibility: hidden;
+        }
+    }
+
+    .paginator__previous .f-icon-chevrons-left {
+        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 6l-6 6 6 6M18 6l-6 6 6 6' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    }
+
+    .paginator__next .f-icon-arrow-right {
+        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 6l6 6-6 6M12 6l6 6-6 6' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
     }
 
     // Checkbox and radio glyphs draw their resting border with the weak

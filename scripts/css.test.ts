@@ -58,11 +58,13 @@ const COMPLETE_GZIP_MARGIN = 512;
  * Bytebudgetar (gzippat, i byte) för de minifierade syskonen. Ett min-syskon
  * ska aldrig bli större än sin läsbara syster (minifiering ska alltid löna
  * sig), så budgeten ligger under syskons gzippade storlek. Uppmätt vid
- * v1.4.0: 5 049, 4 839 respektive 27 835 byte.
+ * v1.4.0: 5 049, 4 839 respektive 27 835 byte. Pagineringens dubbelchevroner
+ * (två maskade riktningsglyfer, 2026-11-04) kostade drygt 100 byte på
+ * standardposten: 5 305, 5 004 respektive 28 062 byte.
  */
 const MIN_BYTE_BUDGETS_GZIP: Record<string, number> = {
-    "dist/felix.min.css": 5_200,
-    "dist/felix-auto.min.css": 5_000,
+    "dist/felix.min.css": 5_400,
+    "dist/felix-auto.min.css": 5_100,
     "dist/felix-complete.min.css": 30_000,
 };
 
