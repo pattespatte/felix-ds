@@ -22,7 +22,12 @@ const modalOpen = ref(false);
                 och eventuell skugga styrs av temats tokens.
             </template>
             <template #footer>
-                <f-button size="medium" variant="primary" @click="modalOpen = true">
+                <f-button
+                    class="button--margin-bottom-0"
+                    size="medium"
+                    variant="primary"
+                    @click="modalOpen = true"
+                >
                     Öppna modal
                 </f-button>
             </template>
