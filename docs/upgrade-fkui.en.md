@@ -2,6 +2,14 @@
 
 When FKUI publishes a new version, this repo bumps all six `@fkui/*` packages in lockstep to the same version and proves with the full gate that the theme holds up. This guide shows the two paths: let the weekly round open a pull request (the normal case) or do the rehearsal locally. What the workflows do on their own is covered in the [maintenance guide](maintenance.en.md) – this is the commands.
 
+## Who this guide is for
+
+The guide covers the felix-ds repo itself – the theme layer and the playground – and whoever maintains it. Use it when FKUI has published a new version and the repo's pinned versions are behind. How that shows up is covered in the next section.
+
+- **The playground: same procedure.** The playground is a folder in the repo and follows along automatically when the six `@fkui/*` versions are bumped – there is no separate upgrade to do.
+- **The demo site and the consumer app: the guide does not apply.** They pin their own FKUI versions and upgrade their felix-ds dependency on their own when a new package version is released.
+- **Apps that do not build on FKUI: not relevant.** The guide is only about the relationship between felix-ds and FKUI's six npm packages.
+
 ## Noticing a new version
 
 Three ways, in the order they usually appear:

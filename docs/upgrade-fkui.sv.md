@@ -2,6 +2,14 @@
 
 När FKUI ger ut en ny version höjer det här repot alla sex `@fkui/*`-paket i takt till samma version och bevisar med hela porten att temat håller. Den här guiden visar de två vägarna: låt veckoronden öppna en pull request (normalfallet) eller gör repetitionen lokalt. Vad arbetsflödena gör av sig självt beskrivs i [underhållsguiden](maintenance.sv.md) – det här är kommandona.
 
+## Vem guiden är till för
+
+Guiden gäller felix-ds-repot självt – temalagret och playgrounden – och den som underhåller det. Använd den när FKUI har gett ut en ny version och repots låsta versioner ligger efter. Hur det märks står i nästa avsnitt.
+
+- **Playgrounden: samma procedur.** Playgrounden är en mapp i repot och följer med automatiskt när de sex `@fkui/*`-versionerna höjs – det finns ingen separat uppgradering att göra.
+- **Demosajten och konsumentappen: guiden gäller inte.** De låser sina egna FKUI-versioner och uppgraderar sitt felix-ds-beroende själva när en ny paketversion ges ut.
+- **Appar som inte bygger på FKUI: ingen relevans.** Guiden handlar enbart om förhållandet mellan felix-ds och FKUI:s sex npm-paket.
+
 ## Märk att en ny version finns
 
 Tre sätt, i den ordning de brukar dyka upp:
