@@ -450,8 +450,8 @@
     --fkds-color-action-background-primary-active: #334075;
     --fkds-color-action-background-primary-focus: #334075;
     --fkds-color-action-background-secondary-default: #eef070;
-    --fkds-color-action-background-secondary-hover: #eef495;
-    --fkds-color-action-background-secondary-active: #eef495;
+    --fkds-color-action-background-secondary-hover: #f4f7fa;
+    --fkds-color-action-background-secondary-active: #e7eef3;
     --fkds-color-action-background-secondary-focus: #eef070;
     --fkds-color-action-border-primary-default: #232948;
     --fkds-color-action-border-primary-hover: #232948;
@@ -559,6 +559,16 @@
   }
   :root .button--secondary:not(:disabled, [aria-disabled=true], .disabled, .button--disabled):focus-visible {
     background-color: var(--fkds-color-background-primary);
+  }
+}
+@media (prefers-color-scheme: light) and (hover: hover) {
+  :root .button:not(.button--primary, .button--secondary, .button--tertiary, .button--discrete, .button--discrete-inverted, .button--text):hover {
+    background-color: #eef495;
+  }
+}
+@media (prefers-color-scheme: light) {
+  :root .button:not(.button--primary, .button--secondary, .button--tertiary, .button--discrete, .button--discrete-inverted, .button--text):active {
+    background-color: #eef495;
   }
   :root .text-field:not(.text-field--error) .text-field__input:hover:not(:disabled):not(:focus),
   :root .textarea-field:not(.textarea-field--error) .textarea-field__textarea:hover:not(:disabled):not(:focus),

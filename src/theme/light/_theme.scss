@@ -59,6 +59,26 @@
         background-color: var(--fkds-color-background-primary);
     }
 
+    // Bare accent button. The unmodified .button is the profile's yellow
+    // accent surface, but the secondary hover/active steps it reads now
+    // carry the neutral surface hover shared with the non-button surfaces
+    // (see the variable file), so the yellow hover step is pinned back here.
+    // Every variant owns its own hover background and is excluded (the
+    // compound tertiary styles always ride along with their base variant
+    // class); the calendar's year-selector buttons are tertiary-styled and
+    // follow the neutral steps.
+    $accent-hover-bg: #eef495;
+
+    @media (hover: hover) {
+        .button:not(.button--primary, .button--secondary, .button--tertiary, .button--discrete, .button--discrete-inverted, .button--text):hover {
+            background-color: $accent-hover-bg;
+        }
+    }
+
+    .button:not(.button--primary, .button--secondary, .button--tertiary, .button--discrete, .button--discrete-inverted, .button--text):active {
+        background-color: $accent-hover-bg;
+    }
+
     // Input fields get a soft tinted hover surface with a slightly deeper
     // border, mirroring the profile's text field behaviour. Focus and error
     // states are left to the upstream styling.
