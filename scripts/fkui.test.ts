@@ -5,6 +5,10 @@
  * alltid sorterat utan dubbletter – valutaarbetsflödet diffar utdatan med
  * `comm` och förlitar sig på det. Samma sak för statuslistan: endast
  * `@deprecated` i JSDoc-blocket omedelbart ovanför en export räknas.
+ * Samma fil låser även målvalet i `upgrade`: senaste versionen som finns hos
+ * samtliga @fkui-paket – en partiell uppströmsutgivning (run 42655289730:
+ * 6.64.1 enbart för @fkui/vue och @fkui/design) ska bli ett vänteläge, inte
+ * en pinning som kraschar i `bun install`.
  * Kör med `bun test`.
  */
 
@@ -12,7 +16,12 @@ import { describe, expect, test } from "bun:test";
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { extractComponentNames, extractDeprecatedNames } from "./fkui.ts";
+import {
+    extractComponentNames,
+    extractDeprecatedNames,
+    highestCommonVersion,
+} from "./fkui.ts";
+import type { Packument } from "./fkui.ts";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -25,6 +34,13 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
  * version.
  */
 const AT_FKUI_FLOOR = process.env.FKUI_FLOOR === "1";
+
+/** Ett packument med endast versionslistan ifylld – det målvalet ser. */
+function packumentOf(versions: string[]): Packument {
+    return {
+        versions: Object.fromEntries(versions.map((version) => [version, {}])),
+    };
+}
 
 const DECLARATION_SNIPPET = `import type { FC } from "vue";
 export declare const FLabel: typeof __VLS_export_2;
@@ -150,5 +166,62 @@ describe("extractDeprecatedNames", () => {
             expect(deprecated.has("FDataTable")).toBe(true);
         }
         expect(deprecated.has("FButton")).toBe(false);
+    });
+});
+
+describe("highestCommonVersion", () => {
+    test("högsta version som finns hos samtliga paket", () => {
+        const packuments = new Map<string, Packument>([
+            ["@fkui/vue", packumentOf(["6.63.0", "6.64.0", "6.64.1"])],
+            ["@fkui/design", packumentOf(["6.63.0", "6.64.0", "6.64.1"])],
+            ["@fkui/date", packumentOf(["6.63.0", "6.64.0"])],
+        ]);
+        expect(
+            highestCommonVersion(packuments, [
+                "@fkui/vue",
+                "@fkui/design",
+                "@fkui/date",
+            ]),
+        ).toBe("6.64.0");
+    });
+
+    test("samma senaste version hos alla paket väljs rakt av", () => {
+        const packuments = new Map<string, Packument>([
+            ["@fkui/vue", packumentOf(["6.64.0", "6.65.0"])],
+            ["@fkui/date", packumentOf(["6.64.0", "6.65.0"])],
+        ]);
+        expect(
+            highestCommonVersion(packuments, ["@fkui/vue", "@fkui/date"]),
+        ).toBe("6.65.0");
+    });
+
+    test("inget snitt ger null", () => {
+        const packuments = new Map<string, Packument>([
+            ["@fkui/vue", packumentOf(["6.64.1"])],
+            ["@fkui/date", packumentOf(["6.64.0"])],
+        ]);
+        expect(
+            highestCommonVersion(packuments, ["@fkui/vue", "@fkui/date"]),
+        ).toBe(null);
+    });
+
+    test("förhandsversioner räknas inte som mål", () => {
+        const packuments = new Map<string, Packument>([
+            ["@fkui/vue", packumentOf(["6.64.0", "7.0.0-beta.1"])],
+            ["@fkui/date", packumentOf(["6.64.0", "7.0.0-beta.1"])],
+        ]);
+        expect(
+            highestCommonVersion(packuments, ["@fkui/vue", "@fkui/date"]),
+        ).toBe("6.64.0");
+    });
+
+    test("versionsordningen är numerisk, inte teckenvis", () => {
+        const packuments = new Map<string, Packument>([
+            ["@fkui/vue", packumentOf(["6.9.0", "6.64.0"])],
+            ["@fkui/date", packumentOf(["6.9.0", "6.64.0"])],
+        ]);
+        expect(
+            highestCommonVersion(packuments, ["@fkui/vue", "@fkui/date"]),
+        ).toBe("6.64.0");
     });
 });

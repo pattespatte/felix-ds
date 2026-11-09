@@ -1,8 +1,10 @@
 name: FKUI currency check
 
 # Weekly proof that felix-ds stays current with the mother library: bump the
-# six @fkui/* dev pins to the latest published version (scripts/fkui.ts
-# lockstep logic), rebuild the prebuilt css and the token files on the new
+# six @fkui/* dev pins to the latest version published for all of them
+# (scripts/fkui.ts lockstep logic; a partial upstream release – some packages
+# only, like 6.64.1 on 2026-11-03 – becomes a green no-op week, not a broken
+# pin), rebuild the prebuilt css and the token files on the new
 # pins, run the full release gate, and open a pull request with the bump,
 # the rebuilt dist and the regenerated tokens on green. A no-op week
 # (already current) exits green without a PR.

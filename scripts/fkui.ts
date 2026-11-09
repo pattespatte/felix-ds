@@ -11,7 +11,10 @@
  *
  * Konventioner som skriptet följer:
  * - samtliga @fkui-paket låses till exakta versioner (inga ^ eller ~)
- * - paketen uppgraderas i takt (samma version på alla), som uppströms publicerar dem
+ * - paketen uppgraderas i takt (samma version på alla), som uppströms publicerar
+ *   dem; en partiell utgivning (några paket saknar den nya versionen) blir ett
+ *   vänteläge på senaste gemensamma version, inte en pinning av versioner som
+ *   inte finns (se run 42655289730, där 6.64.1 enbart fanns för två av sex)
  * - länkar till release notes hämtas ur registrets metadata, inte hårdkodade här
  */
 
@@ -24,7 +27,7 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const PACKAGE_JSON = resolve(ROOT, "package.json");
 const REGISTRY = "https://registry.npmjs.org";
 
-interface Packument {
+export interface Packument {
     "dist-tags"?: Record<string, string>;
     versions?: Record<string, unknown>;
     time?: Record<string, string>;
@@ -232,11 +235,50 @@ function repositoryUrl(packument: Packument): string | null {
     return raw.replace(/^git\+/, "").replace(/\.git$/, "");
 }
 
+/**
+ * Senaste version som finns publicerad hos samtliga namngivna paket – snittet
+ * av registrets versionslistor, högst först. Uppströms publicerar ibland bara
+ * några av paketen i en utgivning (6.64.1 fanns enbart för @fkui/vue och
+ * @fkui/design); snittet gör en sådan partiell utgivning till ett vänteläge
+ * i stället för en uppgraderingsplan som kraschar i `bun install`. Enbart
+ * rena x.y.z-versioner räknas – förhandsversioner blir aldrig mål.
+ */
+export function highestCommonVersion(
+    packuments: Map<string, Packument>,
+    names: string[],
+): string | null {
+    const versionsOf = (name: string): string[] =>
+        Object.keys(packuments.get(name)?.versions ?? {}).filter((version) =>
+            /^\d+\.\d+\.\d+$/.test(version),
+        );
+    let common = versionsOf(names[0] ?? "");
+    for (const name of names.slice(1)) {
+        const available = new Set(versionsOf(name));
+        common = common.filter((version) => available.has(version));
+        if (common.length === 0) {
+            return null;
+        }
+    }
+    return common.sort(compareVersions).at(-1) ?? null;
+}
+
 function parseVersion(version: string): [number, number, number] | null {
     const match = /^(\d+)\.(\d+)\.(\d+)/.exec(version);
     return match
         ? [Number(match[1]), Number(match[2]), Number(match[3])]
         : null;
+}
+
+/** Jämför två versioner som semver; icke-tolkbara strängar räknas lägst. */
+function compareVersions(a: string, b: string): number {
+    const left = parseVersion(a) ?? [0, 0, 0];
+    const right = parseVersion(b) ?? [0, 0, 0];
+    for (let i = 0; i < 3; i++) {
+        if (left[i] !== right[i]) {
+            return left[i] - right[i];
+        }
+    }
+    return 0;
 }
 
 function bumpKind(from: string, to: string): string {
@@ -362,10 +404,32 @@ async function runUpgrade(
         if (latest.length === 1 && latest[0] !== undefined) {
             target = latest[0];
         } else {
-            target = packuments.get("@fkui/vue")?.["dist-tags"]?.latest ?? "";
+            const common = highestCommonVersion(packuments, names);
+            if (common === null) {
+                fail(
+                    "uppströms senaste versioner skiljer sig och ingen version finns gemensamt för samtliga @fkui-paket – kontrollera registret",
+                );
+            }
+            target = common;
             console.log(
-                "OBS: uppströms senaste versioner skiljer sig mellan paketen; målet sätts efter @fkui/vue.",
+                "OBS: uppströms senaste versioner skiljer sig mellan paketen; målet sätts till senaste version som finns hos samtliga paket.",
             );
+            const ahead = names
+                .map((name) => ({
+                    name,
+                    latest: packuments.get(name)?.["dist-tags"]?.latest,
+                }))
+                .filter(
+                    (row): row is { name: string; latest: string } =>
+                        row.latest !== undefined &&
+                        compareVersions(row.latest, target) > 0,
+                )
+                .map((row) => `${row.name}@${row.latest}`);
+            if (ahead.length > 0) {
+                console.log(
+                    `Senare versioner som ännu inte nått alla paket: ${ahead.join(", ")}.`,
+                );
+            }
         }
     }
 
