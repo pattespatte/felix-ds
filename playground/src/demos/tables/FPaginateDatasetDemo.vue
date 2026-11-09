@@ -43,7 +43,7 @@ const items: MaintenanceItem[] = [
             <template #default="{ items: currentPageItems }">
                 <f-list id="underhall" :items="currentPageItems">
                     <template #default="{ item }">
-                        <p>{{ item.atgard }} – {{ item.intervall }}</p>
+                        {{ item.atgard }} – {{ item.intervall }}
                     </template>
                     <template #screenreader="{ item }"> {{ item.atgard }} </template>
                 </f-list>

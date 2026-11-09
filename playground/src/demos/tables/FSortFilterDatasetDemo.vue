@@ -60,10 +60,8 @@ const sortableAttributes = { namn: "Frukt", ursprung: "Ursprung" };
             <template #default="{ sortFilterResult }">
                 <f-list key-attribute="id" :items="sortFilterResult">
                     <template #default="{ item }">
-                        <p>
-                            {{ item.namn }} – {{ item.ursprung }}:
-                            {{ item.beskrivning }}
-                        </p>
+                        {{ item.namn }} – {{ item.ursprung }}:
+                        {{ item.beskrivning }}
                     </template>
                     <template #screenreader="{ item }"> {{ item.namn }} </template>
                 </f-list>
