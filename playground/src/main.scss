@@ -109,28 +109,66 @@ body {
 }
 
 // Shrink the header while the page is scrolled (≈49px vs ≈81px at rest).
-// Desktop only: FLayoutLeftPanel measures the header height once at mount
-// for the mobile drawer's top offset, so below FKUI medium – where the
-// drawer lives – the header keeps a constant height. The whole feature rides
-// on prefers-reduced-motion because shrinking is motion: users (and the
-// Playwright visual suite, which runs with reducedMotion: reduce) get the
-// stable at-rest header instead. 0.375rem padding matches the 6px focus-ring
+// Every viewport width: the old below-FKUI-medium exemption existed because
+// FLayoutLeftPanel measured the header height once at mount for the drawer's
+// top offset, but App.vue now keeps that offset in sync with a
+// ResizeObserver, so a shrinking header can never leave the drawer floating
+// below it. The state itself is a discrete change and applies regardless of
+// motion preferences; only the 0.2s transition rides on
+// prefers-reduced-motion, because shrinking is motion (users with reduced
+// motion – and the Playwright visual suite, which runs with
+// reducedMotion: reduce and never scrolls – get the instant switch and the
+// stable at-rest header). 0.375rem padding matches the 6px focus-ring
 // spread, so :focus-visible rings on the controls stay unclipped inside the
 // header's overflow: hidden.
-@media (min-width: 40em) and (prefers-reduced-motion: no-preference) {
+.page-header__root--scrolled {
+    --header-control-height: 1.75rem;
+    // The pill label's own block padding: shrinking it with the height
+    // keeps the 24px text line from flooring the label above the height
+    // variable.
+    --header-control-pad-block: 0.125rem;
+
+    .page-header {
+        padding-block: 0.375rem;
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
     .page-header {
         transition: padding 0.2s ease;
     }
+}
 
+// Scrolled compact row on wrapped widths: the stacked flex lines collapse
+// back into one. The app name drops its suffix and its upstream min-width so
+// the box hugs the text, the controls give up their forced full-width wrap,
+// and the theme pill – the least useful control mid-scroll – leaves the row.
+// The search field falls back to its desktop size (SearchBox.vue carries the
+// matching override). Fits 320px phones: name ≈88px + search ≥120px + mode
+// button 44px + gaps inside the header's 2.5rem side padding.
+@media (max-width: 44.99em) {
     .page-header__root--scrolled {
-        --header-control-height: 1.75rem;
-        // The pill label's own block padding: shrinking it with the height
-        // keeps the 24px text line from flooring the label above the height
-        // variable.
-        --header-control-pad-block: 0.125rem;
-
         .page-header {
-            padding-block: 0.375rem;
+            flex-wrap: nowrap;
+            row-gap: 0;
+        }
+
+        .page-header__right {
+            flex-basis: auto;
+        }
+
+        .page-header__app-name {
+            min-width: 0;
+        }
+
+        .app-name-sub {
+            display: none;
+        }
+
+        // Doubled class: the component's own scoped .theme-toggle rule is
+        // equally specific and later in the bundle, so a single class loses.
+        .theme-toggle.theme-toggle {
+            display: none;
         }
     }
 }
@@ -198,6 +236,10 @@ html[data-color-mode="dark"]:not(.theme-felix) .badge--default {
     align-items: stretch;
     max-width: var(--page-max-width);
     margin-inline: auto;
+    // Anchor for the collapsed rail's absolute positioning on phones
+    // (mobile drawer block below). Static children and fixed drawers are
+    // unaffected by a relative container.
+    position: relative;
 }
 
 .layout-navigation__navigation {
@@ -286,20 +328,55 @@ html[data-color-mode="dark"]:not(.theme-felix) .badge--default {
 // only runs on window resize, never on load), which on a phone covers
 // nearly the whole viewport. Below the medium breakpoint – where App.vue
 // also collapses the panel on load – the open panel instead becomes a fixed
-// drawer over the content, while the collapsed state keeps the static
-// hamburger rail it has on desktop. The drawer's top offset is the header
-// height the component measured at mount; crossing the breakpoint by
-// resizing keeps that measurement until the next reload.
+// drawer over the content, while the collapsed state keeps a hamburger rail.
+// The drawer's top offset is the header height, kept in sync by App.vue's
+// ResizeObserver (the header shrinks on scroll at every width now).
 @media (max-width: 39.99em) {
     .layout-navigation__navigation[aria-expanded="true"] {
         position: fixed;
-        // Beats the component's inline width (initial-width, 320px).
-        width: min(85vw, 320px) !important;
+        // Beats the component's inline width, which the 50%-viewport resize
+        // clamp pulls down to ~half a phone's width over a session.
+        width: min(85vw, 26rem) !important;
+    }
+
+    // FKUI paints the (resize-clamped) panel width as inline max-widths on
+    // the inner title and content – 171px on a 412px phone after one resize
+    // event – squeezing the drawer's content into a narrow column with a
+    // horizontal scrollbar while the outer drawer is forced wide. Beat the
+    // inline styles: in drawer mode the content fills the drawer, and the
+    // inner column loses the desktop-only margin that reserved room for the
+    // (hidden) drag border.
+    .layout-navigation__navigation[aria-expanded="true"] {
+        .layout-navigation__navigation__inner {
+            margin-right: 0;
+        }
+
+        .layout-navigation__navigation__inner__title,
+        .layout-navigation__navigation__inner__content {
+            max-width: none !important;
+        }
     }
 
     // Drag-to-resize is a desktop affordance; the drawer is fixed-width.
     .layout-navigation__navigation__border {
         display: none;
+    }
+
+    // The collapsed rail leaves the flow: as a static flex column it cost
+    // 56px of viewport plus the view's 1.5rem padding, leaving ~80px of dead
+    // space left of the text. Floating in the content column's top-left
+    // corner instead, the text starts at the view's own inline padding and
+    // the first line simply clears the rail via the view's top padding.
+    .layout-navigation__navigation[aria-expanded="false"] {
+        position: absolute;
+        left: 0;
+        // !important beats the component's inline top (the header height it
+        // measured); bottom: auto beats upstream's bottom: 0, which would
+        // otherwise stretch the absolute rail into a full-height column.
+        top: 0 !important;
+        bottom: auto;
+        // Below the scrim (9993) so an opening drawer covers the rail.
+        z-index: 9992;
     }
 
     // Backdrop for the open drawer, shown only while the panel reports
@@ -334,6 +411,17 @@ html[data-color-mode="dark"]:not(.theme-felix) .badge--default {
     max-width: 52rem;
     padding: 1.5rem 1.5rem 4rem;
     box-sizing: border-box;
+}
+
+// Phones: the collapsed rail floats in the column's top-left corner (mobile
+// drawer block above), so the first line clears it via the extra top padding
+// and the text runs at a phone-friendly 1rem side padding – together that
+// removes the ~80px of dead space left of the text the floating rail used to
+// add. Declared after .view so it wins the same-specificity cascade.
+@media (max-width: 39.99em) {
+    .view {
+        padding: 4.75rem 1rem 4rem;
+    }
 }
 
 .view__intro {

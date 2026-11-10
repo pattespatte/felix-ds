@@ -70,6 +70,31 @@ function closeMobileNav(): void {
 onMounted(closeMobileNav);
 provide("close-mobile-nav", closeMobileNav);
 
+// FLayoutLeftPanel measures the header height once at mount for the drawer's
+// top offset and never re-measures. The header now shrinks while scrolled at
+// every viewport width (main.scss), so the offset is kept in sync here: a
+// ResizeObserver on the header band writes the live height into the
+// component instance whenever it changes – scroll-shrink transition, wrap
+// breakpoint crossings and all. offsetTop is public instance state, just
+// like isOpen above.
+let headerObserver: ResizeObserver | null = null;
+
+onMounted(() => {
+    const header = document.querySelector(".layout-application-template__header");
+    if (header && leftPanel.value) {
+        headerObserver = new ResizeObserver(() => {
+            if (leftPanel.value) {
+                leftPanel.value.offsetTop = header.offsetHeight;
+            }
+        });
+        headerObserver.observe(header);
+    }
+});
+
+onUnmounted(() => {
+    headerObserver?.disconnect();
+});
+
 // Shrinks the header band while the page is scrolled (the CSS lives in
 // main.scss; the class lands on FPageHeader's root element). A small
 // threshold keeps the at-rest state stable against sub-pixel scroll jitter,

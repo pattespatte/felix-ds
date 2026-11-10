@@ -262,6 +262,22 @@ onUnmounted(() => {
     }
 }
 
+/* In the scrolled compact header row (single line below 44.99em, see
+   main.scss) the search returns to its desktop size: inline next to the mode
+   button instead of a full-width row, with the desktop focus expansion. The
+   two-class selector beats every rule above regardless of source order. */
+@media (max-width: 44.99em) {
+    .page-header__root--scrolled .search-box {
+        flex: 0 1 10rem;
+        min-width: 7.5rem;
+        max-width: 10rem;
+    }
+
+    .page-header__root--scrolled .search-box--focused {
+        max-width: 14rem;
+    }
+}
+
 .search-box__field :deep(.text-field) {
     width: 100%;
     margin-bottom: 0;
