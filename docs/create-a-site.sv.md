@@ -120,6 +120,37 @@ Egen layout-css skrivs med tokens endast – `--fkds-*` och `--f-*` – utan rå
 
 Alla typsnitt följer med temat: Noto Sans för brödtext (400, 600 + kursiv) och Roboto Slab för rubriker, med fet stil mappad på vikt 600. Den förbyggda `dist/felix.css` innehåller @font-face-reglerna med woff2-referenser som Vite bundlar (SCSS-flödet får samma regler via `@use "felix-ds/src/fonts/fonts"`) – inga CDN-anrop, inga Google Fonts, ingen integritetsgranskning. Kontrollera gärna i bygget att `dist/assets/*.woff2` finns och att ingen `fonts.googleapis.com`-referens smugit sig in.
 
+## Logotyp
+
+FKUI:s `FLogo`-komponent visar en logotyp, till exempel i sidhuvudet. Bilden kommer från CSS-variablerna `--f-logo-image-small` och `--f-logo-image-large` och appliceras som bakgrund. Temalaget fyller variablerna med en neutral platsmarkör (en fylld cirkel) i båda färglägena. Sätt egna värden i den css-fil som importeras efter temat (till exempel `src/assets/main.css`):
+
+```css
+:root {
+    --f-logo-image-small: url("./logo-small.svg");
+    --f-logo-image-large: url("./logo-large.svg");
+}
+
+/* platsmarkören är deklarerad även i det mörka scopet, så upprepa värdena här */
+html[data-color-mode="dark"] {
+    --f-logo-image-small: url("./logo-small.svg");
+    --f-logo-image-large: url("./logo-large.svg");
+}
+```
+
+Upprepa värdena även när samma fil fungerar på båda bakgrunderna. Det mörka scopet (0,1,1) vinner över `:root` (0,1,0) på specificitet, så utan deklarationen visar mörkt läge platsmarkören. Använder du `dist/felix-auto.css` räcker en deklaration på `:root` i båda lägena. Där ligger platshållarna på `:root` bakom mediafrågan `prefers-color-scheme`, så din css vinner på källordning. En mörk variant lägger du då i `@media (prefers-color-scheme: dark)`.
+
+Rendera sedan komponenten:
+
+```vue
+<f-logo size="responsive">Min webbplats</f-logo>
+```
+
+- `size` bestämmer vilken variabel som används. `small` och `large` använder varsin variabel, medan `responsive` (standard) visar den stora logotypen och byter till den lilla under FKUI:s sm-brytpunkt. Båda variablerna måste vara satta för `responsive`.
+- Textinnehållet blir komponentens tillgänglighetsnamn och visas inte. Slotten får inte vara tom: med tomt innehåll kastar komponenten fel.
+- Logotypens storlek styrs av `--f-logo-size-small` (0,8rem) och `--f-logo-size-large` (0,8rem 6,195rem). Variablerna definieras som padding, den vertikala och horisontella luften runt bilden. Ändra dem i din egen css om logotypens proportioner kräver det. Bilden centreras i rutan.
+
+Playgroundens sida [Logotyp](https://pattespatte.github.io/felix-ds/#/knappar/flogo) visar platsmarkören i båda storlekarna.
+
 ## Mörkt läge
 
 Mönstret har tre delar som samverkar:

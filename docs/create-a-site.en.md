@@ -120,6 +120,37 @@ Custom layout CSS is written with tokens only – `--fkds-*` and `--f-*` – and
 
 The theme self-hosts all typefaces: Noto Sans for body text (400, 600 + italics) and Roboto Slab for headings, with bold mapped to weight 600. The prebuilt `dist/felix.css` contains the @font-face rules with woff2 references that Vite bundles (the SCSS path gets the same rules via `@use "felix-ds/src/fonts/fonts"`) – no CDN calls, no Google Fonts, no privacy review. Verify in the build that `dist/assets/*.woff2` exists and that no `fonts.googleapis.com` reference has slipped in.
 
+## Logo
+
+FKUI's `FLogo` component renders a logo, typically in the page header. The image comes from the CSS variables `--f-logo-image-small` and `--f-logo-image-large`, applied as a background. The theme layer fills the variables with a neutral placeholder (a filled circle) in both color modes. Declare your own values in the CSS file imported after the theme (typically `src/assets/main.css`):
+
+```css
+:root {
+    --f-logo-image-small: url("./logo-small.svg");
+    --f-logo-image-large: url("./logo-large.svg");
+}
+
+/* the theme declares the placeholder in the dark scope too, so restate your values here */
+html[data-color-mode="dark"] {
+    --f-logo-image-small: url("./logo-small.svg");
+    --f-logo-image-large: url("./logo-large.svg");
+}
+```
+
+Restate the values even when the same file works on both backgrounds. The dark scope (0,1,1) outranks `:root` (0,1,0) on specificity, so without the declaration dark mode shows the placeholder. With `dist/felix-auto.css`, one declaration on `:root` wins in both modes. Both placeholders there sit on `:root` inside the `prefers-color-scheme` media queries, so your CSS wins on source order. A dark variant goes in `@media (prefers-color-scheme: dark)`.
+
+Render the component:
+
+```vue
+<f-logo size="responsive">My site</f-logo>
+```
+
+- `size` picks the variable. `small` and `large` each use their own variable, while `responsive` (the default) shows the large logo and switches to the small one below FKUI's sm breakpoint. Both variables must be set for `responsive`.
+- The slot text becomes the component's accessible name and is not rendered. The slot must not be empty: with no text the component throws an error.
+- The logo size is set through `--f-logo-size-small` (`0.8rem`) and `--f-logo-size-large` (`0.8rem 6.195rem`). The variables are declared as padding, the vertical and horizontal space around the image. Override them in your CSS if the proportions require it. The image is centered in the box.
+
+The playground's [Logo](https://pattespatte.github.io/felix-ds/#/knappar/flogo) page shows the placeholder in both sizes.
+
 ## Dark mode
 
 The pattern has three cooperating parts:
