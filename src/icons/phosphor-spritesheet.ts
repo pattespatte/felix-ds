@@ -7,7 +7,7 @@
 // import it INSTEAD of @fkui/icon-lib-default/dist/f — never both (duplicate
 // symbol ids resolve to whichever sheet entered the DOM first).
 //
-// Symbols (66): alert, arrow-down, arrow-in-circle, arrow-right, bars, bell, calendar, caret-down, caret-up, chevrons-left, circle, circle-notch-solid, close, cross, dash, doc, ellipsis, error, file, i, new-window, paper-clip, pdf, pen, pic, plus, search, sort, success, trashcan, triangle, info, warning, tooltip, check-circle, x-circle, clock, envelope, chat-circle, phone, printer, house, user, users, user-circle, lock, key, eye, eye-slash, copy, gear, funnel, bookmark, star, globe, link, folder, folder-open, chart-bar, chart-pie, lightning, seal-check, shield-check, question, download-simple, upload-simple.
+// Symbols (68): alert, arrow-down, arrow-in-circle, arrow-right, bars, bell, calendar, caret-down, caret-up, chevrons-left, circle, circle-notch-solid, close, cross, dash, doc, ellipsis, error, file, i, new-window, paper-clip, pdf, pen, pic, plus, search, sort, success, trashcan, triangle, info, warning, tooltip, check-circle, x-circle, clock, envelope, chat-circle, phone, printer, house, user, users, user-circle, lock, key, eye, eye-slash, copy, gear, funnel, bookmark, star, globe, link, folder, folder-open, chart-bar, chart-pie, lightning, seal-check, shield-check, question, download-simple, upload-simple, text-indent, text-outdent.
 
 export const SPRITESHEET =
     '<svg xmlns="http://www.w3.org/2000/svg" focusable="false">' +
@@ -77,6 +77,8 @@ export const SPRITESHEET =
     '<symbol id="f-icon-question" viewBox="0 0 256 256" data-phosphor-weight="bold"><path fill="currentColor" d="M144,180a16,16,0,1,1-16-16A16,16,0,0,1,144,180Zm92-52A108,108,0,1,1,128,20,108.12,108.12,0,0,1,236,128Zm-24,0a84,84,0,1,0-84,84A84.09,84.09,0,0,0,212,128ZM128,64c-24.26,0-44,17.94-44,40v4a12,12,0,0,0,24,0v-4c0-8.82,9-16,20-16s20,7.18,20,16-9,16-20,16a12,12,0,0,0-12,12v8a12,12,0,0,0,23.73,2.56C158.31,137.88,172,122.37,172,104,172,81.94,152.26,64,128,64Z"></path></symbol>' +
     '<symbol id="f-icon-download-simple" viewBox="0 0 256 256" data-phosphor-weight="bold"><path fill="currentColor" d="M228,144v64a12,12,0,0,1-12,12H40a12,12,0,0,1-12-12V144a12,12,0,0,1,24,0v52H204V144a12,12,0,0,1,24,0Zm-108.49,8.49a12,12,0,0,0,17,0l40-40a12,12,0,0,0-17-17L140,115V32a12,12,0,0,0-24,0v83L96.49,95.51a12,12,0,0,0-17,17Z"></path></symbol>' +
     '<symbol id="f-icon-upload-simple" viewBox="0 0 256 256" data-phosphor-weight="bold"><path fill="currentColor" d="M228,144v64a12,12,0,0,1-12,12H40a12,12,0,0,1-12-12V144a12,12,0,0,1,24,0v52H204V144a12,12,0,0,1,24,0ZM96.49,80.49,116,61v83a12,12,0,0,0,24,0V61l19.51,19.52a12,12,0,1,0,17-17l-40-40a12,12,0,0,0-17,0l-40,40a12,12,0,1,0,17,17Z"></path></symbol>' +
+    '<symbol id="f-icon-text-indent" viewBox="0 0 256 256" data-phosphor-weight="bold"><path fill="currentColor" d="M228,128a12,12,0,0,1-12,12H120a12,12,0,0,1,0-24h96A12,12,0,0,1,228,128ZM120,76h96a12,12,0,0,0,0-24H120a12,12,0,0,0,0,24Zm96,104H40a12,12,0,0,0,0,24H216a12,12,0,0,0,0-24ZM31.51,144.49a12,12,0,0,0,17,0l40-40a12,12,0,0,0,0-17l-40-40a12,12,0,0,0-17,17L63,96,31.51,127.51A12,12,0,0,0,31.51,144.49Z"></path></symbol>' +
+    '<symbol id="f-icon-text-outdent" viewBox="0 0 256 256" data-phosphor-weight="bold"><path fill="currentColor" d="M228,128a12,12,0,0,1-12,12H120a12,12,0,0,1,0-24h96A12,12,0,0,1,228,128ZM120,76h96a12,12,0,0,0,0-24H120a12,12,0,0,0,0,24Zm96,104H40a12,12,0,0,0,0,24H216a12,12,0,0,0,0-24ZM72,148a12,12,0,0,0,8.49-20.49L49,96,80.49,64.48a12,12,0,0,0-17-17l-40,40a12,12,0,0,0,0,17l40,40A12,12,0,0,0,72,148Z"></path></symbol>' +
     '</svg>'
 
 export const PHOSPHOR_ICON_NAMES: readonly string[] = [
@@ -146,6 +148,8 @@ export const PHOSPHOR_ICON_NAMES: readonly string[] = [
     "question",
     "download-simple",
     "upload-simple",
+    "text-indent",
+    "text-outdent",
 ]
 
 // Mirrors @fkui/icon-lib-default's injection: a hidden <div> appended to

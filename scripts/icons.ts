@@ -113,6 +113,8 @@ export const MAPPINGS: Record<string, string> = {
     question: "PhQuestion",
     "download-simple": "PhDownloadSimple",
     "upload-simple": "PhUploadSimple",
+    "text-indent": "PhTextIndent",
+    "text-outdent": "PhTextOutdent",
 };
 
 /** FKUI:s kanoniska namnlista ur det installerade @fkui/icon-lib-default. */

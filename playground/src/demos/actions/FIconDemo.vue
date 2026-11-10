@@ -2,6 +2,17 @@
 import { FIcon } from "@fkui/vue";
 import ComponentHeading from "../../components/ComponentHeading.vue";
 import { PHOSPHOR_ICON_NAMES } from "../../../../src/icons/phosphor-spritesheet";
+
+/**
+ * Namn som döljs ur rutnätet men finns kvar i spriten: FKUI-komponenter
+ * (t.ex. sökfältets tömningsknapp) ritar cross själva, och den delar
+ * teckning med close – att visa båga två ger två identiska rutor.
+ */
+const HIDDEN_ICON_NAMES: ReadonlySet<string> = new Set(["cross"]);
+
+const visibleIconNames: readonly string[] = PHOSPHOR_ICON_NAMES.filter(
+    (name) => !HIDDEN_ICON_NAMES.has(name),
+);
 </script>
 
 <template>
@@ -11,9 +22,11 @@ import { PHOSPHOR_ICON_NAMES } from "../../../../src/icons/phosphor-spritesheet"
             felix-temats ikonuppsättning – Phosphor Icons i vikten bold. Ikonerna är
             SVG-spritebaserade, ersätter standardikonbibliotekets presentation bakom
             oförändrade FIcon-namn och följer textfärgen i det aktiva temat.
+            <code>cross</code> döljs ur listan – den delar teckning med
+            <code>close</code> men finns kvar i spriten för FKUI:s interna användning.
         </p>
         <ul class="icon-grid">
-            <li v-for="name in PHOSPHOR_ICON_NAMES" :key="name" class="icon-grid__item">
+            <li v-for="name in visibleIconNames" :key="name" class="icon-grid__item">
                 <f-icon :name="name" />
                 <span class="icon-grid__label">{{ name }}</span>
             </li>
