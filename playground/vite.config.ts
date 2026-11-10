@@ -43,6 +43,13 @@ function searchIndexPlugin(): Plugin {
 export default defineConfig({
     root: fileURLToPath(new URL(".", import.meta.url)),
     base: "./",
+    // Bind mot alla nätverksgränssnitt så att t.ex. en mobil på LAN-et når
+    // dev-servern på http://<LAN-IP>:5173. Direkta IP-värdar tillåts redan
+    // av Vites allowedHosts-default, och HMR-websocketen följer sidans
+    // ursprung – därför behövs ingen mer konfiguration.
+    server: {
+        host: true,
+    },
     plugins: [
         vue({
             template: {
