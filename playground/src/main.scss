@@ -237,6 +237,50 @@ html[data-color-mode="dark"]:not(.theme-felix) .badge--default {
     display: none;
 }
 
+// FKUI's two navigation toggles draw hardcoded icon names: chevrons-left on
+// the panel's close button and bars on the rail/drawer open button. The
+// sprite cannot remap those names (FPaginator and FMinimizablePanel draw
+// chevrons-left too), so the toggles alone swap artwork through masks – the
+// same technique the theme uses for the paginator. The mask paths are the
+// spritesheet's own bold Phosphor glyphs, text-indent for expand and
+// text-outdent for collapse, so the buttons match the icon grid at
+// #/knappar/ficon. currentColor keeps the buttons' hover colouring intact.
+.layout-navigation__navigation__inner__button {
+    .f-icon-bars,
+    .f-icon-chevrons-left {
+        background-color: currentColor;
+        mask-position: center;
+        mask-repeat: no-repeat;
+        mask-size: contain;
+
+        > use {
+            visibility: hidden;
+        }
+    }
+
+    .f-icon-bars {
+        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath fill='%23000' d='M228,128a12,12,0,0,1-12,12H120a12,12,0,0,1,0-24h96A12,12,0,0,1,228,128ZM120,76h96a12,12,0,0,0,0-24H120a12,12,0,0,0,0,24Zm96,104H40a12,12,0,0,0,0,24H216a12,12,0,0,0,0-24ZM31.51,144.49a12,12,0,0,0,17,0l40-40a12,12,0,0,0,0-17l-40-40a12,12,0,0,0-17,17L63,96,31.51,127.51A12,12,0,0,0,31.51,144.49Z'%3E%3C/path%3E%3C/svg%3E");
+    }
+
+    .f-icon-chevrons-left {
+        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath fill='%23000' d='M228,128a12,12,0,0,1-12,12H120a12,12,0,0,1,0-24h96A12,12,0,0,1,228,128ZM120,76h96a12,12,0,0,0,0-24H120a12,12,0,0,0,0,24Zm96,104H40a12,12,0,0,0,0,24H216a12,12,0,0,0,0-24ZM72,148a12,12,0,0,0,8.49-20.49L49,96,80.49,64.48a12,12,0,0,0-17-17l-40,40a12,12,0,0,0,0,17l40,40A12,12,0,0,0,72,148Z'%3E%3C/path%3E%3C/svg%3E");
+    }
+
+    // High-contrast modes keep upstream's glyphs in the forced palette,
+    // like the theme does.
+    @media (forced-colors: active) {
+        .f-icon-bars,
+        .f-icon-chevrons-left {
+            background: none;
+            mask: none;
+
+            > use {
+                visibility: visible;
+            }
+        }
+    }
+}
+
 // Mobile drawer for the left panel. FKUI's panel has no responsive mode of
 // its own: it mounts open at its inline pixel width (the 50%-viewport clamp
 // only runs on window resize, never on load), which on a phone covers
