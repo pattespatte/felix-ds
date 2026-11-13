@@ -339,7 +339,10 @@
     // colouring the glyph away (the colour drives the chevron itself).
     // Upstream's rotations and mirrors – the expanded panel, the sortable
     // table rows, the flipped month arrows – transform the whole box and
-    // carry the chevron along. The select field and combobox keep their
+    // carry the chevron along. The entrypoint pattern is the one context
+    // with no upstream rotation to lean on; it aims its chevron along the
+    // reading direction instead and gets the artwork rotated through the
+    // mask below. The select field and combobox keep their
     // dedicated dropdown colours from the light and dark theme mixins,
     // which outrank the currentColor here on the same artwork.
     .f-icon-arrow-down,
@@ -398,6 +401,19 @@
 
     .paginator__next .f-icon-arrow-right {
         mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 6l6 6-6 6M12 6l6 6-6 6' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    }
+
+    // The entrypoint pattern renders the arrow-right glyph without any
+    // rotation, so the shared downward chevron above would have it
+    // pointing at the ground. Give the pattern's icon the same single
+    // chevron rotated into the horizontal through the mask itself, and
+    // draw it a step up the icon size scale (the base .icon box is the
+    // small size) so it carries the card's weight; currentColor keeps the
+    // inverted action-text colour.
+    a.entrypoint .entrypoint__icon {
+        height: var(--f-icon-size-medium);
+        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9.5 6l6 6-6 6' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+        width: var(--f-icon-size-medium);
     }
 
     // Checkbox and radio glyphs draw their resting border with the weak

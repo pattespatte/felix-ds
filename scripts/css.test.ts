@@ -60,11 +60,14 @@ const COMPLETE_GZIP_MARGIN = 512;
  * sig), så budgeten ligger under syskons gzippade storlek. Uppmätt vid
  * v1.4.0: 5 049, 4 839 respektive 27 835 byte. Pagineringens dubbelchevroner
  * (två maskade riktningsglyfer, 2026-11-04) kostade drygt 100 byte på
- * standardposten: 5 305, 5 004 respektive 28 062 byte.
+ * standardposten: 5 305, 5 004 respektive 28 062 byte. Startpunktens
+ * framåtpekande chevron och ett storlekssteg på ikonen (två scope-kopior av
+ * en maskregel, 2026-11-13) kostade drygt 125 respektive 175 byte:
+ * 5 430, 5 178 respektive 28 252 byte.
  */
 const MIN_BYTE_BUDGETS_GZIP: Record<string, number> = {
-    "dist/felix.min.css": 5_400,
-    "dist/felix-auto.min.css": 5_100,
+    "dist/felix.min.css": 5_500,
+    "dist/felix-auto.min.css": 5_300,
     "dist/felix-complete.min.css": 30_000,
 };
 
