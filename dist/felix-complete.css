@@ -1255,16 +1255,16 @@ input[type=search]:focus-visible,
 @media (hover: hover) {
   .button:hover, .calendar-navbar__year-selector-button:hover {
     background-color: var(--fkds-color-action-background-secondary-hover, #e5e5f5);
-    border-color: var(--fkds-color-action-border-primary-hover, #3b4292);
+    border-color: var(--fkds-color-action-border-primary-default, #4a52b6);
     box-shadow: var(--f-button-shadow-hover, 0 1px 3px rgba(0,0,0,.3));
-    color: var(--fkds-color-action-text-primary-hover, #3b4292);
+    color: var(--fkds-color-action-text-primary-default, #4a52b6);
   }
 }
 .button:active, .calendar-navbar__year-selector-button:active {
   background-color: var(--fkds-color-action-background-secondary-active, #e5e5f5);
-  border-color: var(--fkds-color-action-border-primary-active, #3b4292);
+  border-color: var(--fkds-color-action-border-primary-default, #4a52b6);
   box-shadow: var(--f-button-shadow-active, none);
-  color: var(--fkds-color-action-text-primary-active, #3b4292);
+  color: var(--fkds-color-action-text-primary-default, #4a52b6);
   transform: translateY(1px);
 }
 .button:focus-visible, .calendar-navbar__year-selector-button:focus-visible {
@@ -1357,16 +1357,16 @@ input[type=search]:focus-visible,
 @media (hover: hover) {
   .button--secondary:hover {
     background-color: var(--fkds-color-action-background-secondary-hover, #e5e5f5);
-    border-color: var(--fkds-color-action-border-primary-hover, #3b4292);
+    border-color: var(--fkds-color-action-border-primary-default, #4a52b6);
     box-shadow: var(--f-button-shadow-hover, 0 1px 3px rgba(0,0,0,.3));
-    color: var(--fkds-color-action-text-primary-hover, #3b4292);
+    color: var(--fkds-color-action-text-primary-default, #4a52b6);
   }
 }
 .button--secondary:active {
   background-color: var(--fkds-color-action-background-secondary-active, #e5e5f5);
-  border-color: var(--fkds-color-action-border-primary-active, #3b4292);
+  border-color: var(--fkds-color-action-border-primary-default, #4a52b6);
   box-shadow: var(--f-button-shadow-active, none);
-  color: var(--fkds-color-action-text-primary-active, #3b4292);
+  color: var(--fkds-color-action-text-primary-default, #4a52b6);
   transform: translateY(1px);
 }
 .button--secondary:focus-visible {
@@ -1562,14 +1562,14 @@ input[type=search]:focus-visible,
     background-color: var(--fkds-color-action-background-secondary-hover, #e5e5f5);
     border-color: transparent;
     box-shadow: none;
-    color: var(--fkds-color-action-text-primary-hover, #3b4292);
+    color: var(--fkds-color-action-text-primary-default, #4a52b6);
   }
 }
 .button--tertiary:active, .calendar-navbar__year-selector-button:active {
   background-color: var(--fkds-color-action-background-secondary-active, #e5e5f5);
   border-color: transparent;
   box-shadow: none;
-  color: var(--fkds-color-action-text-primary-active, #3b4292);
+  color: var(--fkds-color-action-text-primary-default, #4a52b6);
   transform: translateY(1px);
 }
 .button--tertiary:focus-visible, .calendar-navbar__year-selector-button:focus-visible {
@@ -2594,6 +2594,10 @@ input[type=search]:focus-visible,
   margin: 0;
   padding: 1rem;
   align-items: center;
+}
+.datepicker-field__close > .datepicker-field__close__button:hover, .datepicker-field__close > .datepicker-field__close__button:active {
+  color: var(--fkds-color-action-text-secondary-default, #1b1e23);
+  mix-blend-mode: normal;
 }
 
 .popup--overlay .datepicker-field__popup {
@@ -5593,14 +5597,14 @@ input[type=search]:focus-visible,
     background-color: var(--fkds-color-action-background-secondary-hover, #e5e5f5);
     border-color: transparent;
     box-shadow: none;
-    color: var(--fkds-color-action-text-primary-hover, #3b4292);
+    color: var(--fkds-color-action-text-primary-default, #4a52b6);
   }
 }
 .table__button:active {
   background-color: var(--fkds-color-action-background-secondary-active, #e5e5f5);
   border-color: transparent;
   box-shadow: none;
-  color: var(--fkds-color-action-text-primary-active, #3b4292);
+  color: var(--fkds-color-action-text-primary-default, #4a52b6);
   transform: translateY(1px);
 }
 .table__button:focus-visible {
@@ -5722,7 +5726,10 @@ input[type=search]:focus-visible,
   box-shadow: none;
 }
 .table-ng__cell--static__text {
-  text-wrap: wrap;
+  white-space: nowrap;
+}
+.table-ng__cell--static__text--wrap {
+  white-space: pre-wrap;
 }
 .table-ng__cell--align-left {
   text-align: left;
@@ -5941,8 +5948,10 @@ input[type=search]:focus-visible,
 }
 .table-ng__editable__text {
   flex: 1 1 auto;
-  white-space: pre;
-  text-wrap: wrap;
+  white-space: nowrap;
+}
+.table-ng__editable__text--wrap {
+  white-space: pre-wrap;
 }
 .table-ng__editable__numeric span,
 .table-ng__editable__numeric input {
@@ -7290,7 +7299,7 @@ body {
   --fkds-color-footer-text-primary: #ffffff;
   --fkds-focus-indicator-color: #1b1e23;
   --fkds-focus-indicator-color-background: #ffffff;
-  --fkui-theme-default-version: "6.64.0";
+  --fkui-theme-default-version: "6.65.0";
   color-scheme: light;
   --f-font-family: "Noto Sans", system-ui, sans-serif;
   --f-font-weight-bold: 600;
@@ -7513,6 +7522,11 @@ body {
 }
 :root .paginator__next .f-icon-arrow-right {
   mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 6l6 6-6 6M12 6l6 6-6 6' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+:root a.entrypoint .entrypoint__icon {
+  height: var(--f-icon-size-medium);
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9.5 6l6 6-6 6' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  width: var(--f-icon-size-medium);
 }
 :root .checkbox__label::before,
 :root .radio-button__label::before {
@@ -7853,7 +7867,7 @@ html[data-color-mode=dark] {
   --fkds-color-footer-text-primary: #ffffff;
   --fkds-focus-indicator-color: #ffffff;
   --fkds-focus-indicator-color-background: #1b1e23;
-  --fkui-theme-default-version: "6.64.0";
+  --fkui-theme-default-version: "6.65.0";
   color-scheme: dark;
   --f-font-family: "Noto Sans", system-ui, sans-serif;
   --f-font-weight-bold: 600;
@@ -8076,6 +8090,11 @@ html[data-color-mode=dark] .paginator__previous .f-icon-chevrons-left {
 }
 html[data-color-mode=dark] .paginator__next .f-icon-arrow-right {
   mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 6l6 6-6 6M12 6l6 6-6 6' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+html[data-color-mode=dark] a.entrypoint .entrypoint__icon {
+  height: var(--f-icon-size-medium);
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9.5 6l6 6-6 6' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  width: var(--f-icon-size-medium);
 }
 html[data-color-mode=dark] .checkbox__label::before,
 html[data-color-mode=dark] .radio-button__label::before {
