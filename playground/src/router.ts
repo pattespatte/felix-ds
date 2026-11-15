@@ -36,6 +36,15 @@ function resolve(): Route {
 
 export const currentRoute = ref<Route>(resolve());
 
+// A deep link ("#/slug/anchor") must scroll on first load too – the
+// hashchange listener below only sees navigation after the app is up.
+// Anchor loads take over scroll restoration so a mid-page reload cannot
+// fight the anchor; anchor-less reloads keep the browser default.
+if (currentRoute.value.anchor) {
+    history.scrollRestoration = "manual";
+    scrollToAnchor(currentRoute.value.anchor);
+}
+
 function scrollToTop(): void {
     window.scrollTo({ top: 0 });
 }
