@@ -108,7 +108,8 @@ import "@pattespatte/felix-ds/dist/felix.css";</code></pre>
                 tillsammans med mixinparet <code>felix.light</code>/<code>felix.dark</code>.
                 Hela receptet finns i guiden
                 <a href="https://github.com/pattespatte/felix-ds/blob/main/docs/create-a-site.sv.md">Skapa en webbplats med felix-ds</a>
-                och i README:s kompatibilitetsavsnitt.
+                och i
+                <a href="https://github.com/pattespatte/felix-ds/blob/main/docs/getting-started.sv.md#kompatibilitet">kompatibilitetsavsnittet</a>.
             </p>
         </section>
     </div>

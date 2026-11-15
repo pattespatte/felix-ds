@@ -1,6 +1,6 @@
 # Design tokens in DTCG format
 
-*Detta dokument finns också på svenska: [tokens.sv.md](tokens.sv.md).*
+*This document is also available in Swedish: [tokens.sv.md](tokens.sv.md).*
 
 felix-ds ships the theme tokens as JSON in the [W3C Design Tokens](https://design-tokens.github.io/community-group/) draft format (DTCG). This makes the theme tokens readable to tooling outside the CSS world – among others Tokens Studio (Figma), Style Dictionary and documentation generators – without any hand copying.
 
@@ -37,7 +37,7 @@ The package contains two complete files, one per color mode:
 - `@pattespatte/felix-ds/tokens/light.json`
 - `@pattespatte/felix-ds/tokens/dark.json`
 
-Each file is self-contained and contains the **composed theme** for its mode: the upstream `@fkui/theme-default` plus the felix profile's overrides, in other words exactly the values the theme mixins emit (see the README section on [dark mode](https://github.com/pattespatte/felix-ds#dark-mode)). Shared tokens (typography, borders, shadows) appear in both files. The files are committed to the repo and shipped with the npm package.
+Each file is self-contained and contains the **composed theme** for its mode: the upstream `@fkui/theme-default` plus the felix profile's overrides, in other words exactly the values the theme mixins emit (see [the dark-mode section](getting-started.en.md#dark-mode)). Shared tokens (typography, borders, shadows) appear in both files. The files are committed to the repo and shipped with the npm package.
 
 ## The format
 
@@ -50,7 +50,7 @@ The files follow the DTCG draft: tokens are objects with `$value` and optional `
 | `duration` | `100ms` |
 | `number` | `400` (font weight), `1.5` (line height) |
 | `fontFamily` | `["Noto Sans", "system-ui", "sans-serif"]` |
-| `shadow` | shadow object, see [Exclusions and deviations](#exclusions-and-deviations) |
+| `shadow` | shadow object, see [the section on exclusions and deviations](#exclusions-and-deviations) |
 
 DTCG is still a draft; the files are valid against the draft as of writing, but the format may change upstream.
 
@@ -146,7 +146,7 @@ bun run tokens:import -- design-tokens.json --out src/tokens.css
 
 The scope is the felix theme's own variables only – the same surface the export describes. The grundtema is excluded by design: its values ship unmodified inside `@fkui/design`'s CSS, so there is no felix-ds source for them that an import could regenerate, and it changes only when the FKUI packages are bumped.
 
-The output is deterministic: one `:root` block, declarations sorted by name, 2-space indent and a trailing newline. Aliases are emitted as `var(--target)` references, so the generated file refers to tokens instead of duplicating them. The name mapping is the mechanical inverse of the export's (see [Naming and grouping](#naming-and-grouping)).
+The output is deterministic: one `:root` block, declarations sorted by name, 2-space indent and a trailing newline. Aliases are emitted as `var(--target)` references, so the generated file refers to tokens instead of duplicating them. The name mapping is the mechanical inverse of the export's (see [the section on naming and grouping](#naming-and-grouping)).
 
 Validation is strict, and every failure names the offending token path:
 

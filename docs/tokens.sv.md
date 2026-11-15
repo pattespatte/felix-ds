@@ -37,7 +37,7 @@ Paketet innehåller två kompletta filer, en per färgläge:
 - `@pattespatte/felix-ds/tokens/light.json`
 - `@pattespatte/felix-ds/tokens/dark.json`
 
-Varje fil är självbärande och innehåller det **sammansatta temat** i sitt läge: uppströms `@fkui/theme-default` plus felix-profilens överskrivningar, alltså exakt de värden som temats mixins skriver ut (se README:s avsnitt om [mörkt läge](https://github.com/pattespatte/felix-ds#m%C3%B6rkt-l%C3%A4ge)). Delade token (typografi, linjer, skuggor) finns i båda filerna. Filerna committas i repot och skickas med npm-paketet.
+Varje fil är självbärande och innehåller det **sammansatta temat** i sitt läge: uppströms `@fkui/theme-default` plus felix-profilens överskrivningar, alltså exakt de värden som temats mixins skriver ut (se [avsnittet om mörkt läge](getting-started.sv.md#mörkt-läge)). Delade token (typografi, linjer, skuggor) finns i båda filerna. Filerna committas i repot och skickas med npm-paketet.
 
 ## Formatet
 
@@ -50,7 +50,7 @@ Filerna följer DTCG-utkastet: token är objekt med `$value` samt valfria `$type
 | `duration` | `100ms` |
 | `number` | `400` (typografisk vikt), `1.5` (radhöjd) |
 | `fontFamily` | `["Noto Sans", "system-ui", "sans-serif"]` |
-| `shadow` | skuggobjekt, se [Undantag och avvikelser](#undantag-och-avvikelser) |
+| `shadow` | skuggobjekt, se [avsnittet om undantag och avvikelser](#undantag-och-avvikelser) |
 
 DTCG är fortfarande ett utkast. Filerna är giltiga enligt utkastet i skrivande stund, men formatet kan komma att ändras uppströms.
 
@@ -146,7 +146,7 @@ bun run tokens:import -- design-tokens.json --out src/tokens.css
 
 Omfattningen är enbart det egna felix-temats variabler – samma yta som exporten beskriver. Grundtemat undantas med avsikt: dess värden lever omodifierade i `@fkui/design`:s css, så det finns ingen felix-ds-källa som en import kan återskapa, och det ändras bara när FKUI-paketen bumpas.
 
-Utdata är deterministiskt: ett `:root`-block, deklarationer sorterade efter namn, 2 mellanslag indrag och avslutande radbrytning. Aliaser skrivs som `var(--mål)`-referenser, så den genererade filen refererar till token i stället för att duplicera dem. Namnmappningen är den mekaniska inversen av exportens (se [Namngivning och gruppering](#namngivning-och-gruppering)).
+Utdata är deterministiskt: ett `:root`-block, deklarationer sorterade efter namn, 2 mellanslag indrag och avslutande radbrytning. Aliaser skrivs som `var(--mål)`-referenser, så den genererade filen refererar till token i stället för att duplicera dem. Namnmappningen är den mekaniska inversen av exportens (se [avsnittet om namngivning och gruppering](#namngivning-och-gruppering)).
 
 Valideringen är strikt, och varje fel namnger den felande tokensökvägen:
 
