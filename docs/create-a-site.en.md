@@ -1,5 +1,7 @@
 # Building a site with felix-ds
 
+*This document is also available in Swedish: [create-a-site.sv.md](create-a-site.sv.md).*
+
 This guide describes how to build a complete website on felix-ds – FKUI's public npm packages with the felix theme on top. It is written from the pattern proven on a full demo site (Vue 3 + TypeScript + Vite, 26 routes, search, prerendering and both light and dark modes), not speculatively.
 
 A living example of everything below exists as a demo site consuming felix-ds as an npm dependency from GitHub Packages.
@@ -43,7 +45,7 @@ bun add felix-ds@github:pattespatte/felix-ds#<commit>
 
 Four things are worth knowing:
 
-- **FKUI packages are pinned exactly.** All six `@fkui/*` packages pin to the same exact version, in lockstep with how upstream publishes them. felix-ds supports `@fkui/theme-default` within the range `>=6.57.0 <7.0.0` (see the compatibility section in the theme repo's README) – pin the latest version inside the range.
+- **FKUI packages are pinned exactly.** All six `@fkui/*` packages pin to the same exact version, in lockstep with how upstream publishes them. felix-ds supports `@fkui/theme-default` within the range `>=6.57.0 <7.0.0` (see [the compatibility section](getting-started.en.md#compatibility)) – pin the latest version inside the range.
 - **The module specifier follows the package name.** Path A yields `@pattespatte/felix-ds/src/...` in `@use` and import paths, path B yields `felix-ds/src/...`. Everything else in this guide is identical between the paths.
 - **Point at a specific commit, not a branch** (path B), so the build is identical locally and in CI.
 - **Both prebuilt CSS and SCSS ship.** `dist/felix.css` and `dist/felix-auto.css` are precompiled and require no Sass. The SCSS sources under `src/` are only needed to scope the theme to your own selector (see the next section).
@@ -171,11 +173,11 @@ A rich icon set (Phosphor and friends) has no counterpart here – map semantica
 
 Some patterns the demo site has proven:
 
-- **Navigation menu with SPA routing.** `FNavigationMenu` renders anchors and documents the pattern itself: pass routes without `href`, listen for `@selected-route` and call `router.push(key)`. Otherwise every click reloads the whole page under history routing. The `vertical` variant suits secondary navigation.
-- **Dropdown menus.** `FContextMenu` is FKUI's popup menu: a trigger button with `aria-haspopup="menu"` as the anchor, items with `label`/`key`, controlled through `:is-open` and `@select`/`@close`. Full keyboard support included.
+- **Navigation menu with SPA routing.** [`FNavigationMenu`](https://pattespatte.github.io/felix-ds/#/navigation/fnavigationmenu) renders anchors and documents the pattern itself: pass routes without `href`, listen for `@selected-route` and call `router.push(key)`. Otherwise every click reloads the whole page under history routing. The `vertical` variant suits secondary navigation.
+- **Dropdown menus.** [`FContextMenu`](https://pattespatte.github.io/felix-ds/#/modaler/fcontextmenu) is FKUI's popup menu: a trigger button with `aria-haspopup="menu"` as the anchor, items with `label`/`key`, controlled through `:is-open` and `@select`/`@close`. Full keyboard support included.
 - **Tabs.** FKUI has no tabs component (as of 6.62). Build a thin app-level component with the WAI-ARIA tabs pattern (tablist/tab/tabpanel, arrow keys) styled with tokens – a couple of hundred lines, and no wrapper layer is needed in the theme repo.
 - **Breadcrumbs.** Not in FKUI either; a thin `<nav>` with an ordered list, router links and `aria-current="page"` is correct and sufficient.
-- **Cards, lists and messages.** `FCard` (heading through the `#header` slot and its `headingSlotClass`), `FMessageBox` (info/success/warning/error), `FBadge` and `FDataTable` cover most surfaces. `FSortFilterDataset` around a table adds sorting; `FPaginator` adds pagination.
+- **Cards, lists and messages.** [`FCard`](https://pattespatte.github.io/felix-ds/#/ytor/fcard) (heading through the `#header` slot and its `headingSlotClass`), [`FMessageBox`](https://pattespatte.github.io/felix-ds/#/ytor/fmessagebox) (info/success/warning/error), [`FBadge`](https://pattespatte.github.io/felix-ds/#/aterkoppling/fbadge) and [`FDataTable`](https://pattespatte.github.io/felix-ds/#/tabeller/fdatatable) cover most surfaces. [`FSortFilterDataset`](https://pattespatte.github.io/felix-ds/#/tabeller/fsortfilterdataset) around a table adds sorting; [`FPaginator`](https://pattespatte.github.io/felix-ds/#/tabeller/fpaginator) adds pagination.
 - **Expandable content and accordions.** `FExpandableParagraph` with the `#title` slot; an accordion (one open at a time) is controlled with `:expanded` + `@toggle` from a ref. Consider carrying the theme repo's FExpand patch in a `fkui-patches.ts` – it fixes a leave bug.
 
 ## Forms and validation

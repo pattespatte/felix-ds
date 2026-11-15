@@ -1,12 +1,14 @@
 # Pattern library – composition recipes
 
-felix-ds is a theme layer: it changes the presentation of FKUI's components, never their DOM, props or behaviour. That is the stated trade-off, and it is what makes full component coverage and cheap FKUI upgrades possible. When the tokens cannot express something, the first response is a composition recipe in the consumer's own code – not a wrapper. This page collects the recipes that are proven in the project's consumer apps. A separate wrapper package is deliberately out of scope for the thin layer (see [governance](./governance.en.md)).
+*This document is also available in Swedish: [patterns.sv.md](patterns.sv.md).*
+
+felix-ds is a theme layer: it changes the presentation of FKUI's components, never their DOM, props or behavior. That is the stated trade-off, and it is what makes full component coverage and cheap FKUI upgrades possible. When the tokens cannot express something, the first response is a composition recipe in the consumer's own code – not a wrapper. This page collects the recipes that are proven in the project's consumer apps. A separate wrapper package is deliberately out of scope for the thin layer (see [governance](./governance.en.md)).
 
 The entry bar is honest provenance: a pattern lands here after a consumer app has exercised it, not as a design sketch.
 
 ## One accordion item open at a time (FExpandableParagraph)
 
-`FExpandableParagraph` is fully controlled. Bare usage renders the toggle button, but nothing happens on click – with no console error to explain why. The component waits for the `expanded` prop and the `toggle` event to be wired by the application.
+[`FExpandableParagraph`](https://pattespatte.github.io/felix-ds/#/ytor/fexpandableparagraph) is fully controlled. Bare usage renders the toggle button, but nothing happens on click – with no console error to explain why. The component waits for the `expanded` prop and the `toggle` event to be wired by the application.
 
 The recipe is one page-wide ref plus a toggle function; the ids can be generated from list positions:
 
@@ -54,12 +56,12 @@ There is no `FCheckboxGroup` in `@fkui/vue`. The grouping API is `FFieldset` wit
 </f-fieldset>
 ```
 
-with `const topics = ref<string[]>([])` in the script. Proven in the consumer app's contact form.
+with `const topics = ref<string[]>([])` in the script. Proven in the [consumer app's contact form](https://pattespatte.github.io/felix-ds-consumer/#/formular).
 
 ## Let FKUI style the links
 
-FKUI's anchor styling is token-mapped and flips with the colour mode. Hand-colouring links breaks it: a hard-coded light-mode colour fails contrast in dark mode, and axe catches it (the consumer app's first draft failed 7 nodes this way). The recipe is to leave anchors to FKUI, and use existing tokens when emphasis is needed – `--fkds-color-text-secondary` for muted text, for example. Beware invented token names: `--fkds-color-text-action` does not exist; check the token guides before writing a `var()`.
+FKUI's anchor styling is token-mapped and flips with the color mode. Hand-coloring links breaks it: a hard-coded light-mode color fails contrast in dark mode, and axe catches it (the consumer app's first draft failed 7 nodes this way). The recipe is to leave anchors to FKUI, and use existing tokens when emphasis is needed – `--fkds-color-text-secondary` for muted text, for example. Beware invented token names: `--fkds-color-text-action` does not exist; check the token guides before writing a `var()`.
 
-## When a behaviour truly cannot be composed
+## When a behavior truly cannot be composed
 
-Document the divergence where the next developer will look, and re-verify it against upstream at every FKUI bump – each divergence from upstream is flexibility bought on credit. Prefer waiting for upstream or composing around the behaviour. The reserved opt-in wrapper package that the governance policy reserves for a genuinely unavoidable case does not exist today; creating one is an owner decision, never a convenience.
+Document the divergence where the next developer will look, and re-verify it against upstream at every FKUI bump – each divergence from upstream is flexibility bought on credit. Prefer waiting for upstream or composing around the behavior. The reserved opt-in wrapper package that the governance policy reserves for a genuinely unavoidable case does not exist today; creating one is an owner decision, never a convenience.

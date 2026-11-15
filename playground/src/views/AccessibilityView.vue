@@ -29,14 +29,27 @@ interface ComponentRow {
     views: ViewLink[];
 }
 
+/** Delar upp en "slug/ankare"-post och normaliserar en bar slug till vyrot. */
+function splitEntry(entry: string): { slug: string; anchor: string } {
+    const match = /^([a-z0-9-]+)(?:\/([a-z0-9-]+))?$/.exec(entry);
+    if (!match) {
+        throw new Error(`Ogiltigt postformat i tillgänglighetsdatan: ${entry}`);
+    }
+    return { slug: match[1], anchor: match[2] ?? "" };
+}
+
 const rows: ComponentRow[] = (Object.keys(fkuiComponentLinks) as FkuiComponentName[]).map((name) => {
     const links: ViewLink[] = [];
-    for (const slug of componentAccessibility[name].views) {
+    for (const entry of componentAccessibility[name].views) {
+        const { slug, anchor } = splitEntry(entry);
         const view = findView(slug);
         if (view === undefined) {
             throw new Error(`Okänd vy-slug i tillgänglighetsdatan: ${slug}`);
         }
-        links.push({ title: view.title, href: `#/${view.slug}` });
+        if (anchor && !view.anchors.some((candidate) => candidate.id === anchor)) {
+            throw new Error(`Okänt ankare i tillgänglighetsdatan: ${slug}/${anchor}`);
+        }
+        links.push({ title: view.title, href: anchor ? `#/${slug}/${anchor}` : `#/${slug}` });
     }
     return {
         name,

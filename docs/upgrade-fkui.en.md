@@ -1,5 +1,7 @@
 # Upgrading the FKUI dependencies – step by step
 
+*This document is also available in Swedish: [upgrade-fkui.sv.md](upgrade-fkui.sv.md).*
+
 When FKUI publishes a new version, this repo bumps all six `@fkui/*` packages in lockstep to the same version and proves with the full gate that the theme holds up. This guide shows the two paths: let the weekly round open a pull request (the normal case) or do the rehearsal locally. What the workflows do on their own is covered in the [maintenance guide](maintenance.en.md) – this is the commands.
 
 ## Who this guide is for
@@ -7,7 +9,7 @@ When FKUI publishes a new version, this repo bumps all six `@fkui/*` packages in
 The guide covers the felix-ds repo itself – the theme layer and the playground – and whoever maintains it. Use it when FKUI has published a new version and the repo's pinned versions are behind. How that shows up is covered in the next section.
 
 - **The playground: same procedure.** The playground is a folder in the repo and follows along automatically when the six `@fkui/*` versions are bumped – there is no separate upgrade to do.
-- **The demo site and the consumer app: the guide does not apply.** They pin their own FKUI versions and upgrade their felix-ds dependency on their own when a new package version is released.
+- **The [demo site](https://pattespatte.github.io/felix-ds-demo-site/) and the [consumer app](https://pattespatte.github.io/felix-ds-consumer/): the guide does not apply.** They pin their own FKUI versions and upgrade their felix-ds dependency on their own when a new package version is released.
 - **Apps that do not build on FKUI: not relevant.** The guide is only about the relationship between felix-ds and FKUI's six npm packages.
 
 ## Noticing a new version
@@ -54,7 +56,7 @@ git add package.json bun.lockb dist/ tokens/   # tokens/ only when the files cha
 git commit -m "chore(deps): bump @fkui/* 6.63.0 -> 6.64.0"
 ```
 
-The versions in the example are from the 2026-11-03 rehearsal – swap them for the current ones. What the latest rehearsal showed is recorded in the README section "Upgrading the FKUI dependencies".
+The versions in the example are from the 2026-11-03 rehearsal – swap them for the current ones. What the latest rehearsal showed is recorded in the [Upgrading the FKUI dependencies](development.en.md#upgrading-the-fkui-dependencies) section.
 
 ## When pixels change
 
@@ -68,11 +70,11 @@ Recompress the new png files losslessly (`oxipng -o max`) and verify each file w
 
 ## Afterwards
 
-1. Rewrite the README note "Latest upgrade rehearsal" (Swedish and English) with what the round actually showed – a visual no-op, or which pixels changed.
+1. Rewrite the "Latest upgrade rehearsal" note on the [development pages](development.en.md#upgrading-the-fkui-dependencies) (Swedish and English) with what the round actually showed – a visual no-op, or which pixels changed.
 2. Push. The playground deploy is triggered by the `package.json` change. Verify the footer afterwards: "Bygger på FKUI X.Y.Z" with the suffix "som är den senaste utgåvan" ("the latest release").
 3. Start `fkui-currency` by hand as a final check – it should exit green without a pull request ("already current").
 4. Decide whether the prebuilt dist should go out as a new package version – dist follows releases, not pushes. The procedure is in the [release runbook](release.en.md).
-5. The consumer apps (the demo site and the consumer app) pin their own FKUI versions and upgrade their felix-ds dependency on their own.
+5. The consumer apps (the [demo site](https://pattespatte.github.io/felix-ds-demo-site/) and the [consumer app](https://pattespatte.github.io/felix-ds-consumer/)) pin their own FKUI versions and upgrade their felix-ds dependency on their own.
 
 ## Pitfalls
 

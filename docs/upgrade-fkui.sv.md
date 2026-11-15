@@ -1,5 +1,7 @@
 # Uppgradera FKUI-beroendena – steg för steg
 
+*Det här dokumentet finns också på engelska: [upgrade-fkui.en.md](upgrade-fkui.en.md).*
+
 När FKUI ger ut en ny version höjer det här repot alla sex `@fkui/*`-paket i takt till samma version och bevisar med hela porten att temat håller. Den här guiden visar de två vägarna: låt veckoronden öppna en pull request (normalfallet) eller gör repetitionen lokalt. Vad arbetsflödena gör av sig självt beskrivs i [underhållsguiden](maintenance.sv.md) – det här är kommandona.
 
 ## Vem guiden är till för
@@ -7,7 +9,7 @@ När FKUI ger ut en ny version höjer det här repot alla sex `@fkui/*`-paket i 
 Guiden gäller felix-ds-repot självt – temalagret och playgrounden – och den som underhåller det. Använd den när FKUI har gett ut en ny version och repots låsta versioner ligger efter. Hur det märks står i nästa avsnitt.
 
 - **Playgrounden: samma procedur.** Playgrounden är en mapp i repot och följer med automatiskt när de sex `@fkui/*`-versionerna höjs – det finns ingen separat uppgradering att göra.
-- **Demosajten och konsumentappen: guiden gäller inte.** De låser sina egna FKUI-versioner och uppgraderar sitt felix-ds-beroende själva när en ny paketversion ges ut.
+- **[Demosajten](https://pattespatte.github.io/felix-ds-demo-site/) och [konsumentappen](https://pattespatte.github.io/felix-ds-consumer/): guiden gäller inte.** De låser sina egna FKUI-versioner och uppgraderar sitt felix-ds-beroende själva när en ny paketversion ges ut.
 - **Appar som inte bygger på FKUI: ingen relevans.** Guiden handlar enbart om förhållandet mellan felix-ds och FKUI:s sex npm-paket.
 
 ## Märk att en ny version finns
@@ -54,7 +56,7 @@ git add package.json bun.lockb dist/ tokens/   # tokens/ endast när filerna än
 git commit -m "chore(deps): bump @fkui/* 6.63.0 -> 6.64.0"
 ```
 
-Versionsnumren i exemplet är från repetitionen 2026-11-03 – byt ut dem mot aktuella versioner. Vad den senaste repetitionen visade står i README-avsnittet ”Uppgradera FKUI-beroendena”.
+Versionsnumren i exemplet är från repetitionen 2026-11-03 – byt ut dem mot aktuella versioner. Vad den senaste repetitionen visade står i [avsnittet Uppgradera FKUI-beroendena](development.sv.md#uppgradera-fkui-beroendena).
 
 ## När pixlar ändras
 
@@ -68,11 +70,11 @@ Komprimera om de nya png-filerna förlustfritt (`oxipng -o max`) och kontrollera
 
 ## Efteråt
 
-1. Skriv om README-noteringen ”Senaste uppgraderingsrepetitionen” (svenska och engelska) med vad rundan faktiskt visade – visuell nolla eller vilka pixlar som ändrades.
+1. Skriv om noteringen ”Senaste uppgraderingsrepetitionen” på [utvecklingssidorna](development.sv.md#uppgradera-fkui-beroendena) (svenska och engelska) med vad rundan faktiskt visade – visuell nolla eller vilka pixlar som ändrades.
 2. Pusha. Deploy av playgrounden triggas av `package.json`-ändringen. Verifiera sidfoten efteråt: ”Bygger på FKUI X.Y.Z” med tillägget ”som är den senaste utgåvan”.
 3. Starta `fkui-currency` för hand som slutkontroll – den ska avsluta grönt utan pull request (”already current”).
 4. Bestäm om de förbyggda css-filerna ska ges ut som en ny paketversion – filerna följer utgivningarna, inte pusharna. Proceduren står i [utgivningsdokumentationen](release.sv.md).
-5. Demosajten och konsumentappen låser sina egna FKUI-versioner och uppgraderar sitt felix-ds-beroende själva.
+5. [Demosajten](https://pattespatte.github.io/felix-ds-demo-site/) och [konsumentappen](https://pattespatte.github.io/felix-ds-consumer/) låser sina egna FKUI-versioner och uppgraderar sitt felix-ds-beroende själva.
 
 ## Fallgropar
 

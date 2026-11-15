@@ -43,9 +43,23 @@ function viewBySlug(slug: string) {
     return view;
 }
 
-function viewLink(slug: string): string {
+/** Delar upp en "slug/ankare"-post och normaliserar en bar slug till vyrot. */
+function splitEntry(entry: string): { slug: string; anchor: string } {
+    const match = /^([a-z0-9-]+)(?:\/([a-z0-9-]+))?$/.exec(entry);
+    if (!match) {
+        throw new Error(`Ogiltigt postformat i tillgänglighetsdatan: ${entry}`);
+    }
+    return { slug: match[1], anchor: match[2] ?? "" };
+}
+
+function viewLink(entry: string): string {
+    const { slug, anchor } = splitEntry(entry);
     const view = viewBySlug(slug);
-    return `[${view.title}](${PLAYGROUND_URL}#/${view.slug})`;
+    if (anchor && !view.anchors.some((candidate) => candidate.id === anchor)) {
+        throw new Error(`Okänt ankare i tillgänglighetsdatan: ${slug}/${anchor}`);
+    }
+    const hash = anchor ? `#/${slug}/${anchor}` : `#/${slug}`;
+    return `[${view.title}](${PLAYGROUND_URL}${hash})`;
 }
 
 interface Row {
@@ -80,6 +94,8 @@ function renderEn(): string {
     const scans = scanCount();
     return `# Accessibility statement basis
 
+*This document is also available in Swedish: [accessibility-basis.sv.md](accessibility-basis.sv.md).*
+
 This document is the basis a consumer can lift into their own accessibility
 statement: what felix-ds actually proves about the components it themes, no
 more. The [Tillgänglighet view](${PLAYGROUND_URL}#/tillganglighet) in the
@@ -87,9 +103,9 @@ playground shows the same coverage live.
 
 ## What the evidence is
 
-- Every playground view is scanned with axe in both colour modes, and the
+- Every playground view is scanned with axe in both color modes, and the
   search field's open dropdown is scanned separately – ${scans} scans per
-  run (${views.length} views × 2 colour modes + 2). Zero violations is a
+  run (${views.length} views × 2 color modes + 2). Zero violations is a
   condition of every package release, and no axe rules are disabled.
 - The coverage data behind the table below is derived mechanically from the
   demo suite and kept honest by completeness tests, so the table cannot
@@ -103,8 +119,8 @@ playground shows the same coverage live.
 Automated tools typically catch about a third of WCAG's conformance
 criteria. This basis makes no conformance claim – against WCAG 2.x, EN 301
 549 or any other framework – and claims no manual testing. Keyboard order,
-screen reader behaviour, content language and structure need human review,
-as does the consumer's own usage. Behaviour, roles and keyboard support
+screen reader behavior, content language and structure need human review,
+as does the consumer's own usage. Behavior, roles and keyboard support
 belong to the FKUI components themselves; felix-ds changes presentation
 only. Map the evidence onto the framework your statement uses, and test
 your own site.
@@ -114,11 +130,11 @@ your own site.
 Replace \`[Component]\` with the component's name:
 
 > [Component] is themed by felix-ds and demonstrated in the felix-ds public
-> demo playground in both colour modes (light and dark). Every felix-ds
+> demo playground in both color modes (light and dark). Every felix-ds
 > release passes automated accessibility scans (axe) of every playground
-> view in both colour modes, with zero violations as the condition, and the
+> view in both color modes, with zero violations as the condition, and the
 > views demonstrating the component are part of those scans. The basis
-> covers the automated share only: the component's behaviour, roles and
+> covers the automated share only: the component's behavior, roles and
 > keyboard support come from FKUI and require manual review, as does the
 > adopting site's own content and usage.
 
@@ -143,6 +159,8 @@ function renderSv(): string {
     const scans = scanCount();
     return `# Underlag för tillgänglighetsredogörelse
 
+*Det här dokumentet finns också på engelska: [accessibility-basis.en.md](accessibility-basis.en.md).*
+
 Det här dokumentet är underlaget som en konsument kan lyfta in i sin egen
 tillgänglighetsredogörelse: vad felix-ds faktiskt bevisar om de komponenter
 det tematiserar, och inget mer. Vyn
@@ -164,15 +182,15 @@ samma täckning live.
 ## Vad underlaget inte är
 
 Automatiserade verktyg fångar vanligen omkring en tredjedel av WCAG:s
-efterlevnadskriterier. Underlaget gör inga efterlevnadsanspråk – mot WCAG
-2.x, EN 301 549 eller något annat ramverk – och påstår ingen manuell
-testning. Tangentbordsordning, skärmläsarbeteende, innehållets språk och
+efterlevnadskriterier. Underlaget gör inga efterlevnadsanspråk. Det täcker
+inte WCAG 2.x, EN 301 549 eller något annat ramverk, och det påstår ingen
+manuell testning. Tangentbordsordning, skärmläsarbeteende, innehålets språk och
 struktur kräver manuell granskning, liksom konsumentens egen användning.
 Beteende, roller och tangentbordsstöd hör till FKUI:s komponenter. felix-ds
 ändrar bara presentationen. Överför beviset till det ramverk din redogörelse
 använder, och testa din egen webbplats.
 
-## Text att lyfta
+## Text du kan kopiera till din redogörelse
 
 Byt \`[Komponent]\` mot komponentens namn:
 

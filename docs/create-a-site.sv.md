@@ -1,5 +1,7 @@
 # Skapa en webbplats med felix-ds
 
+*Det här dokumentet finns också på engelska: [create-a-site.en.md](create-a-site.en.md).*
+
 Den här guiden beskriver hur man bygger en komplett webbplats på felix-ds – FKUI:s publika npm-paket med felix-temat ovanpå. Den är skriven efter det mönster som bevisats på en fullständig demosajt (Vue 3 + TypeScript + Vite, 26 rutter, sök, prerendering och både ljust och mörkt läge), inte spekulativt.
 
 Ett levande exempel på allt nedan finns i demosajten som konsumerar felix-ds som npm-beroende från GitHub Packages.
@@ -43,7 +45,7 @@ bun add felix-ds@github:pattespatte/felix-ds#<commit>
 
 Fyra saker är värda att känna till:
 
-- **FKUI-paketen låses exakt.** Alla sex `@fkui/*`-paket låses till samma exakta version, i takt med hur uppströms publicerar dem. felix-ds stödjer `@fkui/theme-default` inom intervallet `>=6.57.0 <7.0.0` (se kompatibilitetsavsnittet i temarepots README) – lås senaste versionen inom intervallet.
+- **FKUI-paketen låses exakt.** Alla sex `@fkui/*`-paket låses till samma exakta version, i takt med hur uppströms publicerar dem. felix-ds stödjer `@fkui/theme-default` inom intervallet `>=6.57.0 <7.0.0` (se [avsnittet om kompatibilitet](getting-started.sv.md#kompatibilitet)) – lås senaste versionen inom intervallet.
 - **Modulspecificeraren följer paketnamnet.** Väg A ger `@pattespatte/felix-ds/src/...` i `@use` och importvägar, väg B ger `felix-ds/src/...`. I övrigt är guiden identisk mellan vägarna.
 - **Peka på en specifik commit, inte en gren** (väg B), så att bygget blir identiskt lokalt och i CI.
 - **Både förbyggd CSS och SCSS följer med.** `dist/felix.css` och `dist/felix-auto.css` är färdigkompilerade och kräver ingen Sass. SCSS-källorna under `src/` behövs bara för att avgränsa temat till en egen selektor (se nästa avsnitt).
@@ -171,11 +173,11 @@ Ett rikt ikonbibliotek (Phosphor med flera) har ingen motsvarighet här – väl
 
 Några mönster som demosajten bevisat:
 
-- **Navigeringsmeny med SPA-routing.** `FNavigationMenu` renderar ankare och dokumenterar själv mönstret: skicka rutter utan `href`, lyssna på `@selected-route` och anropa `router.push(key)`. Annars laddar webbläsaren om hela sidan vid history-routing. Den vertikala varianten (`vertical`) passar sekundärnavigering.
-- **Rullgardinsmenyer.** `FContextMenu` är FKUI:s popup-meny: en knapprubrik med `aria-haspopup="menu"` som ankare, menyval med `label`/`key`, styrning via `:is-open` och `@select`/`@close`. Fullt tangentbordsstöd ingår.
+- **Navigeringsmeny med SPA-routing.** [`FNavigationMenu`](https://pattespatte.github.io/felix-ds/#/navigation/fnavigationmenu) renderar ankare och dokumenterar själv mönstret: skicka rutter utan `href`, lyssna på `@selected-route` och anropa `router.push(key)`. Annars laddar webbläsaren om hela sidan vid history-routing. Den vertikala varianten (`vertical`) passar sekundärnavigering.
+- **Rullgardinsmenyer.** [`FContextMenu`](https://pattespatte.github.io/felix-ds/#/modaler/fcontextmenu) är FKUI:s popup-meny: en knapprubrik med `aria-haspopup="menu"` som ankare, menyval med `label`/`key`, styrning via `:is-open` och `@select`/`@close`. Fullt tangentbordsstöd ingår.
 - **Flikar.** FKUI saknar en flikkomponent (per 6.62). Bygg en tunn app-komponent med WAI-ARIA-tabs-mönstret (tablist/tab/tabpanel, piltangenter) formgiven med tokens – ett par hundra rader, och inget wrapperskikt i temarepot behövs.
 - **Brödsmulor.** De finns inte heller i FKUI. En tunn `<nav>` med ordnad lista, router-länkar och `aria-current="page"` räcker och blir rätt.
-- **Kort, listor och meddelanden.** `FCard` (rubrik via `#header`-slotten och dess `headingSlotClass`), `FMessageBox` (info/success/warning/error), `FBadge` och `FDataTable` täcker de flesta ytor. `FSortFilterDataset` runt en tabell ger sortering. `FPaginator` ger sidbrytning.
+- **Kort, listor och meddelanden.** [`FCard`](https://pattespatte.github.io/felix-ds/#/ytor/fcard) (rubrik via `#header`-slotten och dess `headingSlotClass`), [`FMessageBox`](https://pattespatte.github.io/felix-ds/#/ytor/fmessagebox) (info/success/warning/error), [`FBadge`](https://pattespatte.github.io/felix-ds/#/aterkoppling/fbadge) och [`FDataTable`](https://pattespatte.github.io/felix-ds/#/tabeller/fdatatable) täcker de flesta ytor. [`FSortFilterDataset`](https://pattespatte.github.io/felix-ds/#/tabeller/fsortfilterdataset) runt en tabell ger sortering. [`FPaginator`](https://pattespatte.github.io/felix-ds/#/tabeller/fpaginator) ger sidbrytning.
 - **Expanderbart innehåll och accordion.** `FExpandableParagraph` med `#title`-slotten. En accordion (en öppen åt gången) styrs med `:expanded` + `@toggle` från en ref. Lägg gärna temats FExpand-patch från playgrounden i en `fkui-patches.ts` – den åtgärdar en leave-bugg.
 
 ## Formulär och validering

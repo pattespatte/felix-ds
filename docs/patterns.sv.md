@@ -1,12 +1,14 @@
 # Mönsterbibliotek – kompositionsrecept
 
-felix-ds är ett temalager: det ändrar presentationen hos FKUI:s komponenter, aldrig deras DOM, props eller beteende. Det är den uttalade avvägningen, och det är det som gör full komponenttäckning och billiga FKUI-uppgraderingar möjliga. När token inte räcker till: skriv ett kompositionsrecept i konsumentens egen kod, inte en wrapper. Den här sidan samlar recepten som är beprövade i projektets konsumentappar. Ett separat wrapper-paket ingår inte i det tunna lagret – det är ett medvetet val (se [styrningen](./governance.sv.md)).
+*Det här dokumentet finns också på engelska: [patterns.en.md](patterns.en.md).*
+
+felix-ds är ett temalager: det ändrar presentationen hos FKUI:s komponenter, aldrig deras DOM, props eller beteende. Det är den uttalade avvägningen, och den är grunden till att temaset täcker alla komponenter och att FKUI-uppgraderingar blir enkla. När token inte räcker till: skriv ett kompositionsrecept i konsumentens egen kod, inte en wrapper. Den här sidan samlar recepten som är beprövade i projektets konsumentappar. Ett separat wrapper-paket ingår inte i det tunna lagret – det är ett medvetet val (se [styrningen](./governance.sv.md)).
 
 Ett mönster kommer med här först när en konsumentapp har använt det – aldrig som en designs skiss.
 
 ## Ett dragspelsobjekt öppet åt gången (FExpandableParagraph)
 
-`FExpandableParagraph` är helt styrd. Utan egen koppling renderas växlingsknappen, men inget händer vid klick – utan något konsolfel som förklarar varför. Komponenten väntar på att `expanded`-propen och `toggle`-eventet kopplas av applikationen.
+[`FExpandableParagraph`](https://pattespatte.github.io/felix-ds/#/ytor/fexpandableparagraph) är helt styrd. Utan egen koppling renderas växlingsknappen, men inget händer vid klick – utan något konsolfel som förklarar varför. Komponenten väntar på att `expanded`-propen och `toggle`-eventet kopplas av applikationen.
 
 Receptet är en ref per sida plus en växlingsfunktion, och id:erna kan genereras ur listpositioner:
 
@@ -40,7 +42,7 @@ const toggle = (id: string) => {
 </template>
 ```
 
-Beprövat i demosajtens innehållssidor, som driver varje dragspel på sajten på det här sättet (ett objekt öppet åt gången, per sida).
+Beprövat i [demosajtens innehållssidor](https://pattespatte.github.io/felix-ds-demo-site/), som driver varje dragspel på sajten på det här sättet (ett objekt öppet åt gången, per sida).
 
 ## Grupperade kryssrutor (FFieldset + FCheckboxField)
 
@@ -54,7 +56,7 @@ Beprövat i demosajtens innehållssidor, som driver varje dragspel på sajten p�
 </f-fieldset>
 ```
 
-med `const topics = ref<string[]>([])` i skriptet. Beprövat i konsumentappens kontaktformulär.
+med `const topics = ref<string[]>([])` i skriptet. Beprövat i [konsumentappens kontaktformulär](https://pattespatte.github.io/felix-ds-consumer/#/formular).
 
 ## Låt FKUI styla länkarna
 
@@ -62,4 +64,4 @@ FKUI:s ankarstyrsning är tokenmappad och växlar med färgläget. Länkar med h
 
 ## När ett beteende verkligen inte går att komponera
 
-Dokumentera avvikelsen där nästa utvecklare letar, och verifiera den mot uppströms vid varje FKUI-uppgradering – varje avvikelse från uppströms är flexibilitet köpt på kredit. Vänta hellre på uppströms eller komponera runt beteendet. Det wrapper-paket på tillval som styrningspolicyn reserverar för ett genuint oundvikligt fall finns inte i dag. Att skapa ett är ett ägarbeslut, aldrig en bekvämlighet.
+Dokumentera avvikelsen där nästa utvecklare letar, och verifiera den mot uppströms vid varje FKUI-uppgradering – varje avvikelse från uppströms är flexibilitet köpt på kredit. Vänta hellre på uppströms eller lösa beteendet med komposition. Ett wrapper-paket på tillval finns inte i dag. Styrningspolicyn reserverar det för fall där inget annat fungerar. Att skapa ett är ett ägarbeslut, aldrig en bekvämlighet.
