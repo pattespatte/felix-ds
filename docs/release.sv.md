@@ -1,5 +1,7 @@
 # Utgivningsdokumentation (endast ägaren)
 
+*Det här dokumentet finns också på engelska: [release.en.md](release.en.md).*
+
 Det här dokumentet är det enda, uttryckliga undantaget från projektets förbud mot push: **varje `git push` och varje publicering i felix-ds-projektet sker via det här dokumentet, utfört av ägaren.** Automatiska agentsessioner kör det aldrig. Inget här triggas av att filer committas – arbetsflödet drar igång först när en `v*`-tagg når GitHub.
 
 Utgivningsflödet är: förbered lokalt → tagga → **pusha (ägarestyrt)** → GitHub Actions bygger, kör portarna och publicerar → granska GitHub-releasen.
@@ -51,7 +53,7 @@ Gå igenom listan innan du rör en tagg:
    ```
 
    En baseline-uppdatering är ett granskat beslut, aldrig en knapp för att ”få porten grön”: varje pixeländring ska gå att förklara.
-5. **Linux-baselines för CI.** Utgivningsarbetsflödet kör `bun run test:visual` och `bun run test:visual:cross` på ubuntu-24.04 (låst bild, så omgenererade baselines matchar alltid utgivningsrunnerns miljö), vilket kräver baselines med suffixet `-linux`. Baselines är per plattform: Playwright väljer suffixet som matchar maskinen testerna körs på, och repot har linux-uppsättningen plus en för den egna maskinen (darwin i det här repot; i en ren linux-miljö, till exempel en Ubuntu-VM, är de två samma filer). Generera om linux-uppsättningen när den egna uppsättningen har ändrats, via repots arbetsflöde **Generate linux visual baselines** (ingen docker behövs lokalt):
+5. **Linux-baselines för CI.** Utgivningsarbetsflödet kör `bun run test:visual` och `bun run test:visual:cross` på ubuntu-24.04. Runner-bilden är låst, så omgenererade baselines matchar alltid utgivningsrunnerns miljö. Det kräver baselines med suffixet `-linux`. Baselines är per plattform: Playwright väljer suffixet som matchar maskinen testerna körs på. Repot har linux-uppsättningen plus en för den egna maskinen (darwin i det här repot; i en ren linux-miljö, till exempel en Ubuntu-VM, är de två samma filer). Generera om linux-uppsättningen när den egna uppsättningen har ändrats, via repots arbetsflöde **Generate linux visual baselines** (ingen docker behövs lokalt):
 
    1. GitHub → Actions → *Generate linux visual baselines* → **Run workflow** på `main` (tar cirka 10 minuter och kör `--update-snapshots` för chromium, webkit och firefox på en ubuntu-runner och laddar upp båda snapshot-mapparna som artefakten `linux-baselines`.) Den går också att starta från terminalen:
 
@@ -70,9 +72,9 @@ Gå igenom listan innan du rör en tagg:
       ls e2e/visual-cross.spec.ts-snapshots/*-linux.png | wc -l  # väntat tal: 60 (alla 15 vyer × 2 lägen × 2 webbläsare)
       ```
 
-   3. Komprimera om varje ny png förlustfritt och verifiera mot originalet med `compare -metric AE original.png rekomprimerad.png null:` (ska skriva ut `0 (0)`), kör sedan `bun run test:visual` lokalt (bekräfter att den egna uppsättningen fortfarande godkänns) och committa linux-png:erna tillsammans med den egna uppsättningen. Playwright väljer det suffix som matchar runner-plattformen när testerna körs.
+   3. Komprimera om varje ny png förlustfritt och verifiera mot originalet med `compare -metric AE original.png rekomprimerad.png null:` (ska skriva ut `0 (0)`). Kör sedan `bun run test:visual` lokalt – det bekräftar att den egna uppsättningen fortfarande godkänns. Committa linux-png:erna tillsammans med den egna uppsättningen. Playwright väljer det suffix som matchar runner-plattformen när testerna körs.
 
-   Saknas linux-uppsättningen misslyckas utgivningsporten med felet ”snapshot doesn't exist … `-chromium-linux.png`” – det är porten som gör sitt jobb. Gå inte förbi den. Om firefox-halvan av cross-porten misslyckas på linux-runnern, behandla det som utgivningsstopp: linux-runnern kan vara den första miljön där firefox körs (se steg 3).
+   Saknas linux-uppsättningen misslyckas utgivningsporten med felet ”snapshot doesn't exist … `-chromium-linux.png`” – det är porten som gör sitt jobb. Gå inte förbi den. Misslyckas firefox-halvan av cross-porten på linux-runnern ska du behandla det som utgivningsstopp. Linux-runnern kan vara den första miljön där firefox körs (se steg 3).
 
    Den veckovisa fredagsrondningen håller linux-uppsättningen aktuell utan det här momentet. När arbetsflödena körs och när den manuella vägen behövs står i [docs/maintenance.sv.md](maintenance.sv.md).
 
@@ -141,7 +143,7 @@ Paketet publiceras på GitHub Packages under kontot `pattespatte` med begränsad
    bun add @pattespatte/felix-ds
    ```
 
-Konsumenterna låser själva sina `@fkui/*`-versioner. felix-ds deklarerar `@fkui/theme-default` (stött intervall `>=6.57.0 <7.0.0`) som enda peer-beroende och laddar modulen själv – konsumentens egen Sass ska aldrig läsa in paketet via konfigurerad `@use`, eftersom de två konfigurerade laddningarna då krockar. Se avsnittet Kompatibilitet i README.
+Konsumenterna låser själva sina `@fkui/*`-versioner. felix-ds deklarerar `@fkui/theme-default` (stött intervall `>=6.57.0 <7.0.0`) som enda peer-beroende och laddar modulen själv – konsumentens egen Sass ska aldrig läsa in paketet via konfigurerad `@use`, eftersom de två konfigurerade laddningarna då krockar. Se [avsnittet om kompatibilitet](getting-started.sv.md#kompatibilitet).
 
 ## 6. Mall för uppgraderingsnoteringar
 

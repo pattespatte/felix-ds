@@ -1,5 +1,7 @@
 # Styrning och versionskontrakt
 
+*Det här dokumentet finns också på engelska: [governance.en.md](governance.en.md).*
+
 Det här dokumentet beskriver kontraktet mellan felix-ds och de som använder temat: vad versionsnumret lovar, vilket stöd FKUI-intervallet ger och hur ändringar kommuniceras. Själva utgivningsproceduren står i [utgivningsdokumentationen](./release.sv.md) och installationsstegen i [guiden för att bygga en webbapp](./create-a-site.sv.md).
 
 ## Semantisk versionering
@@ -15,7 +17,7 @@ felix-ds följer semantisk versionering för det som paketet exponerar: de publi
 
 Temat har ett enda peer-beroende: `@fkui/theme-default` i intervallet `>=6.57.0 <7.0.0`. Intervallet gäller temalagret, alltså Sass-tokenytan i `@fkui/theme-default` – de variabler som temats startfil läser in med sin konfiguration (`@use` i `src/theme/_default.scss`). Komponenternas interna delar omfattas inte: felix-ds läser ingenting inne i FKUI:s komponenter, så en ändring hos FKUI som inte rör tokenytan kan inte bryta temat.
 
-Testade ändpunkter listas i varje utgivnings versionsfakta (mallen ligger i [utgivningsdokumentationen](./release.sv.md)) – de hör hemma i den daterade utgivningen, inte i README. Undre gränsen (6.57.0) bevisas veckovis i CI: arbetsflödets `floor`-jobb (kontrollen av intervallets äldsta minor) låser utvecklingsberoendena till den och kör bygge, typkontroll och tillgänglighetsporten, medan pixeljämförelserna bara körs mot den senaste låsta versionen eftersom `baselines` är renderade där. Övre gränsen hålls aktuell genom att playgroundens låsta utvecklingsversioner ligger på intervallets topp. Konsumenten låser sina egna FKUI-versioner exakt och väljer själv version inom intervallet.
+Testade ändpunkter listas i varje utgivnings versionsfakta (mallen ligger i [utgivningsdokumentationen](./release.sv.md)) – de hör hemma i den daterade utgivningen, inte i README. Undre gränsen (6.57.0) bevisas veckovis i CI. Arbetsflödets `floor`-jobb kontrollerar intervallets äldsta minor: det låser utvecklingsberoendena till 6.57.0 och kör bygge, typkontroll och tillgänglighetsporten. Pixeljämförelserna körs bara mot den senaste låsta versionen, eftersom referensbilderna (`baselines`) är renderade där. Övre gränsen hålls aktuell genom att playgroundens låsta utvecklingsversioner ligger på intervallets topp. Konsumenten låser sina egna FKUI-versioner exakt och väljer själv version inom intervallet.
 
 ## Avveckling (deprecation)
 
@@ -29,19 +31,25 @@ Motsvarande gäller ikonnamn: ett namn som lämnar uppsättningen aviseras på s
 
 ## Utgivningstakt och uppgraderingsnoteringar
 
-Utgivningar sker när det finns något att ge ut: ackumulerade ändringar, en FKUI-uppgradering som verifierats enligt repetitionsmönstret i README, eller en buggfix. Det finns inget fast datumintervall – takten styrs av behovet, inte kalendern.
+Utgivningar sker när det finns något att ge ut: ackumulerade ändringar, en FKUI-uppgradering som verifierats enligt repetitionsmönstret i [utvecklingsdokumentationen](development.sv.md#uppgradera-fkui-beroendena), eller en buggfix. Det finns inget fast datumintervall – takten styrs av behovet, inte kalendern.
 
 Varje utgivning beskriver i versionsfakta vad den som uppgraderar behöver veta (mallen ligger i [utgivningsdokumentationen](./release.sv.md)): vad som ändrats, vilka konsumentåtgärder som krävs (oftast inga), avvecklade token om några, och vilka FKUI-ändpunkter som testats. Konsumentens uppdatering ska vara en versionshöjning på en rad, och visuella förändringar ska alltid vara förklarade i förväg.
 
-Varje utgivning passerar också axe-porten: automatiserade tillgänglighetsskanningar av varje playground-vy i båda färglägena, med noll överträdelser som villkor. Täckningen per komponent – vilken vy som demonstrerar komponenten och vad den automatiserade testningen omfattar – dokumenteras i [playgroundens vy Tillgänglighet](https://pattespatte.github.io/felix-ds/#/tillganglighet), och ett underlag som konsumenten kan lyfta in i sin egen tillgänglighetsredogörelse genereras till [docs/accessibility-basis.sv.md](./accessibility-basis.sv.md).
+Varje utgivning passerar också axe-porten: automatiserade tillgänglighetsskanningar av varje playground-vy i båda färglägena, med noll överträdelser som villkor.
+
+Täckningen per komponent dokumenteras i [playgroundens vy Tillgänglighet](https://pattespatte.github.io/felix-ds/#/tillganglighet). Där ser du vilken vy som demonstrerar komponenten och vad den automatiserade testningen omfattar. Ett underlag att lyfta in i din egen tillgänglighetsredogörelse finns i [underlaget för tillgänglighetsredogörelse](./accessibility-basis.sv.md).
 
 ## Driftmodell
 
-Systemet är dimensionerat för att drivas av två halvtidstjänster: en UX-designer på 50 % och en frontendutvecklare på 50 %. Designern äger token-värdena, den typografiska profilen och granskningen av tillgänglighetstäckningen. Utvecklaren äger temats källkod, playgroundens dokumentsajt, den visuella och tillgänglighetsbaserade utgivningsporten och det veckovisa arbetsflödet som bevakar FKUI-aktualiteten. Enkelheten är poängen: ett tunt paket är lite kod att granska och underhålla, och därför räcker bemanningen. I en organisations skala väger det tyngre än en bred pipeline. Projektet lovar inget stöd utöver vad den här bemanningen kan hålla. Se [Stöd](#stöd).
+Systemet är dimensionerat för att drivas av två halvtidstjänster: en UX-designer på 50 % och en frontendutvecklare på 50 %. Designern äger token-värdena, den typografiska profilen och granskningen av tillgänglighetstäckningen. Utvecklaren äger temats källkod och playgroundens dokumentsajt. Utvecklaren sköter också den visuella och tillgänglighetsbaserade utgivningsporten och det veckovisa arbetsflödet som bevakar FKUI-aktualiteten.
+
+Enkelheten är poängen: ett tunt paket är lite kod att granska och underhålla, och därför räcker bemanningen. I en liten organisation väger det tyngre än en bred pipeline. Projektet lovar inget stöd utöver vad den här bemanningen kan hålla. Se [avsnittet om stöd](#stöd).
 
 ## Koden är sanningskällan
 
-Den handskrivna temakällkoden (`src/theme/`) är den enda sanningen för det visuella uttrycket. Designerna möter koden via DTCG-rundturen: `bun run tokens:build` exporterar det sammansatta temat som W3C DTCG-filer (`tokens/light.json`, `tokens/dark.json`) som designverktyg kan läsa, och `bun run tokens:import` läser valfri W3C DTCG-fil (till exempel en export från ett designverktyg) tillbaka till anpassade egenskaper. Importen är den stödda bryggan mot designsidan. Ingen API-integration mot ett designverktyg byggs: API:et är Enterprise-låst och proprietärt, och de token det genererar täcker inte hela css:en, så en sådan pipeline skulle flytta det handskötta lagret i stället för att ta bort det. Automatiseringen stannar vid token-export i båda fallen. Rendering, interaktionstillstånd och sammansatta beslut granskas av människor.
+Den handskrivna temakällkoden (`src/theme/`) är den enda sanningen för det visuella uttrycket. Designerna möter koden via DTCG-rundturen: `bun run tokens:build` exporterar det sammansatta temat som W3C DTCG-filer (`tokens/light.json`, `tokens/dark.json`) som designverktyg kan läsa, och `bun run tokens:import` läser valfri W3C DTCG-fil (till exempel en export från ett designverktyg) tillbaka till anpassade egenskaper. Importen är den stödda bryggan mot designsidan.
+
+Ingen API-integration mot ett designverktyg byggs. API:et är Enterprise-låst och proprietärt, och de token det genererar täcker inte hela css:en. En sådan pipeline skulle flytta det handskötta lagret i stället för att ta bort det. Automatiseringen stannar vid token-export i båda fallen. Rendering, interaktionstillstånd och sammansatta beslut granskas av människor.
 
 ## Stöd
 

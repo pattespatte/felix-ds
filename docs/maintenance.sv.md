@@ -1,5 +1,7 @@
 # Underhåll och arbetsflöden
 
+*Det här dokumentet finns också på engelska: [maintenance.en.md](maintenance.en.md).*
+
 Den här guiden är för den som underhåller repot (ägaren). Den besvarar tre frågor om repots fem GitHub Actions-arbetsflöden: vad som körs av sig självt, när du behöver göra något och hur en vanlig vecka ser ut. De flesta veckor räcker det med en `git pull`.
 
 ## De fem arbetsflödena i korthet
@@ -49,15 +51,15 @@ flowchart TD
 
 ### Fredagen: `linux-baselines` hålls aktuella
 
-Körningen börjar med en ren git-kontroll: har inget som styr det visuella (playgroundens vyer, temakällor, tokens, testkonfiguration, låsfil) ändrats sedan `linux-baselines` senast genererades om, avslutar den grönt utan att köra ett enda test. I annat fall genererar den om `linux-baselines`, komprimerar om png-filerna förlustfritt, kör hela porten (paritetstester, bygge, typkontroll, visuella jämförelser i tre webbläsare, axe-skanningar) och pushar resultatet till `main` som committen ”test(visual): regenerate linux baselines (friday currency)”. Efteråt gör du en enda sak: `git pull`.
+Körningen börjar med en ren git-kontroll: har inget som styr det visuella ändrats sedan `linux-baselines` senast genererades om, avslutar den grönt utan att köra ett enda test. Det som styr det visuella är playgroundens vyer, temakällorna, tokens, testkonfigurationen och låsfilen. I annat fall genererar den om `linux-baselines` och komprimerar om png-filerna förlustfritt. Sedan kör den hela porten (paritetstester, bygge, typkontroll, visuella jämförelser i tre webbläsare och axe-skanningar) och pushar resultatet till `main` som committen ”test(visual): regenerate linux baselines (friday currency)”. Efteråt gör du en enda sak: `git pull`.
 
 ### Måndagen: FKUI-kontrollen
 
-Har FKUI inte gett ut någon ny version avslutar körningen grönt utan att öppna något. Finns en ny version höjer den de sex `@fkui/*`-versionerna, kör hela porten på höjningen och öppnar en pull request (”chore(deps): bump @fkui/* …”). Granska och merga den, och ge ut nästa version enligt [utgivningsdokumentationen](release.sv.md). Texten i pull requesten listar också de `@fkui/vue`-komponenter som höjningen lägger till eller tar bort. En andra del av körningen låser peer-intervallets undre gräns (6.57.0) och kör portarna som inte är visuella. Ett rött resultat där är en signal att titta närmare på, och den delen öppnar aldrig någon pull request. Körningen gör också en beroendeaudit som bara rapporterar. Steg för steg – att merga veckorondens pull request eller att göra repetitionen lokalt – står i [uppgraderingsguiden](upgrade-fkui.sv.md).
+Har FKUI inte gett ut någon ny version avslutar körningen grönt utan att öppna något. Finns en ny version höjer den de sex `@fkui/*`-versionerna, kör hela porten på höjningen och öppnar en pull request (”chore(deps): bump @fkui/* …”). Granska och merga den, och ge ut nästa version enligt [utgivningsdokumentationen](release.sv.md). Texten i pull requesten listar också de `@fkui/vue`-komponenter som höjningen lägger till eller tar bort. En andra del av körningen låser peer-intervallets undre gräns (6.57.0) och kör portarna som inte är visuella. Blir den delen röd ska du undersöka felet närmare. Den öppnar aldrig någon pull request. Körningen gör också en beroendeaudit som bara rapporterar. Steg för steg – att merga veckorondens pull request eller att göra repetitionen lokalt – står i [uppgraderingsguiden](upgrade-fkui.sv.md).
 
 ## När du behöver göra något själv
 
-Baselines finns i uppsättningar, en per plattform: filnamnen slutar på plattformens suffix (`-darwin`, `-linux`), och Playwright väljer själv rätt uppsättning när testerna körs. Repot committar `linux-baselines`, som CI-porten jämför mot på den låsta runner-bilden, och `darwin-baselines`, eftersom ägarens maskin är en mac – i en ren linux-miljö (till exempel en Ubuntu-VM) är de två samma filer. Oavsett plattform renderas `linux-baselines` alltid av arbetsflödena.
+Baselines finns i uppsättningar, en per plattform: filnamnen slutar på plattformens suffix (`-darwin`, `-linux`), och Playwright väljer själv rätt uppsättning när testerna körs. Repot committar två uppsättningar: `linux-baselines` och `darwin-baselines`. CI-porten jämför mot `linux-baselines` på den låsta runner-bilden. `darwin-baselines` behövs för att ägarens maskin är en mac, och i en ren linux-miljö (till exempel en Ubuntu-VM) är de två uppsättningarna samma filer. Oavsett plattform renderas `linux-baselines` alltid av arbetsflödena.
 
 ### Du har ändrat pixlar i en vy
 
