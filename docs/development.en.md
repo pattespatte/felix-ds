@@ -25,6 +25,7 @@ Open the address printed in the terminal (usually `http://localhost:5173/`). Swi
 | `bun run build` | Build the playground for production |
 | `bun run build:theme` | Compile the prebuilt CSS entries to `dist/felix.css`, `dist/felix-auto.css` and `dist/felix-complete.css` plus minified `.min.css` siblings (committed; the parity test fails stale files and enforces the byte budgets) |
 | `bun run tokens:build` | Generate `tokens/light.json` and `tokens/dark.json` from the theme's SCSS sources |
+| `bun run tokens:export` | Alias for `tokens:build` – the same script, named after the export direction |
 | `bun run tokens:import` | Read a W3C DTCG file and emit CSS custom properties (any file as argument) |
 | `bun run icons:build` | Regenerate `src/icons/phosphor-spritesheet.ts` from the mappings in `scripts/icons.ts` |
 | `bun run search:build` | Generate the playground search index `playground/public/search-index.json` from the navigation and demos (also run automatically by Vite in dev and build) |

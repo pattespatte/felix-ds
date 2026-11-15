@@ -4,11 +4,13 @@
 
 felix-ds skickar med temats token som JSON i [W3C Design Tokens](https://design-tokens.github.io/community-group/) utkastformat (DTCG). Det gör temats token läsbara för verktyg utanför CSS-världen – bland annat Tokens Studio (Figma), Style Dictionary och dokumentationsgeneratorer – utan att något kopieras för hand.
 
+Varje riktning har ett eget kommando: [export](#exportera-tokens) kompilerar temat till `tokens/light.json` och `tokens/dark.json`, och [import](#importera-tokens) läser valfri DTCG-fil tillbaka till CSS-variabler.
+
 ```mermaid
 flowchart TB
     subgraph ROW1 [" "]
         direction LR
-        S["Handskriven temakälla<br>src/theme (ljust + mörkt)<br>den enda sanningskällan"] -->|"tokens:build"| E["tokens/light.json<br>tokens/dark.json<br>committade i repot,<br>skickas med paketet"]
+        S["Handskriven temakälla<br>src/theme (ljust + mörkt)<br>den enda sanningskällan"] -->|"tokens:export"| E["tokens/light.json<br>tokens/dark.json<br>committade i repot,<br>skickas med paketet"]
         E --> T["Designverktyg<br>Tokens Studio (Figma),<br>Style Dictionary m.fl."]
     end
     subgraph ROW2 [" "]
@@ -38,6 +40,44 @@ Paketet innehåller två kompletta filer, en per färgläge:
 - `@pattespatte/felix-ds/tokens/dark.json`
 
 Varje fil är självbärande och innehåller det **sammansatta temat** i sitt läge: uppströms `@fkui/theme-default` plus felix-profilens överskrivningar, alltså exakt de värden som temats mixins skriver ut (se [avsnittet om mörkt läge](getting-started.sv.md#mörkt-läge)). Delade token (typografi, linjer, skuggor) finns i båda filerna. Filerna committas i repot och skickas med npm-paketet.
+
+## Exportera tokens
+
+Exportera temat som DTCG genom att köra:
+
+```bash
+bun run tokens:export
+```
+
+`tokens:export` är ett alias för `tokens:build` – namnen kör samma skript, `scripts/tokens.ts`. Skriptet kompilerar båda färglägena ur SCSS-källorna i `src/theme/`, typar varje värde och skriver `tokens/light.json` och `tokens/dark.json`. De två filerna är exporten – det är dem som committas och skickas med paketet. Utdata är deterministiskt: sorterade nycklar, 2 mellanslag indrag, LF och avslutande radbrytning.
+
+Exporten är enkelriktad. Den handskrivna SCSS:en i `src/theme/` är fortfarande den enda sanningskällan, och skriptet skriver aldrig till den.
+
+`bun test` håller filerna aktuella: paritetstestet fäller de committade filerna om de inte längre stämmer med färskt kompilerad CSS – samma namnmängd, samma värden, giltig struktur, lösta aliaser, inget föråldrat. Efter en FKUI-uppgradering kör du `bun run fkui upgrade` och därefter `bun run tokens:export` och granskar diffen: nya token dyker upp, och ändrade upstream-värden sprider sig till exporten.
+
+## Importera tokens
+
+Importen går andra vägen: `scripts/tokens-import.ts` läser valfri W3C DTCG-fil och skriver ut anpassade CSS-egenskaper. Den typiska källan är en export från ett designverktyg – till exempel en Figma-plugin som talar DTCG – så att designerns tokenuppsättning blir en överskrivningsfil utan att något kopieras för hand:
+
+```bash
+bun run tokens:import -- design-tokens.json
+bun run tokens:import -- design-tokens.json --out src/tokens.css
+```
+
+Det första kommandot läser `design-tokens.json`, validerar filen och skriver CSS:en till terminalen – bra för en snabb titt eller för att själv styra vart CSS:en hamnar. Det andra skriver CSS:en till `src/tokens.css` i stället för att skriva ut den. Allt efter `--` hör till skriptet: första argumentet är indatafilen, `--out` anger utdatafilen, och utan `--out` skrivs CSS:en till standardutdata.
+
+Omfattningen är enbart det egna felix-temats variabler – samma yta som exporten beskriver. Grundtemat undantas med avsikt: dess värden lever omodifierade i `@fkui/design`:s css, så det finns ingen felix-ds-källa som en import kan återskapa, och det ändras bara när FKUI-paketen bumpas.
+
+Utdata är deterministiskt: ett `:root`-block, deklarationer sorterade efter namn, 2 mellanslag indrag och avslutande radbrytning. Aliaser skrivs som `var(--mål)`-referenser, så den genererade filen refererar till token i stället för att duplicera dem. Namnmappningen är den mekaniska inversen av exportens (se [avsnittet om namngivning och gruppering](#namngivning-och-gruppering)).
+
+Valideringen är strikt, och varje fel namnger den felande tokensökvägen:
+
+- de stödda `$type`-värdena är `color`, `dimension`, `number`, `duration`, `fontFamily` och `shadow` – allt annat (t.ex. `gradient` eller `typography`) avvisas, eftersom felix-tokenmodellen inte kan uttrycka det
+- token utan `$type` accepteras (sammansatta kortformer, som exportens otypade token)
+- varje alias `{sökväg}` måste lösa sig till ett token i samma fil, och aliascykler avvisas
+- blandnoder (ett token med underordnade grupper), tomma grupper, okända `$`-nycklar och krockande css-namn avvisas
+
+Importen skriver aldrig till temats egna SCSS-källor – det handskrivna temat förblir den enda sanningskällan, och importen är skrivskyddad mot sin indatafil. Rundturen bevisas av `bun test`: att importera de committade `tokens/light.json` och `tokens/dark.json` kompilerar tillbaka till exakt det sammansatta temats deklarationer. En dokumenterad asymmetri: exporten strök citattecken ur typsnittsnamn, så fontlistor jämförs kanoniskt i stället för byte för byte, och återutgivna filer återger värdesemantiken – inte originalets citeringsval.
 
 ## Formatet
 
@@ -124,35 +164,3 @@ export default {
 ```
 
 **I Tokens Studio:** importera filen som tokenuppsättning (DTCG-format).
-
-## Generering och paritet
-
-Filerna genereras av `scripts/tokens.ts`:
-
-```bash
-bun run tokens:build
-```
-
-Skriptet kompilerar båda färglägena ur SCSS-källorna och typar varje värde. Filerna är committade, och `bun test` (paritetstestet) misslyckas om de inte stämmer med färskt kompilerad CSS: samma namnmängd, samma värden, giltig struktur, lösta aliaser och inte föråldrade. Efter en FKUI-uppgradering: kör `bun run fkui upgrade` och därefter `bun run tokens:build`, och granska diffen – nya token dyker då upp, och ändrade upstream-värden sprider sig till exporten.
-
-## Importera tokens
-
-Riktningen är symmetrisk: `scripts/tokens-import.ts` läser valfri W3C DTCG-fil och skriver ut anpassade CSS-egenskaper. Den typiska källan är en export från ett designverktyg – till exempel Figma-plugin som talar DTCG – så att designerns tokenuppsättning blir en överskrivningsfil utan att något kopieras för hand:
-
-```bash
-bun run tokens:import -- design-tokens.json
-bun run tokens:import -- design-tokens.json --out src/tokens.css
-```
-
-Omfattningen är enbart det egna felix-temats variabler – samma yta som exporten beskriver. Grundtemat undantas med avsikt: dess värden lever omodifierade i `@fkui/design`:s css, så det finns ingen felix-ds-källa som en import kan återskapa, och det ändras bara när FKUI-paketen bumpas.
-
-Utdata är deterministiskt: ett `:root`-block, deklarationer sorterade efter namn, 2 mellanslag indrag och avslutande radbrytning. Aliaser skrivs som `var(--mål)`-referenser, så den genererade filen refererar till token i stället för att duplicera dem. Namnmappningen är den mekaniska inversen av exportens (se [avsnittet om namngivning och gruppering](#namngivning-och-gruppering)).
-
-Valideringen är strikt, och varje fel namnger den felande tokensökvägen:
-
-- de stödda `$type`-värdena är `color`, `dimension`, `number`, `duration`, `fontFamily` och `shadow` – allt annat (t.ex. `gradient` eller `typography`) avvisas, eftersom felix-tokenmodellen inte kan uttrycka det
-- token utan `$type` accepteras (sammansatta kortformer, som exportens otypade token)
-- varje alias `{sökväg}` måste lösa sig till ett token i samma fil, och aliascykler avvisas
-- blandnoder (ett token med underordnade grupper), tomma grupper, okända `$`-nycklar och krockande css-namn avvisas
-
-Importen skriver aldrig till temats egna SCSS-källor – det handskrivna temat förblir den enda sanningskällan, och importen är skrivskyddad mot sin indatafil. Rundturen bevisas av `bun test`: att importera de committade `tokens/light.json` och `tokens/dark.json` kompilerar tillbaka till exakt det sammansatta temats deklarationer. En dokumenterad asymmetri: exporten strök citattecken ur typsnittsnamn, så fontlistor jämförs kanoniskt i stället för byte för byte, och återutgivna filer återger värdesemantiken – inte originalets citeringsval.

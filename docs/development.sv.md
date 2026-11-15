@@ -25,6 +25,7 @@ bun run dev        # startar playgrounden (Vite)
 | `bun run build` | Bygg playgrounden för produktion |
 | `bun run build:theme` | Kompilera de förbyggda CSS-posterna till `dist/felix.css`, `dist/felix-auto.css` och `dist/felix-complete.css` samt minifierade `.min.css`-syskon (filerna committas – paritetstestet upptäcker föråldrade filer och kontrollerar bytebudgetarna) |
 | `bun run tokens:build` | Generera `tokens/light.json` och `tokens/dark.json` ur temats SCSS-källor |
+| `bun run tokens:export` | Alias för `tokens:build` – samma skript, döpt efter exportriktningen |
 | `bun run tokens:import` | Läs en W3C DTCG-fil och skriv ut anpassade CSS-egenskaper (valfri fil som argument) |
 | `bun run icons:build` | Generera om `src/icons/phosphor-spritesheet.ts` ur mappningarna i `scripts/icons.ts` |
 | `bun run search:build` | Generera playgroundens sökindex `playground/public/search-index.json` ur navigationen och demoerna (körs även automatiskt av Vite i dev och bygge) |

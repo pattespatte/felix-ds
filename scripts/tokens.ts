@@ -6,6 +6,8 @@
  *
  * Användning:
  *   bun run tokens:build        generera tokens/light.json och tokens/dark.json
+ *   bun run tokens:export       alias – samma skript, namnet speglar
+ *                               importriktningen i tokens-import.ts
  *
  * Konventioner som skriptet följer:
  * - SCSS-källorna är den enda sanningskällan; exporten är enkelriktad
