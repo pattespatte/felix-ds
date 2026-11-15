@@ -1,5 +1,7 @@
 # Maintenance and workflows
 
+*This document is also available in Swedish: [maintenance.sv.md](maintenance.sv.md).*
+
 This guide is for whoever maintains the repo (the owner). It answers three questions about the repo's five GitHub Actions workflows: what runs by itself, when you need to act, and what a normal week looks like. Most weeks the only thing you do is `git pull`.
 
 ## The five workflows at a glance
@@ -101,7 +103,7 @@ The most common cause is a stale linux baseline set; the error `snapshot doesn't
 
 ## Pitfalls
 
-- **”Re-run failed jobs” reuses the old commit.** A scheduled run that raced a baseline regen must run against the new `main`. Start a fresh run (Run workflow, or `gh workflow run`) instead of re-running.
+- **"Re-run failed jobs" reuses the old commit.** A scheduled run that raced a baseline regen must run against the new `main`. Start a fresh run (Run workflow, or `gh workflow run`) instead of re-running.
 - **Bot commits land on `main`.** The Friday run commits its baselines directly. Run `git pull` before you keep working locally.
 - **Schedules need the file on the default branch** and GitHub switches them off after 60 days without repo activity. After a long pause, check that both weekly runs actually ran.
 - **Times are UTC in the cron lines.** The Swedish clock times in this guide are winter times and shift one hour in summer.

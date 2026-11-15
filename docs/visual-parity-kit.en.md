@@ -1,5 +1,7 @@
 # The visual parity kit – prove that a bump is pixel-identical
 
+*This document is also available in Swedish: [visual-parity-kit.sv.md](visual-parity-kit.sv.md).*
+
 A small recipe for consumers who want to prove that an update of the felix theme (or of the FKUI packages) does not change a single pixel: capture full-page screenshots of your app before and after the bump, compare them pixel for pixel and pin the difference to zero. The recipe is a standalone script – it ships neither in the package nor with anything beyond `@playwright/test` and ImageMagick as requirements.
 
 The idea: felix-ds's structural promise is that a theme or FKUI upgrade is a visual no-op unless the release notes say otherwise. This kit makes that promise checkable in your own CI.

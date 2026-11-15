@@ -1,5 +1,7 @@
 # Release runbook (owner only)
 
+*This document is also available in Swedish: [release.sv.md](release.sv.md).*
+
 This document is the single, explicit exception to the project's no-push rule: **every `git push` and publish action in the felix-ds project happens through this runbook, executed by the owner.** Automated agent sessions never execute it. Nothing here is triggered by committing files; the workflow only fires when a `v*` tag reaches GitHub.
 
 The release flow is: prepare locally → tag → **push (owner-gated)** → GitHub Actions builds, gates and publishes → review the GitHub Release.
@@ -141,7 +143,7 @@ The package is published to GitHub Packages under the `pattespatte` account with
    bun add @pattespatte/felix-ds
    ```
 
-Consumers pin their own `@fkui/*` versions; felix-ds declares `@fkui/theme-default` (supported range `>=6.57.0 <7.0.0`) as its only peer dependency and loads that module itself – a consumer's own Sass must never `@use` it with configuration, or the two configured loads collide. See the README's Compatibility section.
+Consumers pin their own `@fkui/*` versions; felix-ds declares `@fkui/theme-default` (supported range `>=6.57.0 <7.0.0`) as its only peer dependency and loads that module itself – a consumer's own Sass must never `@use` it with configuration, or the two configured loads collide. See [the compatibility section](getting-started.en.md#compatibility).
 
 ## 6. Upgrade-notes template
 
