@@ -6,7 +6,7 @@ import { PHOSPHOR_ICON_NAMES } from "../../../../src/icons/phosphor-spritesheet"
 /**
  * Namn som döljs ur rutnätet men finns kvar i spriten: FKUI-komponenter
  * (t.ex. sökfältets tömningsknapp) ritar cross själva, och den delar
- * teckning med close – att visa båga två ger två identiska rutor.
+ * teckning med close – att visa båda två ger två identiska rutor.
  */
 const HIDDEN_ICON_NAMES: ReadonlySet<string> = new Set(["cross"]);
 
