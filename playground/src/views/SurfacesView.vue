@@ -10,6 +10,7 @@ import FMinimizablePanelDemo from "../demos/surfaces/FMinimizablePanelDemo.vue";
 import FFixedPaneDemo from "../demos/surfaces/FFixedPaneDemo.vue";
 import FResizePaneDemo from "../demos/surfaces/FResizePaneDemo.vue";
 import FOfflineDemo from "../demos/surfaces/FOfflineDemo.vue";
+import SurfacePairsDemo from "../demos/surfaces/SurfacePairsDemo.vue";
 </script>
 
 <template>
@@ -22,6 +23,7 @@ import FOfflineDemo from "../demos/surfaces/FOfflineDemo.vue";
             nedkopplad.
         </p>
 
+        <surface-pairs-demo />
         <f-card-demo />
         <f-expand-demo />
         <f-expandable-panel-demo />

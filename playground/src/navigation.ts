@@ -121,6 +121,7 @@ export const views: NavView[] = [
         slug: "ytor",
         title: "Ytor och paneler",
         anchors: [
+            { id: "surface-pairs", title: "Ytor i två par" },
             { id: "fcard", title: "Kort" },
             { id: "fexpand", title: "Expanderingsyta" },
             { id: "fexpandablepanel", title: "Expanderbar panel" },

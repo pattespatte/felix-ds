@@ -155,6 +155,8 @@ defineExpose({ handleKeydown });
     z-index: 60;
     border: 1px solid var(--fkds-color-border-primary, #c4c6cd);
     border-radius: 0.25rem;
+    // A floating panel reads as the white card surface, lifted off the cool
+    // canvas.
     background-color: var(--fkds-color-background-primary, #ffffff);
     box-shadow: 0 2px 8px rgb(0 0 0 / 20%);
     text-align: left;
@@ -185,7 +187,9 @@ defineExpose({ handleKeydown });
 
 .search-results__item:hover,
 .search-results__item--active {
-    background-color: var(--fkds-color-background-secondary, #f5f5f5);
+    // The dropdown surface is the white card, so the hover row reads the cool
+    // canvas tint.
+    background-color: var(--fkds-color-background-secondary, #f5f7fa);
 }
 
 /* The whole option is one link that fills the row (title, meta, snippet are

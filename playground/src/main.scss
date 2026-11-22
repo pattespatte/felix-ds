@@ -13,7 +13,7 @@
     // layout's shadow parts, so standalone consumers of it (FMinimizablePanel)
     // would render transparent. The base theme gets the same value the
     // upstream panel area uses.
-    --f-page-layout-background: var(--fkds-color-background-secondary);
+    --f-page-layout-background: var(--fkds-color-background-tertiary);
 }
 
 // Scoped felix theme: html.theme-felix (0,1,1) wins over the global :root
@@ -45,8 +45,10 @@ body {
 
 // Without an explicit background the browser canvas shows through wherever
 // the app shell does not paint; the token flips with the active theme/mode.
+// The canvas takes the cool surface so white cards and panels read as raised
+// against it.
 body {
-    background-color: var(--fkds-color-background-primary, #ffffff);
+    background-color: var(--fkds-color-background-secondary, #f5f7fa);
 }
 
 // Page wrapper: header content, the nav + view row and the footer content

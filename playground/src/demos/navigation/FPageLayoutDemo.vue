@@ -34,10 +34,12 @@ import ComponentHeading from "../../components/ComponentHeading.vue";
 }
 
 .page-layout-demo__band {
-    background-color: var(--fkds-color-background-secondary, #f7f8f8);
+    // The page layout's own areas read the primary/tertiary surfaces, so the
+    // demo bands use the same tokens the component would paint with.
+    background-color: var(--fkds-color-background-tertiary, #f6f3ef);
     // The page layout paints its header/footer areas with inverted text;
     // without an explicit color the band labels end up white on light gray.
-    color: var(--fkds-color-text-primary, #1b1e23);
+    color: var(--fkds-color-text-primary, #242946);
 }
 
 .page-layout-demo__panel {

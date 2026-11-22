@@ -128,7 +128,7 @@ p a {
     margin: 0 0 1rem;
     padding: 0.75rem 1rem;
     overflow-x: auto;
-    background: var(--fkds-color-background-secondary, #f7f8f8);
+    background: var(--fkds-color-background-tertiary, #f6f3ef);
     border: 1px solid var(--fkds-color-border-weak, #d7d9e0);
     border-radius: var(--f-border-radius-medium, 8px);
 
@@ -143,7 +143,7 @@ p a {
     code {
         font-family: var(--f-font-family-code, monospace);
         font-size: 0.875rem;
-        color: var(--fkds-color-text-primary, #081130);
+        color: var(--fkds-color-text-primary, #242946);
     }
 }
 </style>
