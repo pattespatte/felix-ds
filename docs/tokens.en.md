@@ -136,14 +136,14 @@ The light mode background values form two pairs, both read with the same dark fo
 
 | Surface | Token | Value | Used for |
 | --- | --- | --- | --- |
-| Cool ground | `fkds.color.background.secondary` | `#f5f7fa` | The page's base surface |
-| Cool surface | `fkds.color.background.primary` | `#ffffff` | Cards, fields and popovers lifted off the ground |
+| Cool frame | `fkds.color.background.secondary` | `#f5f7fa` | Cool bands framing the content: the header band and the navigation |
+| Cool ground | `fkds.color.background.primary` | `#ffffff` | The page's base surface; cards, fields and popovers |
 | Warm ground | `fkds.color.background.tertiary` | `#f6f3ef` | Soft bands, such as side panels |
 | Warm surface | `fkds.color.background.warm` | `#dfd7c8` | Deeper sand bands |
 
 The warm pair belongs with the dark foreground. White text does not — the contrast against `#dfd7c8` is too low. Dark mode keeps its own neutral ramp instead of mirroring the pairs, so `background.warm` takes a neutral value there.
 
-Primary background stays white and must not be repainted in the ground colour: upstream binds some thirty component surfaces — cards, fields, table rows, popovers — to that token, so cards and fields would vanish into the ground.
+Primary background stays white and must not be repainted in the frame's cool tint: upstream binds some thirty component surfaces — cards, fields, table rows, popovers — to the same token as the page canvas, so a repaint would flip them all at once.
 
 ## Exclusions and deviations
 

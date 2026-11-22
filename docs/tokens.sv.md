@@ -136,14 +136,14 @@ Ljus läges bakgrundsvärden bildar två par som båda läses med samma mörka f
 
 | Yta | Token | Värde | Används till |
 | --- | --- | --- | --- |
-| Kall duk | `fkds.color.background.secondary` | `#f5f7fa` | Sidans basyta |
-| Kall yta | `fkds.color.background.primary` | `#ffffff` | Kort, fält och popovers som lyfts från duken |
+| Kall ram | `fkds.color.background.secondary` | `#f5f7fa` | Kalla band runt innehållet: sidhuvudets band och navigeringen |
+| Kall duk | `fkds.color.background.primary` | `#ffffff` | Sidans basyta; kort, fält och popovers |
 | Varm grund | `fkds.color.background.tertiary` | `#f6f3ef` | Mjuka band, till exempel sidopaneler |
 | Varm yta | `fkds.color.background.warm` | `#dfd7c8` | Djupare sandband |
 
 Det varma paret hör ihop med den mörka förgrunden. Vit text hör inte dit – kontrasten mot `#dfd7c8` blir för låg. Mörkt läge behåller sin egen neutrala ramp i stället för att spegla paren, så `background.warm` får där ett neutralt värde.
 
-Primär bakgrund hålls vit och får inte målas om till dukens färg: uppströms binder ett trettiotal komponentytor – kort, fält, tabellrader, popovers – till den token, så kort och fält skulle försvinna in i duken.
+Primär bakgrund hålls vit och får inte målas om till ramens kalla nyans: uppströms binder ett trettiotal komponentytor – kort, fält, tabellrader, popovers – till samma token som sidans duk, så en omfärgning slår om dem alla på en gång.
 
 ## Undantag och avvikelser
 

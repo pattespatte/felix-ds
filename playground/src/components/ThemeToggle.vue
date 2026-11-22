@@ -111,8 +111,14 @@ import { applyTheme, currentTheme } from "../theme";
     background: rgba(0, 0, 0, 0.2);
 }
 
+// The checked segment steps one token up (the hover variant): under felix
+// the header band itself now uses the default action colour, so a default
+// fill would blend into it; on the grundtema's green band the hover variant
+// reads the same way the default did. Text and the segment border follow the
+// inverted/header text tokens, so the state keeps its contrast in both
+// themes (WCAG 2.2, 1.4.3/1.4.11).
 .theme-toggle__input:checked + .theme-toggle__label {
-    background: var(--fkds-color-action-background-primary-default, #232948);
+    background: var(--fkds-color-action-background-primary-hover, #334075);
     color: var(--fkds-color-action-text-inverted-default, #ffffff);
 }
 

@@ -183,6 +183,9 @@ function isCurrent(slug: string, anchor: string): boolean {
 
 .nav-tree__link[aria-current="page"] {
     font-weight: var(--f-font-weight-bold, 600);
+    // A primary-surface pill on the secondary nav column: the current page
+    // lifts out of the tree the same way cards do.
+    background-color: var(--fkds-color-background-primary);
     box-shadow: inset 4px 0 0 var(--fkds-color-text-primary, #1b1e23);
 }
 

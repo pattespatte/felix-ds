@@ -45,10 +45,10 @@ body {
 
 // Without an explicit background the browser canvas shows through wherever
 // the app shell does not paint; the token flips with the active theme/mode.
-// The canvas takes the cool surface so white cards and panels read as raised
-// against it.
+// The canvas stays on the primary surface; the cool nuance now frames the
+// chrome (header band + navigation column) instead.
 body {
-    background-color: var(--fkds-color-background-secondary, #f5f7fa);
+    background-color: var(--fkds-color-background-primary, #ffffff);
 }
 
 // Page wrapper: header content, the nav + view row and the footer content
@@ -98,16 +98,48 @@ body {
 
 // The header band: FPageHeader's full-width root carries the colour and the
 // hairline, so both keep spanning the viewport while the content row is
-// centered. Upstream paints the colour on .page-header itself; in felix dark
-// that token (#16171b) differs from the page background (#000000), so left
-// on the narrower row it would show a seam at the column's edges. The root
-// also holds the shared control height for everything in the header row
-// (search field, theme pill, mode button); the components consume it so the
-// scroll-shrink below can tighten the whole row from one place.
+// centered. The band is the header token pair: under the grundtema those are
+// upstream's own values (green band, white text), under felix the rule below
+// repaints the band with the primary action colour. In felix dark the band
+// colour differs from the black page background, so the colour must sit on
+// this full-bleed root – on the narrower row alone it would show a seam at
+// the column's edges. The root also holds the shared control height for
+// everything in the header row (search field, theme pill, mode button); the
+// components consume it so the scroll-shrink below can tighten the whole row
+// from one place.
 .page-header__root {
     --header-control-height: 2.5rem;
     background-color: var(--fkds-color-header-background-primary);
     border-bottom: 1px solid var(--fkds-color-border-weak, #d7d9e0);
+}
+
+// felix: the band takes the primary action colour and re-points the header
+// text token at the inverted text colour, so the whole subtree follows in
+// one step – upstream's .page-header colour (the title link inherits it),
+// the theme pill's borders and labels, the mode button's border and icon.
+html.theme-felix .page-header__root {
+    --fkds-color-header-text-primary: var(
+        --fkds-color-action-text-inverted-default,
+        #ffffff
+    );
+    background-color: var(--fkds-color-action-background-primary-default, #232948);
+}
+
+// The title link is styled as plain text (App.vue), but the theme's global
+// anchor rule is re-emitted under the dark scope selector
+// (html.theme-felix[data-color-mode=dark] a, 0,2,2), which beats the link's
+// own scoped colour – in felix dark it would paint the action link colour,
+// underlined, on the band. Restate the header text colour one step higher
+// (0,3,0), in every state: the link keeps its plain-text treatment and
+// follows the band's inverted text. Under the grundtema the same token is
+// upstream's white header text, so both profiles read identically.
+.page-header__root .page-header__app-name .app-title-link {
+    color: var(--fkds-color-header-text-primary, inherit);
+    text-decoration: none;
+
+    &:hover {
+        color: var(--fkds-color-header-text-primary, inherit);
+    }
 }
 
 // Shrink the header while the page is scrolled (≈49px vs ≈81px at rest).
@@ -247,7 +279,7 @@ html[data-color-mode="dark"]:not(.theme-felix) .badge--default {
 .layout-navigation__navigation {
     position: static;
     flex-shrink: 0;
-    background-color: var(--fkds-color-background-primary, #ffffff);
+    background-color: var(--fkds-color-background-secondary, #f5f7fa);
 }
 
 // The static nav column still carries FKUI's declared z-index (9994) and, as
