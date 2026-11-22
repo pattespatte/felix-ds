@@ -21,9 +21,9 @@ flowchart TB
     ROW1 -.-|"bun test bevisar rundturen:<br>import av de committade filerna<br>kompilerar tillbaka till exakt samma tema"| ROW2
     ROW2 -.->|"ingår i det sammansatta temat,<br>men har ingen felix-källa att importera"| G["Grundtemat undantas med avsikt:<br>dess värden lever i @fkui/design<br>och ändras bara när FKUI-paketen<br>bumpas"]
 
-    classDef step fill:#f6f3ee,stroke:#232948,stroke-width:1px,color:#081130,rx:10,ry:10
+    classDef step fill:#f6f3ef,stroke:#232948,stroke-width:1px,color:#242946,rx:10,ry:10
     classDef owner fill:#232948,stroke:#232948,stroke-width:1px,color:#ffffff,font-weight:600,rx:10,ry:10
-    classDef note fill:#f7f8f8,stroke:#8c93a4,stroke-width:1px,color:#585f71,rx:10,ry:10
+    classDef note fill:#f5f7fa,stroke:#8c93a4,stroke-width:1px,color:#585f71,rx:10,ry:10
 
     class E,T,I,O step
     class S owner
@@ -85,7 +85,7 @@ Filerna följer DTCG-utkastet: token är objekt med `$value` samt valfria `$type
 
 | `$type` | Exempel |
 | --- | --- |
-| `color` | `#081130`, `rgba(0, 0, 0, 0.8)` |
+| `color` | `#242946`, `rgba(0, 0, 0, 0.8)` |
 | `dimension` | `3rem`, `1px`, `100%` |
 | `duration` | `100ms` |
 | `number` | `400` (typografisk vikt), `1.5` (radhöjd) |
@@ -130,6 +130,21 @@ Token som i CSS:t pekar på en annan token uttrycks som DTCG-alias `{sökväg}` 
 
 Alla alias löses inom samma fil.
 
+## Ytor i två par
+
+Ljus läges bakgrundsvärden bildar två par som båda läses med samma mörka förgrund (`fkds.color.text.primary`):
+
+| Yta | Token | Värde | Används till |
+| --- | --- | --- | --- |
+| Kall duk | `fkds.color.background.secondary` | `#f5f7fa` | Sidans basyta |
+| Kall yta | `fkds.color.background.primary` | `#ffffff` | Kort, fält och popovers som lyfts från duken |
+| Varm grund | `fkds.color.background.tertiary` | `#f6f3ef` | Mjuka band, till exempel sidopaneler |
+| Varm yta | `fkds.color.background.warm` | `#dfd7c8` | Djupare sandband |
+
+Det varma paret hör ihop med den mörka förgrunden. Vit text hör inte dit – kontrasten mot `#dfd7c8` blir för låg. Mörkt läge behåller sin egen neutrala ramp i stället för att spegla paren, så `background.warm` får där ett neutralt värde.
+
+Primär bakgrund hålls vit och får inte målas om till dukens färg: uppströms binder ett trettiotal komponentytor – kort, fält, tabellrader, popovers – till den token, så kort och fält skulle försvinna in i duken.
+
 ## Undantag och avvikelser
 
 Exporten speglar temat 1:1 utom följande, som alla är dokumenterade beslut:
@@ -146,7 +161,7 @@ Exporten speglar temat 1:1 utom följande, som alla är dokumenterade beslut:
 ```ts
 import light from "@pattespatte/felix-ds/tokens/light.json";
 
-const primary = light.fkds.color.text.primary.$value; // "#081130"
+const primary = light.fkds.color.text.primary.$value; // "#242946"
 ```
 
 **Med Style Dictionary** (illustration, inte en del av paketet):

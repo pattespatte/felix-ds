@@ -38,10 +38,10 @@ flowchart TD
     M4 --> O2["Du: granska och merga pull requesten,<br>ge sedan ut nästa version"]
     O2 -.-> U["Utgivning före fredagen med nya pixlar?<br>Kör generate-linux-baselines för hand<br>(cirka 10 minuter, publicerar ingenting)"]
 
-    classDef step fill:#f6f3ee,stroke:#232948,stroke-width:1px,color:#081130,rx:10,ry:10
-    classDef decision fill:#e7f2ff,stroke:#0053a7,stroke-width:1px,color:#081130,rx:10,ry:10
+    classDef step fill:#f6f3ef,stroke:#232948,stroke-width:1px,color:#242946,rx:10,ry:10
+    classDef decision fill:#e7f2ff,stroke:#0053a7,stroke-width:1px,color:#242946,rx:10,ry:10
     classDef owner fill:#232948,stroke:#232948,stroke-width:1px,color:#ffffff,font-weight:600,rx:10,ry:10
-    classDef note fill:#f7f8f8,stroke:#8c93a4,stroke-width:1px,color:#585f71,rx:10,ry:10
+    classDef note fill:#f5f7fa,stroke:#8c93a4,stroke-width:1px,color:#585f71,rx:10,ry:10
 
     class F1,F4,F5,M1,M4 step
     class F2,M2 decision

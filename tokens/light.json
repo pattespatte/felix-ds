@@ -697,7 +697,7 @@
       "background": {
         "disabled": {
           "$type": "color",
-          "$value": "#f7f8f8"
+          "$value": "#f5f7fa"
         },
         "primary": {
           "$type": "color",
@@ -705,11 +705,15 @@
         },
         "secondary": {
           "$type": "color",
-          "$value": "#f7f8f8"
+          "$value": "#f5f7fa"
         },
         "tertiary": {
           "$type": "color",
-          "$value": "#f6f3ee"
+          "$value": "#f6f3ef"
+        },
+        "warm": {
+          "$type": "color",
+          "$value": "#dfd7c8"
         }
       },
       "border": {
@@ -851,7 +855,7 @@
           "primary": {
             "$description": "Headern har ljus bakgrund i profilen, så headertext använder primär textfärg i stället för uppströms inverterade färg.",
             "$type": "color",
-            "$value": "#081130"
+            "$value": "#242946"
           }
         }
       },
@@ -952,7 +956,7 @@
         },
         "primary": {
           "$type": "color",
-          "$value": "#081130"
+          "$value": "#242946"
         },
         "secondary": {
           "$type": "color",

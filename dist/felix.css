@@ -461,14 +461,15 @@
   color: var(--fkds-color-action-border-primary-default);
 }
 :root {
-  --fkds-color-text-primary: #081130;
+  --fkds-color-text-primary: #242946;
   --fkds-color-text-secondary: #585f71;
   --fkds-color-text-inverted: #ffffff;
   --fkds-color-text-disabled: #585f71;
   --fkds-color-background-primary: #ffffff;
-  --fkds-color-background-secondary: #f7f8f8;
-  --fkds-color-background-tertiary: #f6f3ee;
-  --fkds-color-background-disabled: #f7f8f8;
+  --fkds-color-background-secondary: #f5f7fa;
+  --fkds-color-background-tertiary: #f6f3ef;
+  --fkds-color-background-warm: #dfd7c8;
+  --fkds-color-background-disabled: #f5f7fa;
   --fkds-color-border-primary: #6e7689;
   --fkds-color-border-strong: #8c93a4;
   --fkds-color-border-weak: #d7d9e0;
@@ -534,7 +535,7 @@
   --fkds-color-navigation-background-selected: #232948;
   --fkds-color-header-background-primary: #ffffff;
   --f-page-layout-background: var(--fkds-color-background-tertiary);
-  --fkds-color-header-text-primary: #081130;
+  --fkds-color-header-text-primary: #242946;
   --fkds-focus-indicator-color: #000000;
   --fkds-focus-indicator-color-background: #ffffff;
 }
@@ -1036,6 +1037,7 @@ html[data-color-mode=dark] {
   --fkds-color-background-primary: #000000;
   --fkds-color-background-secondary: #16171b;
   --fkds-color-background-tertiary: #1e222e;
+  --fkds-color-background-warm: #252932;
   --fkds-color-background-disabled: #3e424e;
   --fkds-color-border-primary: #8c93a4;
   --fkds-color-border-strong: #d7d9e0;

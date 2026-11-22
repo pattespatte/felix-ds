@@ -710,6 +710,10 @@
         "tertiary": {
           "$type": "color",
           "$value": "#1e222e"
+        },
+        "warm": {
+          "$type": "color",
+          "$value": "#252932"
         }
       },
       "border": {

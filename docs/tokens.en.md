@@ -21,9 +21,9 @@ flowchart TB
     ROW1 -.-|"bun test proves the round trip:<br>importing the committed files compiles<br>back to exactly the theme"| ROW2
     ROW2 -.->|"part of the composed theme,<br>but no felix source to import"| G["The grundtema sits outside by design:<br>its values ship inside @fkui/design<br>and change only on an FKUI bump"]
 
-    classDef step fill:#f6f3ee,stroke:#232948,stroke-width:1px,color:#081130,rx:10,ry:10
+    classDef step fill:#f6f3ef,stroke:#232948,stroke-width:1px,color:#242946,rx:10,ry:10
     classDef owner fill:#232948,stroke:#232948,stroke-width:1px,color:#ffffff,font-weight:600,rx:10,ry:10
-    classDef note fill:#f7f8f8,stroke:#8c93a4,stroke-width:1px,color:#585f71,rx:10,ry:10
+    classDef note fill:#f5f7fa,stroke:#8c93a4,stroke-width:1px,color:#585f71,rx:10,ry:10
 
     class E,T,I,O step
     class S owner
@@ -85,7 +85,7 @@ The files follow the DTCG draft: tokens are objects with `$value` and optional `
 
 | `$type` | Example |
 | --- | --- |
-| `color` | `#081130`, `rgba(0, 0, 0, 0.8)` |
+| `color` | `#242946`, `rgba(0, 0, 0, 0.8)` |
 | `dimension` | `3rem`, `1px`, `100%` |
 | `duration` | `100ms` |
 | `number` | `400` (font weight), `1.5` (line height) |
@@ -130,6 +130,21 @@ Tokens that point at another token in CSS are expressed as DTCG aliases `{path}`
 
 All aliases resolve within the same file.
 
+## Surfaces in two pairs
+
+The light mode background values form two pairs, both read with the same dark foreground (`fkds.color.text.primary`):
+
+| Surface | Token | Value | Used for |
+| --- | --- | --- | --- |
+| Cool ground | `fkds.color.background.secondary` | `#f5f7fa` | The page's base surface |
+| Cool surface | `fkds.color.background.primary` | `#ffffff` | Cards, fields and popovers lifted off the ground |
+| Warm ground | `fkds.color.background.tertiary` | `#f6f3ef` | Soft bands, such as side panels |
+| Warm surface | `fkds.color.background.warm` | `#dfd7c8` | Deeper sand bands |
+
+The warm pair belongs with the dark foreground. White text does not — the contrast against `#dfd7c8` is too low. Dark mode keeps its own neutral ramp instead of mirroring the pairs, so `background.warm` takes a neutral value there.
+
+Primary background stays white and must not be repainted in the ground colour: upstream binds some thirty component surfaces — cards, fields, table rows, popovers — to that token, so cards and fields would vanish into the ground.
+
 ## Exclusions and deviations
 
 The export mirrors the theme 1:1 except for the following, all documented decisions:
@@ -146,7 +161,7 @@ The export mirrors the theme 1:1 except for the following, all documented decisi
 ```ts
 import light from "@pattespatte/felix-ds/tokens/light.json";
 
-const primary = light.fkds.color.text.primary.$value; // "#081130"
+const primary = light.fkds.color.text.primary.$value; // "#242946"
 ```
 
 **With Style Dictionary** (illustration, not part of the package):

@@ -21,10 +21,10 @@ flowchart TD
     J --> K["Kontrollera installationen<br>npm view med konsument-PAT"]
     I -.-> N["deploy-playground.yml triggas också<br>väntat och harmlöst"]
 
-    classDef step fill:#f6f3ee,stroke:#232948,stroke-width:1px,color:#081130,rx:10,ry:10
-    classDef decision fill:#e7f2ff,stroke:#0053a7,stroke-width:1px,color:#081130,rx:10,ry:10
+    classDef step fill:#f6f3ef,stroke:#232948,stroke-width:1px,color:#242946,rx:10,ry:10
+    classDef decision fill:#e7f2ff,stroke:#0053a7,stroke-width:1px,color:#242946,rx:10,ry:10
     classDef owner fill:#232948,stroke:#232948,stroke-width:1px,color:#ffffff,font-weight:600,rx:10,ry:10
-    classDef note fill:#f7f8f8,stroke:#8c93a4,stroke-width:1px,color:#585f71,rx:10,ry:10
+    classDef note fill:#f5f7fa,stroke:#8c93a4,stroke-width:1px,color:#585f71,rx:10,ry:10
 
     class A,C,E,F,G,I,J,K step
     class B decision

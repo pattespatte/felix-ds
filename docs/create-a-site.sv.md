@@ -66,9 +66,9 @@ flowchart TD
     Q3 -- Nej --> Q1
     S -.-> X["Konfigurera aldrig @fkui/theme-default själv<br>felix laddar det redan konfigurerat –<br>de två konfigurerade laddningarna krockar"]
 
-    classDef step fill:#f6f3ee,stroke:#232948,stroke-width:1px,color:#081130,rx:10,ry:10
-    classDef decision fill:#e7f2ff,stroke:#0053a7,stroke-width:1px,color:#081130,rx:10,ry:10
-    classDef danger fill:#ffe5e1,stroke:#c7311a,stroke-width:1px,color:#081130,rx:10,ry:10
+    classDef step fill:#f6f3ef,stroke:#232948,stroke-width:1px,color:#242946,rx:10,ry:10
+    classDef decision fill:#e7f2ff,stroke:#0053a7,stroke-width:1px,color:#242946,rx:10,ry:10
+    classDef danger fill:#ffe5e1,stroke:#c7311a,stroke-width:1px,color:#242946,rx:10,ry:10
 
     class A,C,P1,P2,S step
     class Q1,Q2,Q3 decision

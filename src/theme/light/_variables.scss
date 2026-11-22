@@ -5,16 +5,29 @@
 
 @mixin variables {
     // TEXT
-    --fkds-color-text-primary: #081130;
+    // The profile's dark ink. It is the foreground of the first surface pair
+    // (dark text on the cool canvas), and the same value reads as the warm
+    // pair's foreground when a warm band needs text.
+    --fkds-color-text-primary: #242946;
     --fkds-color-text-secondary: #585f71;
     --fkds-color-text-inverted: #ffffff;
     --fkds-color-text-disabled: #585f71;
 
     // BACKGROUND
+    // Two surface pairs, both with a dark foreground:
+    //   cool – a white surface (primary) that cards, fields and popups read,
+    //          lifted off the cool page canvas
+    //   warm – a soft band (tertiary) and a deeper sand band (warm)
+    // Upstream binds some thirty component surfaces to background-primary –
+    // cards, inputs, popups, table rows – so that token stays white and the
+    // cool tint lives on the page canvas instead (see the body rule in the
+    // playground and demo site shells). Painting it with the canvas colour
+    // would make every card vanish.
     --fkds-color-background-primary: #ffffff;
-    --fkds-color-background-secondary: #f7f8f8;
-    --fkds-color-background-tertiary: #f6f3ee;
-    --fkds-color-background-disabled: #f7f8f8;
+    --fkds-color-background-secondary: #f5f7fa;
+    --fkds-color-background-tertiary: #f6f3ef;
+    --fkds-color-background-warm: #dfd7c8;
+    --fkds-color-background-disabled: #f5f7fa;
 
     // BORDER
     --fkds-color-border-primary: #6e7689;
@@ -116,19 +129,20 @@
     --fkds-color-navigation-background-selected: #232948;
 
     // HEADER - BACKGROUND
+    // The header band stays white so it separates from the cool canvas.
     --fkds-color-header-background-primary: #ffffff;
 
     // PAGE LAYOUT SURFACE
     // Upstream only defines this token inside the page layout's own shadow
     // parts (panel areas get the secondary background); standalone surfaces
     // like FMinimizablePanel read it without a fallback. The profile maps
-    // the panel surface to the beige tertiary background.
+    // the panel surface to the warm tertiary background.
     --f-page-layout-background: var(--fkds-color-background-tertiary);
 
     // HEADER - TEXT
     // Header background is light in this profile, so header text flips from
     // the upstream inverted colour to the primary text colour.
-    --fkds-color-header-text-primary: #081130;
+    --fkds-color-header-text-primary: #242946;
 
     // FOCUS INDICATOR
     // Pure black outer ring over a white inner ring – see --f-focus-box-shadow.

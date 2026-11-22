@@ -38,10 +38,10 @@ flowchart TD
     M4 --> O2["You: review and merge the PR,<br>then cut the next release"]
     O2 -.-> U["Release before Friday with new pixels?<br>Run generate-linux-baselines by hand<br>(about 10 min, publishes nothing)"]
 
-    classDef step fill:#f6f3ee,stroke:#232948,stroke-width:1px,color:#081130,rx:10,ry:10
-    classDef decision fill:#e7f2ff,stroke:#0053a7,stroke-width:1px,color:#081130,rx:10,ry:10
+    classDef step fill:#f6f3ef,stroke:#232948,stroke-width:1px,color:#242946,rx:10,ry:10
+    classDef decision fill:#e7f2ff,stroke:#0053a7,stroke-width:1px,color:#242946,rx:10,ry:10
     classDef owner fill:#232948,stroke:#232948,stroke-width:1px,color:#ffffff,font-weight:600,rx:10,ry:10
-    classDef note fill:#f7f8f8,stroke:#8c93a4,stroke-width:1px,color:#585f71,rx:10,ry:10
+    classDef note fill:#f5f7fa,stroke:#8c93a4,stroke-width:1px,color:#585f71,rx:10,ry:10
 
     class F1,F4,F5,M1,M4 step
     class F2,M2 decision

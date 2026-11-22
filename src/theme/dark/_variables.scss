@@ -16,9 +16,16 @@
     --fkds-color-text-disabled: #585f71;
 
     // BACKGROUND
+    // The dark profile keeps its own neutral ramp rather than mirroring the
+    // light profile's cool/warm pairs – a dark canvas has no white card to
+    // lift, so the three surfaces form a depth ramp instead.
     --fkds-color-background-primary: #000000;
     --fkds-color-background-secondary: #16171b;
     --fkds-color-background-tertiary: #1e222e;
+    // Dark counterpart of the light profile's warm sand band. There is no
+    // warm hue in the dark snapshot, so the deepest neutral step carries
+    // the role; text on it stays the primary text colour.
+    --fkds-color-background-warm: #252932;
     --fkds-color-background-disabled: #3e424e;
 
     // BORDER
