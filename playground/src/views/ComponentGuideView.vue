@@ -92,6 +92,7 @@ const groups: GuideGroup[] = [
         id: "ytor",
         title: "Ytor och paneler",
         entries: [
+            { slug: "ytor", id: "surface-pairs", text: "välj mellan ytornas två färgpar" },
             { slug: "ytor", id: "fcard", name: "FCard", text: "gruppera innehåll på ett kort" },
             { slug: "ytor", id: "fexpand", name: "FExpand", text: "visa och dölja mer innehåll på plats" },
             { slug: "ytor", id: "fexpandablepanel", name: "FExpandablePanel", text: "en expanderbar yta" },
